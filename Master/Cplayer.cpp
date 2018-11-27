@@ -1,11 +1,11 @@
 //=============================================================================
 //
-//	PlayerƒNƒ‰ƒX
+//	Playerã‚¯ãƒ©ã‚¹
 //
 //=============================================================================
 
 //=============================================================================
-//	ƒCƒ“ƒNƒ‹[ƒhƒtƒ@ƒCƒ‹
+//	ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ãƒ•ã‚¡ã‚¤ãƒ«
 //=============================================================================
 
 #include "Cplayer.h"
@@ -16,20 +16,20 @@
 #include "debug_font.h"
 
 //=============================================================================
-//	’è”’è‹`
+//	å®šæ•°å®šç¾©
 //=============================================================================
 #define SPEED (0.2)
 #define PLAYER_SAIZ (1)
 #define MPSTOCK_INIT (5)
 //=============================================================================
-//	Ã“I•Ï”
+//	é™çš„å¤‰æ•°
 //=============================================================================
 
 //D3DXMATRIX CPlayer::m_mtxWorld;
 CPlayer *CPlayer::m_pPlayer[PLAYER_MAX] = {};
 int CPlayer::m_PlayerNum = 0;
 //=============================================================================
-// ¶¬
+// ç”Ÿæˆ
 //=============================================================================
 CPlayer::CPlayer()
 {
@@ -40,13 +40,13 @@ CPlayer::CPlayer()
 
 CPlayer *CPlayer::PlayerCreate(void)
 {
-	m_pPlayer[m_PlayerNum-1] = new CPlayer;
+	m_pPlayer[m_PlayerNum - 1] = new CPlayer;
 	return m_pPlayer[m_PlayerNum - 1];
 }
 
 
 //=============================================================================
-// ”jŠü
+// ç ´æ£„
 //=============================================================================
 CPlayer::~CPlayer()
 {
@@ -55,7 +55,7 @@ CPlayer::~CPlayer()
 }
 
 //=============================================================================
-// XV
+// æ›´æ–°
 //=============================================================================
 void CPlayer::Update(void)
 {
@@ -108,17 +108,17 @@ void CPlayer::Update(void)
 		}
 	}
 
-	
+
 
 }
 //=============================================================================
-// •`‰æ
+// æç”»
 //=============================================================================
 
 void CPlayer::Draw(void)
 {
-		
-	
+
+
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 
 	myData* mydata = (myData*)NxA_pPlayer->userData;
@@ -131,12 +131,12 @@ void CPlayer::Draw(void)
 	DrawDX2(m_mtxWorld, NxA_pPlayer, MODELL_PLAYER);
 	//DrawDirectXMesh(NxA_pBoss);
 	//DrawDirectXMesh(NxA_pPlayer);
-	//	ƒfƒoƒbƒO
+	//	ãƒ‡ãƒãƒƒã‚°
 	//DebugFont_Draw(300, 30, "%f\n,%f\n,%f\n,", m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 	RenderPhysX();
 }
 
-//	‰Šú‰»
+//	åˆæœŸåŒ–
 void CPlayer::Player_Initialize(void)
 {
 	m_Hp = HP_MAX;
@@ -150,17 +150,15 @@ void CPlayer::Player_Initialize(void)
 
 	NxMat33 mat1;
 	//mat1.rotZ(0);
-	NxVec3 scaleDwarf = NxVec3(1, 1, 1);	//	ƒ‚ƒfƒ‹ƒXƒP[ƒ‹
-	NxVec3 BBDwarf = NxVec3(1.0f, 1.0f, 1.0f);	//	“–‚½‚è”»’è‚Ì‘å‚«‚³
+	NxVec3 scaleDwarf = NxVec3(1, 1, 1);	//	ãƒ¢ãƒ‡ãƒ«ã‚¹ã‚±ãƒ¼ãƒ«
+	NxVec3 BBDwarf = NxVec3(1.0f, 1.0f, 1.0f);	//	å½“ãŸã‚Šåˆ¤å®šã®å¤§ãã•
 
-	//NxA_pPlayer = CreateMeshAsBox(NxVec3(0, 1, 0), mat1, scaleDwarf, BBDwarf, MODELL_PLAYER);
+												//NxA_pPlayer = CreateMeshAsBox(NxVec3(0, 1, 0), mat1, scaleDwarf, BBDwarf, MODELL_PLAYER);
 	NxA_pPlayer = CreateMeshAsSphere(NxVec3(0, 1, 0), 1.0, MODELL_PLAYER);
-	m_SphereCollision = {
-		
-	}
+
 }
 
-//	I—¹ˆ—
+//	çµ‚äº†å‡¦ç†
 void CPlayer::Finalize(void)
 {
 	for (int i = 0;i < m_PlayerNum;i++)
