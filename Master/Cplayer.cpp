@@ -156,7 +156,7 @@ void CPlayer::Player_Initialize(void)
 	//NxA_pPlayer = CreateMeshAsBox(NxVec3(0, 1, 0), mat1, scaleDwarf, BBDwarf, MODELL_PLAYER);
 	NxA_pPlayer = CreateMeshAsSphere(NxVec3(0, 1, 0), 1.0, MODELL_PLAYER);
 	m_SphereCollision = {
-		D3DXVECTOR3()
+		
 	}
 }
 
