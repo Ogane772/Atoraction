@@ -21,6 +21,8 @@
 #define SPEED (0.2)
 #define PLAYER_SAIZ (1)
 #define MPSTOCK_INIT (5)
+#define ANGLE_Y (4)
+
 //=============================================================================
 //	静的変数
 //=============================================================================
@@ -75,6 +77,93 @@ void CPlayer::Update(void)
 	{
 		m_mtxTranslation *= Move(LEFT, SPEED);
 	}
+	//プレイヤーの角度変更
+	if (Keyboard_IsPress(DIK_W))
+	{
+		if (player_kakudo != 0 && (player_kakudo >= -180 && player_kakudo < 0))
+		{
+			Model_Angle(true);//アングルフラグがtrueだったら右回転false左
+		}
+		if (player_kakudo != 360 && (player_kakudo >= 180 && player_kakudo < 360))
+		{
+			Model_Angle(true);
+		}
+		if (player_kakudo != 0 && (player_kakudo < 180 && player_kakudo >= 0))
+		{
+			Model_Angle(false);
+		}
+		if (player_kakudo != -360 && (player_kakudo < -180 && player_kakudo >= -360))
+		{
+			Model_Angle(false);
+		}
+	}
+
+	if (Keyboard_IsPress(DIK_A))
+	{
+		if (player_kakudo != -90 && (player_kakudo <= 90 && player_kakudo > -90))
+		{
+			Model_Angle(false);
+		}
+		if (player_kakudo != -90 && (player_kakudo >= -270 && player_kakudo < -90))
+		{
+			Model_Angle(true);
+		}
+		if (player_kakudo != 270 && (player_kakudo > 90 && player_kakudo < 270))
+		{
+			Model_Angle(true);
+		}
+		if (player_kakudo != 270 && (player_kakudo >= 270 && player_kakudo < 360))
+		{
+			Model_Angle(false);
+		}
+	}
+
+	if (Keyboard_IsPress(DIK_S))
+	{
+		if (player_kakudo != 180 && (player_kakudo >= 0 && player_kakudo < 180))
+		{
+			Model_Angle(true);
+		}
+		if (player_kakudo != 180 && (player_kakudo <= 360 && player_kakudo > 180))
+		{
+			Model_Angle(false);
+		}
+		if (player_kakudo != -180 && (player_kakudo < 0 && player_kakudo > -180))
+		{
+			Model_Angle(false);
+		}
+		if (player_kakudo != -180 && (player_kakudo >= -360 && player_kakudo < -180))
+		{
+			Model_Angle(false);
+		}
+	}
+
+	if (Keyboard_IsPress(DIK_D))
+	{
+		if (player_kakudo != 90 && (player_kakudo >= -90 && player_kakudo < 90))
+		{
+			Model_Angle(true);
+		}
+		if (player_kakudo != 90 && (player_kakudo <= 270 && player_kakudo > 90))
+		{
+			Model_Angle(false);
+		}
+		if (player_kakudo != -270 && (player_kakudo <= -90 && player_kakudo > -270))
+		{
+			Model_Angle(false);
+		}
+		if (player_kakudo != -270 && (player_kakudo <= -270 && player_kakudo > -360))
+		{
+			Model_Angle(true);
+		}
+	}
+
+
+	if (player_kakudo >= 360 || player_kakudo <= -360)
+	{
+		player_kakudo = 0;
+	}
+
 	if (Keyboard_IsRelease(DIK_O))
 	{
 		CAttraction::Create(CAttraction::TYPE_COFFEE);
@@ -119,14 +208,11 @@ void CPlayer::Draw(void)
 {
 
 
-	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
+	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(180 + player_kakudo));
 
-	myData* mydata = (myData*)NxA_pPlayer->userData;
+	//D3DXMatrixTranslation(&m_mtxTranslation, tank_position.x + tank_angleX, tank_position.y, tank_position.z + tank_angleZ);
 
-	/*mydata->meshTranslation.x = m_mtxWorld._41;
-	mydata->meshTranslation.y = m_mtxWorld._42;
-	mydata->meshTranslation.z = m_mtxWorld._43;
-	NxA_pPlayer->setGlobalPosition(mydata->meshTranslation);*/
+	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 
 	DrawDX2(m_mtxWorld, NxA_pPlayer, MODELL_PLAYER);
 	//DrawDirectXMesh(NxA_pBoss);
@@ -143,6 +229,21 @@ void CPlayer::Player_Initialize(void)
 	m_Mp = 0;
 	m_MpStock = MPSTOCK_INIT;
 	m_Enable = true;
+
+	//playerfront等の初期化
+	player_at = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	wheel_at = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	player_position = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	player_front = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+	D3DXVec3Normalize(&player_front, &player_front);
+
+	player_up = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+	D3DXVec3Cross(&player_right, &player_front, &player_up);
+	D3DXVec3Normalize(&player_right, &player_right);
+	D3DXVec3Cross(&player_up, &player_right, &player_front);
+	D3DXVec3Normalize(&player_up, &player_up);
+	player_kakudo = 0;
+
 	D3DXMatrixTranslation(&m_mtxTranslation, 0, 1, 0);
 	D3DXMatrixScaling(&m_mtxScaling, 0.5f, 1.0f, 0.5f);
 	m_mtxKeepTranslation = m_mtxTranslation;
@@ -167,6 +268,28 @@ void CPlayer::Finalize(void)
 		{
 			delete m_pPlayer[i];
 		}
+	}
+}
+
+void CPlayer::Model_Angle(bool Angle_Flg)
+{
+	if (Angle_Flg == true)
+	{
+		player_kakudo += ANGLE_Y;
+		D3DXMATRIX mtxR;
+		//引数(&, 軸, angle)
+		D3DXMatrixRotationAxis(&mtxR, &player_up, D3DXToRadian(ANGLE_Y));
+		D3DXVec3TransformNormal(&player_front, &player_front, &mtxR);
+		D3DXVec3TransformNormal(&player_right, &player_right, &mtxR);
+	}
+	else
+	{
+		player_kakudo += -ANGLE_Y;
+		D3DXMATRIX mtxR;
+		//引数(&, 軸, angle)
+		D3DXMatrixRotationAxis(&mtxR, &player_up, D3DXToRadian(-ANGLE_Y));
+		D3DXVec3TransformNormal(&player_front, &player_front, &mtxR);
+		D3DXVec3TransformNormal(&player_right, &player_right, &mtxR);
 	}
 }
 
