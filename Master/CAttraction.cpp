@@ -14,6 +14,7 @@
 #include "Ccoffee_cup.h"
 #include "Cfreefall.h"
 #include "CGameObj.h"
+#include "CAttraction_Coaster .h"
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================
@@ -64,6 +65,11 @@ void CAttraction::Create(int nType)
 	if (nType == TYPE_WHEEL)
 	{
 		m_pAttraction[m_AttractionNum[TYPE_ALL] - 1] = new Cwheel;
+		createchack = true;
+	}
+	if (nType == TYPE_COASTER)
+	{
+		m_pAttraction[m_AttractionNum[TYPE_ALL] - 1] = new Coaster;
 		createchack = true;
 	}
 }

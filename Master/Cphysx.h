@@ -45,11 +45,12 @@ protected:
 		MODELL_ENBAN,
 		MODELL_HASIRA,
 		MODELL_WHEEL,
+		MODELL_COASTER,
 	};//ModelFileData
 	  //static NxActor *NxA_pPlayer,*NxA_pBoss;//物理エンジンを適用するモンスターを宣言する
 	  //NxActor *NxA_pPlayer, *NxA_pSmall;
 	  //static NxActor* Get_PhysxData(int Index) { return m_ModelFileData[Index].Physx; }
-	NxActor *NxA_pCoffee, *NxA_pCoffeeTable, *NxA_pEnban, *NxA_pHasira, *NxA_pWheel;
+	NxActor *NxA_pCoffee, *NxA_pCoffeeTable, *NxA_pEnban, *NxA_pHasira, *NxA_pWheel,*NxA_Coaster;
 	// ユーザーデータ
 	struct myData
 	{

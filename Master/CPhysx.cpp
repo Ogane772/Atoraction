@@ -47,6 +47,7 @@ CPhysx::ModelFileData CPhysx::m_ModelFileData[] = {
 	{ "asset/model/enban.x" },
 	{ "asset/model/hasira.x" },
 	{ "asset/model/ferris.x" },
+	{ "asset/model/coaster.x" },
 };
 
 int CPhysx::m_MODELFAIL_MAX = sizeof(CPhysx::m_ModelFileData) / sizeof(m_ModelFileData[0]);

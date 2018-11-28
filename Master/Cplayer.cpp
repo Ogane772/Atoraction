@@ -61,131 +61,138 @@ CPlayer::~CPlayer()
 //=============================================================================
 void CPlayer::Update(void)
 {
-	if (Keyboard_IsPress(DIK_W))
+	if (!g_CosterMode)//コースターじゃないとき
 	{
-		m_mtxTranslation *= Move(FLONT, SPEED);
-	}
-	if (Keyboard_IsPress(DIK_S))
-	{
-		m_mtxTranslation *= Move(BACK, SPEED);
-	}
-	if (Keyboard_IsPress(DIK_D))
-	{
-		m_mtxTranslation *= Move(RIGHT, SPEED);
-	}
-	if (Keyboard_IsPress(DIK_A))
-	{
-		m_mtxTranslation *= Move(LEFT, SPEED);
-	}
-	//プレイヤーの角度変更
-	if (Keyboard_IsPress(DIK_W))
-	{
-		if (player_kakudo != 0 && (player_kakudo >= -180 && player_kakudo < 0))
+		if (Keyboard_IsPress(DIK_W))
 		{
-			Model_Angle(true);//アングルフラグがtrueだったら右回転false左
+			m_mtxTranslation *= Move(FLONT, SPEED);
 		}
-		if (player_kakudo != 360 && (player_kakudo >= 180 && player_kakudo < 360))
+		if (Keyboard_IsPress(DIK_S))
 		{
-			Model_Angle(true);
+			m_mtxTranslation *= Move(BACK, SPEED);
 		}
-		if (player_kakudo != 0 && (player_kakudo < 180 && player_kakudo >= 0))
+		if (Keyboard_IsPress(DIK_D))
 		{
-			Model_Angle(false);
+			m_mtxTranslation *= Move(RIGHT, SPEED);
 		}
-		if (player_kakudo != -360 && (player_kakudo < -180 && player_kakudo >= -360))
+		if (Keyboard_IsPress(DIK_A))
 		{
-			Model_Angle(false);
+			m_mtxTranslation *= Move(LEFT, SPEED);
 		}
-	}
+		//プレイヤーの角度変更
+		if (Keyboard_IsPress(DIK_W))
+		{
+			if (player_kakudo != 0 && (player_kakudo >= -180 && player_kakudo < 0))
+			{
+				Model_Angle(true);//アングルフラグがtrueだったら右回転false左
+			}
+			if (player_kakudo != 360 && (player_kakudo >= 180 && player_kakudo < 360))
+			{
+				Model_Angle(true);
+			}
+			if (player_kakudo != 0 && (player_kakudo < 180 && player_kakudo >= 0))
+			{
+				Model_Angle(false);
+			}
+			if (player_kakudo != -360 && (player_kakudo < -180 && player_kakudo >= -360))
+			{
+				Model_Angle(false);
+			}
+		}
 
-	if (Keyboard_IsPress(DIK_A))
-	{
-		if (player_kakudo != -90 && (player_kakudo <= 90 && player_kakudo > -90))
+		if (Keyboard_IsPress(DIK_A))
 		{
-			Model_Angle(false);
+			if (player_kakudo != -90 && (player_kakudo <= 90 && player_kakudo > -90))
+			{
+				Model_Angle(false);
+			}
+			if (player_kakudo != -90 && (player_kakudo >= -270 && player_kakudo < -90))
+			{
+				Model_Angle(true);
+			}
+			if (player_kakudo != 270 && (player_kakudo > 90 && player_kakudo < 270))
+			{
+				Model_Angle(true);
+			}
+			if (player_kakudo != 270 && (player_kakudo >= 270 && player_kakudo < 360))
+			{
+				Model_Angle(false);
+			}
 		}
-		if (player_kakudo != -90 && (player_kakudo >= -270 && player_kakudo < -90))
-		{
-			Model_Angle(true);
-		}
-		if (player_kakudo != 270 && (player_kakudo > 90 && player_kakudo < 270))
-		{
-			Model_Angle(true);
-		}
-		if (player_kakudo != 270 && (player_kakudo >= 270 && player_kakudo < 360))
-		{
-			Model_Angle(false);
-		}
-	}
 
-	if (Keyboard_IsPress(DIK_S))
-	{
-		if (player_kakudo != 180 && (player_kakudo >= 0 && player_kakudo < 180))
+		if (Keyboard_IsPress(DIK_S))
 		{
-			Model_Angle(true);
+			if (player_kakudo != 180 && (player_kakudo >= 0 && player_kakudo < 180))
+			{
+				Model_Angle(true);
+			}
+			if (player_kakudo != 180 && (player_kakudo <= 360 && player_kakudo > 180))
+			{
+				Model_Angle(false);
+			}
+			if (player_kakudo != -180 && (player_kakudo < 0 && player_kakudo > -180))
+			{
+				Model_Angle(false);
+			}
+			if (player_kakudo != -180 && (player_kakudo >= -360 && player_kakudo < -180))
+			{
+				Model_Angle(false);
+			}
 		}
-		if (player_kakudo != 180 && (player_kakudo <= 360 && player_kakudo > 180))
-		{
-			Model_Angle(false);
-		}
-		if (player_kakudo != -180 && (player_kakudo < 0 && player_kakudo > -180))
-		{
-			Model_Angle(false);
-		}
-		if (player_kakudo != -180 && (player_kakudo >= -360 && player_kakudo < -180))
-		{
-			Model_Angle(false);
-		}
-	}
 
-	if (Keyboard_IsPress(DIK_D))
-	{
-		if (player_kakudo != 90 && (player_kakudo >= -90 && player_kakudo < 90))
+		if (Keyboard_IsPress(DIK_D))
 		{
-			Model_Angle(true);
+			if (player_kakudo != 90 && (player_kakudo >= -90 && player_kakudo < 90))
+			{
+				Model_Angle(true);
+			}
+			if (player_kakudo != 90 && (player_kakudo <= 270 && player_kakudo > 90))
+			{
+				Model_Angle(false);
+			}
+			if (player_kakudo != -270 && (player_kakudo <= -90 && player_kakudo > -270))
+			{
+				Model_Angle(false);
+			}
+			if (player_kakudo != -270 && (player_kakudo <= -270 && player_kakudo > -360))
+			{
+				Model_Angle(true);
+			}
 		}
-		if (player_kakudo != 90 && (player_kakudo <= 270 && player_kakudo > 90))
+
+
+		if (player_kakudo >= 360 || player_kakudo <= -360)
 		{
-			Model_Angle(false);
+			player_kakudo = 0;
 		}
-		if (player_kakudo != -270 && (player_kakudo <= -90 && player_kakudo > -270))
+
+		if (Keyboard_IsTrigger(DIK_P))
 		{
-			Model_Angle(false);
+			CAttraction::Create(CAttraction::TYPE_COASTER);
+			g_CosterMode = true;
 		}
-		if (player_kakudo != -270 && (player_kakudo <= -270 && player_kakudo > -360))
+		if (Keyboard_IsRelease(DIK_O))
 		{
-			Model_Angle(true);
+			CAttraction::Create(CAttraction::TYPE_COFFEE);
+		}
+		if (Keyboard_IsRelease(DIK_I))
+		{
+			CAttraction::Create(CAttraction::TYPE_FALL);
+		}
+		if (Keyboard_IsRelease(DIK_U))
+		{
+			CAttraction::Create(CAttraction::TYPE_WHEEL);
+		}
+
+		if (45.0*45.0 < (m_mtxTranslation._41*m_mtxTranslation._41) + (m_mtxTranslation._43 * m_mtxTranslation._43))
+		{
+			m_mtxTranslation = m_mtxKeepTranslation;
+		}
+		else
+		{
+			m_mtxKeepTranslation = m_mtxTranslation;
 		}
 	}
-
-
-	if (player_kakudo >= 360 || player_kakudo <= -360)
-	{
-		player_kakudo = 0;
-	}
-
-	if (Keyboard_IsRelease(DIK_O))
-	{
-		CAttraction::Create(CAttraction::TYPE_COFFEE);
-	}
-	if (Keyboard_IsRelease(DIK_I))
-	{
-		CAttraction::Create(CAttraction::TYPE_FALL);
-	}
-	if (Keyboard_IsRelease(DIK_U))
-	{
-		CAttraction::Create(CAttraction::TYPE_WHEEL);
-	}
-
-	if (45.0*45.0 < (m_mtxTranslation._41*m_mtxTranslation._41) + (m_mtxTranslation._43 * m_mtxTranslation._43))
-	{
-		m_mtxTranslation = m_mtxKeepTranslation;
-	}
-	else
-	{
-		m_mtxKeepTranslation = m_mtxTranslation;
-	}
-
 	//	MP
 	if (m_FrameCount % 60 == 0)
 	{
@@ -229,7 +236,7 @@ void CPlayer::Player_Initialize(void)
 	m_Mp = 0;
 	m_MpStock = MPSTOCK_INIT;
 	m_Enable = true;
-
+	g_CosterMode = false;
 	//playerfront等の初期化
 	player_at = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	wheel_at = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
