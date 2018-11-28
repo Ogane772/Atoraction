@@ -550,6 +550,11 @@ void CPhysx::DrawDX2(D3DXMATRIX mtxWorld, NxActor* actor, int type)
 			//D3DXMatrixMultiply(&mtxWorld2, &mtxWorld, &mtxWorld2);
 			D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
 		}
+		if (type == CAttraction::MODELL_WHEEL)
+		{
+			mat = mydata->meshRotation;
+			D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
+		}
 
 		// ƒƒbƒVƒ…‚ÌŒ´“_’²®
 		D3DXMatrixTranslation(&mat, 0, 0, 0);
