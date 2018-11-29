@@ -76,9 +76,17 @@ void CUserInterFace::Draw(void)
 
 	//§ŒÀŽžŠÔ
 	int t = CGameObj::m_FrameCount / 60;
-	Num_Draw(WINDOW_WIDTH / 6, -25, GAMEEND/60-t,2,0);
-	int tt = CGameObj::m_FrameCount % 60*1.7;
-	Mp_Draw(WINDOW_WIDTH / 2+170, 80, 99 - tt, 2,1);
+	Num_Draw(WINDOW_WIDTH / 2-25, -25, GAMEEND/60-t,2,0,true);
+	int tt = CGameObj::m_FrameCount % 61*1.7;
+	if (CGameObj::m_FrameCount >= GAMEEND)
+	{
+		tt = 100;
+	}
+	Mp_Draw(WINDOW_WIDTH / 2+230, 80, 100 - tt, 2,true);
+
+	//	Œ‚”j”
+	int ko = pp->Get_KoCount();
+	Num_Draw(WINDOW_WIDTH / 3, WINDOW_HIGHT / 2+90, ko, 3, 1,false);
 }
 
 void CUserInterFace::Finalize(void)

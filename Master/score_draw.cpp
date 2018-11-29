@@ -145,7 +145,7 @@ void Mp_Draw(float x, float y, int score, int fig, bool zero)
 	}
 }
 
-void Num_Draw(float x, float y, int score, int fig, int color)
+void Num_Draw(float x, float y, int score, int fig, int color, bool zero)
 {
 
 	int count_stop_score = 1;
@@ -158,14 +158,31 @@ void Num_Draw(float x, float y, int score, int fig, int color)
 		score = count_stop_score - 1;
 	}
 
-	int number = score % 10;
-	score /= 10;
-	Number_Draw2(x + SCORE_NUMBER_SIZE*(fig + 1), y, number,color);
-	if (score != 0)
+	
+	if (!zero)
 	{
-		Number_Draw2(x + SCORE_NUMBER_SIZE*fig, y, score,color);
+		int number = score % 10;
+		score /= 10;
+		Number_Draw2(x + SCORE_NUMBER_SIZE*(fig + 1), y, number, color);
+		for (int i = 0;i < fig - 1;i++)
+		{
+			if (score > 0)
+			{
+				int number = score % 10;
+				score /= 10;
+				Number_Draw2(x + SCORE_NUMBER_SIZE*(fig - i), y, number, color);
+			}
+		}
 	}
-
+	else
+	{
+		for (int i = 0;i < fig;i++)
+		{
+			int number = score % 10;
+			score /= 10;
+			Number_Draw2(x + SCORE_NUMBER_SIZE*(fig - (i + 1)), y, number, color);
+		}
+	}
 	/*	for (int i = 0;i < fig;i++)
 	{
 

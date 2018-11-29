@@ -12,17 +12,18 @@
 #include "Cplayer.h"
 #include "Cphysx.h"
 #include "debug_font.h"
+#include "CEnemy.h"
+#include "CEnemy_Small.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
-#define SPEED (0.1f)
-#define SPECIAL_SPEED (0.3f)
+#define SPEED (0.5f)
 #define SIZE (0.8f)
 #define WHEEL_HP (40)
 #define WHEEL_MP (1)
 #define WHEEL_ATK (1)
 #define SCORE (1)
-#define WHEEL_SCALE (3)
+#define WHEEL_SCALE (2)
 //=============================================================================
 //	静的変数
 //=============================================================================
@@ -52,103 +53,94 @@ void Cwheel::Initialize()
 	ferris_flg = true;
 	ferris_counter = 0;
 	rotate_ferris = 0;
-	Ferris_position = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-
-	Wheel_position = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-
-	Wheel_Flg = false;
-	Rotate_Ferris = 0.0f;
-	Ferris_Angel_stock = 0.0f;
-
 	hp = WHEEL_HP;
 	mp = WHEEL_MP;
 	atk = WHEEL_ATK;
-	kakudoXFerris = D3DXToRadian(0);
 	CPlayer *playerget = CPlayer::Get_Player(0);
 	D3DXMATRIX mtx = playerget->Get_mtxWorld();
 	D3DXMatrixTranslation(&m_mtxTranslation, mtx._41, mtx._42, mtx._43);//X,Y,Zを渡す
 	D3DXMatrixScaling(&m_mtxScaling, WHEEL_SCALE, WHEEL_SCALE, WHEEL_SCALE);
-	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
-
+	angle = playerget->Get_Angle();
+	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angle));
+	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
+	Wheel_position = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42*3, m_mtxWorld._43);
+	move = playerget->Get_Front();
 	NxMat33 mat1;
 	mat1.rotZ(0);
 	NxVec3 scaleDwarf = NxVec3(WHEEL_SCALE, WHEEL_SCALE, WHEEL_SCALE);	//	モデルスケール
-	NxVec3 BBDwarf = NxVec3(0.0, 0.0, 0.0);	//	当たり判定の大きさ
-	NxA_pWheel = CreateMeshAsBox(NxVec3(mtx._41, mtx._42, mtx._43), mat1, scaleDwarf, BBDwarf, MODELL_WHEEL, true);
-
-	//弾の生成ポジション
-	Wheel_position.x = mtx._41;
-	Wheel_position.y = mtx._42;
-	Wheel_position.z = mtx._43;
-	//g_Bullet[i].btCollision.cx = g_Bullet[i].btX;
-	//g_Bullet[i].btCollision.cy = g_Bullet[i].btY;
-
-	CPlayer *player = CPlayer::Get_Player(0);
-
-	//プレイヤーの角度をストックに
-	Ferris_Angel_stock = player->Get_Player_Angle();
-	Wheel_position_stock = player->Get_PlayerFront();
-	Wheel_Flg = true;
+	NxVec3 BBDwarf = NxVec3(1.5, 2.0, 2.0);	//	当たり判定の大きさ
+	NxVec3 BBDwarf2 = NxVec3(0, 0, 0);
+	NxA_pWheel = CreateMeshAsBox(NxVec3(mtx._41, mtx._42, mtx._43 + 5), mat1, scaleDwarf, BBDwarf, MODELL_WHEEL);
 }
 
 void Cwheel::Update(void)
 {
-	if (m_Enable)
-	{//ここで回転計算を行う
-	 //動いてる状態
-		if (Wheel_Flg == true)
-		{
-
-			Wheel_position += Wheel_position_stock * SPEED;
-			Rotate_Ferris += 2.0f;
-
-			//Wheel.btCollision.cx = Wheel.btX;
-			//Wheel.btCollision.cy = Wheel.btY;
-
-			//②弾が画面外に出たら弾を無効にする
-
-
-			//奥
-			if (Wheel_position.z >= 100.0f)//100.0fは壁の座標なんで自分で変えてね
-			{
-				Wheel_Flg = false;
-				Rotate_Ferris = 0.0f;
-			}
-			//手前
-			if (Wheel_position.z <= -100.0f)
-			{
-				Rotate_Ferris = 0.0f;
-			}
-			//右
-			if (Wheel_position.x >= 100.0f)
-			{
-				Wheel_Flg = false;
-				Rotate_Ferris = 0.0f;
-			}
-			//左
-			if (Wheel_position.x <= -100.0f)
-			{
-				Wheel_Flg = false;
-				Rotate_Ferris = 0.0f;
-			}
-		}
+	//動いてる状態
+	if (ferris_flg == true)
+	{
+		
+		
+	}
+	//静止
+	else
+	{
+		
 	}
 
+	if (m_Enable)
+	{//ここで回転計算を行う
 
-	NxVec3 tr = NxA_pWheel->getGlobalPosition();
-	D3DXMatrixTranslation(&m_mtxTranslation, Wheel_position.x, Wheel_position.y, Wheel_position.z);
-	D3DXMatrixScaling(&m_mtxScaling, WHEEL_SCALE, WHEEL_SCALE, WHEEL_SCALE);
-	D3DXMatrixRotationX(&m_mtxRotation, -kakudoXFerris);
-	D3DXMatrixRotationY(&m_mtxRotation2, D3DXToRadian(Ferris_Angel_stock));
+		rotate_ferris += 4;
+		D3DXMatrixRotationX(&mtxR, D3DXToRadian(-rotate_ferris));
+		Wheel_position += move*SPEED;
 
-	m_mtxWorld = m_mtxRotation2 * m_mtxRotation *  m_mtxScaling * m_mtxTranslation;
 
+		NxVec3 tr = NxA_pWheel->getGlobalPosition();
+		D3DXMatrixTranslation(&m_mtxTranslation, tr.x, tr.y, tr.z);
+		//D3DXMatrixTranslation(&m_mtxTranslation, Wheel_position.x, Wheel_position.y, Wheel_position.z);
+		D3DXMatrixScaling(&m_mtxScaling, WHEEL_SCALE, WHEEL_SCALE, WHEEL_SCALE);
+		//D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(0));
+		D3DXMATRIX mtxT;
+		D3DXMatrixTranslation(&mtxT, move.x, move.y, move.z);
+		D3DXMatrixTranslation(&m_mtxTranslation, Wheel_position.x, Wheel_position.y, Wheel_position.z);
+		m_mtxWorld =m_mtxScaling * mtxR * m_mtxRotation * m_mtxTranslation;
+
+		if (45.0*45.0 < (m_mtxWorld._41*m_mtxWorld._41) + (m_mtxWorld._43 * m_mtxWorld._43))
+		{
+			m_Enable = false;
+			CPlayer::m_delete = true;
+		}
+
+		/*int enemynum = CEnemy::Get_EnemyMaxNum();
+		for (int i = 0;i < enemynum;i++)
+		{
+			CEnemy *penemy = CEnemy_Small::Get_Enemy(i);
+
+			if (penemy)
+			{
+				NxActor* act = penemy->Get_Actor();
+				myData* mydata = (myData*)NxA_pWheel->userData;
+				if (mydata->hit)
+				{
+					penemy->Damage();
+					mydata->hit = false;
+				}
+				NxScene* scene = Get_PhysX_Scene();
+				scene->setUserContactReport(new ContactCallBack());
+				scene->setActorPairFlags(*NxA_pWheel,
+					*act,
+					NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH);
+
+
+			}
+		}*/
+	}
 }
 
 void Cwheel::Draw(void)
 {
-	DebugFont_Draw(500, 30, "Ferris_position.x = %f\n,", Wheel_position.x);
-	DebugFont_Draw(500, 60, "ferris_flg = %d\n,", ferris_flg);
+	//DebugFont_Draw(900, 30, "ugoki = %f\n,", ugoki);
+	//DebugFont_Draw(900, 60, "Bugoki = %d\n,", Bugoki);
 	if (m_Enable)
 	{
 		DrawDX2(m_mtxWorld, NxA_pWheel, MODELL_WHEEL);
@@ -159,6 +151,8 @@ void Cwheel::Draw(void)
 void Cwheel::Finalize(void)
 {
 	Attraction_Finalize(m_AttractionIndex);
+	
+	//USERDATA* pUserData = (USERDATA*)NxA_pWheel->userData;
+	//pUserData->ContactPairFlag = 0;
 	NxA_pWheel = NULL;
-
 }

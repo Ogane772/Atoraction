@@ -33,6 +33,8 @@ public:
 
 	virtual void Update(void) = 0;
 	virtual void Draw(void) = 0;
+	virtual void Damage(void) = 0;
+
 	void Enemy_Finalize(int Index);
 
 	static CEnemy *Create(int Index);
@@ -42,20 +44,20 @@ public:
 	int Get_Score(void) { return m_Score; }
 	int Get_Type(void) { return m_Type; }
 	void EnemyDamage(void);
-	
+	virtual NxActor* Get_Actor(void) = 0;
 	static int Get_EnemyMaxNum(void) { return m_ENEMY_MAX; }
 protected:
 
 	enum
 	{
-		NORTH,		//　上
-		NORTHEAST,	//　右上
-		EAST,		//	右
-		SOUTHEAST,	//　右下
-		SOUTH,		//　下
-		SOUTHWEST,	//　左下
-		WEST,		//　左
-		NORTHWEST,	//　左上
+		DIRE_NORTH,		//　上
+		DIRE_NORTHEAST,	//　右上
+		DIRE_EAST,		//	右
+		DIRE_SOUTHEAST,	//　右下
+		DIRE_SOUTH,		//　下
+		DIRE_SOUTHWEST,	//　左下
+		DIRE_WEST,		//　左
+		DIRE_NORTHWEST,	//　左上
 	};
 
 	typedef struct {

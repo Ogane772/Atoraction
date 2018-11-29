@@ -21,10 +21,7 @@ C3DObj::~C3DObj()
 
 }
 
-void C3DObj::Debug_Collision(SphereCollision sc)
-{
-	DebugFont_Draw(400, 10, "%f\n,%f\n,%f\n,", sc.CenterPos.x, sc.CenterPos.y, sc.CenterPos.z);
-}
+
 
 
 

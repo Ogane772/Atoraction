@@ -88,7 +88,7 @@ void Coaster::Update(void)
 	if (m_Enable && *coaster)
 	{
 		CPlayer *player = CPlayer::Get_Player(0);
-		D3DXMATRIX playermatrix = player->Get_mtx();
+		D3DXMATRIX playermatrix = player->Get_mtxTranslation();
 
 		//—LŒøŠÔ‚ğˆø‚­
 		endfream = J_TIME - (m_FrameCount - keepfream);

@@ -36,6 +36,14 @@ CGameObj::CGameObj()
 	m_GameObjNum++;
 }
 
+void CGameObj::Initialize(void)
+{
+	m_FrameCount = 0;
+	m_GameObjNum = 0;
+}
+
+
+
 //=============================================================================
 //	”jŠü
 //=============================================================================
@@ -43,8 +51,9 @@ CGameObj::CGameObj()
 CGameObj::~CGameObj()
 {
 	//CGameObj::Device_Finalize();
-	m_GameObjNum--;
-	m_FrameCount = 0;
+	//m_GameObjNum--;
+	//m_FrameCount = 0;
+	m_TimeKeep = 0;
 }
 
 

@@ -38,9 +38,12 @@ public:
 	void Attraction_Finalize(int index);
 	static void Create(int nType);
 	static CAttraction * Get_Attraction(int index);
+	static CAttraction * Get_Attraction(int index,int type);
 	static int Get_AttractionNum(int AttractionType) { return m_AttractionNum[AttractionType]; }
 	static int Get_AttractionIndex(int AttractionType) { return m_AttractionNum[AttractionType] - 1; }
 	static bool Get_CreateCheck(void) { return createchack; }
+	virtual NxActor* Get_Actor(void) = 0;
+	static void Attraction_Initialize(void);
 protected:
 	static CAttraction *Attraction[ATTRACTION_MAX];
 	static int m_AttractionNum[TYPE_MAX];

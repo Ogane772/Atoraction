@@ -47,7 +47,7 @@ CAttraction::CAttraction(int nType)
 
 CAttraction::~CAttraction()
 {
-	m_AttractionNum[TYPE_ALL]--;
+	//m_AttractionNum[TYPE_ALL]--;
 }
 
 void CAttraction::Create(int nType)
@@ -79,14 +79,33 @@ CAttraction* CAttraction::Get_Attraction(int index)
 	createchack = false;
 	return m_pAttraction[index];
 }
-
+CAttraction* CAttraction::Get_Attraction(int index, int type)
+{
+	if (m_pAttraction[index])
+	{
+		if (m_pAttraction[index]->m_Type == type)
+		{
+			return m_pAttraction[index];
+		}
+	}
+	return NULL;
+}
 
 void CAttraction::Attraction_Finalize(int index)
 {
 	if (m_pAttraction[index])
 	{
-		delete[]m_pAttraction[index];
+		delete m_pAttraction[index];
+		m_pAttraction[index] = NULL;
 	}
 }
 
 
+void CAttraction::Attraction_Initialize(void)
+{
+	for (int i = 0;i < TYPE_MAX;i++)
+	{
+		m_AttractionNum[i] = 0;
+	}
+}
+		

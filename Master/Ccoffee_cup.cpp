@@ -16,7 +16,7 @@
 //	’è”’è‹`
 //=============================================================================
 #define SPEED (0.05f)
-#define SIZE (0.8f)
+#define COFFEE_SIZE (4)
 #define COFFEE_CUP_HP (40)
 #define COFFEE_CUP_MP (1)
 #define COFFEE_CUP_ATK (1)
@@ -73,7 +73,9 @@ void CCoffeeCup::Initialize()
 	NxA_pCoffee = CreateMeshAsBox(NxVec3(mtx._41, 0, mtx._43), mat1, scaleDwarf, BBDwarf, MODELL_CUP, false);
 	NxA_pCoffeeTable = CreateMeshAsBox(NxVec3(mtx._41, 0, mtx._43), mat1, scaleDwarf, BBDwarf2, MODELL_CUP_TABLE, false);
 
-
+	m_SphereCollision = {
+		D3DXVECTOR3(m_mtxTranslation._41,m_mtxTranslation._42,m_mtxTranslation._43),COFFEE_SIZE
+	};
 }
 
 void CCoffeeCup::Update(void)
@@ -106,19 +108,18 @@ void CCoffeeCup::Update(void)
 			x = 0.0;
 		}
 
-
-		NxVec3 tr2 = NxA_pCoffeeTable->getGlobalPosition();
-		//D3DXMatrixTranslation(&m_mtxTranslation, tr2.x,0, tr2.z);
-		//D3DXMatrixScaling(&m_mtxScaling, COFFEE_SCALE, COFFEE_SCALE, COFFEE_SCALE);
-		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(0));
-		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
+	
 
 		NxVec3 tr = NxA_pCoffee->getGlobalPosition();
-		//D3DXMatrixTranslation(&m_mtxTranslation, tr2.x, 0, tr2.z);
+		D3DXMatrixTranslation(&m_mtxTranslation, tr.x, -0.5, tr.z);
 		//D3DXMatrixScaling(&m_mtxScaling, COFFEE_SCALE, COFFEE_SCALE, COFFEE_SCALE);
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angCup));
 		m_mtxWorld2 = m_mtxScaling* m_mtxRotation  * m_mtxTranslation;
 
+		D3DXMatrixTranslation(&m_mtxTranslation, tr.x, 0, tr.z);
+		//D3DXMatrixScaling(&m_mtxScaling, COFFEE_SCALE, COFFEE_SCALE, COFFEE_SCALE);
+		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(0));
+		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 		/*myData* mydata = (myData*)NxA_pCoffee->userData;
 		D3DXMATRIX mtx = m_mtxWorld2;
 
@@ -131,13 +132,14 @@ void CCoffeeCup::Update(void)
 
 void CCoffeeCup::Draw(void)
 {
-	DebugFont_Draw(600, 30, "Dodai = %f\n,", angCup);
-	DebugFont_Draw(600, 60, "CoolTime = %d\n,", CoolTime);
+	//DebugFont_Draw(600, 30, "Dodai = %f\n,", angCup);
+	//DebugFont_Draw(600, 60, "CoolTime = %d\n,", CoolTime);
 	if (m_Enable)
 	{
 		DrawDX2(m_mtxWorld2, NxA_pCoffee, MODELL_CUP);
 		DrawDX2(m_mtxWorld, NxA_pCoffeeTable, MODELL_CUP_TABLE);
-		//DrawDirectXMesh(NxA_pSmall);
+	//	Debug_Collision(m_SphereCollision, m_mtxTranslation);
+		
 	}
 }
 

@@ -73,7 +73,7 @@ void Cfreefall::Initialize()
 	mat1.rotZ(0);
 	mat2.rotZ(0);
 	NxVec3 scaleDwarf = NxVec3(FREEFALL_SCALE, FREEFALL_SCALE, FREEFALL_SCALE);	//	モデルスケール
-	NxVec3 BBDwarf = NxVec3(5.0, 2.0, 5.0);	//	当たり判定の大きさ
+	NxVec3 BBDwarf = NxVec3(5.0, 1.0, 5.0);	//	当たり判定の大きさ
 	NxVec3 BBDwarf2 = NxVec3(0, 0, 0);
 	NxA_pEnban = CreateMeshAsBox(NxVec3(mtx._41, mtx._42, mtx._43 + 5), mat1, scaleDwarf, BBDwarf, MODELL_ENBAN, false);
 	NxA_pHasira = CreateMeshAsBox(NxVec3(mtx._41, mtx._42, mtx._43 + 5), mat2, scaleDwarf, BBDwarf2, MODELL_HASIRA, false);
@@ -135,8 +135,8 @@ void Cfreefall::Update(void)
 
 void Cfreefall::Draw(void)
 {
-	DebugFont_Draw(800, 30, "ugoki = %f\n,", ugoki);
-	DebugFont_Draw(800, 60, "Bugoki = %d\n,", Bugoki);
+//	DebugFont_Draw(800, 30, "ugoki = %f\n,", ugoki);
+//	DebugFont_Draw(800, 60, "Bugoki = %d\n,", Bugoki);
 	if (m_Enable)
 	{
 		DrawDX2(m_mtxWorld, NxA_pEnban, MODELL_ENBAN);

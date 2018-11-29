@@ -34,6 +34,15 @@ public:
 											// PhysXの終了処理　Cleanup
 	static void ExitNx(void);
 
+	//	当たり範囲
+	typedef struct SphereCollision_tag {
+		D3DXVECTOR3 CenterPos;
+		float radius;
+	}SphereCollision;
+	
+	SphereCollision* Get_Collision(void) { return &m_SphereCollision; }
+
+
 protected:
 
 	enum {
@@ -50,7 +59,7 @@ protected:
 	  //static NxActor *NxA_pPlayer,*NxA_pBoss;//物理エンジンを適用するモンスターを宣言する
 	  //NxActor *NxA_pPlayer, *NxA_pSmall;
 	  //static NxActor* Get_PhysxData(int Index) { return m_ModelFileData[Index].Physx; }
-	NxActor *NxA_pCoffee, *NxA_pCoffeeTable, *NxA_pEnban, *NxA_pHasira, *NxA_pWheel,*NxA_Coaster;
+	
 	// ユーザーデータ
 	struct myData
 	{
@@ -66,6 +75,7 @@ protected:
 		NxVec3 meshScale;		// メッシュの拡大縮小
 		NxVec3 meshTranslation;	// メッシュの平行移動
 		D3DXMATRIX meshRotation;	// メッシュの回転
+		bool hit;
 	};
 
 	// アクターで使用するユーザーデータの構造体
@@ -113,15 +123,19 @@ protected:
 	// PhysXの描画　PhysXRender
 	void RenderPhysX(void);
 
-private:
-
 	// 頂点の構造体
 	struct CUSTOMVERTEX
 	{
 		FLOAT x, y, z;
 	};
+	#define D3DFVF_CUSTOMVERTEX (D3DFVF_XYZ | D3DFVF_DIFFUSE)
+	static LPDIRECT3DVERTEXBUFFER9 g_pVB;
 
-#define D3DFVF_CUSTOMVERTEX (D3DFVF_XYZ | D3DFVF_DIFFUSE)
+	SphereCollision m_SphereCollision;
+	//	当たり範囲描画
+	void Debug_Collision(SphereCollision sc, D3DXMATRIX mtx);
+private:
+
 
 
 
@@ -134,7 +148,6 @@ private:
 	static D3DMATERIAL9*       g_pMeshMaterials[numMesh];
 	static LPDIRECT3DTEXTURE9* g_pMeshTextures[numMesh];
 	static DWORD               g_dwNumMaterials[numMesh];
-	static LPDIRECT3DVERTEXBUFFER9 g_pVB;
 
 
 	//	初期化処理

@@ -44,6 +44,9 @@ void Game_Initialize(void)
 	g_bend = false;
 	CPhysx::CPhysX_Initialize();	//	ï®óùââéZèàóùÇÃèâä˙âª
 	gScene = CPhysx::Get_PhysX_Scene();
+	CGameObj::Initialize();
+	CAttraction::Attraction_Initialize();
+
 	pGameObj[CGameObj::Get_GameObjIndex()] = CPlayer::PlayerCreate();
 	pGameObj[CGameObj::Get_GameObjIndex()] = CLight::Light_Create();
 	pGameObj[CGameObj::Get_GameObjIndex()] = CCamera::Camera_Create();
@@ -76,8 +79,11 @@ void Game_Finalize(void)
 	int end = CGameObj::Get_GameObjNum();
 	for (int i = 0;i < end;i++)
 	{
-		pGameObj[i]->Finalize();
-		pGameObj[i] = NULL;
+		if (pGameObj[i])
+		{
+			pGameObj[i]->Finalize();
+			pGameObj[i] = NULL;
+		}
 	}
 	CPhysx::ExitNx();
 }
@@ -88,14 +94,33 @@ void Game_Finalize(void)
 
 void Game_Updata(void)
 {
-	CGameObj::FrameCountUp();
+	
 
 	for (int i = 0;i < CGameObj::Get_GameObjNum();i++)
 	{
-		pGameObj[i]->Update();
-		if (CAttraction::Get_CreateCheck())
+		if (pGameObj[i])
 		{
-			pGameObj[CGameObj::Get_GameObjIndex()] = CAttraction::Get_Attraction(CAttraction::Get_AttractionIndex(CAttraction::TYPE_ALL));
+			pGameObj[i]->Update();
+			if (CAttraction::Get_CreateCheck())
+			{
+				pGameObj[CGameObj::Get_GameObjIndex()] = CAttraction::Get_Attraction(CAttraction::Get_AttractionIndex(CAttraction::TYPE_ALL));
+			}
+			if (CPlayer::m_delete)
+			{
+
+				for (int i = 0;i < CGameObj::Get_GameObjNum();i++)
+				{
+					if (pGameObj[i])
+					{
+						if (!pGameObj[i]->Get_Enable())
+						{
+							pGameObj[i]->Finalize();
+							pGameObj[i] = NULL;
+						}
+					}
+				}
+				CPlayer::m_delete = false;
+			}
 		}
 	}
 
@@ -103,7 +128,7 @@ void Game_Updata(void)
 	{
 		if (CEnemy::Create(i))
 		{
-			pGameObj[CGameObj::Get_GameObjIndex()] = CEnemy::Get_Enemy(CEnemy::Get_EnemyNum(CEnemy::TYPE_ALL)-1);
+			pGameObj[CGameObj::Get_GameObjIndex()] = CEnemy::Get_Enemy(CEnemy::Get_EnemyNum(CEnemy::TYPE_ALL) - 1);
 		}
 	}
 
@@ -120,6 +145,10 @@ void Game_Updata(void)
 				Scene_Change(SCENE_INDEX_RESULT);
 		}
 	}
+	else
+	{
+		CGameObj::FrameCountUp();
+	}
 
 }
 
@@ -132,10 +161,13 @@ void Game_Draw(void)
 	
 	for (int i = 0;i < CGameObj::Get_GameObjNum();i++)
 	{
-		pGameObj[i]->Draw();
+		if (pGameObj[i])
+		{
+			pGameObj[i]->Draw();
+		}
 	}
 
-	CCamera *c = CCamera::Get_CCamera();
+	/*CCamera *c = CCamera::Get_CCamera();
 	c->DebugDraw();
 	CGameObj::DebugDraw();
 
