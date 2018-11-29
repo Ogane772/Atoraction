@@ -36,11 +36,29 @@ CEnemy::ENEMY_MOVE CEnemy::m_EnemyMove[8] = {
 
 CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 {
-	{ 0  , TYPE_SMALL, D3DXVECTOR3(10.0, 1.6 ,10.0), NORTH ,false },
-	{ 0	 , TYPE_SMALL, D3DXVECTOR3(20.0, 1.6 ,20.0), NORTH ,false },
-	{ 100, TYPE_SMALL, D3DXVECTOR3(30.0, 1.6 ,30.0), NORTH ,false },
-	{ 200, TYPE_SMALL, D3DXVECTOR3(20.0, 1.6 ,10.0), NORTH ,false },
-	{ 300, TYPE_SMALL, D3DXVECTOR3(0.0,  1.6 ,0.0), NORTH ,false },
+	{ 0  , TYPE_SMALL, D3DXVECTOR3(10.0, 1.6 ,10.0), DIRE_NORTH	  ,false },
+	{ 0	 , TYPE_SMALL, D3DXVECTOR3(20.0, 1.6 ,20.0), DIRE_EAST	  ,false },
+	{ 0, TYPE_SMALL, D3DXVECTOR3(30.0, 1.6 ,30.0), DIRE_NORTHWEST ,false },
+	{ 0, TYPE_SMALL, D3DXVECTOR3(20.0, 1.6 ,10.0), DIRE_SOUTHEAST ,false },
+	{ 0, TYPE_SMALL, D3DXVECTOR3(0.0,  1.6 ,0.0) , DIRE_NORTHEAST ,false },
+	{ 100 , TYPE_SMALL, D3DXVECTOR3(50.0, 1.6 ,10.0), DIRE_SOUTH  ,false },
+	{ 100 , TYPE_SMALL, D3DXVECTOR3(50.0, 1.6 ,20.0), DIRE_SOUTH  ,false },
+	{ 100 , TYPE_SMALL, D3DXVECTOR3(50.0, 1.6 ,30.0), DIRE_SOUTH  ,false },
+	{ 100 , TYPE_SMALL, D3DXVECTOR3(50.0, 1.6 ,40.0), DIRE_SOUTH  ,false },
+	{ 100 , TYPE_SMALL, D3DXVECTOR3(50.0, 1.6 ,50.0), DIRE_SOUTH  ,false },
+	{ 100 , TYPE_SMALL, D3DXVECTOR3(-50.0, 1.6 ,60.0), DIRE_SOUTH  ,false },
+	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0, 1.6 ,10.0), DIRE_SOUTH  ,false },
+	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0, 1.6 ,20.0), DIRE_SOUTH  ,false },
+	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0, 1.6 ,30.0), DIRE_SOUTH  ,false },
+	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0, 1.6 ,40.0), DIRE_SOUTH  ,false },
+	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0, 1.6 ,50.0), DIRE_SOUTH  ,false },
+	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0, 1.6 ,60.0), DIRE_SOUTH  ,false },
+	{ 500 , TYPE_SMALL, D3DXVECTOR3(50.0, 1.6 ,-10.0), DIRE_SOUTH  ,false },
+	{ 500 , TYPE_SMALL, D3DXVECTOR3(50.0, 1.6 ,-20.0), DIRE_SOUTH  ,false },
+	{ 500 , TYPE_SMALL, D3DXVECTOR3(50.0, 1.6 ,-30.0), DIRE_SOUTH  ,false },
+	{ 500 , TYPE_SMALL, D3DXVECTOR3(50.0, 1.6 ,-40.0), DIRE_SOUTH  ,false },
+	{ 500 , TYPE_SMALL, D3DXVECTOR3(50.0, 1.6 ,-50.0), DIRE_SOUTH  ,false },
+	{ 500 , TYPE_SMALL, D3DXVECTOR3(50.0, 1.6 ,-60.0), DIRE_SOUTH  ,false },
 };
 
 int CEnemy::m_ENEMY_MAX = sizeof(CEnemy_Small::m_EnemyEmitter) / sizeof(m_EnemyEmitter[0]);
@@ -109,9 +127,10 @@ void CEnemy::Enemy_Finalize(int Index)
 {
 	if (m_pEnemy[Index])
 	{
-		delete[]m_pEnemy[Index];
 		m_EnemyEmitter[Index].CreateCheck = false;
+		delete m_pEnemy[Index];
 		
+		m_pEnemy[Index] = NULL;
 	}
 }
 
@@ -128,6 +147,7 @@ void CEnemy::EnemyMove(NxActor *actor, int direction, float speed)
 		mydata->meshTranslation.z += move.z;
 		actor->setGlobalPosition(mydata->meshTranslation);
 	}
+	
 }
 
 void CEnemy::EnemyAngleChange(NxActor *actor, int direction)

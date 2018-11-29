@@ -19,7 +19,7 @@ public:
 	void Draw(void);
 	void Finalize(void);
 	void Coaster_Create(void);
-
+	NxActor* Get_Actor(void) { return NxA_Coaster; }
 
 private:
 	void Initialize();
@@ -29,5 +29,6 @@ private:
 	int endfream = 0;
 	int keepfream = 0;
 	D3DXVECTOR3 position;
+	NxActor *NxA_Coaster;
 };
 #endif;

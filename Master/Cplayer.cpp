@@ -1,11 +1,11 @@
 //=============================================================================
 //
-//	Player„ÇØ„É©„Çπ
+//	PlayerÉNÉâÉX
 //
 //=============================================================================
 
 //=============================================================================
-//	„Ç§„É≥„ÇØ„É´„Éº„Éâ„Éï„Ç°„Ç§„É´
+//	ÉCÉìÉNÉãÅ[ÉhÉtÉ@ÉCÉã
 //=============================================================================
 
 #include "Cplayer.h"
@@ -15,23 +15,27 @@
 #include "CAttraction.h"
 #include "debug_font.h"
 
+#include "CEnemy.h"
+#include "Cwheel.h"
+#include "CEnemy_Small.h"
 //=============================================================================
-//	ÂÆöÊï∞ÂÆöÁæ©
+//	íËêîíËã`
 //=============================================================================
 #define SPEED (0.2)
 #define PLAYER_SAIZ (1)
 #define MPSTOCK_INIT (5)
-#define ANGLE_Y (4)
-
+#define ANGLE (3)
 //=============================================================================
-//	ÈùôÁöÑÂ§âÊï∞
+//	ê√ìIïœêî
 //=============================================================================
 
 //D3DXMATRIX CPlayer::m_mtxWorld;
 CPlayer *CPlayer::m_pPlayer[PLAYER_MAX] = {};
 int CPlayer::m_PlayerNum = 0;
+int CPlayer::m_KO_Count = 0;
+bool CPlayer::m_delete = false;
 //=============================================================================
-// ÁîüÊàê
+// ê∂ê¨
 //=============================================================================
 CPlayer::CPlayer()
 {
@@ -42,13 +46,13 @@ CPlayer::CPlayer()
 
 CPlayer *CPlayer::PlayerCreate(void)
 {
-	m_pPlayer[m_PlayerNum - 1] = new CPlayer;
+	m_pPlayer[m_PlayerNum-1] = new CPlayer;
 	return m_pPlayer[m_PlayerNum - 1];
 }
 
 
 //=============================================================================
-// Á†¥Ê£Ñ
+// îjä¸
 //=============================================================================
 CPlayer::~CPlayer()
 {
@@ -57,123 +61,66 @@ CPlayer::~CPlayer()
 }
 
 //=============================================================================
-// Êõ¥Êñ∞
+// çXêV
 //=============================================================================
 void CPlayer::Update(void)
 {
-	if (g_CosterMode)//„Ç≥„Éº„Çπ„Çø„Éº„ÅÆÊôÇ
+	if (g_CosterMode)//ÉRÅ[ÉXÉ^Å[ÇÃéû
 	{
 		m_mtxTranslation *= Move(FLONT, SPEED);
 	}
-	if (!g_CosterMode)//„Ç≥„Éº„Çπ„Çø„Éº„Åò„ÇÉ„Å™„ÅÑ„Å®„Åç
+	else
 	{
 		if (Keyboard_IsPress(DIK_W))
 		{
+
+			if ((m_Angle < 180) && (m_Angle >= 0))
+			{
+				AngleChange(true);
+			}
+			if ((m_Angle > 180) && (m_Angle <= 360))
+			{
+				AngleChange(false);
+			}
 			m_mtxTranslation *= Move(FLONT, SPEED);
 		}
 		if (Keyboard_IsPress(DIK_S))
 		{
+			if ((m_Angle > 0) && (m_Angle < 180))
+			{
+				AngleChange(false);
+			}
+			if ((m_Angle < 360) && (m_Angle >= 180))
+			{
+				AngleChange(true);
+			}
 			m_mtxTranslation *= Move(BACK, SPEED);
 		}
 		if (Keyboard_IsPress(DIK_D))
 		{
+			if ((m_Angle < 90) || (m_Angle > 270))
+			{
+				AngleChange(false);
+			}
+			if ((m_Angle >= 90) && (m_Angle < 270))
+			{
+				AngleChange(true);
+			}
+
 			m_mtxTranslation *= Move(RIGHT, SPEED);
 		}
 		if (Keyboard_IsPress(DIK_A))
 		{
+			if ((m_Angle > 90) && (m_Angle <= 270))
+			{
+				AngleChange(false);
+			}
+			if ((m_Angle < 90) || (m_Angle > 270))
+			{
+				AngleChange(true);
+			}
+
 			m_mtxTranslation *= Move(LEFT, SPEED);
-		}
-		//„Éó„É¨„Ç§„É§„Éº„ÅÆËßíÂ∫¶Â§âÊõ¥
-		if (Keyboard_IsPress(DIK_W))
-		{
-			if (player_kakudo != 0 && (player_kakudo >= -180 && player_kakudo < 0))
-			{
-				Model_Angle(true);//„Ç¢„É≥„Ç∞„É´„Éï„É©„Ç∞„Ååtrue„Å†„Å£„Åü„ÇâÂè≥ÂõûËª¢falseÂ∑¶
-			}
-			if (player_kakudo != 360 && (player_kakudo >= 180 && player_kakudo < 360))
-			{
-				Model_Angle(true);
-			}
-			if (player_kakudo != 0 && (player_kakudo < 180 && player_kakudo >= 0))
-			{
-				Model_Angle(false);
-			}
-			if (player_kakudo != -360 && (player_kakudo < -180 && player_kakudo >= -360))
-			{
-				Model_Angle(false);
-			}
-		}
-
-		if (Keyboard_IsPress(DIK_A))
-		{
-			if (player_kakudo != -90 && (player_kakudo <= 90 && player_kakudo > -90))
-			{
-				Model_Angle(false);
-			}
-			if (player_kakudo != -90 && (player_kakudo >= -270 && player_kakudo < -90))
-			{
-				Model_Angle(true);
-			}
-			if (player_kakudo != 270 && (player_kakudo > 90 && player_kakudo < 270))
-			{
-				Model_Angle(true);
-			}
-			if (player_kakudo != 270 && (player_kakudo >= 270 && player_kakudo < 360))
-			{
-				Model_Angle(false);
-			}
-		}
-
-		if (Keyboard_IsPress(DIK_S))
-		{
-			if (player_kakudo != 180 && (player_kakudo >= 0 && player_kakudo < 180))
-			{
-				Model_Angle(true);
-			}
-			if (player_kakudo != 180 && (player_kakudo <= 360 && player_kakudo > 180))
-			{
-				Model_Angle(false);
-			}
-			if (player_kakudo != -180 && (player_kakudo < 0 && player_kakudo > -180))
-			{
-				Model_Angle(false);
-			}
-			if (player_kakudo != -180 && (player_kakudo >= -360 && player_kakudo < -180))
-			{
-				Model_Angle(false);
-			}
-		}
-
-		if (Keyboard_IsPress(DIK_D))
-		{
-			if (player_kakudo != 90 && (player_kakudo >= -90 && player_kakudo < 90))
-			{
-				Model_Angle(true);
-			}
-			if (player_kakudo != 90 && (player_kakudo <= 270 && player_kakudo > 90))
-			{
-				Model_Angle(false);
-			}
-			if (player_kakudo != -270 && (player_kakudo <= -90 && player_kakudo > -270))
-			{
-				Model_Angle(false);
-			}
-			if (player_kakudo != -270 && (player_kakudo <= -270 && player_kakudo > -360))
-			{
-				Model_Angle(true);
-			}
-		}
-
-
-		if (player_kakudo >= 360 || player_kakudo <= -360)
-		{
-			player_kakudo = 0;
-		}
-
-		if (Keyboard_IsTrigger(DIK_P))
-		{
-			CAttraction::Create(CAttraction::TYPE_COASTER);
-			g_CosterMode = true;
 		}
 		if (Keyboard_IsRelease(DIK_O))
 		{
@@ -187,7 +134,16 @@ void CPlayer::Update(void)
 		{
 			CAttraction::Create(CAttraction::TYPE_WHEEL);
 		}
+		if (Keyboard_IsTrigger(DIK_P))
+		{
+			CAttraction::Create(CAttraction::TYPE_COASTER);
+			g_CosterMode = true;
+		}
 	}
+	D3DXMATRIX mtxr;
+	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(m_Angle));
+	//m_mtxRotation *= mtxr;
+
 	if (45.0*45.0 < (m_mtxTranslation._41*m_mtxTranslation._41) + (m_mtxTranslation._43 * m_mtxTranslation._43))
 	{
 		m_mtxTranslation = m_mtxKeepTranslation;
@@ -196,7 +152,7 @@ void CPlayer::Update(void)
 	{
 		m_mtxKeepTranslation = m_mtxTranslation;
 	}
-	
+
 	//	MP
 	if (m_FrameCount % 60 == 0)
 	{
@@ -208,69 +164,100 @@ void CPlayer::Update(void)
 		}
 	}
 
+/*	int atrnum = CAttraction::Get_AttractionNum(CAttraction::TYPE_ALL);
+	for (int j = 0;j < atrnum;j++)
+	{
+		CAttraction *patr = CAttraction::Get_Attraction(j, CAttraction::TYPE_WHEEL);
+		if (patr)
+		{
+			int enemynum = CEnemy::Get_EnemyMaxNum();
+			for (int i = 0;i < enemynum;i++)
+			{
+				CEnemy *penemy = CEnemy_Small::Get_Enemy(i);
+				if (penemy)
+				{
+					NxActor* act = penemy->Get_Actor();
+					NxActor* act2 = patr->Get_Actor();
+					myData* mydata = (myData*)act2->userData;
+					if (mydata->hit)
+					{
+						penemy->Damage();
+						mydata->hit = false;
+					}
+					NxScene* scene = Get_PhysX_Scene();
+					scene->setUserContactReport(new ContactCallBack());
+					scene->setActorPairFlags(*act2,
+						*act,
+						NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH);
 
 
+				}
+			}
+		}
+	}*/
 }
 //=============================================================================
-// ÊèèÁîª
+// ï`âÊ
 //=============================================================================
 
 void CPlayer::Draw(void)
 {
+		
+	
+	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
+	m_SphereCollision.CenterPos = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 
-
-	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(180 + player_kakudo));
-
-	//D3DXMatrixTranslation(&m_mtxTranslation, tank_position.x + tank_angleX, tank_position.y, tank_position.z + tank_angleZ);
-
-	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
+	myData* mydata = (myData*)NxA_pPlayer->userData;
 
 	DrawDX2(m_mtxWorld, NxA_pPlayer, MODELL_PLAYER);
-	//DrawDirectXMesh(NxA_pBoss);
-	//DrawDirectXMesh(NxA_pPlayer);
-	//	„Éá„Éê„ÉÉ„Ç∞
-	//DebugFont_Draw(300, 30, "%f\n,%f\n,%f\n,", m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-	RenderPhysX();
+
+	//	ÉfÉoÉbÉO
+	//DebugFont_Draw(300, 50, "%f\n%f\n%f\n%f", m_front.x, m_front.y, m_front.z, m_Angle);
+	//RenderPhysX();
+	
+	//Debug_Collision(m_SphereCollision, m_mtxTranslation);
 }
 
-//	ÂàùÊúüÂåñ
+//	èâä˙âª
 void CPlayer::Player_Initialize(void)
 {
 	m_Hp = HP_MAX;
 	m_Mp = 0;
 	m_MpStock = MPSTOCK_INIT;
+	m_KO_Count = 0;
 	m_Enable = true;
+	m_delete = false;
 	g_CosterMode = false;
-	//playerfrontÁ≠â„ÅÆÂàùÊúüÂåñ
-	player_at = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	wheel_at = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	player_position = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	player_front = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
-	D3DXVec3Normalize(&player_front, &player_front);
-
-	player_up = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-	D3DXVec3Cross(&player_right, &player_front, &player_up);
-	D3DXVec3Normalize(&player_right, &player_right);
-	D3DXVec3Cross(&player_up, &player_right, &player_front);
-	D3DXVec3Normalize(&player_up, &player_up);
-	player_kakudo = 0;
-
 	D3DXMatrixTranslation(&m_mtxTranslation, 0, 1, 0);
 	D3DXMatrixScaling(&m_mtxScaling, 0.5f, 1.0f, 0.5f);
 	m_mtxKeepTranslation = m_mtxTranslation;
-	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
+	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(200));
+	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
+
+	m_Angle = 180;
+	m_front = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+	D3DXVec3Normalize(&m_front, &m_front);
+	m_up = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+	D3DXVec3Cross(&m_right, &m_front, &m_up);
+	D3DXVec3Normalize(&m_right, &m_right);
+	D3DXVec3Cross(&m_up, &m_right, &m_front);
+	D3DXVec3Normalize(&m_up, &m_up);
 
 	NxMat33 mat1;
 	//mat1.rotZ(0);
-	NxVec3 scaleDwarf = NxVec3(1, 1, 1);	//	„É¢„Éá„É´„Çπ„Ç±„Éº„É´
-	NxVec3 BBDwarf = NxVec3(1.0f, 1.0f, 1.0f);	//	ÂΩì„Åü„ÇäÂà§ÂÆö„ÅÆÂ§ß„Åç„Åï
+	NxVec3 scaleDwarf = NxVec3(1, 1, 1);	//	ÉÇÉfÉãÉXÉPÅ[Éã
+	NxVec3 BBDwarf = NxVec3(1.0f, 1.0f, 1.0f);	//	ìñÇΩÇËîªíËÇÃëÂÇ´Ç≥
 
-												//NxA_pPlayer = CreateMeshAsBox(NxVec3(0, 1, 0), mat1, scaleDwarf, BBDwarf, MODELL_PLAYER);
+	//NxA_pPlayer = CreateMeshAsBox(NxVec3(0, 1, 0), mat1, scaleDwarf, BBDwarf, MODELL_PLAYER);
 	NxA_pPlayer = CreateMeshAsSphere(NxVec3(0, 1, 0), 1.0, MODELL_PLAYER);
-
+	/*NxScene *g = CPhysx::Get_PhysX_Scene();
+	g->setUserContactReport(new ContactCallBack());*/
+	m_SphereCollision = {
+		D3DXVECTOR3(m_mtxWorld._41,m_mtxWorld._42,m_mtxWorld._43),PLAYER_SAIZ
+	};
 }
 
-//	ÁµÇ‰∫ÜÂá¶ÁêÜ
+//	èIóπèàóù
 void CPlayer::Finalize(void)
 {
 	for (int i = 0;i < m_PlayerNum;i++)
@@ -282,25 +269,43 @@ void CPlayer::Finalize(void)
 	}
 }
 
-void CPlayer::Model_Angle(bool Angle_Flg)
+
+
+void  CPlayer::AngleChange(bool Angle_Flg)
 {
+
 	if (Angle_Flg == true)
 	{
-		player_kakudo += ANGLE_Y;
+		m_Angle += ANGLE;
 		D3DXMATRIX mtxR;
-		//ÂºïÊï∞(&, Ëª∏, angle)
-		D3DXMatrixRotationAxis(&mtxR, &player_up, D3DXToRadian(ANGLE_Y));
-		D3DXVec3TransformNormal(&player_front, &player_front, &mtxR);
-		D3DXVec3TransformNormal(&player_right, &player_right, &mtxR);
+		if (m_Angle > 360)
+		{
+			m_Angle = m_Angle - 360;
+		}
+		//à¯êî(&, é≤, angle)
+		D3DXMatrixRotationAxis(&mtxR, &m_up, D3DXToRadian(ANGLE));
+		D3DXVec3TransformNormal(&m_front, &m_front, &mtxR);
+		D3DXVec3TransformNormal(&m_right, &m_right, &mtxR);
 	}
 	else
 	{
-		player_kakudo += -ANGLE_Y;
+		m_Angle += -ANGLE;
 		D3DXMATRIX mtxR;
-		//ÂºïÊï∞(&, Ëª∏, angle)
-		D3DXMatrixRotationAxis(&mtxR, &player_up, D3DXToRadian(-ANGLE_Y));
-		D3DXVec3TransformNormal(&player_front, &player_front, &mtxR);
-		D3DXVec3TransformNormal(&player_right, &player_right, &mtxR);
+		if (m_Angle < 0)
+		{
+			m_Angle = 360 - m_Angle;
+		}
+		//à¯êî(&, é≤, angle)
+		D3DXMatrixRotationAxis(&mtxR, &m_up, D3DXToRadian(-ANGLE));
+		D3DXVec3TransformNormal(&m_front, &m_front, &mtxR);
+		D3DXVec3TransformNormal(&m_right, &m_right, &mtxR);
 	}
 }
+
+
+
+
+
+
+
 

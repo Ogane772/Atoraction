@@ -66,7 +66,7 @@ LPDIRECT3DVERTEXBUFFER9 CPhysx::g_pVB = {};
 //NxActor* CPhysx::NxA_pBoss = {};
 //NxActor* CPhysx::NxA_pSmall = {};
 bool CPhysx::hit = false;
-
+bool g_hit = false;
 
 /*NxActor* CPhysx::NxA_pCoffee = {};
 NxActor* CPhysx::NxA_pCoffeeTable = {};
@@ -301,12 +301,12 @@ void CPhysx::PhysXRender(D3DXMATRIX mtxWorld)
 	{
 		RenderDirectX(mtxWorld);//モデル描画
 	}
-	if (NxA_pCoffee && NxA_pEnban)
+	/*if (NxA_pCoffee && NxA_pEnban)
 	{
 		gScene->setActorPairFlags(*NxA_pCoffee,
 			*NxA_pEnban,
 			NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH);
-	}
+	}*/
 }
 
 // PhysXの描画 PhysXRender
@@ -350,12 +350,12 @@ void CPhysx::RenderPhysX(void)
 			DrawCapsule(actor, matWorld);
 			break;
 		}
-		if (NxA_pCoffee && NxA_pEnban)
+	/*	if (NxA_pCoffee && NxA_pEnban)
 		{
 			gScene->setActorPairFlags(*NxA_pCoffee,
 				*NxA_pEnban,
 				NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH);
-		}
+		}*/
 	}
 }
 
@@ -419,12 +419,12 @@ void CPhysx::RenderDirectX(D3DXMATRIX mtxWorld)
 		{
 			DrawDirectXMesh(actor);
 		}
-		if (NxA_pCoffee && NxA_pEnban)
+	/*	if (NxA_pCoffee && NxA_pEnban)
 		{
 			gScene->setActorPairFlags(*NxA_pCoffee,
 				*NxA_pEnban,
 				NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH);
-		}
+		}*/
 		// ２つのアクターを関連づけて衝突開始と衝突終了イベントを有効にする
 		//当たり判定処理　第一引数と第二引数に当たり判定を行うアクターを指定する
 		/*if (MODELL_PLAYER)
@@ -492,12 +492,12 @@ void CPhysx::DrawDirectXMesh(NxActor* actor)
 				}
 
 			}
-			if (NxA_pCoffee && NxA_pEnban)
+		/*	if (NxA_pCoffee && NxA_pEnban)
 			{
 				gScene->setActorPairFlags(*NxA_pCoffee,
 					*NxA_pEnban,
 					NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH);
-			}
+			}*/
 		}
 	}
 }
@@ -506,9 +506,9 @@ void CPhysx::DrawDX2(D3DXMATRIX mtxWorld, NxActor* actor, int type)
 {
 	if (actor)
 	{
-		DebugFont_Draw(8, 58, "8キー　モデルの非表示");
+		/*DebugFont_Draw(8, 58, "8キー　モデルの非表示");
 		DebugFont_Draw(8, 108, "9キー　当たり判定表示");
-		DebugFont_Draw(8, 158, "当たったか　%d", hit);
+		DebugFont_Draw(8, 158, "当たったか　%d", hit);*/
 
 		// PhysXのシーンをチェック
 		if (gScene == NULL) return;
@@ -540,39 +540,43 @@ void CPhysx::DrawDX2(D3DXMATRIX mtxWorld, NxActor* actor, int type)
 		D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
 
 		// メッシュの回転
-		if (type != MODELL_PLAYER)
+		mat = mydata->meshRotation;
+		//D3DXMatrixMultiply(&mtxWorld2, &mat, &mtxWorld2);
+		D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
+		/*if (type != MODELL_PLAYER)
 		{
 			mat = mydata->meshRotation;
-			D3DXMatrixMultiply(&mtxWorld2, &mat, &mtxWorld2);
+			//D3DXMatrixMultiply(&mtxWorld2, &mat, &mtxWorld2);
+			D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
 		}
-		if (type == CAttraction::MODELL_CUP_TABLE || type == CAttraction::MODELL_CUP)
+	/*	if (type == CAttraction::MODELL_CUP_TABLE || type == CAttraction::MODELL_CUP)
 		{
 			mat = mydata->meshRotation;
 			//D3DXMatrixMultiply(&mtxWorld2, &mtxWorld, &mtxWorld2);
 			D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
 		}
-		if (type == CAttraction::MODELL_WHEEL)
-		{
-			mat = mydata->meshRotation;
-			D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
-		}
-
+		*/
 		// メッシュの原点調整
-		D3DXMatrixTranslation(&mat, 0, 0, 0);
-		D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
-
-
-		// マトリックスのセット
-		m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+	
 		/*if (type == MODELL_SMALL)
 		{
 			// メッシュの原点調整
 			D3DXMatrixTranslation(&mat, 0, 0, 0);
 			//D3DXMatrixTranslation(&mat, t.x, t.y, t.z);
-			D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld2);
+			D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
+			m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+		}
+		else
+		{
+			D3DXMatrixTranslation(&mat, 0, 0, 0);
+			D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
+			// マトリックスのセット
 			m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 		}*/
-	
+		D3DXMatrixTranslation(&mat, 0, 0, 0);
+		D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
+		// マトリックスのセット
+		m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 		// メッシュの描画
 		int n = mydata->ID;
 		for (DWORD i = 0; i < g_dwNumMaterials[n]; i++)
@@ -592,16 +596,32 @@ void CPhysx::DrawDX2(D3DXMATRIX mtxWorld, NxActor* actor, int type)
 		}
 		// ２つのアクターを関連づけて衝突開始と衝突終了イベントを有効にする
 		//当たり判定処理　第一引数と第二引数に当たり判定を行うアクターを指定する
-
-		/*if (type == MODELL_PLAYER)
+		*/
+	//	if ((type != MODELL_PLAYER)&& (type != MODELL_SMALL))
+		if(type != MODELL_SMALL)
 		{
-		if ((NxA_pPlayer != NULL) && (NxA_pSmall != NULL))
-		{
-		gScene->setActorPairFlags(*NxA_pPlayer,
-		*NxA_pSmall,
-		NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH);
+			int enemynum = CEnemy::Get_EnemyMaxNum();
+			for (int i = 0;i < enemynum;i++)
+			{
+				CEnemy *penemy = CEnemy_Small::Get_Enemy(i);
+				
+				if (penemy)
+				{
+					NxActor* act = penemy->Get_Actor();
+					if (mydata->hit)
+					{
+						penemy->Damage();
+						mydata->hit = false;
+					}
+					gScene->setUserContactReport(new ContactCallBack());
+					gScene->setActorPairFlags(*actor,
+						*act,
+						NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH);
+					
+					
+				}
+			}
 		}
-		}*/
 	}
 }
 
@@ -762,12 +782,12 @@ void CPhysx::DrawDX(D3DXMATRIX mtxWorld, NxActor* actor)
 			// 描画
 			g_pMesh[n]->DrawSubset(i);
 		}
-		if (NxA_pCoffee && NxA_pEnban)
+		/*if (NxA_pCoffee && NxA_pEnban)
 		{
 			gScene->setActorPairFlags(*NxA_pCoffee,
 				*NxA_pEnban,
 				NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH);
-		}
+		}*/
 		// ２つのアクターを関連づけて衝突開始と衝突終了イベントを有効にする
 		//当たり判定処理　第一引数と第二引数に当たり判定を行うアクターを指定する
 		/*	if (MODELL_PLAYER)
@@ -819,6 +839,7 @@ NxActor* CPhysx::CreateMeshAsBox(NxVec3 position, NxMat33 rotation, NxVec3 scale
 	mydata.type = 'B';
 	mydata.rotation = rotation;
 	mydata.position = position;
+	mydata.hit = false;
 	return CreateBox(mydata, &NxVec3(1.0f, 1.0f, 1.0f));
 }
 
@@ -837,6 +858,7 @@ NxActor* CPhysx::CreateMeshAsBox(NxVec3 position, NxMat33 rotation, NxVec3 scale
 	mydata.type = 'B';
 	mydata.rotation = rotation;
 	mydata.position = position;
+	mydata.hit = false;
 	return CreateBox(mydata, &NxVec3(1.0f, 1.0f, 1.0f), type);
 }
 
@@ -858,6 +880,7 @@ NxActor* CPhysx::CreateMeshAsSphere(NxVec3 position, float r, int ID)
 	mat2.rotX(0);
 	mydata.rotation = mat2;
 	mydata.position = position;
+	mydata.hit = false;
 	return CreateSphere(mydata, &NxVec3(1.0f, 1.0f, 1.0f));
 }
 
@@ -1205,7 +1228,8 @@ void CPhysx::ContactCallBack::onContactNotify(NxContactPair& pair, NxU32 events)
 	// アクターで使用するユーザーデータ
 	USERDATA* pUserData1 = NULL;
 	USERDATA* pUserData2 = NULL;
-
+	myData* mydata = (myData*)pair.actors[0]->userData;
+	myData* mydata2 = (myData*)pair.actors[0]->userData;
 	switch (events)
 	{
 		// 衝突開始イベント通知
@@ -1214,19 +1238,23 @@ void CPhysx::ContactCallBack::onContactNotify(NxContactPair& pair, NxU32 events)
 		// 衝突対象の２つのアクターのユーザーデータのポインタを取得する。
 		pUserData1 = (USERDATA*)pair.actors[0]->userData;
 		pUserData2 = (USERDATA*)pair.actors[1]->userData;
-		pair.actors[0]->addForce(NxVec3(100000, 1000000, 0));
-		pair.actors[0]->setLinearVelocity(NxVec3(10, 0, 0));
-		pair.actors[0]->addLocalTorque(NxVec3(100000, 0, 0), NX_FORCE);
+		pair.actors[1]->addForce(NxVec3(500000, -2000000, 0));
+		pair.actors[1]->setLinearVelocity(NxVec3(20, 0, 0));
+		pair.actors[1]->addLocalTorque(NxVec3(100000, 0, 0), NX_FORCE);
 		// ユーザーデータにイベント情報を設定する
 		//pUserData1->ContactPairFlag = events;
 		//pUserData2->ContactPairFlag = events;
-		hit = true;
+		
+		mydata->hit = true;
+		mydata2->hit = true;
 		break;
 
 		// 衝突終了イベント通知
 	case NX_NOTIFY_ON_END_TOUCH:
 
-		hit = false;
+	//	myData* mydata2 = (myData*)pair.actors[0]->userData;
+		mydata->hit = false;
+		mydata2->hit = false;
 		// 衝突対象の２つのアクターのユーザーデータのポインタを取得する。
 		//pUserData1 = (USERDATA*)pair.actors[0]->userData;
 		//pUserData2 = (USERDATA*)pair.actors[1]->userData;
@@ -1240,3 +1268,20 @@ void CPhysx::ContactCallBack::onContactNotify(NxContactPair& pair, NxU32 events)
 }
 
 
+void CPhysx::Debug_Collision(SphereCollision sc, D3DXMATRIX mtx)
+{
+	//DebugFont_Draw(700, 300, "%f\n,%f\n,%f\n,", sc.CenterPos.x, sc.CenterPos.y, sc.CenterPos.z);
+
+	D3DXMATRIX mtxS;
+	D3DXMatrixScaling(&mtxS, sc.radius, sc.radius, sc.radius);
+	// ワールドへ乗算
+	//D3DXMatrixMultiply(&mtx, &mtxR, &mtx);
+	mtx = mtxS * mtx;
+	// バッファへ転送
+	m_pD3DDevice->SetStreamSource(0, g_pVB, 0, sizeof(CUSTOMVERTEX));
+	m_pD3DDevice->SetFVF(D3DFVF_CUSTOMVERTEX);
+	m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtx);
+	m_pD3DDevice->DrawPrimitive(D3DPT_LINESTRIP, 38, 8);
+	m_pD3DDevice->DrawPrimitive(D3DPT_LINESTRIP, 47, 8);
+	m_pD3DDevice->DrawPrimitive(D3DPT_LINESTRIP, 56, 8);
+}

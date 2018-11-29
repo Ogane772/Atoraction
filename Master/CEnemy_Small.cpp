@@ -9,6 +9,7 @@
 //=============================================================================
 
 #include "CEnemy_Small.h"
+#include "Cplayer.h"
 #include "input.h"
 //=============================================================================
 //	定数定義
@@ -28,7 +29,7 @@
 //=============================================================================
 //	グローバル変数
 //=============================================================================
-
+int t;
 //=============================================================================
 //	生成
 //=============================================================================
@@ -59,6 +60,7 @@ void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 
 	m_Enable = true;
 	m_MoveCheck = false;
+	m_DrawCheck = true;
 	m_Hp = SMALL_HP;
 	m_Attack = SMALL_ATTACK;
 	m_Score = SMALL_SCORE;
@@ -73,17 +75,21 @@ void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 	NxVec3 scaleDwarf = NxVec3(1, 1, 1);	//	モデルスケール
 	NxVec3 BBDwarf = NxVec3(1.0f, 1.5f, 1.5f);	//	当たり判定の大きさ
 
-	//NxA_pSmall = CreateMeshAsBox(NxVec3(Emitter->InitPos.x, Emitter->InitPos.y, Emitter->InitPos.z), mat1, scaleDwarf, BBDwarf, MODELL_SMALL);
-	//NxA_pSmall = CreateMeshAsBox(NxVec3(0,0,0), mat1, scaleDwarf, BBDwarf, MODELL_SMALL);
+	
 	NxA_pSmall = CreateMeshAsSphere(NxVec3(Emitter->InitPos.x, Emitter->InitPos.y, Emitter->InitPos.z), 1.7, MODELL_SMALL);
-	//NxA_pSmall = CreateMeshAsCapsule(NxVec3(Emitter->InitPos.x, Emitter->InitPos.y, Emitter->InitPos.z), mat1, scaleDwarf, 1.5, 0.5, MODELL_SMALL);
+	
 }
 
 
 void CEnemy_Small::Finalize(void)
 {
+	
 	Enemy_Finalize(m_EnemyIndex);
+	
+	/*USERDATA* pUserData = (USERDATA*)NxA_pSmall->userData;
+	pUserData->ContactPairFlag = 0;*/
 	NxA_pSmall = NULL;
+	
 }
 
 
@@ -91,43 +97,89 @@ void CEnemy_Small::Update(void)
 {
 	if (m_Enable)
 	{
-
-		if (m_Hp == 0)
+		if (m_Hp > 0)
 		{
 			
-		}
-		else
-		{
-			if (!m_MoveCheck)
+			if (m_DrawCheck)
 			{
-				m_Direction = rand() % 10;
-				EnemyAngleChange(NxA_pSmall, m_Direction);
-				m_TimeKeep = m_FrameCount;
-				m_MoveCheck = true;
+				if (!m_MoveCheck)
+				{
+					
+					m_Direction++;
+					if (m_Direction >= 10)
+					{
+						m_Direction = 0;
+					}
+					EnemyAngleChange(NxA_pSmall, m_Direction);
+					D3DXMatrixRotationY(&m_mtxRotation, m_EnemyMove[m_Direction].Angle);
+					m_TimeKeep = m_FrameCount;
+					t = rand() % 3 + 1;
+					m_MoveCheck = true;
+				}
+				else
+				{
+					EnemyMove(NxA_pSmall, m_Direction, SMALL_SPEED);
+					if (m_FrameCount - m_TimeKeep >= 60 *t)
+					{
+						m_MoveCheck = false;
+					}
+				}
 			}
 			else
 			{
-				EnemyMove(NxA_pSmall, m_Direction, SMALL_SPEED);
-				if (m_FrameCount - m_TimeKeep >= 60)
+				if (m_MoveCheck)
 				{
-					m_MoveCheck = false;
+					EnemyMove(NxA_pSmall, m_Direction, SMALL_SPEED);
+					if (m_FrameCount - m_TimeKeep >= 180)
+					{
+						m_MoveCheck = false;
+						m_Direction += 2;
+					}
+				}
+				else
+				{
+					float angle = atan2(-m_mtxWorld._43, -m_mtxWorld._41);
+					D3DXMatrixRotationY(&m_mtxRotation, angle);
+					D3DXVECTOR3 move = D3DXVECTOR3(cos(angle), 0, sin(angle));
+					move *= SMALL_SPEED;
+					myData* mydata = (myData*)NxA_pSmall->userData;
+					mydata->meshTranslation.x += move.x;
+					mydata->meshTranslation.y += move.y;
+					mydata->meshTranslation.z += move.z;
+					NxA_pSmall->setGlobalPosition(mydata->meshTranslation);
 				}
 			}
 		}
+		
+			
+	
+
+
 
 		NxVec3 tr = NxA_pSmall->getGlobalPosition();
 		D3DXMatrixTranslation(&m_mtxTranslation, tr.x, tr.y, tr.z);
-		m_mtxWorld = m_mtxScaling * m_mtxTranslation;
+		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 		
 		
 
 
 		if (45.0*45.0 < (m_mtxWorld._41*m_mtxWorld._41) + (m_mtxWorld._43 * m_mtxWorld._43))
 		{
-			m_DrawCheck = false;
+			if (m_Hp <= 0)
+			{
+				m_Enable = false;
+				CPlayer::m_delete = true;
+
+			}
+			else
+			{
+				m_DrawCheck = false;
+			}
+			
 		}
 		else
 		{
+
 			m_DrawCheck = true;
 		}
 	}
@@ -150,7 +202,20 @@ void CEnemy_Small::Draw(void)
 }
 
 
-
+void CEnemy_Small::Damage(void)
+{
+	
+	if (m_Hp > 0)
+	{
+		m_Hp -= 1;
+		if (m_Hp == 0)
+		{
+			CPlayer::Add_KoCount();
+		}
+	}
+	
+	
+}
 
 
 

@@ -19,9 +19,10 @@ public:
 	void Update(void);
 	void Draw(void);
 	void Finalize(void);
-	void EnemySmall_Create(void);
-	
+	void Damage(void);
+	NxActor* Get_Actor(void) { return NxA_pSmall; }
 private:
+	void EnemySmall_Create(void);
 	void Initialize(ENEMY_EMITTER *Emitter);
 	
 	NxActor* NxA_pSmall;
