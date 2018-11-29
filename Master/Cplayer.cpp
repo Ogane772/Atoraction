@@ -61,6 +61,10 @@ CPlayer::~CPlayer()
 //=============================================================================
 void CPlayer::Update(void)
 {
+	if (g_CosterMode)//コースターの時
+	{
+		m_mtxTranslation *= Move(FLONT, SPEED);
+	}
 	if (!g_CosterMode)//コースターじゃないとき
 	{
 		if (Keyboard_IsPress(DIK_W))
@@ -183,16 +187,16 @@ void CPlayer::Update(void)
 		{
 			CAttraction::Create(CAttraction::TYPE_WHEEL);
 		}
-
-		if (45.0*45.0 < (m_mtxTranslation._41*m_mtxTranslation._41) + (m_mtxTranslation._43 * m_mtxTranslation._43))
-		{
-			m_mtxTranslation = m_mtxKeepTranslation;
-		}
-		else
-		{
-			m_mtxKeepTranslation = m_mtxTranslation;
-		}
 	}
+	if (45.0*45.0 < (m_mtxTranslation._41*m_mtxTranslation._41) + (m_mtxTranslation._43 * m_mtxTranslation._43))
+	{
+		m_mtxTranslation = m_mtxKeepTranslation;
+	}
+	else
+	{
+		m_mtxKeepTranslation = m_mtxTranslation;
+	}
+	
 	//	MP
 	if (m_FrameCount % 60 == 0)
 	{
