@@ -30,6 +30,8 @@ public:
 		TEX_STOCK,
 		TEX_NUM,
 		TEX_NUM2,
+		TEX_MAP,
+		TEX_Player_Icon,
 
 
 		TYPE_MAX
