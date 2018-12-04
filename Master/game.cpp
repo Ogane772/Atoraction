@@ -20,6 +20,7 @@
 #include "CUserInterface.h"
 #include "CAttraction.h"
 #include "common.h"
+#include "map.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -33,6 +34,7 @@
 
 CGameObj *pGameObj[MAX_GAMEOBJ];
 CUserInterFace *pUI;
+MapObj *pMap;
 //int ObjNum = 0;
 static NxScene*	gScene = NULL;	//	フィジックスのシーン登録
 static bool g_bend;
@@ -54,6 +56,7 @@ void Game_Initialize(void)
 	pGameObj[CGameObj::Get_GameObjIndex()] = CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_FLORR, 6.0f, 45.0f, 20, 1);
 	pGameObj[CGameObj::Get_GameObjIndex()] = CMesh_SkyDome::Mesh_SkyDome_Create(CTexture::TEX_SKY, 2.0f, 60.0f, 40, 20);
 	pUI = new CUserInterFace();
+	pMap = new MapObj();
 	/*for (int i = 0; i < CEnemy::Get_EnemyMaxNum(); i++)
 	{
 		pGameObj[CGameObj::Get_GameObjIndex()] = CEnemy::Create(i);
@@ -150,6 +153,7 @@ void Game_Updata(void)
 		CGameObj::FrameCountUp();
 	}
 
+	pMap->Update();
 }
 
 //=============================================================================
@@ -179,6 +183,7 @@ void Game_Draw(void)
 		BillBoard_Draw(i,3,0);
 	}*/
 	pUI->Draw();
+	pMap->Draw();
 
 	gScene->flushStream();
 	gScene->fetchResults(NX_RIGID_BODY_FINISHED, true);

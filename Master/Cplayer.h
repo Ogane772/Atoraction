@@ -34,6 +34,8 @@ public:
 	static bool m_delete;
 	
 	bool *Get_Coaster(void) { return &g_CosterMode; }
+
+	D3DXMATRIX Get_Player_position(void) { return m_mtxTranslation; }
 protected:
 	//int m_Hp;
 	//int m_Mp;
