@@ -31,7 +31,7 @@
 CPlayer *CPlayer::m_pPlayer[PLAYER_MAX] = {};
 int CPlayer::m_PlayerNum = 0;
 //=============================================================================
-// 生成
+// 生�E
 //=============================================================================
 CPlayer::CPlayer()
 {
@@ -48,7 +48,7 @@ CPlayer *CPlayer::PlayerCreate(void)
 
 
 //=============================================================================
-// 破棄
+// 破棁E
 //=============================================================================
 CPlayer::~CPlayer()
 {
@@ -61,11 +61,11 @@ CPlayer::~CPlayer()
 //=============================================================================
 void CPlayer::Update(void)
 {
-	if (g_CosterMode)//コースターの時
+	if (g_CosterMode)//コースターの晁E
 	{
 		m_mtxTranslation *= Move(FLONT, SPEED);
 	}
-	if (!g_CosterMode)//コースターじゃないとき
+	if (!g_CosterMode)//コースターじゃなぁE��ぁE
 	{
 		if (Keyboard_IsPress(DIK_W))
 		{
@@ -228,12 +228,12 @@ void CPlayer::Draw(void)
 	DrawDX2(m_mtxWorld, NxA_pPlayer, MODELL_PLAYER);
 	//DrawDirectXMesh(NxA_pBoss);
 	//DrawDirectXMesh(NxA_pPlayer);
-	//	デバッグ
+	//	チE��チE��
 	//DebugFont_Draw(300, 30, "%f\n,%f\n,%f\n,", m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 	RenderPhysX();
 }
 
-//	初期化
+//	初期匁E
 void CPlayer::Player_Initialize(void)
 {
 	m_Hp = HP_MAX;
@@ -241,7 +241,7 @@ void CPlayer::Player_Initialize(void)
 	m_MpStock = MPSTOCK_INIT;
 	m_Enable = true;
 	g_CosterMode = false;
-	//playerfront等の初期化
+	//playerfront等�E初期匁E
 	player_at = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	wheel_at = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	player_position = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -262,15 +262,15 @@ void CPlayer::Player_Initialize(void)
 
 	NxMat33 mat1;
 	//mat1.rotZ(0);
-	NxVec3 scaleDwarf = NxVec3(1, 1, 1);	//	モデルスケール
-	NxVec3 BBDwarf = NxVec3(1.0f, 1.0f, 1.0f);	//	当たり判定の大きさ
+	NxVec3 scaleDwarf = NxVec3(1, 1, 1);	//	モチE��スケール
+	NxVec3 BBDwarf = NxVec3(1.0f, 1.0f, 1.0f);	//	当たり判定�E大きさ
 
 												//NxA_pPlayer = CreateMeshAsBox(NxVec3(0, 1, 0), mat1, scaleDwarf, BBDwarf, MODELL_PLAYER);
 	NxA_pPlayer = CreateMeshAsSphere(NxVec3(0, 1, 0), 1.0, MODELL_PLAYER);
 
 }
 
-//	終了処理
+//	終亁E�E琁E
 void CPlayer::Finalize(void)
 {
 	for (int i = 0;i < m_PlayerNum;i++)
