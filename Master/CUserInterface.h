@@ -19,9 +19,11 @@ public:
 	void Update(void);
 	void Draw(void);
 	void Finalize(void);
-	
+	static void UICreate(void);
 protected:
 
+private:
+	
 };
 
 #endif // !1

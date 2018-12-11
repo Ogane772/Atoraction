@@ -34,7 +34,7 @@ int t;
 //	ê∂ê¨
 //=============================================================================
 
-CEnemy_Small::CEnemy_Small(ENEMY_EMITTER *Emitter):CEnemy(TYPE_SMALL)
+CEnemy_Small::CEnemy_Small(ENEMY_EMITTER *Emitter):CEnemy(TYPE_SMALL),C3DObj(C3DObj::TYPE_ENEMY)
 {
 	Initialize(Emitter);
 }
@@ -189,14 +189,12 @@ void CEnemy_Small::Update(void)
 
 void CEnemy_Small::Draw(void)
 {
-	if (Get_Enemy(m_EnemyIndex))
+	
+	if (m_Enable)
 	{
-		if (m_Enable)
+		if (m_DrawCheck)
 		{
-			if (m_DrawCheck)
-			{
-				DrawDX2(m_mtxWorld, NxA_pSmall, MODELL_SMALL);
-			}
+			DrawDX2(m_mtxWorld, NxA_pSmall, MODELL_SMALL);
 		}
 	}
 }

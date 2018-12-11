@@ -38,6 +38,7 @@ CAttraction::CAttraction()
 CAttraction::CAttraction(int nType)
 {
 	m_Type = nType;
+
 	m_AttractionNum[TYPE_ALL]++;
 	m_AttractionNum[nType]++;
 }
@@ -47,29 +48,30 @@ CAttraction::CAttraction(int nType)
 
 CAttraction::~CAttraction()
 {
-	//m_AttractionNum[TYPE_ALL]--;
+	m_AttractionNum[TYPE_ALL]--;
+	m_AttractionNum[m_Type]--;
 }
 
 void CAttraction::Create(int nType)
 {
 	if (nType == TYPE_COFFEE)
 	{
-		m_pAttraction[m_AttractionNum[TYPE_ALL] - 1] = new CCoffeeCup;
+		CCoffeeCup *m_pAttraction = new CCoffeeCup;
 		createchack = true;
 	}
 	if (nType == TYPE_FALL)
 	{
-		m_pAttraction[m_AttractionNum[TYPE_ALL] - 1] = new Cfreefall;
+		Cfreefall *m_pAttraction = new Cfreefall;
 		createchack = true;
 	}
 	if (nType == TYPE_WHEEL)
 	{
-		m_pAttraction[m_AttractionNum[TYPE_ALL] - 1] = new Cwheel;
+		Cwheel *m_pAttraction = new Cwheel;
 		createchack = true;
 	}
 	if (nType == TYPE_COASTER)
 	{
-		m_pAttraction[m_AttractionNum[TYPE_ALL] - 1] = new Coaster;
+		Coaster *m_pAttraction = new Coaster;
 		createchack = true;
 	}
 }
@@ -101,11 +103,3 @@ void CAttraction::Attraction_Finalize(int index)
 }
 
 
-void CAttraction::Attraction_Initialize(void)
-{
-	for (int i = 0;i < TYPE_MAX;i++)
-	{
-		m_AttractionNum[i] = 0;
-	}
-}
-		

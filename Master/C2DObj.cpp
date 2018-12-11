@@ -8,8 +8,8 @@
 //	インクルードファイル
 //=============================================================================
 
+
 #include "C2DObj.h"
-#include "ten_texture.h"
 #include "CCamera.h"
 #include "common.h"
 //=============================================================================
@@ -21,7 +21,7 @@
 //	静的変数
 //=============================================================================
 
-LPDIRECT3DVERTEXBUFFER9 C2DObj::m_p2DVertexBuffer = NULL;
+LPDIRECT3DVERTEXBUFFER9 C2DObj::m_p2DVertexBuffer = NULL;	
 LPDIRECT3DINDEXBUFFER9 C2DObj::m_p2DIndexBuffer = NULL;
 
 //=============================================================================
@@ -30,7 +30,7 @@ LPDIRECT3DINDEXBUFFER9 C2DObj::m_p2DIndexBuffer = NULL;
 
 C2DObj::C2DObj()
 {
-	//m_GameObjNum--;
+	
 }
 
 //=============================================================================
@@ -128,19 +128,6 @@ void C2DObj::Sprite_Draw(int texture_index, float dx, float dy, int tx, int ty, 
 	Ipv[5] = 2;
 	m_p2DIndexBuffer->Unlock();
 
-	/*D3DXMATRIX mtxWorld;		// 4*4行列　d3dx9.h必要
-	D3DXMatrixIdentity(&mtxWorld);	// アドレス送ると単位行列を作ってくれる
-	C2DObj::m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
-
-	D3DXMATRIX mtxv = CCamera::Get_ViewMtx();
-	C2DObj::m_pD3DDevice->SetTransform(D3DTS_VIEW, &mtxv);
-
-	// プロジェクション座標変換行列
-	D3DXMATRIX mtxProjection;
-	// プロジェクション座標変換
-	D3DXMatrixOrthoLH(&mtxProjection, WINDOW_WIDTH, WINDOW_HIGHT, NYAA, FUAA);
-	CGameObj::m_pD3DDevice->SetTransform(D3DTS_TEXTURE0, &mtxProjection);
-	*/
 	m_pD3DDevice->SetFVF(FVF_VERTEX2D);		//	FVFをデバイスに設定
 
 	m_pD3DDevice->SetTexture(0, Texture_GetTexture(texture_index));
@@ -148,31 +135,10 @@ void C2DObj::Sprite_Draw(int texture_index, float dx, float dy, int tx, int ty, 
 	m_pD3DDevice->SetStreamSource(0, m_p2DVertexBuffer, 0, sizeof(Vertex2D));
 	m_pD3DDevice->SetIndices(m_p2DIndexBuffer);
 
-
-
-	// g_pD3DDevice->DrawPrimitiveUP(D3DPT_TRIANGLELIST, 2, v, sizeof(Vertex2D));		
-	/*
-	第1引数　どんな形か
-	第2引数　プリミティブ数　三角形をいくつだすか
-	第3引数  頂点データの先頭アドレス
-	第4引数　頂点データ構造体の大きさ
-	*/
-	//g_pD3DDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLELIST, 0, 4, 2, index, D3DFMT_INDEX16, v, sizeof(Vertex2D));
-	/*
-	第1引数　どんな形か
-	第2引数　index の一番小さい数
-	第3引数　頂点の数
-	第4引数　プリミティブ数
-	第5引数　indexの先頭アドレス
-	第6引数　ビット数(16or32)
-	第7引数　頂点データの先頭アドレス
-	第8引数　頂点データ構造体の大きさ
-	*/
-	//g_pD3DDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 	m_pD3DDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 4, 0, 2);
 }
 
-
+//	タイトルリザルト用
 void C2DObj::m_Sprite_Draw(int texture_index, float dx, float dy, int tx, int ty, int tw, int th)
 {
 	float w = (float)Texture_GetWidth(texture_index, 1);
@@ -234,25 +200,7 @@ void C2DObj::m_Sprite_Draw(int texture_index, float dx, float dy, int tx, int ty
 	m_pD3DDevice->SetStreamSource(0, m_p2DVertexBuffer, 0, sizeof(Vertex2D));
 	m_pD3DDevice->SetIndices(m_p2DIndexBuffer);
 
-	// g_pD3DDevice->DrawPrimitiveUP(D3DPT_TRIANGLELIST, 2, v, sizeof(Vertex2D));		
-	/*
-	第1引数　どんな形か
-	第2引数　プリミティブ数　三角形をいくつだすか
-	第3引数  頂点データの先頭アドレス
-	第4引数　頂点データ構造体の大きさ
-	*/
-	//g_pD3DDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLELIST, 0, 4, 2, index, D3DFMT_INDEX16, v, sizeof(Vertex2D));
-	/*
-	第1引数　どんな形か
-	第2引数　index の一番小さい数
-	第3引数　頂点の数
-	第4引数　プリミティブ数
-	第5引数　indexの先頭アドレス
-	第6引数　ビット数(16or32)
-	第7引数　頂点データの先頭アドレス
-	第8引数　頂点データ構造体の大きさ
-	*/
-	//g_pD3DDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+
 	m_pD3DDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 4, 0, 2);
 }
 //=============================================================================

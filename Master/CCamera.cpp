@@ -38,7 +38,7 @@ CCamera *CCamera::m_pCamera;
 //=============================================================================
 //	¶¬
 //=============================================================================
-CCamera::CCamera()
+CCamera::CCamera() :CGameObj(CGameObj::TYPE_CAMERA)
 {
 	Camera_Initialize();
 }
@@ -112,9 +112,11 @@ void CCamera::Update(void)
 	}
 
 	D3DXMATRIX at;
-	CPlayer *pPlayer = CPlayer::Get_Player(0);
+	//CPlayer *pPlayer = CPlayer::Get_Player(0);
 	//at = pPlayer->Get_mtxWorld();
-	at = pPlayer->Get_mtxkeep();
+	//at = pPlayer->Get_mtxkeep();
+	C3DObj *pPlayer = CPlayer::Get_Player();
+	at = pPlayer->Get_mtxWorld();
 
 	m_at.x = at._41;
 	m_at.y = at._42;

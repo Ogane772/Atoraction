@@ -11,15 +11,15 @@
 //	グローバル変数宣言
 //=============================================================================
 
-static bool g_bend = false;
-C2DObj *t;
+static bool g_bend = false;	//	フェードインアウトフラグ
+C2DObj *ptitle;
 //=============================================================================
 //	初期化処理
 //=============================================================================
 
 void Title_Initialize(void)
 {
-	t = new C2DObj;
+	ptitle = new C2DObj;
 	g_bend = false;
 }
 
@@ -29,7 +29,7 @@ void Title_Initialize(void)
 
 void Title_Finalize(void)
 {
-	delete t;
+	delete ptitle;
 }
 
 //=============================================================================
@@ -38,6 +38,7 @@ void Title_Finalize(void)
 
 void Title_Update(void)
 {
+	//	スペースでゲーム画面へ
 	if (!g_bend)
 	{
 		if (Keyboard_IsTrigger(DIK_SPACE))
@@ -64,7 +65,7 @@ void Title_Draw(void)
 {
 	
 	
-	t->m_Sprite_Draw(3, 0, 0, 0, 0, t->Texture_GetWidth(3, 1), t->Texture_GetHeight(3, 1));
+	ptitle->m_Sprite_Draw(3, 0, 0, 0, 0, ptitle->Texture_GetWidth(3, 1), ptitle->Texture_GetHeight(3, 1));
 
 }
 

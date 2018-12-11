@@ -22,24 +22,22 @@ public:
 	static CPlayer *PlayerCreate(void);
 	NxActor *Get_Actor(void) { return NxA_pPlayer; }
 	//int Get_Mp(void) { return m_Mp; }
-	int Get_MpStock(void) { return m_MpStock; }
+	
 	
 	static CPlayer *Get_Player(int IndexPlayer) { return m_pPlayer[IndexPlayer]; }
 	D3DXMATRIX Get_mtxkeep(void) { return m_mtxKeepTranslation; }
 	static int Get_KoCount(void) { return m_KO_Count; }
 	static void Add_KoCount(void) { m_KO_Count++; }
-	int Get_Angle(void) { return m_Angle; }
-	D3DXVECTOR3 Get_Front(void) { return m_front; }
+	
 	//static bool Check_delete(void) { return m_delete; }
 	static bool m_delete;
+	static C3DObj *Get_Player(void);
+	//bool *Get_Coaster(void) { return &g_CosterMode; }
 	
-	bool *Get_Coaster(void) { return &g_CosterMode; }
-
-	D3DXMATRIX Get_Player_position(void) { return m_mtxTranslation; }
 protected:
 	//int m_Hp;
 	//int m_Mp;
-	int m_MpStock;
+	
 	
 	D3DXMATRIX m_mtxKeepTranslation;	//	à⁄ìÆï€éùçsóÒ
 	
@@ -52,10 +50,7 @@ private:
 	int m_PlayerIndex;
 	NxActor *NxA_pPlayer;
 	static int m_KO_Count;
-	float m_Angle;
-	D3DXVECTOR3 m_front;
-	D3DXVECTOR3 m_right;
-	D3DXVECTOR3 m_up;
+	
 	bool g_CosterMode;
 };
 

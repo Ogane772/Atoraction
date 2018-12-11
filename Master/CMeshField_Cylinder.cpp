@@ -31,7 +31,7 @@ CMeshField_Cylinder::CMeshField_Cylinder()
 {
 
 }
-CMeshField_Cylinder::CMeshField_Cylinder(int TexIndex, float meshH, float radius, int meshXnum, int meshYnum)
+CMeshField_Cylinder::CMeshField_Cylinder(int TexIndex, float meshH, float radius, int meshXnum, int meshYnum) :CGameObj(CGameObj::TYPE_MESH)
 {
 	m_TexIndex = TexIndex;
 	m_meshH = meshH;
@@ -70,7 +70,7 @@ void CMeshField_Cylinder::Draw(void)
 //	メッシュフィールドシリンダー作成
 CMeshField_Cylinder *CMeshField_Cylinder::MeshField_Cylinder_Create(int TexIndex, float meshH, float radius, int meshXnum, int meshYnum)
 {
-	m_pMeshField_Cylinder = new CMeshField_Cylinder(TexIndex, meshH, radius, meshXnum, meshYnum);
+	CMeshField_Cylinder *m_pMeshField_Cylinder = new CMeshField_Cylinder(TexIndex, meshH, radius, meshXnum, meshYnum);
 	return m_pMeshField_Cylinder;
 }
 

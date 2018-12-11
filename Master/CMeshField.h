@@ -11,7 +11,7 @@
 
 #define MAX_MESH_FIELD (5000)
 
-class CMeshField : public CTexture
+class CMeshField :public CTexture
 {
 public:
 

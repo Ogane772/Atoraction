@@ -35,7 +35,7 @@
 //	¶¬
 //=============================================================================
 
-CCoffeeCup::CCoffeeCup() :CAttraction(TYPE_COFFEE)
+CCoffeeCup::CCoffeeCup() :CAttraction(TYPE_COFFEE),C3DObj(C3DObj::TYPE_ATTRACTION)
 {
 	Initialize();
 }
@@ -50,16 +50,17 @@ void CCoffeeCup::Initialize()
 	m_AttractionIndex = Get_AttractionIndex(TYPE_ALL);
 
 	m_Enable = true;
-	angDodai = 0.0f;//ŽM(“y‘ä)‚Ì‰ñ“]
+	
 	angCup = 0.0f;//ƒJƒbƒv‚Ì‰ñ“]
 	CoolTime = 0;//ƒN[ƒ‹ƒ^ƒCƒ€
 	B_CoolTime;//ƒN[ƒ‹ƒ^ƒCƒ€‚Ìƒu[ƒ‹
-	angCupCount = 0.0f;//ƒJƒbƒv‚Ì‰ñ“]‚ÌƒJƒEƒ“ƒg
+	
 	B_CoolTime = true;
-	hp = COFFEE_CUP_HP;
-	mp = COFFEE_CUP_MP;
-	atk = COFFEE_CUP_ATK;
-	CPlayer *playerget = CPlayer::Get_Player(0);
+	m_Hp = COFFEE_CUP_HP;
+	m_Mp = COFFEE_CUP_MP;
+	m_Attack = COFFEE_CUP_ATK;
+
+	C3DObj *playerget = CPlayer::Get_Player();
 	D3DXMATRIX mtx = playerget->Get_mtxWorld();
 	D3DXMatrixTranslation(&m_mtxTranslation, mtx._41, 0, mtx._43);//X,Y,Z‚ð“n‚·
 	D3DXMatrixScaling(&m_mtxScaling, COFFEE_SCALE, COFFEE_SCALE, COFFEE_SCALE);
@@ -80,53 +81,42 @@ void CCoffeeCup::Initialize()
 
 void CCoffeeCup::Update(void)
 {
-	int x;
 	if (m_Enable)
 	{//‚±‚±‚Å‰ñ“]ŒvŽZ‚ðs‚¤
 	 //‰ñ“]
 		if (B_CoolTime)
 		{
 			angCup += 3.5f;
-			//angCupCount += 3.5f;
+			
 			if (angCup>355.0f)
 			{
 				B_CoolTime = false;
 				angCup = 0.0f;
-				//angCupCount = 0.0f;
+				
 			}
 		}
 		if (!B_CoolTime)
 		{
 			CoolTime++;
-			x = 0.1;
 		}
 		//5•b‚½‚Á‚½‚ç
 		if (CoolTime > 100)
 		{
 			B_CoolTime = true;
 			CoolTime = 0;
-			x = 0.0;
 		}
 
 	
 
 		NxVec3 tr = NxA_pCoffee->getGlobalPosition();
 		D3DXMatrixTranslation(&m_mtxTranslation, tr.x, -0.5, tr.z);
-		//D3DXMatrixScaling(&m_mtxScaling, COFFEE_SCALE, COFFEE_SCALE, COFFEE_SCALE);
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angCup));
 		m_mtxWorld2 = m_mtxScaling* m_mtxRotation  * m_mtxTranslation;
 
 		D3DXMatrixTranslation(&m_mtxTranslation, tr.x, 0, tr.z);
-		//D3DXMatrixScaling(&m_mtxScaling, COFFEE_SCALE, COFFEE_SCALE, COFFEE_SCALE);
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(0));
 		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
-		/*myData* mydata = (myData*)NxA_pCoffee->userData;
-		D3DXMATRIX mtx = m_mtxWorld2;
 
-		mydata->meshTranslation.x = mtx._41;
-		mydata->meshTranslation.y = mtx._42;
-		mydata->meshTranslation.z = mtx._43;
-		NxA_pCoffee->setGlobalPosition(mydata->meshTranslation);*/
 	}
 }
 

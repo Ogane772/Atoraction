@@ -1,7 +1,7 @@
 //=============================================================================
 //	インクルードファイル
 //=============================================================================
-
+/*
 #include <d3dx9.h>
 #include "mochi_d3d.h"
 #include "camera.h"
@@ -57,7 +57,7 @@ void BillBoard_Initialize(void)
 	3 仮想アドレスを入れる
 	4 0でいい
 	*/
-	memcpy(pv, g_bb, sizeof(g_bb));
+/*	memcpy(pv, g_bb, sizeof(g_bb));
 	g_pVertexBuffer->Unlock();
 
 
@@ -167,4 +167,4 @@ void BillBoard_Draw(float x,float y,float z)
 	pD3DDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 
 	pD3DDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-}
+}*/

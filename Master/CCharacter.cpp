@@ -9,8 +9,7 @@
 
 CCharacter::CCharacter()
 {
-	m_Hp = 0;
-	m_Mp = 0;
+	
 }
 
 CCharacter::~CCharacter()

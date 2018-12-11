@@ -9,20 +9,31 @@
 
 #include <d3dx9.h>
 
+#define MAX_GAMEOBJ (100)
 #define TEXTURE_FILENAME_MAX (64)
 
 class CGameObj
 {
 public:
 	CGameObj();
+	CGameObj(int type);
 	virtual ~CGameObj();
+	typedef enum
+	{
+		TYPE_LIGHT,  // ライト
+		TYPE_CAMERA, //	カメラ
+		TYPE_MESH,	 // メッシュフィールド
+		TYPE_UI,	 //	UI
 
+		TYPE_MAX
+
+	} OBJTYPE;
 	virtual void Update(void) = 0;
 	virtual void Draw(void) = 0;
 	virtual void Finalize(void) = 0;
 	bool Get_Enable(void) { return m_Enable; }
 
-	static void Initialize(void);
+	static void FrameCountReset(void);
 	static int Get_FraemCount(void) { return m_FrameCount; }	//	フレームカウント取得
 	static int Get_GameObjNum(void) { return m_GameObjNum; }	//	総ゲームオブジェクト取得
 	static int Get_GameObjIndex(void) { return m_GameObjNum - 1; }	//	ゲームオブジェクトインデックス
@@ -32,6 +43,14 @@ public:
 	static void Device_Finalize(void);	//	デバイス破棄
 	static LPDIRECT3DDEVICE9 m_pD3DDevice;	//	デバイス
 
+
+	static void UpdateAll();	// 全オブジェクト更新
+	static void DrawAll();		// 全オブジェクト描画
+	static void DeleteAll();	// 全オブジェクト削除
+/*	static CGameObj *Get(int nIdx);				// インスタンス取得
+	int Get_GameObjIndex() { return m_GameObjIndex;}	// ワークインデックス取得*/
+	int Get_GameType(void) {	return m_GameObjType;}		// 種類取得
+	int Get_GameIndex(void) { return m_GameObjIndex; }
 	static void DebugDraw(void);
 protected:		
 
@@ -42,8 +61,9 @@ protected:
 
 private:
 
-	
-
+	int m_GameObjIndex;
+	int m_GameObjType;
+	static CGameObj *pGameObj[MAX_GAMEOBJ];
 	static LPDIRECT3D9 m_pD3D;
 	
 };

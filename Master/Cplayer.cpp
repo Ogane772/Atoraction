@@ -11,13 +11,13 @@
 #include "Cplayer.h"
 #include "input.h"
 #include "move.h"
-#include "model.h"
 #include "CAttraction.h"
 #include "debug_font.h"
 
 #include "CEnemy.h"
 #include "Cwheel.h"
 #include "CEnemy_Small.h"
+#include "CAttraction_Coaster .h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -37,7 +37,7 @@ bool CPlayer::m_delete = false;
 //=============================================================================
 // 生成
 //=============================================================================
-CPlayer::CPlayer()
+CPlayer::CPlayer():C3DObj(C3DObj::TYPE_PLAYER)
 {
 	Player_Initialize();
 	m_PlayerIndex = m_PlayerNum;
@@ -46,8 +46,10 @@ CPlayer::CPlayer()
 
 CPlayer *CPlayer::PlayerCreate(void)
 {
-	m_pPlayer[m_PlayerNum-1] = new CPlayer;
-	return m_pPlayer[m_PlayerNum - 1];
+	//m_pPlayer[m_PlayerNum-1] = new CPlayer;
+	//return m_pPlayer[m_PlayerNum - 1];
+	CPlayer *m_pPlayer = new CPlayer;
+	return m_pPlayer;
 }
 
 
@@ -67,7 +69,15 @@ void CPlayer::Update(void)
 {
 	if (g_CosterMode)//コースターの時
 	{
-		m_mtxTranslation *= Move(FLONT, SPEED);
+		C3DObj *pcoaster = Coaster::Get_Coaster();
+		if (pcoaster)
+		{
+			m_mtxTranslation *= Move(FLONT, SPEED);
+		}
+		else
+		{
+			g_CosterMode = false;
+		}
 	}
 	else
 	{
@@ -156,6 +166,7 @@ void CPlayer::Update(void)
 	//	MP
 	if (m_FrameCount % 60 == 0)
 	{
+
 		m_Mp++;
 		if (m_Mp >= MP_MAX)
 		{
@@ -244,17 +255,14 @@ void CPlayer::Player_Initialize(void)
 	D3DXVec3Normalize(&m_up, &m_up);
 
 	NxMat33 mat1;
-	//mat1.rotZ(0);
 	NxVec3 scaleDwarf = NxVec3(1, 1, 1);	//	モデルスケール
 	NxVec3 BBDwarf = NxVec3(1.0f, 1.0f, 1.0f);	//	当たり判定の大きさ
 
-	//NxA_pPlayer = CreateMeshAsBox(NxVec3(0, 1, 0), mat1, scaleDwarf, BBDwarf, MODELL_PLAYER);
+	
 	NxA_pPlayer = CreateMeshAsSphere(NxVec3(0, 1, 0), 1.0, MODELL_PLAYER);
-	/*NxScene *g = CPhysx::Get_PhysX_Scene();
-	g->setUserContactReport(new ContactCallBack());*/
-	m_SphereCollision = {
+	/*m_SphereCollision = {
 		D3DXVECTOR3(m_mtxWorld._41,m_mtxWorld._42,m_mtxWorld._43),PLAYER_SAIZ
-	};
+	};*/
 }
 
 //	終了処理
@@ -303,7 +311,17 @@ void  CPlayer::AngleChange(bool Angle_Flg)
 }
 
 
-
+C3DObj *CPlayer::Get_Player(void)
+{
+	for (int i = 0;i < MAX_GAMEOBJ;i++)
+	{
+		C3DObj *pplayer = C3DObj::Get(i);
+		if (pplayer->Get_3DObjType() == C3DObj::TYPE_PLAYER)
+		{
+			return pplayer;
+		}
+	}
+}
 
 
 
