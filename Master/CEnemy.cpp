@@ -24,6 +24,7 @@
 //	静的変数
 //=============================================================================
 
+//	エネミー移動用構造体
 CEnemy::ENEMY_MOVE CEnemy::m_EnemyMove[8] = {
 	{ D3DXVECTOR3(0.0f,0.0f,1.0f),D3DXToRadian(-90.0) },
 	{ D3DXVECTOR3(1.0f,0.0f,1.0f),D3DXToRadian(-45.0) },
@@ -34,6 +35,7 @@ CEnemy::ENEMY_MOVE CEnemy::m_EnemyMove[8] = {
 	{ D3DXVECTOR3(0.0f,0.0f,-1.0f),D3DXToRadian(90.0) },
 };
 
+//	エネミーエミッター
 CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 {
 	{ 0  , TYPE_SMALL, D3DXVECTOR3(10.0, 1.6 ,10.0), DIRE_NORTH	  ,false },
@@ -41,11 +43,12 @@ CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 	{ 0, TYPE_SMALL, D3DXVECTOR3(30.0, 1.6 ,30.0), DIRE_NORTHWEST ,false },
 	{ 0, TYPE_SMALL, D3DXVECTOR3(20.0, 1.6 ,10.0), DIRE_SOUTHEAST ,false },
 	{ 0, TYPE_SMALL, D3DXVECTOR3(0.0,  1.6 ,0.0) , DIRE_NORTHEAST ,false },
+
 	{ 100 , TYPE_SMALL, D3DXVECTOR3(50.0, 1.6 ,10.0), DIRE_SOUTH  ,false },
-	{ 100 , TYPE_SMALL, D3DXVECTOR3(50.0, 1.6 ,20.0), DIRE_SOUTH  ,false },
-	{ 100 , TYPE_SMALL, D3DXVECTOR3(50.0, 1.6 ,30.0), DIRE_SOUTH  ,false },
-	{ 100 , TYPE_SMALL, D3DXVECTOR3(50.0, 1.6 ,40.0), DIRE_SOUTH  ,false },
-	{ 100 , TYPE_SMALL, D3DXVECTOR3(50.0, 1.6 ,50.0), DIRE_SOUTH  ,false },
+	{ 100 , TYPE_SMALL, D3DXVECTOR3(60.0, 1.6 ,30.0), DIRE_SOUTH  ,false },
+	{ 100 , TYPE_SMALL, D3DXVECTOR3(70.0, 1.6 ,50.0), DIRE_SOUTH  ,false },
+	{ 100 , TYPE_SMALL, D3DXVECTOR3(80.0, 1.6 ,80.0), DIRE_SOUTH  ,false },
+	{ 100 , TYPE_SMALL, D3DXVECTOR3(90.0, 1.6 ,50.0), DIRE_SOUTH  ,false },
 	{ 100 , TYPE_SMALL, D3DXVECTOR3(-50.0, 1.6 ,60.0), DIRE_SOUTH  ,false },
 	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0, 1.6 ,10.0), DIRE_SOUTH  ,false },
 	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0, 1.6 ,20.0), DIRE_SOUTH  ,false },
@@ -63,10 +66,6 @@ CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 
 int CEnemy::m_ENEMY_MAX = sizeof(CEnemy_Small::m_EnemyEmitter) / sizeof(m_EnemyEmitter[0]);
 
-
-
-CEnemy *CEnemy::m_pEnemy[sizeof(CEnemy::m_EnemyEmitter) / sizeof(m_EnemyEmitter[0])] = {};
-
 int CEnemy::m_EnemyNum[TYPE_MAX] = {};
 
 //=============================================================================
@@ -75,13 +74,13 @@ int CEnemy::m_EnemyNum[TYPE_MAX] = {};
 
 CEnemy::CEnemy()
 {
-	
 	m_EnemyNum[TYPE_ALL]++;
 }
 
 CEnemy::CEnemy(int EnemyType)
 {
 	m_Type = EnemyType;
+	m_EnemyIndex = m_EnemyNum[TYPE_ALL];
 	m_EnemyNum[TYPE_ALL]++;
 	m_EnemyNum[EnemyType]++;
 	m_Attack = 0;
@@ -99,39 +98,31 @@ CEnemy::CEnemy(int EnemyType)
 
 CEnemy::~CEnemy()
 {
+	m_EnemyEmitter[m_EnemyIndex].CreateCheck = false;
 	m_EnemyNum[TYPE_ALL]--;
 }
 
-
-CEnemy *CEnemy::Create(int Index)
+void CEnemy::Create(void)
 {
-	if (!m_EnemyEmitter[Index].CreateCheck)
+	for (int i = 0;i < m_ENEMY_MAX;i++)
 	{
-		if (m_FrameCount == m_EnemyEmitter[Index].CreateFrame)
+		if (!m_EnemyEmitter[i].CreateCheck)
 		{
-			if (m_EnemyEmitter[Index].Type == TYPE_SMALL)
+			if (m_FrameCount == m_EnemyEmitter[i].CreateFrame)
 			{
-				m_pEnemy[m_EnemyNum[TYPE_ALL] - 1] = new CEnemy_Small(&m_EnemyEmitter[Index]);
-				m_EnemyEmitter[Index].CreateCheck = true;
-				return m_pEnemy[m_EnemyNum[TYPE_ALL] - 1];
+				if (m_EnemyEmitter[i].Type == TYPE_SMALL)
+				{
+					CEnemy_Small *penemysmall = new CEnemy_Small(&m_EnemyEmitter[i]);
+					m_EnemyEmitter[i].CreateCheck = true;
+				}
 			}
 		}
 	}
-
-	return NULL;
 }
-
-
 
 void CEnemy::Enemy_Finalize(int Index)
 {
-	if (m_pEnemy[Index])
-	{
-		m_EnemyEmitter[Index].CreateCheck = false;
-		delete m_pEnemy[Index];
-		
-		m_pEnemy[Index] = NULL;
-	}
+	m_EnemyEmitter[Index].CreateCheck = false;
 }
 
 

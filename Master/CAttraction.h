@@ -11,7 +11,7 @@
 #include "Cphysx.h"
 #define ATTRACTION_MAX (100)
 
-class CAttraction : public C3DObj, public CPhysx
+class CAttraction : virtual public C3DObj, public CPhysx
 {
 public:
 
@@ -19,11 +19,11 @@ public:
 	{
 		TYPE_ALL = 0,
 
-		TYPE_COASTER,		//	ジェットコースター
+		TYPE_COASTER,	//	ジェットコースター
 		TYPE_WHEEL,		//	観覧車
-		TYPE_COFFEE,		//	コーヒーカップ
+		TYPE_COFFEE,	//	コーヒーカップ
 		TYPE_FALL,		//	フリーフォール
-		TYPE_POPCORN,		//	ポップコーン
+		TYPE_POPCORN,	//	ポップコーン
 
 
 		TYPE_MAX
@@ -36,6 +36,7 @@ public:
 	virtual void Update(void) = 0;
 	virtual void Draw(void) = 0;
 	void Attraction_Finalize(int index);
+
 	static void Create(int nType);
 	static CAttraction * Get_Attraction(int index);
 	static CAttraction * Get_Attraction(int index,int type);
@@ -43,14 +44,12 @@ public:
 	static int Get_AttractionIndex(int AttractionType) { return m_AttractionNum[AttractionType] - 1; }
 	static bool Get_CreateCheck(void) { return createchack; }
 	virtual NxActor* Get_Actor(void) = 0;
-	static void Attraction_Initialize(void);
+	
 protected:
 	static CAttraction *Attraction[ATTRACTION_MAX];
 	static int m_AttractionNum[TYPE_MAX];
 	int m_AttractionIndex;
-	int hp;
-	int mp;
-	int atk;
+	
 	
 	bool create;
 private:

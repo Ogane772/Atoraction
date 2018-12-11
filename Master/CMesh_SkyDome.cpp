@@ -32,7 +32,7 @@ CMesh_SkyDome::CMesh_SkyDome()
 
 }
 
-CMesh_SkyDome::CMesh_SkyDome(int TexIndex,float meshH, float radius, int meshXnum, int meshYnum)
+CMesh_SkyDome::CMesh_SkyDome(int TexIndex,float meshH, float radius, int meshXnum, int meshYnum) :CGameObj(CGameObj::TYPE_MESH)
 {
 	m_TexIndex = TexIndex;
 	m_meshH = meshH;
@@ -71,7 +71,7 @@ void CMesh_SkyDome::Draw(void)
 //	メッシュフィールドシリンダー作成
 CMesh_SkyDome *CMesh_SkyDome::Mesh_SkyDome_Create(int TexIndex,float meshH, float radius, int meshXnum, int meshYnum)
 {
-	m_pMesh_SkyDome = new CMesh_SkyDome(TexIndex, meshH, radius, meshXnum, meshYnum);
+	CMesh_SkyDome *m_pMesh_SkyDome = new CMesh_SkyDome(TexIndex, meshH, radius, meshXnum, meshYnum);
 	return m_pMesh_SkyDome;
 }
 

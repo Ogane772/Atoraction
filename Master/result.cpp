@@ -12,15 +12,15 @@
 //	グローバル変数宣言
 //=============================================================================
 
-static bool g_bend;
-C2DObj *r;
+static bool g_bend;		//	フェードインアウトフラグ
+C2DObj *presult;
 //=============================================================================
 //	初期化処理
 //=============================================================================
 
 void Result_Initialize(void)
 {
-	r = new C2DObj;
+	presult = new C2DObj;
 	g_bend = false;
 	
 }
@@ -31,7 +31,7 @@ void Result_Initialize(void)
 
 void Result_Finalize(void)
 {
-	delete r;
+	delete presult;
 }
 
 //=============================================================================
@@ -40,6 +40,7 @@ void Result_Finalize(void)
 
 void Result_Update(void)
 {
+	//	スペースでタイトル画面へ
 	if (!g_bend)
 	{
 		if (Keyboard_IsTrigger(DIK_SPACE))
@@ -64,7 +65,7 @@ void Result_Update(void)
 
 void Result_Draw(void)
 {
-	r->m_Sprite_Draw(4, 0, 0, 0, 0, r->Texture_GetWidth(4, 1), r->Texture_GetHeight(4, 1));
+	presult->m_Sprite_Draw(4, 0, 0, 0, 0, presult->Texture_GetWidth(4, 1), presult->Texture_GetHeight(4, 1));
 }
 
 

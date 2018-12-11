@@ -11,7 +11,7 @@
 
 #define TEXTURE_FILENAME_MAX (64)
 
-class CTexture :public CGameObj
+class CTexture : virtual public CGameObj
 {
 public:
 	CTexture();

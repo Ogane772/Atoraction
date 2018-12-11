@@ -20,15 +20,11 @@ public:
 	void Finalize(void);
 	void Coaster_Create(void);
 	NxActor* Get_Actor(void) { return NxA_Coaster; }
+	static C3DObj *Get_Coaster(void);
 
 private:
 	void Initialize();
 	int u;	//モデルの角度
-	bool *coaster = NULL;//コースターフラグ（ゲットで受け取る）
-#define J_TIME (8000)	//使用時間
-	int endfream = 0;
-	int keepfream = 0;
-	D3DXVECTOR3 position;
 	NxActor *NxA_Coaster;
 };
 #endif;

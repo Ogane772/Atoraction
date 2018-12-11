@@ -16,14 +16,14 @@ public:
 	C2DObj();
 	~C2DObj();
 
-	void Update(void);
-	void Draw(void);
-	void Finalize(void);
+	void Update(void);						//	更新
+	void Draw(void);						//	描画
+	void Finalize(void);					//	終了処理
 	static void Sprite_Initialize(void);	//	スプライト初期化
 	static void Sprite_Finalize(void);		//	スプライト破棄
 
 	void m_Sprite_Draw(int texture_index, float dx, float dy, int tx, int ty, int tw, int th);	//	スプライト描画
-	void Sprite_Draw(int texture_index, float dx, float dy, int tx, int ty, int tw, int th);	//	スプライト描画
+	void Sprite_Draw(int texture_index, float dx, float dy, int tx, int ty, int tw, int th);	//	スプライト描画タイトルリザルト用
 	/*	
 		texture_index:テクスチャ番号
 		dx:表示したいスプライトの左上座標X

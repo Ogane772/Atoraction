@@ -23,7 +23,7 @@
 #include "system_timer.h"
 //#include "ten_texture.h"
 #include "debug_font.h"
-#include "debug_primitive.h"
+//#include "debug_primitive.h"
 #include "fade.h"
 #include "Cphysx.h"
 #include "sound.h"

@@ -3,11 +3,9 @@
 //	インクルードファイル
 //=============================================================================
 #define NOMINMAX
-#include "cube.h"
-#include "grid.h"
+
 #include "CLight.h"
 #include "CCamera.h"
-#include "model.h"
 #include "CMeshField.h"
 #include "CMeshField_Cylinder.h"
 #include "CMesh_SkyDome.h"
@@ -20,56 +18,40 @@
 #include "CUserInterface.h"
 #include "CAttraction.h"
 #include "common.h"
-#include "map.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
-
-#define MAX_GAMEOBJ (100)
 
 
 //=============================================================================
 //	グローバル宣言
 //=============================================================================
 
-CGameObj *pGameObj[MAX_GAMEOBJ];
-CUserInterFace *pUI;
-MapObj *pMap;
-//int ObjNum = 0;
 static NxScene*	gScene = NULL;	//	フィジックスのシーン登録
-static bool g_bend;
+static bool g_bend;				//	フェードインアウトフラグ
 //=============================================================================
 //	初期化処理
 //=============================================================================
 void Game_Initialize(void)
 {
 	g_bend = false;
-	CPhysx::CPhysX_Initialize();	//	物理演算処理の初期化
-	gScene = CPhysx::Get_PhysX_Scene();
-	CGameObj::Initialize();
-	CAttraction::Attraction_Initialize();
+	CPhysx::CPhysX_Initialize();			//	物理演算処理の初期化
+	gScene = CPhysx::Get_PhysX_Scene();		//	シーン初期化
+	
 
-	pGameObj[CGameObj::Get_GameObjIndex()] = CPlayer::PlayerCreate();
-	pGameObj[CGameObj::Get_GameObjIndex()] = CLight::Light_Create();
-	pGameObj[CGameObj::Get_GameObjIndex()] = CCamera::Camera_Create();
-	pGameObj[CGameObj::Get_GameObjIndex()] = CMeshField::MeshField_Create(CTexture::TEX_FLORR, 120.0f, 1, 1);
-	pGameObj[CGameObj::Get_GameObjIndex()] = CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_FLORR, 6.0f, 45.0f, 20, 1);
-	pGameObj[CGameObj::Get_GameObjIndex()] = CMesh_SkyDome::Mesh_SkyDome_Create(CTexture::TEX_SKY, 2.0f, 60.0f, 40, 20);
-	pUI = new CUserInterFace();
-	pMap = new MapObj();
-	/*for (int i = 0; i < CEnemy::Get_EnemyMaxNum(); i++)
-	{
-		pGameObj[CGameObj::Get_GameObjIndex()] = CEnemy::Create(i);
-	}*/
-	for (int i = 0; i < CEnemy::Get_EnemyMaxNum(); i++)
-	{
-		if (CEnemy::Create(i))
-		{
-			pGameObj[CGameObj::Get_GameObjIndex()] = CEnemy::Get_Enemy(CEnemy::Get_EnemyNum(CEnemy::TYPE_ALL) - 1);
-		}
-	}
 
-//	BillBoard_Initialize();
+	CPlayer::PlayerCreate();				//	プレイヤー生成		
+	CLight::Light_Create();					//	ライト生成
+	CCamera::Camera_Create();				//	カメラ生成
+
+	CMeshField::MeshField_Create(CTexture::TEX_FLORR, 120.0f, 1, 1);							//	地面生成
+	CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_FLORR, 6.0f, 45.0f, 20, 1);	//	カベ生成
+	CMesh_SkyDome::Mesh_SkyDome_Create(CTexture::TEX_SKY, 2.0f, 60.0f, 40, 20);					//	空生成
+	CUserInterFace::UICreate();				//	UI生成
+	CEnemy::Create();						//	敵生成
+
+
+
 
 }
 
@@ -79,16 +61,10 @@ void Game_Initialize(void)
 
 void Game_Finalize(void) 
 {
-	int end = CGameObj::Get_GameObjNum();
-	for (int i = 0;i < end;i++)
-	{
-		if (pGameObj[i])
-		{
-			pGameObj[i]->Finalize();
-			pGameObj[i] = NULL;
-		}
-	}
-	CPhysx::ExitNx();
+	C3DObj::DeleteAll();			//	3Dオブジェクト全消去
+	CGameObj::DeleteAll();			//	2Dオブジェクト全消去
+	CPhysx::ExitNx();				//	物理演算終了処理
+	CGameObj::FrameCountReset();	//	フレームカウントリセット
 }
 
 //=============================================================================
@@ -99,43 +75,12 @@ void Game_Updata(void)
 {
 	
 
-	for (int i = 0;i < CGameObj::Get_GameObjNum();i++)
-	{
-		if (pGameObj[i])
-		{
-			pGameObj[i]->Update();
-			if (CAttraction::Get_CreateCheck())
-			{
-				pGameObj[CGameObj::Get_GameObjIndex()] = CAttraction::Get_Attraction(CAttraction::Get_AttractionIndex(CAttraction::TYPE_ALL));
-			}
-			if (CPlayer::m_delete)
-			{
+	C3DObj::UpdateAll();	//	3Dオブジェクト更新
+	CGameObj::UpdateAll();	//	2Dオブジェクト更新
+	
+	CEnemy::Create();		//	エネミー生成
 
-				for (int i = 0;i < CGameObj::Get_GameObjNum();i++)
-				{
-					if (pGameObj[i])
-					{
-						if (!pGameObj[i]->Get_Enable())
-						{
-							pGameObj[i]->Finalize();
-							pGameObj[i] = NULL;
-						}
-					}
-				}
-				CPlayer::m_delete = false;
-			}
-		}
-	}
-
-	for (int i = 0; i < CEnemy::Get_EnemyMaxNum(); i++)
-	{
-		if (CEnemy::Create(i))
-		{
-			pGameObj[CGameObj::Get_GameObjIndex()] = CEnemy::Get_Enemy(CEnemy::Get_EnemyNum(CEnemy::TYPE_ALL) - 1);
-		}
-	}
-
-	if (GAMEEND <= CGameObj::Get_FraemCount())
+	if (GAMEEND <= CGameObj::Get_FraemCount())		//	FraemCountがGAMEENDになるまでカウントUP　なったら終了
 	{
 		if (!g_bend)
 		{
@@ -153,7 +98,6 @@ void Game_Updata(void)
 		CGameObj::FrameCountUp();
 	}
 
-	pMap->Update();
 }
 
 //=============================================================================
@@ -162,29 +106,11 @@ void Game_Updata(void)
 
 void Game_Draw(void)
 {
-	
-	for (int i = 0;i < CGameObj::Get_GameObjNum();i++)
-	{
-		if (pGameObj[i])
-		{
-			pGameObj[i]->Draw();
-		}
-	}
-
-	/*CCamera *c = CCamera::Get_CCamera();
-	c->DebugDraw();
-	CGameObj::DebugDraw();
-
-
-	//BillBoard_Draw();
-
-	/*for (int i = 0;i < 4;i++)
-	{
-		BillBoard_Draw(i,3,0);
-	}*/
-	pUI->Draw();
-	pMap->Draw();
+	C3DObj::DrawAll();		//	3Dオブジェクト描画
+	CGameObj::DrawAll();	//	2Dオブジェクト描画
 
 	gScene->flushStream();
 	gScene->fetchResults(NX_RIGID_BODY_FINISHED, true);
 }
+
+

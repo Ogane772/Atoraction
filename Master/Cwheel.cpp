@@ -35,7 +35,7 @@
 //=============================================================================
 //	生成
 //===========
-Cwheel::Cwheel() :CAttraction(TYPE_WHEEL)
+Cwheel::Cwheel() :CAttraction(TYPE_WHEEL), C3DObj(C3DObj::TYPE_ATTRACTION)
 {
 	Initialize();
 }
@@ -53,20 +53,26 @@ void Cwheel::Initialize()
 	ferris_flg = true;
 	ferris_counter = 0;
 	rotate_ferris = 0;
-	hp = WHEEL_HP;
-	mp = WHEEL_MP;
-	atk = WHEEL_ATK;
-	CPlayer *playerget = CPlayer::Get_Player(0);
+	m_Hp = WHEEL_HP;
+	m_Mp = WHEEL_MP;
+	m_Attack = WHEEL_ATK;
+	
+	C3DObj *playerget = CPlayer::Get_Player();	//	プレイヤー取得
+	move = playerget->Get_Front();
+
 	D3DXMATRIX mtx = playerget->Get_mtxWorld();
 	D3DXMatrixTranslation(&m_mtxTranslation, mtx._41, mtx._42, mtx._43);//X,Y,Zを渡す
 	D3DXMatrixScaling(&m_mtxScaling, WHEEL_SCALE, WHEEL_SCALE, WHEEL_SCALE);
+
 	angle = playerget->Get_Angle();
 	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angle));
+
 	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
+	
 	Wheel_position = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42*3, m_mtxWorld._43);
-	move = playerget->Get_Front();
+	
+	
 	NxMat33 mat1;
-	mat1.rotZ(0);
 	NxVec3 scaleDwarf = NxVec3(WHEEL_SCALE, WHEEL_SCALE, WHEEL_SCALE);	//	モデルスケール
 	NxVec3 BBDwarf = NxVec3(1.5, 2.0, 2.0);	//	当たり判定の大きさ
 	NxVec3 BBDwarf2 = NxVec3(0, 0, 0);
@@ -97,9 +103,7 @@ void Cwheel::Update(void)
 
 		NxVec3 tr = NxA_pWheel->getGlobalPosition();
 		D3DXMatrixTranslation(&m_mtxTranslation, tr.x, tr.y, tr.z);
-		//D3DXMatrixTranslation(&m_mtxTranslation, Wheel_position.x, Wheel_position.y, Wheel_position.z);
 		D3DXMatrixScaling(&m_mtxScaling, WHEEL_SCALE, WHEEL_SCALE, WHEEL_SCALE);
-		//D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(0));
 		D3DXMATRIX mtxT;
 		D3DXMatrixTranslation(&mtxT, move.x, move.y, move.z);
 		D3DXMatrixTranslation(&m_mtxTranslation, Wheel_position.x, Wheel_position.y, Wheel_position.z);
@@ -111,29 +115,6 @@ void Cwheel::Update(void)
 			CPlayer::m_delete = true;
 		}
 
-		/*int enemynum = CEnemy::Get_EnemyMaxNum();
-		for (int i = 0;i < enemynum;i++)
-		{
-			CEnemy *penemy = CEnemy_Small::Get_Enemy(i);
-
-			if (penemy)
-			{
-				NxActor* act = penemy->Get_Actor();
-				myData* mydata = (myData*)NxA_pWheel->userData;
-				if (mydata->hit)
-				{
-					penemy->Damage();
-					mydata->hit = false;
-				}
-				NxScene* scene = Get_PhysX_Scene();
-				scene->setUserContactReport(new ContactCallBack());
-				scene->setActorPairFlags(*NxA_pWheel,
-					*act,
-					NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH);
-
-
-			}
-		}*/
 	}
 }
 
@@ -151,8 +132,5 @@ void Cwheel::Draw(void)
 void Cwheel::Finalize(void)
 {
 	Attraction_Finalize(m_AttractionIndex);
-	
-	//USERDATA* pUserData = (USERDATA*)NxA_pWheel->userData;
-	//pUserData->ContactPairFlag = 0;
 	NxA_pWheel = NULL;
 }

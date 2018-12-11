@@ -31,7 +31,7 @@ CMeshField::CMeshField()
 {
 	
 }
-CMeshField::CMeshField(int TexIndex, float meshW, int meshXnum, int meshZnum)
+CMeshField::CMeshField(int TexIndex, float meshW, int meshXnum, int meshZnum) : CGameObj(CGameObj::TYPE_MESH)
 {
 	m_TexIndex = TexIndex;
 	m_meshW = meshW;
@@ -89,7 +89,7 @@ void CMeshField::Draw(void)
 
 CMeshField *CMeshField::MeshField_Create(int TexIndex, float meshW, int meshXnum, int meshZnum)
 {
-	m_pMeshFielde = new CMeshField(TexIndex, meshW, meshXnum, meshZnum);
+	CMeshField *m_pMeshFielde = new CMeshField(TexIndex, meshW, meshXnum, meshZnum);
 	return m_pMeshFielde;
 }
 

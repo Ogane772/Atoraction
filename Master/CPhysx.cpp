@@ -598,7 +598,7 @@ void CPhysx::DrawDX2(D3DXMATRIX mtxWorld, NxActor* actor, int type)
 		//当たり判定処理　第一引数と第二引数に当たり判定を行うアクターを指定する
 		*/
 	//	if ((type != MODELL_PLAYER)&& (type != MODELL_SMALL))
-		if(type != MODELL_SMALL)
+	/*	if(type != MODELL_SMALL)
 		{
 			int enemynum = CEnemy::Get_EnemyMaxNum();
 			for (int i = 0;i < enemynum;i++)
@@ -621,7 +621,7 @@ void CPhysx::DrawDX2(D3DXMATRIX mtxWorld, NxActor* actor, int type)
 					
 				}
 			}
-		}
+		}*/
 	}
 }
 

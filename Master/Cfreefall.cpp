@@ -40,7 +40,7 @@ static int CoolTime = 0;//クールタイム*/
 //=============================================================================
 //	生成
 //=============================================================================
-Cfreefall::Cfreefall() :CAttraction(TYPE_FALL)
+Cfreefall::Cfreefall() :CAttraction(TYPE_FALL), C3DObj(C3DObj::TYPE_ATTRACTION)
 {
 	Initialize();
 }
@@ -59,10 +59,11 @@ void Cfreefall::Initialize()
 	ugoki = 0.0f;
 	CoolTime = 0;
 	moveY = 0.0f;
-	hp = FREEFALL_HP;
-	mp = FREEFALL_MP;
-	atk = FREEFALL_ATK;
-	CPlayer *playerget = CPlayer::Get_Player(0);
+	m_Hp = FREEFALL_HP;
+	m_Mp = FREEFALL_MP;
+	m_Attack = FREEFALL_ATK;
+	
+	C3DObj *playerget = CPlayer::Get_Player();
 	D3DXMATRIX mtx = playerget->Get_mtxWorld();
 	D3DXMatrixTranslation(&m_mtxTranslation, mtx._41, mtx._42, mtx._43);//X,Y,Zを渡す
 	D3DXMatrixScaling(&m_mtxScaling, FREEFALL_SCALE, FREEFALL_SCALE, FREEFALL_SCALE);

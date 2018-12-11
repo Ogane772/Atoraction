@@ -26,20 +26,37 @@ int CGameObj::m_GameObjNum = 0;
 LPDIRECT3D9 CGameObj::m_pD3D = NULL;
 LPDIRECT3DDEVICE9 CGameObj::m_pD3DDevice = NULL;
 
-
+CGameObj *CGameObj::pGameObj[MAX_GAMEOBJ];
 //=============================================================================
 //	生成
 //=============================================================================
 
 CGameObj::CGameObj()
 {
-	m_GameObjNum++;
-}
 
-void CGameObj::Initialize(void)
+}
+CGameObj::CGameObj(int type)
+{
+	// ワークに自分自身(this)を格納
+	for (m_GameObjIndex = 0; m_GameObjIndex < MAX_GAMEOBJ; m_GameObjIndex++)
+	{
+		if (pGameObj[m_GameObjIndex] == NULL)
+		{
+			pGameObj[m_GameObjIndex] = this;
+			m_GameObjType = type;
+			m_GameObjNum++;
+			break;
+		}
+	}
+	// ワーク格納失敗
+	if (m_GameObjIndex >= MAX_GAMEOBJ)
+	{
+		m_GameObjIndex = -1;
+	}
+}
+void CGameObj::FrameCountReset(void)
 {
 	m_FrameCount = 0;
-	m_GameObjNum = 0;
 }
 
 
@@ -50,10 +67,14 @@ void CGameObj::Initialize(void)
 
 CGameObj::~CGameObj()
 {
-	//CGameObj::Device_Finalize();
-	//m_GameObjNum--;
-	//m_FrameCount = 0;
+	
 	m_TimeKeep = 0;
+	if (m_GameObjIndex >= 0)
+	{
+		m_GameObjNum--;
+		pGameObj[m_GameObjIndex] = NULL;
+	}
+	
 }
 
 
@@ -144,10 +165,52 @@ void CGameObj::DebugDraw(void)
 }
 
 
+//=============================================================================
+// 全オブジェクト更新
+//=============================================================================
+void CGameObj::UpdateAll()
+{
+	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	{
+		// ポリモーフィズムによって派生クラスのUpdate()が呼ばれる
+		if (pGameObj[i])
+		{
+			pGameObj[i]->Update();
+		}
+	}
+}
+
+//=============================================================================
+// 全オブジェクト描画
+//=============================================================================
+void CGameObj::DrawAll()
+{
+	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	{
+		// ポリモーフィズムによって派生クラスのDraw()が呼ばれる
+		if (pGameObj[i])
+		{
+			pGameObj[i]->Draw();
+		}
+	}
+}
 
 
 
-
+//=============================================================================
+// 全オブジェクト削除
+//=============================================================================
+void CGameObj::DeleteAll()
+{
+	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	{
+		if (pGameObj[i])
+		{
+			delete pGameObj[i];
+			//pGameObj[i] = NULL;
+		}
+	}
+}
 
 
 

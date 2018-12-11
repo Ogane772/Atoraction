@@ -20,9 +20,9 @@ public:
 		TYPE_ALL = 0,
 
 		TYPE_SMALL,		//	ザコ
-		TYPE_MIDDLE,		//	中ザコ
-		TYPE_BIG,			//	巨大
-		TYPE_SPECIAL,		//	特殊
+		TYPE_MIDDLE,	//	中ザコ
+		TYPE_BIG,		//	巨大
+		TYPE_SPECIAL,	//	特殊
 
 		TYPE_MAX
 	};
@@ -37,8 +37,8 @@ public:
 
 	void Enemy_Finalize(int Index);
 
-	static CEnemy *Create(int Index);
-	static CEnemy *Get_Enemy(int IdxEnemy) { return m_pEnemy[IdxEnemy]; }
+	
+	static void Create(void);
 	static int Get_EnemyNum(int EnemyType) { return m_EnemyNum[EnemyType]; }
 	static int Get_EnemyIndex(int EnemyType) { return m_EnemyNum[EnemyType] - 1; }
 	int Get_Score(void) { return m_Score; }
@@ -67,13 +67,13 @@ protected:
 
 	static ENEMY_MOVE m_EnemyMove[8];
 
-	int m_Attack;	//	攻撃
-	int m_Score;	//	スコア
-	int m_Direction;//	向き
-	float m_DirectionAngle;	//	向き変更角度
-	bool m_MoveCheck;	//	移動フラグ
-	bool m_DrawCheck;	//	描画フラグ
-	//bool m_Enable;		//	
+	
+	int m_Score;				//	スコア
+	int m_Direction;			//	向き
+	float m_DirectionAngle;		//	向き変更角度
+	bool m_MoveCheck;			//	移動フラグ
+	bool m_DrawCheck;			//	描画フラグ
+
 	
 	typedef struct{
 		int CreateFrame;		//	生成フレーム
@@ -84,12 +84,11 @@ protected:
 	}ENEMY_EMITTER;
 
 	int m_EnemyIndex;
-	void EnemyMove(NxActor *actor, int direction, float speed);
-	void EnemyAngleChange(NxActor *actor, int direction);
+	void EnemyMove(NxActor *actor, int direction, float speed);		//	移動処理
+	void EnemyAngleChange(NxActor *actor, int direction);			//	向き変更処理
 private:
 
 	int m_Type;			// 種類
-	static CEnemy *m_pEnemy[];
 	static int m_EnemyNum[TYPE_MAX];
 
 	static ENEMY_EMITTER m_EnemyEmitter[];
