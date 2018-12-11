@@ -32,6 +32,7 @@ public:
 		TEX_NUM2,
 		TEX_MAP,
 		TEX_Player_Icon,
+		TEX_ENEMY_ICON,
 
 
 		TYPE_MAX
