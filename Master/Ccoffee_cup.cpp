@@ -102,6 +102,7 @@ void CCoffeeCup::Update(void)
 				
 			}
 		}
+		
 		if (!B_CoolTime)
 		{
 			CoolTime++;
