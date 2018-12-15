@@ -163,4 +163,17 @@ void CEnemy::EnemyDamage(void)
 }
 
 
-
+C3DObj *CEnemy::Get_Map_Enemy(int Index)
+{
+	C3DObj *pEnemy = C3DObj::Get(Index);
+	if (pEnemy)
+	{
+		if (pEnemy->Get_3DObjType() == C3DObj::TYPE_ENEMY)
+		{
+			if (pEnemy->Get_DrawCheck())
+			{
+				return pEnemy;
+			}
+		}
+	}
+}

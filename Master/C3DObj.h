@@ -50,11 +50,13 @@ public:
 	int Get_Hp(void) { return m_Hp; }				//	HP取得
 	int Get_Mp(void) { return m_Mp; }				//	MP取得
 	int Get_MpStock(void) { return m_MpStock; }		//	MPストック取得
+	virtual bool Get_DrawCheck(void) = 0;
 protected:
 	D3DXMATRIX m_mtxWorld;			//	ワールド変換用行列
 	D3DXMATRIX m_mtxTranslation;	//	移動行列
 	D3DXMATRIX m_mtxRotation;		//	移動行列
 	D3DXMATRIX m_mtxScaling;		//	移動行列
+
 	
 	float m_Angle;			//	角度
 	D3DXVECTOR3 m_front;	//	前ベクトル

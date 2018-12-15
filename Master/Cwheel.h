@@ -19,7 +19,7 @@ public:
 	void Draw(void);
 	void Finalize(void);
 	NxActor* Get_Actor(void) { return NxA_pWheel; }
-
+	bool Get_DrawCheck(void) { return false; }
 private:
 	void Initialize();
 	int m_AttractionIndex;

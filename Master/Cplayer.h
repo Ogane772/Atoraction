@@ -33,7 +33,7 @@ public:
 	static bool m_delete;
 	static C3DObj *Get_Player(void);
 	//bool *Get_Coaster(void) { return &g_CosterMode; }
-	
+	bool Get_DrawCheck(void) { return false; }
 protected:
 	//int m_Hp;
 	//int m_Mp;

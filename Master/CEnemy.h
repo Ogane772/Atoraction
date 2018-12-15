@@ -46,6 +46,11 @@ public:
 	void EnemyDamage(void);
 	virtual NxActor* Get_Actor(void) = 0;
 	static int Get_EnemyMaxNum(void) { return m_ENEMY_MAX; }
+	bool Get_DrawCheck(void) { return m_DrawCheck; }
+
+	static C3DObj *Get_Map_Enemy(int Index);
+
+
 protected:
 
 	enum
