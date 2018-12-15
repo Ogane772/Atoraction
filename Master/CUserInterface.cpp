@@ -11,6 +11,7 @@
 
 #include "CUserInterface.h"
 #include "Cplayer.h"
+#include "CEnemy.h"
 #include "CCamera.h"
 #include "common.h"
 #include "score_draw.h"
@@ -60,7 +61,9 @@ void CUserInterFace::Update(void)
 void CUserInterFace::Draw(void)
 {
 	C3DObj *playerget = CPlayer::Get_Player();
-	
+
+
+
 	int hp = playerget->Get_Hp();
 	Sprite_Draw(TEX_HP,20, 10, 0, 0, HP_GAGE_WIDTH, HP_GAGE_HEIGHT);
 	Sprite_Draw(TEX_HP2, 20, 10, 0, 0, HP_GAGE_WIDTH * hp / HP_MAX, HP_GAGE_HEIGHT);
@@ -89,13 +92,26 @@ void CUserInterFace::Draw(void)
 	int ko = CPlayer::Get_KoCount();
 	Num_Draw(WINDOW_WIDTH / 3, WINDOW_HIGHT / 2+90, ko, 3, 1,false);
 
+
+	//マップ----------------------------------------------------
 	D3DXMATRIX playermatrix = playerget->Get_mtxTranslation();
+	
+	//下絵
 	Sprite_Draw(TEX_MAP, 850.0f, 0.0f, 0.0f, 0.0f, 150, 150);
-
-
-
+	//プレイヤ
 	Sprite_Draw(TEX_Player_Icon, 880.0f + playermatrix._41, 60.0f - playermatrix._43, 0.0f, 0.0f, 60, 30);
 	
+	//エネミー
+	for (int i = 0; i < ENEMY_MAX; i++)
+	{
+		C3DObj *enemyget = CEnemy::Get_Map_Enemy(i);
+		if (enemyget)
+		{
+			D3DXMATRIX enemymatrix = enemyget->Get_mtxTranslation();
+
+			Sprite_Draw(TEX_ENEMY_ICON, 905.0f + enemymatrix._41, 70.0f - enemymatrix._43, 0.0f, 0.0f, 6, 6);
+		}
+	}
 }
 
 void CUserInterFace::Finalize(void)

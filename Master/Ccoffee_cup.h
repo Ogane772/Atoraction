@@ -19,7 +19,7 @@ public:
 	void Draw(void);
 	void Finalize(void);
 	void CoffeeCup_Create(void);
-
+	bool Get_DrawCheck(void) { return false; }
 	NxActor* Get_Actor(void) { return NxA_pCoffee; }
 private:
 	void Initialize();

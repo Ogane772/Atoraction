@@ -21,7 +21,7 @@ public:
 	void Coaster_Create(void);
 	NxActor* Get_Actor(void) { return NxA_Coaster; }
 	static C3DObj *Get_Coaster(void);
-
+	bool Get_DrawCheck(void) { return false; }
 private:
 	void Initialize();
 	int u;	//ƒ‚ƒfƒ‹‚ÌŠp“x
