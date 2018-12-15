@@ -55,6 +55,9 @@ protected:
 		MODELL_HASIRA,
 		MODELL_WHEEL,
 		MODELL_COASTER,
+		MODELL_CUP_BLUE,
+		MODELL_CUP_YELLOW,
+		MODELL_CUP_GREEN,
 	};//ModelFileData
 	  //static NxActor *NxA_pPlayer,*NxA_pBoss;//物理エンジンを適用するモンスターを宣言する
 	  //NxActor *NxA_pPlayer, *NxA_pSmall;

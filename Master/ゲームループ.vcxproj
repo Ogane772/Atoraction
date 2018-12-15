@@ -183,30 +183,37 @@
     <ClCompile Include="CPhysx.cpp" />
     <ClCompile Include="Cplayer.cpp" />
     <ClCompile Include="CTexture.cpp" />
-    <ClCompile Include="cube.cpp" />
     <ClCompile Include="CUserInterface.cpp" />
     <ClCompile Include="Cwheel.cpp" />
     <ClCompile Include="debug_font.cpp" />
-    <ClCompile Include="debug_primitive.cpp" />
     <ClCompile Include="fede.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="grid.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="map.cpp" />
-    <ClCompile Include="mesh_field.cpp" />
+    <ClCompile Include="mesh_field.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="CMesh_SkyDome.cpp" />
-    <ClCompile Include="mochi_d3d.cpp" />
-    <ClCompile Include="model.cpp" />
+    <ClCompile Include="mochi_d3d.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="move.cpp" />
-    <ClCompile Include="nan_sprite.cpp" />
+    <ClCompile Include="nan_sprite.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="number.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="score_draw.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="system_timer.cpp" />
-    <ClCompile Include="ten_texture.cpp" />
     <ClCompile Include="tex_animation.cpp" />
     <ClCompile Include="title.cpp" />
   </ItemGroup>

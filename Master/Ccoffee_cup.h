@@ -28,8 +28,12 @@ private:
 	int CoolTime = 0;					//クールタイム
 	bool B_CoolTime;					//クールタイムのブール
 	
+	D3DXMATRIX m_mtxTranslation2;	//	移動行列
+
 	D3DXMATRIX m_mtxWorld2;				//	ワールド変換用行列2
-	D3DXMATRIX m_mtxTranslation2;		//	移動行列2
-	NxActor *NxA_pCoffee, *NxA_pCoffeeTable;
+	D3DXMATRIX m_mtxWorld3;				//	ワールド変換用行列3
+	D3DXMATRIX m_mtxWorld4;				//	ワールド変換用行列4
+
+	NxActor *NxA_pCoffee, *NxA_pCoffeeTable, *NxA_pCoffeeBlue, *NxA_pCoffeeYellow, *NxA_pCoffeeGreen;
 };
 #endif;
