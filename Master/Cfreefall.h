@@ -18,7 +18,7 @@ public:
 	void Update(void);
 	void Draw(void);
 	void Finalize(void);
-
+	bool Get_DrawCheck(void) { return false; }
 	NxActor* Get_Actor(void) { return NxA_pEnban; }
 private:
 	void Initialize();
