@@ -176,4 +176,5 @@ C3DObj *CEnemy::Get_Map_Enemy(int Index)
 			}
 		}
 	}
+	return NULL;
 }
