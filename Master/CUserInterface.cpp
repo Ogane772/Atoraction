@@ -101,6 +101,7 @@ void CUserInterFace::Draw(void)
 	//プレイヤ
 	Sprite_Draw(TEX_Player_Icon, 880.0f + playermatrix._41, 60.0f - playermatrix._43, 0.0f, 0.0f, 60, 30);
 	
+
 	//エネミー
 	for (int i = 0; i < ENEMY_MAX; i++)
 	{
