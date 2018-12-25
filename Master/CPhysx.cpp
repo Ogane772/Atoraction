@@ -51,6 +51,7 @@ CPhysx::ModelFileData CPhysx::m_ModelFileData[] = {
 	{ "asset/model/cup_blue.x" },
 	{ "asset/model/cup_kiiro.x" },
 	{ "asset/model/cup_midori.x" },
+	{ "asset/model/popcorn.x" },
 };
 
 int CPhysx::m_MODELFAIL_MAX = sizeof(CPhysx::m_ModelFileData) / sizeof(m_ModelFileData[0]);

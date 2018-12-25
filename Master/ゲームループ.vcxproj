@@ -166,6 +166,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="CAttraction.cpp" />
     <ClCompile Include="CAttraction_Coaster.cpp" />
+    <ClCompile Include="CAttraction_Popcorn.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CCharacter.cpp" />
     <ClCompile Include="Ccoffee_cup.cpp" />
@@ -188,6 +189,7 @@
     <ClCompile Include="debug_font.cpp" />
     <ClCompile Include="fede.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="gamepad.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mesh_field.cpp">
@@ -224,6 +226,7 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="CAttraction.h" />
     <ClInclude Include="CAttraction_Coaster .h" />
+    <ClInclude Include="CAttraction_Popcorn.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CCharacter.h" />
     <ClInclude Include="Ccoffee_cup.h" />
@@ -249,6 +252,7 @@
     <ClInclude Include="debug_primitive.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="gamepad.h" />
     <ClInclude Include="grid.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="map.h" />

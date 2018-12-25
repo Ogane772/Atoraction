@@ -15,6 +15,7 @@
 #include "Cfreefall.h"
 #include "CGameObj.h"
 #include "CAttraction_Coaster .h"
+#include "CAttraction_Popcorn.h"
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================
@@ -72,6 +73,11 @@ void CAttraction::Create(int nType)
 	if (nType == TYPE_COASTER)
 	{
 		Coaster *m_pAttraction = new Coaster;
+		createchack = true;
+	}
+	if (nType == TYPE_POPCORN)
+	{
+		Popcorn *m_pAttraction = new Popcorn;
 		createchack = true;
 	}
 }

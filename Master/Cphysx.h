@@ -58,6 +58,7 @@ protected:
 		MODELL_CUP_BLUE,
 		MODELL_CUP_YELLOW,
 		MODELL_CUP_GREEN,
+		MODELL_POPCORN,
 	};//ModelFileData
 	  //static NxActor *NxA_pPlayer,*NxA_pBoss;//物理エンジンを適用するモンスターを宣言する
 	  //NxActor *NxA_pPlayer, *NxA_pSmall;

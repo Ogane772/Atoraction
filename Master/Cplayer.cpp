@@ -18,6 +18,8 @@
 #include "Cwheel.h"
 #include "CEnemy_Small.h"
 #include "CAttraction_Coaster .h"
+#include "CAttraction_Popcorn.h"
+#include "gamepad.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -28,7 +30,10 @@
 //=============================================================================
 //	静的変数
 //=============================================================================
-
+//コントローラーに使う変数
+static DIJOYSTATE2 js;
+static LPDIRECTINPUTDEVICE8 pJoyDevice;
+static HRESULT hr;
 //D3DXMATRIX CPlayer::m_mtxWorld;
 CPlayer *CPlayer::m_pPlayer[PLAYER_MAX] = {};
 int CPlayer::m_PlayerNum = 0;
@@ -67,6 +72,12 @@ CPlayer::~CPlayer()
 //=============================================================================
 void CPlayer::Update(void)
 {
+	//コントローラー情報があるときのみ取得
+	if (pJoyDevice)
+	{
+		pJoyDevice->GetDeviceState(sizeof(DIJOYSTATE2), &js);
+	}
+	/////////////////////////////
 	if (g_CosterMode)//コースターの時
 	{
 		C3DObj *pcoaster = Coaster::Get_Coaster();
@@ -81,9 +92,10 @@ void CPlayer::Update(void)
 	}
 	else
 	{
-		if (Keyboard_IsPress(DIK_W))
+		//十字キーあるいはスティックにより移動
+		
+		if (Keyboard_IsPress(DIK_W) || js.lY <= -3)
 		{
-
 			if ((m_Angle < 180) && (m_Angle >= 0))
 			{
 				AngleChange(true);
@@ -94,7 +106,7 @@ void CPlayer::Update(void)
 			}
 			m_mtxTranslation *= Move(FLONT, SPEED);
 		}
-		if (Keyboard_IsPress(DIK_S))
+		if (Keyboard_IsPress(DIK_S) || js.lY >= 3)
 		{
 			if ((m_Angle > 0) && (m_Angle < 180))
 			{
@@ -106,7 +118,7 @@ void CPlayer::Update(void)
 			}
 			m_mtxTranslation *= Move(BACK, SPEED);
 		}
-		if (Keyboard_IsPress(DIK_D))
+		if (Keyboard_IsPress(DIK_D) || js.lX >= 3)
 		{
 			if ((m_Angle < 90) || (m_Angle > 270))
 			{
@@ -119,7 +131,7 @@ void CPlayer::Update(void)
 
 			m_mtxTranslation *= Move(RIGHT, SPEED);
 		}
-		if (Keyboard_IsPress(DIK_A))
+		if (Keyboard_IsPress(DIK_A) || js.lX <= -3)
 		{
 			if ((m_Angle > 90) && (m_Angle <= 270))
 			{
@@ -148,6 +160,10 @@ void CPlayer::Update(void)
 		{
 			CAttraction::Create(CAttraction::TYPE_COASTER);
 			g_CosterMode = true;
+		}
+		if (Keyboard_IsTrigger(DIK_Y))
+		{
+			CAttraction::Create(CAttraction::TYPE_POPCORN);
 		}
 	}
 	D3DXMATRIX mtxr;
@@ -213,7 +229,6 @@ void CPlayer::Update(void)
 
 void CPlayer::Draw(void)
 {
-		
 	
 	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 	m_SphereCollision.CenterPos = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
@@ -225,7 +240,8 @@ void CPlayer::Draw(void)
 	//	デバッグ
 	//DebugFont_Draw(300, 50, "%f\n%f\n%f\n%f", m_front.x, m_front.y, m_front.z, m_Angle);
 	//RenderPhysX();
-	
+	//コントローラーのスティック取得
+	//DebugFont_Draw(300, 50, "X = %ld , Y= %ld", js.lX, js.lY);
 	//Debug_Collision(m_SphereCollision, m_mtxTranslation);
 }
 
@@ -263,6 +279,13 @@ void CPlayer::Player_Initialize(void)
 	/*m_SphereCollision = {
 		D3DXVECTOR3(m_mtxWorld._41,m_mtxWorld._42,m_mtxWorld._43),PLAYER_SAIZ
 	};*/
+	//コントローラー情報取得
+	js = { 0 };
+	pJoyDevice = *JoyDevice_Get();
+	if (pJoyDevice)
+	{
+		hr = pJoyDevice->Acquire();
+	}
 }
 
 //	終了処理
