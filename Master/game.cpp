@@ -80,7 +80,9 @@ void Game_Updata(void)
 	
 	CEnemy::Create();		//	エネミー生成
 
-	if (GAMEEND <= CGameObj::Get_FraemCount())		//	FraemCountがGAMEENDになるまでカウントUP　なったら終了
+	/*
+	//	FraemCountがGAMEENDになるまでカウントUP　なったら終了
+	if (GAMEEND <= CGameObj::Get_FraemCount())
 	{
 		if (!g_bend)
 		{
@@ -92,11 +94,10 @@ void Game_Updata(void)
 				Fade_Start(false, 3, 0, 0, 0);
 				Scene_Change(SCENE_INDEX_RESULT);
 		}
-	}
-	else
-	{
+	}*/
+
 		CGameObj::FrameCountUp();
-	}
+	
 
 }
 

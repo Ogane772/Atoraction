@@ -79,6 +79,7 @@ void CUserInterFace::Draw(void)
 	Mp_Draw(MP_MAX * 6, 80, stock, 2,0);
 
 	//êßå¿éûä‘
+	
 	int t = CGameObj::m_FrameCount / 60;
 	Num_Draw(WINDOW_WIDTH / 2-25, -25, GAMEEND/60-t,2,0,true);
 	int tt = CGameObj::m_FrameCount % 61*1.7;

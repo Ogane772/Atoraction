@@ -30,7 +30,7 @@
 
 //#include "CGameObj.h"
 #include "C2DObj.h"
-
+#include "gamepad.h"
 
 //=============================================================================
 //	定数定義
@@ -224,7 +224,11 @@ bool Begin(HINSTANCE hInstance, HWND hWnd)
 	{
 		return false;
 	}
-	
+	//ゲームパッドの初期化
+	if (!Gamepad_Initialize(hInstance, hWnd))
+	{
+		return false;
+	}
 	
 	
 	// スプライトの初期化
@@ -381,7 +385,8 @@ void End(void)
 
 	// キーボード終了処理
 	Keyboard_Finalize();
-
+	//ゲームパッド終了処理
+	Gamepad_Finalize();
 	CPhysx::Cleanup();
 	// デバイスの開放
 	CGameObj::Device_Finalize();
