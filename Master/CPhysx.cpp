@@ -47,7 +47,7 @@ CPhysx::ModelFileData CPhysx::m_ModelFileData[] = {
 	{ "asset/model/enban.x" },
 	{ "asset/model/hasira.x" },
 	{ "asset/model/ferris.x" },
-	{ "asset/model/coaster.x" },
+	{ "asset/model/jet.x" },
 	{ "asset/model/cup_blue.x" },
 	{ "asset/model/cup_kiiro.x" },
 	{ "asset/model/cup_midori.x" },

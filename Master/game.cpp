@@ -28,16 +28,18 @@
 //=============================================================================
 
 static NxScene*	gScene = NULL;	//	フィジックスのシーン登録
-static bool g_bend;				//	フェードインアウトフラグ
-//=============================================================================
-//	初期化処理
-//=============================================================================
+static bool g_bend;//	フェードインアウトフラグ
+static float Check_per;//	敵の割合(1体で1%)
+					   //=============================================================================
+					   //	初期化処理
+					   //=============================================================================
 void Game_Initialize(void)
 {
 	g_bend = false;
+	Check_per = 0;
 	CPhysx::CPhysX_Initialize();			//	物理演算処理の初期化
 	gScene = CPhysx::Get_PhysX_Scene();		//	シーン初期化
-	
+
 
 
 	CPlayer::PlayerCreate();				//	プレイヤー生成		
@@ -59,7 +61,7 @@ void Game_Initialize(void)
 //	終了処理
 //=============================================================================
 
-void Game_Finalize(void) 
+void Game_Finalize(void)
 {
 	C3DObj::DeleteAll();			//	3Dオブジェクト全消去
 	CGameObj::DeleteAll();			//	2Dオブジェクト全消去
@@ -73,31 +75,32 @@ void Game_Finalize(void)
 
 void Game_Updata(void)
 {
-	
+
 
 	C3DObj::UpdateAll();	//	3Dオブジェクト更新
 	CGameObj::UpdateAll();	//	2Dオブジェクト更新
-	
+
 	CEnemy::Create();		//	エネミー生成
 
-	/*
-	//	FraemCountがGAMEENDになるまでカウントUP　なったら終了
-	if (GAMEEND <= CGameObj::Get_FraemCount())
+	Check_per = 1.0 - (float)CEnemy::Get_EnemyNum(0) / 100;	//制圧率
+
+	if (GAMEEND <= CGameObj::Get_FraemCount())		//	FraemCountがGAMEENDになるまでカウントUP　なったら終了
 	{
 		if (!g_bend)
 		{
-				Fade_Start(true, 3, 0, 0, 0);
-				g_bend = true;
+			Fade_Start(true, 3, 0, 0, 0);
+			g_bend = true;
 		}
 		else
 		{
-				Fade_Start(false, 3, 0, 0, 0);
-				Scene_Change(SCENE_INDEX_RESULT);
+			Fade_Start(false, 3, 0, 0, 0);
+			Scene_Change(SCENE_INDEX_SCORE);
 		}
-	}*/
-
+	}
+	else
+	{
 		CGameObj::FrameCountUp();
-	
+	}
 
 }
 
@@ -115,3 +118,7 @@ void Game_Draw(void)
 }
 
 
+float Get_CheckPer(void)
+{
+	return Check_per;
+}

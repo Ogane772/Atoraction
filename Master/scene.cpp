@@ -5,6 +5,7 @@
 #include "title.h"
 #include "game.h"
 #include "result.h"
+#include "Score_total.h"
 //=============================================================================
 //	グローバル変数宣言
 //=============================================================================
@@ -17,25 +18,30 @@ typedef void(*SceneFunc)(void);	//呪文
 static const SceneFunc Initialize[] = {
 	Title_Initialize,
 	Game_Initialize,
-	Result_Initialize
+	Score_total_Initialize,
+	Result_Initialize,
+
 	//	関数のポインタは関数名のみ
 };
 
 static const SceneFunc Finalize[] = {
 	Title_Finalize,
 	Game_Finalize,
+	Score_total_Finalize,
 	Result_Finalize
 };
 
 static const SceneFunc Update[] = {
 	Title_Update,
 	Game_Updata,
+	Score_total_Update,
 	Result_Update
 };
 
 static const SceneFunc Draw[] = {
 	Title_Draw,
 	Game_Draw,
+	Score_total_Draw,
 	Result_Draw
 };
 
