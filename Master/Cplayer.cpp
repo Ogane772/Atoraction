@@ -93,7 +93,17 @@ void CPlayer::Update(void)
 	else
 	{
 		//十字キーあるいはスティックにより移動
-		
+		if (Keyboard_IsPress(DIK_T))//スクリーンショット
+		{													   // バックバファの取得
+			LPDIRECT3DSURFACE9 pBackBuf;
+			m_pD3DDevice->GetRenderTarget(0, &pBackBuf);
+
+			// スクショ出力
+			D3DXSaveSurfaceToFile("asset/screenshot.bmp", D3DXIFF_BMP, pBackBuf, NULL, NULL);
+
+			// Get系で取得したサーフェイスはAddRefが呼ばれているので忘れずに解放する
+			pBackBuf->Release();
+		}
 		if (Keyboard_IsPress(DIK_W) || js.lY <= -3)
 		{
 			if ((m_Angle < 180) && (m_Angle >= 0))
