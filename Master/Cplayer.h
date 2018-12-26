@@ -1,5 +1,5 @@
-#ifndef _PLAYER_H_
-#define _PLAYER_H_
+#ifndef _CPLAYER_H_
+#define _CPLAYER_H_
 
 #include "CCharacter.h"
 #include <d3dx9.h>
