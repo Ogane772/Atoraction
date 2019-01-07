@@ -15,7 +15,6 @@
 #include "Cphysx.h"
 #include "input.h"
 #include <mmsystem.h>
-
 #include <d3dx9.h>
 #pragma warning( disable : 4996 ) 
 #include <strsafe.h>
@@ -36,10 +35,10 @@
 //	静的変数
 //=============================================================================
 
-//	使いたいモデルの数だけ書く
-CPhysx::ModelFileData CPhysx::m_ModelFileData[] = {
+//	使いたいノーマルモデルの数だけ書く
+CPhysx::ModelFileData CPhysx::m_NormalModelFileData[] = {
+	{},
 	{ "asset/model/emi-ru2.x" },
-	//{ "asset/model/zako_body.x" },
 	{ "asset/model/zako.x" },
 	{ "asset/model/boss.x" },
 	{ "asset/model/CoffeeCup.blend.x" },
@@ -53,9 +52,12 @@ CPhysx::ModelFileData CPhysx::m_ModelFileData[] = {
 	{ "asset/model/cup_midori.x" },
 	{ "asset/model/popcorn.x" },
 };
-
-int CPhysx::m_MODELFAIL_MAX = sizeof(CPhysx::m_ModelFileData) / sizeof(m_ModelFileData[0]);
-
+//	使いたいアニメモデルの数だけ書く
+CPhysx::ModelFileData CPhysx::m_AnimeModelFileData[] = {
+	{ "asset/anime_model/small_enemy.x" },
+};
+int CPhysx::m_NORMALMODELFAIL_MAX = sizeof(CPhysx::m_NormalModelFileData) / sizeof(m_NormalModelFileData[0]);
+int CPhysx::m_ANIMEMODELFAIL_MAX = sizeof(CPhysx::m_AnimeModelFileData) / sizeof(m_AnimeModelFileData[0]);
 // PhysXクラス
 NxPhysicsSDK* CPhysx::gPhysicsSDK = NULL;
 NxScene* CPhysx::gScene = NULL;
@@ -78,6 +80,13 @@ NxActor* CPhysx::NxA_pCoffeeTable = {};
 NxActor* CPhysx::NxA_pEnban = {};
 NxActor* CPhysx::NxA_pHasira = {};
 NxActor* CPhysx::NxA_pWheel = {};*/
+//モデルアニメーション関係変数
+SKIN_MESH SkinMesh;
+THING Thing[THING_AMOUNT + 1];//読み込むモデルの最大数+1
+LPD3DXANIMATIONSET pAnimSet[THING_AMOUNT][10] = { 0 };//選択したモデルに10個までのアニメーションをセット
+FLOAT fAnimTime = 0.0f;
+BOOL boPlayAnim = true;
+D3DXTRACK_DESC TrackDesc;
 //=============================================================================
 //	生成
 //=============================================================================
@@ -113,11 +122,18 @@ HRESULT CPhysx::InitGeometry()
 	if (FAILED(LoadMesh("asset/model/slime.x", SMALL)))
 	return E_FAIL;
 	*/
-	for (int i = 0;i < m_MODELFAIL_MAX;i++)
+	for (int i = 0;i < m_NORMALMODELFAIL_MAX - 1;i++)
 	{
-		if (FAILED(LoadMesh(m_ModelFileData[i].filename, i)))
+		if (FAILED(LoadMesh(m_NormalModelFileData[i+1].filename, i+1)))
 			return E_FAIL;
 	}
+	//アニメーションモデル読み込み
+	//THINGにxファイルを読み込む
+	for (int i = 0; i < ANIME_MODEL_MAX; i++)
+	{
+		SkinMesh.InitThing(m_pD3DDevice, &Thing[i], m_AnimeModelFileData[i].filename);
+	}
+	
 	if (FAILED(CreateDebugBase()))
 		return E_FAIL;
 	return S_OK;
@@ -547,36 +563,7 @@ void CPhysx::DrawDX2(D3DXMATRIX mtxWorld, NxActor* actor, int type)
 		mat = mydata->meshRotation;
 		//D3DXMatrixMultiply(&mtxWorld2, &mat, &mtxWorld2);
 		D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
-		/*if (type != MODELL_PLAYER)
-		{
-			mat = mydata->meshRotation;
-			//D3DXMatrixMultiply(&mtxWorld2, &mat, &mtxWorld2);
-			D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
-		}
-	/*	if (type == CAttraction::MODELL_CUP_TABLE || type == CAttraction::MODELL_CUP)
-		{
-			mat = mydata->meshRotation;
-			//D3DXMatrixMultiply(&mtxWorld2, &mtxWorld, &mtxWorld2);
-			D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
-		}
-		*/
-		// メッシュの原点調整
-	
-		/*if (type == MODELL_SMALL)
-		{
-			// メッシュの原点調整
-			D3DXMatrixTranslation(&mat, 0, 0, 0);
-			//D3DXMatrixTranslation(&mat, t.x, t.y, t.z);
-			D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
-			m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
-		}
-		else
-		{
-			D3DXMatrixTranslation(&mat, 0, 0, 0);
-			D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
-			// マトリックスのセット
-			m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
-		}*/
+
 		D3DXMatrixTranslation(&mat, 0, 0, 0);
 		D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
 		// マトリックスのセット
@@ -592,43 +579,80 @@ void CPhysx::DrawDX2(D3DXMATRIX mtxWorld, NxActor* actor, int type)
 			// 描画
 			g_pMesh[n]->DrawSubset(i);
 		}
-		/*	if (NxA_pCoffee && NxA_pEnban)
-		{
-		gScene->setActorPairFlags(*NxA_pCoffee,
-		*NxA_pEnban,
-		NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH);
-		}
-		// ２つのアクターを関連づけて衝突開始と衝突終了イベントを有効にする
-		//当たり判定処理　第一引数と第二引数に当たり判定を行うアクターを指定する
-		*/
-	//	if ((type != MODELL_PLAYER)&& (type != MODELL_SMALL))
-	/*	if(type != MODELL_SMALL)
-		{
-			int enemynum = CEnemy::Get_EnemyMaxNum();
-			for (int i = 0;i < enemynum;i++)
-			{
-				CEnemy *penemy = CEnemy_Small::Get_Enemy(i);
-				
-				if (penemy)
-				{
-					NxActor* act = penemy->Get_Actor();
-					if (mydata->hit)
-					{
-						penemy->Damage();
-						mydata->hit = false;
-					}
-					gScene->setUserContactReport(new ContactCallBack());
-					gScene->setActorPairFlags(*actor,
-						*act,
-						NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH);
-					
-					
-				}
-			}
-		}*/
+
 	}
 }
 
+void CPhysx::DrawDX_Anime(D3DXMATRIX mtxWorld, NxActor* actor, int type,THING* pThing)
+{
+	static float fAnimTimeHold = fAnimTime;
+	if (actor)
+	{
+		/*DebugFont_Draw(8, 58, "8キー　モデルの非表示");
+		DebugFont_Draw(8, 108, "9キー　当たり判定表示");
+		DebugFont_Draw(8, 158, "当たったか　%d", hit);*/
+
+		// PhysXのシーンをチェック
+		if (gScene == NULL) return;
+		// PhysX時間ステップ
+		gScene->simulate(1.0f / 60.0f);
+
+		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+		m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
+		m_pD3DDevice->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL);
+
+		myData* mydata = (myData*)actor->userData;
+
+		mydata->meshTranslation.x = mtxWorld._41;
+		mydata->meshTranslation.y = mtxWorld._42;
+		mydata->meshTranslation.z = mtxWorld._43;
+		actor->setGlobalPosition(mydata->meshTranslation);
+
+		D3DXMATRIXA16 mat;
+		D3DXMATRIXA16 mtxWorld2;
+		// PhysX姿勢の取得
+		float glMat[16];
+		actor->getGlobalPose().getColumnMajor44(glMat);
+		ConvertMatrix(mtxWorld2, glMat);
+
+		NxVec3 s = mydata->meshScale;
+		NxVec3 t = mydata->meshTranslation;
+		// メッシュの拡大縮小
+		D3DXMatrixScaling(&mat, s.x, s.y, s.z);
+		D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
+
+		// メッシュの回転
+		mat = mydata->meshRotation;
+		//D3DXMatrixMultiply(&mtxWorld2, &mat, &mtxWorld2);
+		D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
+
+		D3DXMatrixTranslation(&mat, 0, 0, 0);
+		D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
+		// マトリックスのセット
+		m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+		// メッシュの描画
+		int n = mydata->ID;
+		for (DWORD i = 0; i < g_dwNumMaterials[n]; i++)
+		{
+			// マテリアルとテクスチャ
+			m_pD3DDevice->SetMaterial(&g_pMeshMaterials[n][i]);
+			m_pD3DDevice->SetTexture(0, g_pMeshTextures[n][i]);
+
+			// 描画
+			g_pMesh[n]->DrawSubset(i);
+		}
+		//レンダリング
+		SkinMesh.UpdateFrameMatrices(pThing->pFrameRoot, &mtxWorld);
+		SkinMesh.DrawFrame(m_pD3DDevice, pThing->pFrameRoot);
+		pThing->pAnimController->AdvanceTime(fAnimTime - fAnimTimeHold, NULL);
+		//アニメ再生時間を+
+		fAnimTimeHold = fAnimTime;
+		if (boPlayAnim)
+		{
+			fAnimTime += 0.01f;
+		}
+	}
+}
 /*void CPhysx::DrawDX2(D3DXMATRIX mtxWorld, NxActor* actor, int type)
 {
 if (actor)
@@ -1288,4 +1312,9 @@ void CPhysx::Debug_Collision(SphereCollision sc, D3DXMATRIX mtx)
 	m_pD3DDevice->DrawPrimitive(D3DPT_LINESTRIP, 38, 8);
 	m_pD3DDevice->DrawPrimitive(D3DPT_LINESTRIP, 47, 8);
 	m_pD3DDevice->DrawPrimitive(D3DPT_LINESTRIP, 56, 8);
+}
+
+THING* CPhysx::GetAnimeModel(int index)
+{
+	return &Thing[index];
 }

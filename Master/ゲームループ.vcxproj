@@ -183,6 +183,7 @@
     <ClCompile Include="COrnament.cpp" />
     <ClCompile Include="CPhysx.cpp" />
     <ClCompile Include="Cplayer.cpp" />
+    <ClCompile Include="CSkinAnimation.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="CUserInterface.cpp" />
     <ClCompile Include="Cwheel.cpp" />
@@ -245,6 +246,7 @@
     <ClInclude Include="COrnament.h" />
     <ClInclude Include="Cphysx.h" />
     <ClInclude Include="Cplayer.h" />
+    <ClInclude Include="CSkinAnimation.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="cube.h" />
     <ClInclude Include="CUserInterface.h" />

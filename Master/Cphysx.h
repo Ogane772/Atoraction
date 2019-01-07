@@ -15,7 +15,7 @@
 #include "CGameObj.h"
 #include <d3dx9.h>
 #include "NxPhysics.h"
-
+#include "CSkinAnimation.h"
 #define numMesh 20
 
 class CPhysx : virtual public CGameObj
@@ -45,7 +45,8 @@ public:
 
 protected:
 
-	enum {
+	enum NORMAL_MODEL{
+		NO_MODELL,
 		MODELL_PLAYER,
 		MODELL_SMALL,
 		MODELL_BOSS,
@@ -59,7 +60,13 @@ protected:
 		MODELL_CUP_YELLOW,
 		MODELL_CUP_GREEN,
 		MODELL_POPCORN,
-	};//ModelFileData
+	};
+	enum ANIME_MODEL
+	{
+		MODELL_ANIME_SMALL,
+		ANIME_MODEL_MAX,//アニメモデル最大数
+	};
+	//ModelFileData
 	  //static NxActor *NxA_pPlayer,*NxA_pBoss;//物理エンジンを適用するモンスターを宣言する
 	  //NxActor *NxA_pPlayer, *NxA_pSmall;
 	  //static NxActor* Get_PhysxData(int Index) { return m_ModelFileData[Index].Physx; }
@@ -119,8 +126,10 @@ protected:
 	bool directx = true;	//directX描画フラグ　falseの時モデルの非表示					
 	static bool hit;	//当たり判定で当たったか表示するフラグ
 
-
+	//モデル描画
 	void DrawDX2(D3DXMATRIX mtxWorld, NxActor* actor, int type);
+	//アニメーションモデル描画
+	void DrawDX_Anime(D3DXMATRIX mtxWorld, NxActor* actor, int type, THING* pThing);
 	void DrawDX(D3DXMATRIX mtxWorld, NxActor* actor);
 	// メッシュの描画　RenderDirectX
 	void DrawDirectXMesh(NxActor* actor);
@@ -138,6 +147,8 @@ protected:
 	SphereCollision m_SphereCollision;
 	//	当たり範囲描画
 	void Debug_Collision(SphereCollision sc, D3DXMATRIX mtx);
+
+	THING* GetAnimeModel(int index);//取得したいモデル情報取得
 private:
 
 
@@ -214,8 +225,11 @@ private:
 
 	}ModelFileData;
 
-	static ModelFileData m_ModelFileData[];
-	static int m_MODELFAIL_MAX;
+
+	static ModelFileData m_NormalModelFileData[];
+	static ModelFileData m_AnimeModelFileData[];
+	static int m_NORMALMODELFAIL_MAX;
+	static int m_ANIMEMODELFAIL_MAX;
 };
 
 
