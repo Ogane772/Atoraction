@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <d3dx9.h>
 #include <stdio.h>
-
+#include "BSphere.h"
 //必要なライブラリファイルのロード
 #pragma comment(lib,"winmm.lib")
 #pragma comment(lib,"d3d9.lib")
@@ -44,17 +44,25 @@ public:
     STDMETHOD(DestroyMeshContainer)(THIS_ LPD3DXMESHCONTAINER );	
 };
 // 物体構造体
+struct SPHERE2
+{
+	D3DXVECTOR3 vCenter;
+	FLOAT fRadius;
+};
 struct THING
 {	
 	LPD3DXMESH pMesh;
 	LPD3DXFRAME pFrameRoot;
+	LPD3DXMESH pSphereMesh;
     LPD3DXANIMATIONCONTROLLER pAnimController;
 	D3DMATERIAL9* pMeshMaterials;
+	D3DMATERIAL9* pSphereMeshMaterials;
 	LPDIRECT3DTEXTURE9* pMeshTextures; 
 	DWORD dwNumMaterials;
 	D3DXVECTOR3 vPosition;
 	D3DXMATRIX mRotation;
 	D3DXMATRIX mWorld;
+	SPHERE2 Sphere;
 
 	THING()
 	{
@@ -70,6 +78,8 @@ public:
 	HRESULT InitThing(LPDIRECT3DDEVICE9,THING *,LPSTR);
 	HRESULT AllocateBoneMatrix( THING* , LPD3DXMESHCONTAINER  );
 	HRESULT AllocateAllBoneMatrices(THING* ,  LPD3DXFRAME  );
+	HRESULT InitSphere(LPDIRECT3DDEVICE9, THING*);
+	static HRESULT UpdateSphere(LPDIRECT3DDEVICE9 pDevice, THING* pThing);//当たり判定の更新
 	VOID RenderMeshContainer(LPDIRECT3DDEVICE9, MYMESHCONTAINER* ,MYFRAME* );
 	VOID UpdateFrameMatrices(LPD3DXFRAME , LPD3DXMATRIX );
 	VOID DrawFrame(LPDIRECT3DDEVICE9,LPD3DXFRAME );

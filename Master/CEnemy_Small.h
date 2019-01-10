@@ -21,7 +21,7 @@ public:
 	void Finalize(void);
 	void Damage(void);
 	NxActor* Get_Actor(void) { return NxA_pSmall; }
-
+	static C3DObj *Get_EnemySmall(int Index);
 
 private:
 	void EnemySmall_Create(void);

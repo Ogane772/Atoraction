@@ -161,6 +161,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="billboard.cpp" />
+    <ClCompile Include="BSphere.cpp" />
     <ClCompile Include="C2DObj.cpp" />
     <ClCompile Include="C3DObj.cpp" />
     <ClCompile Include="camera.cpp" />
@@ -223,6 +224,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="billboard.h" />
+    <ClInclude Include="BSphere.h" />
     <ClInclude Include="C2DObj.h" />
     <ClInclude Include="C3DObj.h" />
     <ClInclude Include="camera.h" />

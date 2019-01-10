@@ -16,6 +16,7 @@
 #include <d3dx9.h>
 #include "NxPhysics.h"
 #include "CSkinAnimation.h"
+#include "BSphere.h"
 #define numMesh 20
 
 class CPhysx : virtual public CGameObj
@@ -23,7 +24,11 @@ class CPhysx : virtual public CGameObj
 public:
 	CPhysx();
 	~CPhysx();
-
+	enum ANIME_MODEL
+	{
+		MODELL_ANIME_SMALL,
+		ANIME_MODEL_MAX,//アニメモデル最大数
+	};
 	// void Update(void);
 	// void Draw(void);
 
@@ -42,6 +47,7 @@ public:
 	
 	SphereCollision* Get_Collision(void) { return &m_SphereCollision; }
 
+	static THING* GetAnimeModel(int index);//取得したいモデル情報取得
 
 protected:
 
@@ -61,11 +67,7 @@ protected:
 		MODELL_CUP_GREEN,
 		MODELL_POPCORN,
 	};
-	enum ANIME_MODEL
-	{
-		MODELL_ANIME_SMALL,
-		ANIME_MODEL_MAX,//アニメモデル最大数
-	};
+
 	//ModelFileData
 	  //static NxActor *NxA_pPlayer,*NxA_pBoss;//物理エンジンを適用するモンスターを宣言する
 	  //NxActor *NxA_pPlayer, *NxA_pSmall;
@@ -131,10 +133,14 @@ protected:
 	//アニメーションモデル描画
 	void DrawDX_Anime(D3DXMATRIX mtxWorld, NxActor* actor, int type, THING* pThing);
 	void DrawDX(D3DXMATRIX mtxWorld, NxActor* actor);
+
+	void RenderThing(D3DXMATRIX mtxWorld, NxActor* actor, int type, THING2* pThing);
 	// メッシュの描画　RenderDirectX
 	void DrawDirectXMesh(NxActor* actor);
 	// PhysXの描画　PhysXRender
 	void RenderPhysX(void);
+
+	
 
 	// 頂点の構造体
 	struct CUSTOMVERTEX
@@ -148,7 +154,8 @@ protected:
 	//	当たり範囲描画
 	void Debug_Collision(SphereCollision sc, D3DXMATRIX mtx);
 
-	THING* GetAnimeModel(int index);//取得したいモデル情報取得
+	
+	THING2* GetNormalModel(int index);//取得したいモデル情報取得
 private:
 
 
@@ -170,8 +177,7 @@ private:
 	static HRESULT InitGeometry(void);	// Geometryの初期化（モデルの読み込み）
 	static bool InitNx(void);			// PhysXの初期化
 	static HRESULT LoadMesh(LPCSTR filename, int n); // メッシュの読み込み　InitGeometry
-
-
+	static HRESULT InitThing(THING2 *pThing, LPSTR szXFileName);//モデルの読み込み
 
 
 													 //	当たり判定

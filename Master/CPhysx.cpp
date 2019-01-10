@@ -22,8 +22,9 @@
 #include "ErrorStream.h"
 #include "CAttraction.h"
 #include "debug_font.h"
-
-
+#include "BSphere.h"
+#include "CSkinAnimation.h"
+#include "Cplayer.h"
 #include "CEnemy.h"
 #include "CEnemy_Small.h"
 //=============================================================================
@@ -80,8 +81,11 @@ NxActor* CPhysx::NxA_pCoffeeTable = {};
 NxActor* CPhysx::NxA_pEnban = {};
 NxActor* CPhysx::NxA_pHasira = {};
 NxActor* CPhysx::NxA_pWheel = {};*/
+bool boRenderSphere = true;
 //モデルアニメーション関係変数
+#define MODEL_MAX (13)
 SKIN_MESH SkinMesh;
+THING2 Thing2[MODEL_MAX - 1];//読み込むモデルの最大数+1
 THING Thing[THING_AMOUNT + 1];//読み込むモデルの最大数+1
 LPD3DXANIMATIONSET pAnimSet[THING_AMOUNT][10] = { 0 };//選択したモデルに10個までのアニメーションをセット
 FLOAT fAnimTime = 0.0f;
@@ -122,18 +126,35 @@ HRESULT CPhysx::InitGeometry()
 	if (FAILED(LoadMesh("asset/model/slime.x", SMALL)))
 	return E_FAIL;
 	*/
+	/*
+	for (int i = 1; i < m_NORMALMODELFAIL_MAX - 1; i++)
+	{
+		InitThing(&Thing2[i], m_NormalModelFileData[i].filename);
+	}*/
+	InitThing(&Thing2[0], m_NormalModelFileData[1].filename);
+	InitSphere(m_pD3DDevice, &Thing2[0]);
+
+//	InitThing(&Thing2[1], m_NormalModelFileData[2].filename);
+//	InitSphere(m_pD3DDevice, &Thing2[1]);
+	/*
+	// メッシュごとのバウンディングスフィア（境界球）の作成
+	for (int i = 0; i < m_NORMALMODELFAIL_MAX - 1; i++)
+	{
+		InitSphere(m_pD3DDevice, &Thing2[i]);
+	}*/
+	/*
 	for (int i = 0;i < m_NORMALMODELFAIL_MAX - 1;i++)
 	{
 		if (FAILED(LoadMesh(m_NormalModelFileData[i+1].filename, i+1)))
 			return E_FAIL;
-	}
+	}*/
 	//アニメーションモデル読み込み
 	//THINGにxファイルを読み込む
 	for (int i = 0; i < ANIME_MODEL_MAX; i++)
 	{
 		SkinMesh.InitThing(m_pD3DDevice, &Thing[i], m_AnimeModelFileData[i].filename);
 	}
-	
+	SkinMesh.InitSphere(m_pD3DDevice, &Thing[0]);
 	if (FAILED(CreateDebugBase()))
 		return E_FAIL;
 	return S_OK;
@@ -234,6 +255,44 @@ HRESULT CPhysx::LoadMesh(LPCSTR filename, int n)
 		}
 	}
 	// マテリアルバッファの解放
+	pD3DXMtrlBuffer->Release();
+
+	return S_OK;
+}
+
+HRESULT CPhysx::InitThing(THING2 *pThing, LPSTR szXFileName)
+{
+	/////////
+	// Xファイルからメッシュをロードする	
+	LPD3DXBUFFER pD3DXMtrlBuffer = NULL;
+
+	if (FAILED(D3DXLoadMeshFromX(szXFileName, D3DXMESH_SYSTEMMEM,
+		m_pD3DDevice, NULL, &pD3DXMtrlBuffer, NULL,
+		&pThing->dwNumMaterials, &pThing->pMesh)))
+	{
+		MessageBox(NULL, "Xファイルの読み込みに失敗しました", szXFileName, MB_OK);
+		return E_FAIL;
+	}
+	D3DXMATERIAL* d3dxMaterials = (D3DXMATERIAL*)pD3DXMtrlBuffer->GetBufferPointer();
+	pThing->pMeshMaterials = new D3DMATERIAL9[pThing->dwNumMaterials];
+	pThing->pMeshTextures = new LPDIRECT3DTEXTURE9[pThing->dwNumMaterials];
+
+	for (DWORD i = 0; i<pThing->dwNumMaterials; i++)
+	{
+		pThing->pMeshMaterials[i] = d3dxMaterials[i].MatD3D;
+		pThing->pMeshMaterials[i].Ambient = pThing->pMeshMaterials[i].Diffuse;
+		pThing->pMeshTextures[i] = NULL;
+		if (d3dxMaterials[i].pTextureFilename != NULL &&
+			lstrlen(d3dxMaterials[i].pTextureFilename) > 0)
+		{
+			if (FAILED(D3DXCreateTextureFromFile(m_pD3DDevice,
+				d3dxMaterials[i].pTextureFilename,
+				&pThing->pMeshTextures[i])))
+			{
+				MessageBox(NULL, "テクスチャの読み込みに失敗しました", NULL, MB_OK);
+			}
+		}
+	}
 	pD3DXMtrlBuffer->Release();
 
 	return S_OK;
@@ -588,6 +647,7 @@ void CPhysx::DrawDX_Anime(D3DXMATRIX mtxWorld, NxActor* actor, int type,THING* p
 	static float fAnimTimeHold = fAnimTime;
 	if (actor)
 	{
+		SKIN_MESH::UpdateSphere(m_pD3DDevice, pThing);
 		/*DebugFont_Draw(8, 58, "8キー　モデルの非表示");
 		DebugFont_Draw(8, 108, "9キー　当たり判定表示");
 		DebugFont_Draw(8, 158, "当たったか　%d", hit);*/
@@ -641,10 +701,26 @@ void CPhysx::DrawDX_Anime(D3DXMATRIX mtxWorld, NxActor* actor, int type,THING* p
 			// 描画
 			g_pMesh[n]->DrawSubset(i);
 		}
+
 		//レンダリング
 		SkinMesh.UpdateFrameMatrices(pThing->pFrameRoot, &mtxWorld);
 		SkinMesh.DrawFrame(m_pD3DDevice, pThing->pFrameRoot);
 		pThing->pAnimController->AdvanceTime(fAnimTime - fAnimTimeHold, NULL);
+		//　バウンディングスフィアのレンダリング	
+		D3DXMatrixTranslation(&mat, pThing->vPosition.x, pThing->vPosition.y,
+			pThing->vPosition.z);
+		D3DXMatrixTranslation(&mtxWorld, pThing->Sphere.vCenter.x, pThing->Sphere.vCenter.y,
+			pThing->Sphere.vCenter.z);
+		mtxWorld *= mat;
+
+		m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+
+		if (boRenderSphere)
+		{
+			m_pD3DDevice->SetTexture(0, NULL);
+			m_pD3DDevice->SetMaterial(pThing->pSphereMeshMaterials);
+			pThing->pSphereMesh->DrawSubset(0);
+		}
 		//アニメ再生時間を+
 		fAnimTimeHold = fAnimTime;
 		if (boPlayAnim)
@@ -653,101 +729,6 @@ void CPhysx::DrawDX_Anime(D3DXMATRIX mtxWorld, NxActor* actor, int type,THING* p
 		}
 	}
 }
-/*void CPhysx::DrawDX2(D3DXMATRIX mtxWorld, NxActor* actor, int type)
-{
-if (actor)
-{
-DebugFont_Draw(8, 58, "8キー　モデルの非表示");
-DebugFont_Draw(8, 108, "9キー　当たり判定表示");
-DebugFont_Draw(8, 158, "当たったか　%d", hit);
-
-// PhysXのシーンをチェック
-if (gScene == NULL) return;
-// PhysX時間ステップ
-gScene->simulate(1.0f / 60.0f);
-
-m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
-m_pD3DDevice->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL);
-
-myData* mydata = (myData*)actor->userData;
-
-mydata->meshTranslation.x = mtxWorld._41;
-mydata->meshTranslation.y = mtxWorld._42;
-mydata->meshTranslation.z = mtxWorld._43;
-actor->setGlobalPosition(mydata->meshTranslation);
-
-D3DXMATRIXA16 mat;
-D3DXMATRIXA16 mtxWorld2;
-// PhysX姿勢の取得
-float glMat[16];
-actor->getGlobalPose().getColumnMajor44(glMat);
-ConvertMatrix(mtxWorld2, glMat);
-
-NxVec3 s = mydata->meshScale;
-NxVec3 t = mydata->meshTranslation;
-// メッシュの拡大縮小
-D3DXMatrixScaling(&mat, s.x, s.y, s.z);
-D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
-
-// メッシュの回転
-/*if (type != MODELL_PLAYER)
-{
-mat = mydata->meshRotation;
-D3DXMatrixMultiply(&mtxWorld2, &mat, &mtxWorld2);
-}
-if (type == CAttraction::MODELL_CUP_TABLE || type == CAttraction::MODELL_CUP)
-{
-mat = mydata->meshRotation;
-D3DXMatrixMultiply(&mtxWorld2, &mtxWorld, &mtxWorld2);
-}
-
-// メッシュの原点調整
-D3DXMatrixTranslation(&mat, 0, 0, 0);
-D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
-
-
-// マトリックスのセット
-m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
-if (type != MODELL_PLAYER)
-{
-// メッシュの原点調整
-D3DXMatrixTranslation(&mat, t.x, t.y + 1, t.z);
-D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
-m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
-}
-
-// メッシュの描画
-int n = mydata->ID;
-for (DWORD i = 0; i < g_dwNumMaterials[n]; i++)
-{
-// マテリアルとテクスチャ
-m_pD3DDevice->SetMaterial(&g_pMeshMaterials[n][i]);
-m_pD3DDevice->SetTexture(0, g_pMeshTextures[n][i]);
-
-// 描画
-g_pMesh[n]->DrawSubset(i);
-}
-/*	if (NxA_pCoffee && NxA_pEnban)
-{
-gScene->setActorPairFlags(*NxA_pCoffee,
-*NxA_pEnban,
-NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH);
-}
-// ２つのアクターを関連づけて衝突開始と衝突終了イベントを有効にする
-//当たり判定処理　第一引数と第二引数に当たり判定を行うアクターを指定する
-
-/*if (type == MODELL_PLAYER)
-{
-if ((NxA_pPlayer != NULL) && (NxA_pSmall != NULL))
-{
-gScene->setActorPairFlags(*NxA_pPlayer,
-*NxA_pSmall,
-NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH);
-}
-}
-}
-}*/
 void CPhysx::DrawDX(D3DXMATRIX mtxWorld, NxActor* actor)
 {
 	if (actor)
@@ -827,6 +808,82 @@ void CPhysx::DrawDX(D3DXMATRIX mtxWorld, NxActor* actor)
 	}
 }
 
+void CPhysx::RenderThing(D3DXMATRIX mtxWorld, NxActor* actor, int type, THING2* pThing)
+{
+	// PhysXのシーンをチェック
+	if (gScene == NULL) return;
+	// PhysX時間ステップ
+	gScene->simulate(1.0f / 60.0f);
+
+	m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+	m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
+	m_pD3DDevice->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL);
+
+	myData* mydata = (myData*)actor->userData;
+
+	mydata->meshTranslation.x = mtxWorld._41;
+	mydata->meshTranslation.y = mtxWorld._42;
+	mydata->meshTranslation.z = mtxWorld._43;
+	actor->setGlobalPosition(mydata->meshTranslation);
+
+	D3DXMATRIXA16 mat;
+	D3DXMATRIXA16 mtxWorld2;
+	// PhysX姿勢の取得
+	float glMat[16];
+	actor->getGlobalPose().getColumnMajor44(glMat);
+	ConvertMatrix(mtxWorld2, glMat);
+
+	NxVec3 s = mydata->meshScale;
+	NxVec3 t = mydata->meshTranslation;
+	// メッシュの拡大縮小
+	D3DXMatrixScaling(&mat, s.x, s.y, s.z);
+	D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
+
+	// メッシュの回転
+	mat = mydata->meshRotation;
+	//D3DXMatrixMultiply(&mtxWorld2, &mat, &mtxWorld2);
+	D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
+
+	D3DXMatrixTranslation(&mat, 0, 0, 0);
+	D3DXMatrixMultiply(&mtxWorld, &mat, &mtxWorld);
+	// マトリックスのセット
+	m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+
+
+	for (DWORD i = 0; i<pThing->dwNumMaterials; i++)
+	{
+		m_pD3DDevice->SetMaterial(&pThing->pMeshMaterials[i]);
+		m_pD3DDevice->SetTexture(0, pThing->pMeshTextures[i]);
+		pThing->pMesh->DrawSubset(i);
+	}
+	//　バウンディングスフィアのレンダリング	
+	if (boRenderSphere)
+	{
+		m_pD3DDevice->SetTexture(0, NULL);
+		m_pD3DDevice->SetMaterial(pThing->pSphereMeshMaterials);
+		pThing->pSphereMesh->DrawSubset(0);
+	}
+	//当たり判定
+	if (Collision(&Thing2[0], &Thing2[1]))
+	{
+		DebugFont_Draw(500, 300, "当たったぞ！！！！！！！！！！！");
+		C3DObj *pplayer = CPlayer::Get_Player();
+		NxActor *pactor = pplayer->Get_Actor();
+			//C3DObj *penemy = CEnemy_Small::Get_EnemySmall();
+			if (actor != pactor)
+			{
+				//NxActor *actor = penemy->Get_Actor();
+				actor->addForce(NxVec3(500000000, -2000000, 0));
+				actor->setLinearVelocity(NxVec3(20, 0, 0));
+				actor->addLocalTorque(NxVec3(100000, 0, 0), NX_FORCE);
+			}
+		
+	}
+	else
+	{
+		DebugFont_Draw(500, 500, "当たってないぞ！！！！！！！！！！！");
+	}
+}
 
 // マトリックスの変換 RenderPhysX　DrawDirectXMesh
 void CPhysx::ConvertMatrix(D3DXMATRIXA16 &matWorld, float *glMat) //(D3DXMATRIXA16 &matWorld, float *glMat)
@@ -1013,7 +1070,7 @@ NxActor* CPhysx::CreateSphere(myData mydata, const NxVec3* initialVelocity)
 
 	NxActorDesc actorDesc;
 	actorDesc.shapes.pushBack(&sphereDesc); // ここでアクターにスフィアコリジョンを登録
-	actorDesc.body = &bodyDesc;//ここで動的情報を取得
+	actorDesc.body = NULL;//ここで動的情報を取得
 	actorDesc.density = 10.0f;//質量
 	actorDesc.globalPose.t = data->position;//ワールド空間の位置に置く
 	actorDesc.globalPose.M = data->rotation;//PhysX内では右手座標系なので転置行列をセットする
@@ -1317,4 +1374,9 @@ void CPhysx::Debug_Collision(SphereCollision sc, D3DXMATRIX mtx)
 THING* CPhysx::GetAnimeModel(int index)
 {
 	return &Thing[index];
+}
+
+THING2* CPhysx::GetNormalModel(int index)
+{
+	return &Thing2[index];
 }

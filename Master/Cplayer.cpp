@@ -39,6 +39,7 @@ CPlayer *CPlayer::m_pPlayer[PLAYER_MAX] = {};
 int CPlayer::m_PlayerNum = 0;
 int CPlayer::m_KO_Count = 0;
 bool CPlayer::m_delete = false;
+THING2 *Thing;
 //=============================================================================
 // 生成
 //=============================================================================
@@ -200,7 +201,6 @@ void CPlayer::Update(void)
 			m_Mp = 0;
 		}
 	}
-
 /*	int atrnum = CAttraction::Get_AttractionNum(CAttraction::TYPE_ALL);
 	for (int j = 0;j < atrnum;j++)
 	{
@@ -242,10 +242,13 @@ void CPlayer::Draw(void)
 	
 	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 	m_SphereCollision.CenterPos = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+	Thing->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 
 	myData* mydata = (myData*)NxA_pPlayer->userData;
 
-	DrawDX2(m_mtxWorld, NxA_pPlayer, MODELL_PLAYER);
+	//DrawDX2(m_mtxWorld, NxA_pPlayer, MODELL_PLAYER);
+
+	RenderThing(m_mtxWorld, NxA_pPlayer, MODELL_PLAYER, Thing);
 
 	//	デバッグ
 	//DebugFont_Draw(300, 50, "%f\n%f\n%f\n%f", m_front.x, m_front.y, m_front.z, m_Angle);
@@ -258,6 +261,8 @@ void CPlayer::Draw(void)
 //	初期化
 void CPlayer::Player_Initialize(void)
 {
+
+
 	m_Hp = HP_MAX;
 	m_Mp = 0;
 	m_MpStock = MPSTOCK_INIT;
@@ -266,7 +271,7 @@ void CPlayer::Player_Initialize(void)
 	m_delete = false;
 	g_CosterMode = false;
 	D3DXMatrixTranslation(&m_mtxTranslation, 0, 1, 0);
-	D3DXMatrixScaling(&m_mtxScaling, 0.5f, 1.0f, 0.5f);
+	D3DXMatrixScaling(&m_mtxScaling, 1.0f, 1.0f, 1.0f);
 	m_mtxKeepTranslation = m_mtxTranslation;
 	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(200));
 	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
@@ -285,6 +290,9 @@ void CPlayer::Player_Initialize(void)
 	NxVec3 BBDwarf = NxVec3(1.0f, 1.0f, 1.0f);	//	当たり判定の大きさ
 
 	
+												//モデル情報取得
+	Thing = GetNormalModel(0);
+
 	NxA_pPlayer = CreateMeshAsSphere(NxVec3(0, 1, 0), 1.0, MODELL_PLAYER);
 	/*m_SphereCollision = {
 		D3DXVECTOR3(m_mtxWorld._41,m_mtxWorld._42,m_mtxWorld._43),PLAYER_SAIZ
