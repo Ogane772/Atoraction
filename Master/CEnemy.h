@@ -50,7 +50,7 @@ public:
 
 	static C3DObj *Get_Map_Enemy(int Index);
 
-
+	
 protected:
 
 	enum

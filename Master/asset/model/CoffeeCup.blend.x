@@ -1912,14 +1912,14 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"Cup4.png";}
+          TextureFilename {"asset/model/Cup4.png";}
         }
         Material Material_004 {
            0.640000; 0.640000; 0.640000; 1.000000;;
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"Cup4.png";}
+          TextureFilename {"asset/model/Cup4.png";}
         }
       } // End of Cylinder_001 material list
     } // End of Cylinder_001 mesh
@@ -3829,7 +3829,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"Cup4.png";}
+          TextureFilename {"asset/model/Cup4.png";}
         }
       } // End of Cylinder_002 material list
     } // End of Cylinder_002 mesh
@@ -5739,14 +5739,14 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"Cup4.png";}
+          TextureFilename {"asset/model/Cup4.png";}
         }
         Material Material_001 {
            0.640000; 0.640000; 0.640000; 1.000000;;
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"Cup4.png";}
+          TextureFilename {"asset/model/Cup4.png";}
         }
       } // End of Cylinder_003 material list
     } // End of Cylinder_003 mesh

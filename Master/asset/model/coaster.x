@@ -368,7 +368,7 @@ Frame Root {
            96.078431;
            0.000000; 0.000000; 0.000000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"coaster.png";}
+          TextureFilename {"asset/model/coaster.png";}
         }
       } // End of coaster material list
     } // End of coaster mesh

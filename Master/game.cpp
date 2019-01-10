@@ -18,6 +18,8 @@
 #include "CUserInterface.h"
 #include "CAttraction.h"
 #include "common.h"
+#include "CSkinAnimation.h"
+#include "Cphysx.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -75,8 +77,7 @@ void Game_Finalize(void)
 
 void Game_Updata(void)
 {
-
-
+	//ここにクラス関係なしの関数を書く
 	C3DObj::UpdateAll();	//	3Dオブジェクト更新
 	CGameObj::UpdateAll();	//	2Dオブジェクト更新
 
@@ -101,7 +102,7 @@ void Game_Updata(void)
 	{
 		CGameObj::FrameCountUp();
 	}
-
+	
 }
 
 //=============================================================================

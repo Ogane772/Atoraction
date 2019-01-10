@@ -1912,14 +1912,14 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"leather.png";}
+          TextureFilename {"asset/model/leather.png";}
         }
         Material Material_001 {
            0.640000; 0.640000; 0.640000; 1.000000;;
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"leather.png";}
+          TextureFilename {"asset/model/leather.png";}
         }
       } // End of Circle material list
     } // End of Circle mesh

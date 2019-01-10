@@ -258,7 +258,40 @@ HRESULT SKIN_MESH::AllocateAllBoneMatrices( THING* pThing,LPD3DXFRAME pFrame )
     return S_OK;
 }
 //
+HRESULT SKIN_MESH::InitSphere(LPDIRECT3DDEVICE9 pDevice, THING* pThing)
+{
+	// メッシュの外接円の中心と半径を計算する
+	D3DXFrameCalculateBoundingSphere(pThing->pFrameRoot, &pThing->Sphere.vCenter,
+		&pThing->Sphere.fRadius);
+	// 得られた中心と半径を基にメッシュとしてのスフィアを作成する
+	D3DXCreateSphere(pDevice, pThing->Sphere.fRadius, 24, 24, &pThing->pSphereMesh, NULL);
+	//スフィアメッシュのマテリアル　白色、半透明、光沢強
+	pThing->pSphereMeshMaterials = new D3DMATERIAL9;
+	pThing->pSphereMeshMaterials->Diffuse.r = 1.0f;
+	pThing->pSphereMeshMaterials->Diffuse.g = 1.0f;
+	pThing->pSphereMeshMaterials->Diffuse.b = 1.0f;
+	pThing->pSphereMeshMaterials->Diffuse.a = 0.3f;
+	pThing->pSphereMeshMaterials->Ambient = pThing->pSphereMeshMaterials->Diffuse;
+	pThing->pSphereMeshMaterials->Specular.r = 1.0f;
+	pThing->pSphereMeshMaterials->Specular.g = 1.0f;
+	pThing->pSphereMeshMaterials->Specular.b = 1.0f;
+	pThing->pSphereMeshMaterials->Emissive.r = 0.1f;
+	pThing->pSphereMeshMaterials->Emissive.g = 0.1f;
+	pThing->pSphereMeshMaterials->Emissive.b = 0.1f;
+	pThing->pSphereMeshMaterials->Power = 120.0f;
+
+	return S_OK;
+}
 //
+HRESULT SKIN_MESH::UpdateSphere(LPDIRECT3DDEVICE9 pDevice, THING* pThing)
+{
+	D3DXFrameCalculateBoundingSphere(pThing->pFrameRoot, &pThing->Sphere.vCenter,
+		&pThing->Sphere.fRadius);
+	pThing->pSphereMesh->Release();
+	D3DXCreateSphere(pDevice, pThing->Sphere.fRadius, 24, 24, &pThing->pSphereMesh, NULL);
+
+	return S_OK;
+}
 //
 HRESULT SKIN_MESH::InitThing(LPDIRECT3DDEVICE9 pDevice,THING *pThing,LPSTR szXFileName)
 {

@@ -59,7 +59,7 @@ void Coaster::Initialize()
 
 	m_TimeKeep = m_FrameCount;
 
-	u = 0;
+	u = 90;
 
 
 

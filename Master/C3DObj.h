@@ -8,6 +8,7 @@
 #define _3DOBJ_H_
 
 #include "CGameObj.h"
+#include "Cphysx.h"
 #include <d3dx9.h>
 
 class C3DObj :virtual public CGameObj
@@ -25,6 +26,7 @@ public:
 		TYPE_COASTER,	// ジェットコースター
 		TYPE_ORNAMENT,	// 障害物
 		TYPE_etc,		// その他
+		TYPE_ENEMYSMALL,// エネミースモール
 
 		TYPE_MAX
 
@@ -51,6 +53,7 @@ public:
 	int Get_Mp(void) { return m_Mp; }				//	MP取得
 	int Get_MpStock(void) { return m_MpStock; }		//	MPストック取得
 	virtual bool Get_DrawCheck(void) = 0;
+	virtual NxActor* Get_Actor(void) { return NULL; }
 protected:
 	D3DXMATRIX m_mtxWorld;			//	ワールド変換用行列
 	D3DXMATRIX m_mtxTranslation;	//	移動行列

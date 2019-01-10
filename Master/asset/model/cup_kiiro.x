@@ -2288,7 +2288,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"Cup4.png";}
+          TextureFilename {"asset/model/Cup4.png";}
         }
       } // End of Cylinder material list
     } // End of Cylinder mesh
