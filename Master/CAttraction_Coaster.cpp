@@ -79,7 +79,7 @@ void Coaster::Initialize()
 	NxVec3 scaleDwarf = NxVec3(COSTER_SCALE, COSTER_SCALE, COSTER_SCALE);	//	モデルスケール
 	NxVec3 BBDwarf = NxVec3(0.0, 0.0, 0.0);	//	当たり判定の大きさ
 	NxA_Coaster = CreateMeshAsBox(NxVec3(mtx._41, mtx._42 - 10, mtx._43), mat1, scaleDwarf, BBDwarf, MODELL_COASTER, false);
-
+	Thing_Normal = GetNormalModel(MODELL_COASTER);
 
 }
 
@@ -114,7 +114,9 @@ void Coaster::Draw(void)
 	DebugFont_Draw(600, 0, "U = %f\n,", u);
 	if (m_Enable)
 	{
-		DrawDX2(m_mtxWorld, NxA_Coaster, MODELL_COASTER);
+		Thing_Normal->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+
+		RenderThing(m_mtxWorld, NxA_Coaster, MODELL_COASTER, Thing_Normal);
 	}
 }
 

@@ -102,7 +102,7 @@ void Game_Updata(void)
 	{
 		CGameObj::FrameCountUp();
 	}
-	
+	CPhysx::HitCheck();
 }
 
 //=============================================================================

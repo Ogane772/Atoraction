@@ -413,6 +413,21 @@ void CPhysx::RenderPhysX(void)
 	}
 }
 
+void CPhysx::HitCheck(void)
+{
+	//当たり判定
+	if (Collision(&Thing2[0], &Thing2[1]))
+	{
+		DebugFont_Draw(500, 300, "当たったぞ！！！！！！！！！！！");
+		C3DObj *pplayer = CPlayer::Get_Player();
+		NxActor *pactor = pplayer->Get_Actor();
+	}
+	else
+	{
+		DebugFont_Draw(500, 500, "当たってないぞ！！！！！！！！！！！");
+	}
+}
+
 // 地面のマット RenderPhysX
 void CPhysx::DrawMat(void)
 {
@@ -832,32 +847,13 @@ void CPhysx::RenderThing(D3DXMATRIX mtxWorld, NxActor* actor, int type, THING2* 
 		pThing->pMesh->DrawSubset(i);
 	}
 	//　バウンディングスフィアのレンダリング	
-	if (boRenderSphere)
+	if (boRenderSphere && pThing->pSphereMeshMaterials)
 	{
 		m_pD3DDevice->SetTexture(0, NULL);
 		m_pD3DDevice->SetMaterial(pThing->pSphereMeshMaterials);
 		pThing->pSphereMesh->DrawSubset(0);
 	}
-	//当たり判定
-	if (Collision(&Thing2[0], &Thing2[1]))
-	{
-		DebugFont_Draw(500, 300, "当たったぞ！！！！！！！！！！！");
-		C3DObj *pplayer = CPlayer::Get_Player();
-		NxActor *pactor = pplayer->Get_Actor();
-			//C3DObj *penemy = CEnemy_Small::Get_EnemySmall();
-			if (actor != pactor)
-			{
-				//NxActor *actor = penemy->Get_Actor();
-				actor->addForce(NxVec3(500000000, -2000000, 0));
-				actor->setLinearVelocity(NxVec3(20, 0, 0));
-				actor->addLocalTorque(NxVec3(100000, 0, 0), NX_FORCE);
-			}
-		
-	}
-	else
-	{
-		DebugFont_Draw(500, 500, "当たってないぞ！！！！！！！！！！！");
-	}
+	
 }
 
 // マトリックスの変換 RenderPhysX　DrawDirectXMesh
