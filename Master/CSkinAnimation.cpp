@@ -2,7 +2,6 @@
 #include "CSkinAnimation.h"
 
 //
-//HRESULT MY_HIERARCHY::CreateFrame(LPCTSTR Name, LPD3DXFRAME *ppNewFrame)
 //フレームを作成する
 HRESULT MY_HIERARCHY::CreateFrame(LPCTSTR Name, LPD3DXFRAME *ppNewFrame)
 {
@@ -33,7 +32,6 @@ HRESULT MY_HIERARCHY::CreateFrame(LPCTSTR Name, LPD3DXFRAME *ppNewFrame)
     return S_OK;
 }
 //
-//HRESULT MY_HIERARCHY::CreateMeshContainer
 //メッシュコンテナーを作成する
 HRESULT MY_HIERARCHY::CreateMeshContainer(LPCSTR Name, CONST D3DXMESHDATA* pMeshData,
                             CONST D3DXMATERIAL* pMaterials, CONST D3DXEFFECTINSTANCE* pEffectInstances,
@@ -145,7 +143,6 @@ HRESULT MY_HIERARCHY::CreateMeshContainer(LPCSTR Name, CONST D3DXMESHDATA* pMesh
     return S_OK;
 }
 //
-//HRESULT MY_HIERARCHY::DestroyFrame(LPD3DXFRAME pFrameToFree) 
 //フレームを破棄する
 HRESULT MY_HIERARCHY::DestroyFrame(LPD3DXFRAME pFrameToFree) 
 {
@@ -165,7 +162,6 @@ HRESULT MY_HIERARCHY::DestroyFrame(LPD3DXFRAME pFrameToFree)
     return S_OK; 
 }
 //
-//HRESULT MY_HIERARCHY::DestroyMeshContainer(LPD3DXMESHCONTAINER pMeshContainerBase)
 //メッシュコンテナーを破棄する
 HRESULT MY_HIERARCHY::DestroyMeshContainer(LPD3DXMESHCONTAINER pMeshContainerBase)
 {
@@ -202,7 +198,6 @@ HRESULT MY_HIERARCHY::DestroyMeshContainer(LPD3DXMESHCONTAINER pMeshContainerBas
 }
 
 //
-//HRESULT AllocateBoneMatrix( THING* pThing,LPD3DXMESHCONTAINER pMeshContainerBase )
 //
 HRESULT SKIN_MESH::AllocateBoneMatrix( THING* pThing,LPD3DXMESHCONTAINER pMeshContainerBase )
 {
@@ -230,7 +225,6 @@ HRESULT SKIN_MESH::AllocateBoneMatrix( THING* pThing,LPD3DXMESHCONTAINER pMeshCo
     return S_OK;
 }
 //
-//HRESULT AllocateAllBoneMatrices( THING* pThing,LPD3DXFRAME pFrame )
 //
 HRESULT SKIN_MESH::AllocateAllBoneMatrices( THING* pThing,LPD3DXFRAME pFrame )
 {
@@ -310,7 +304,7 @@ HRESULT SKIN_MESH::InitThing(LPDIRECT3DDEVICE9 pDevice,THING *pThing,LPSTR szXFi
 	return S_OK;
 }
 //
-//VOID RenderMeshContainer(LPDIRECT3DDEVICE9 pDevice,MYMESHCONTAINER* pMeshContainer, MYFRAME* pFrame)
+
 //フレーム内のそれぞれのメッシュをレンダリングする
 VOID SKIN_MESH::RenderMeshContainer(LPDIRECT3DDEVICE9 pDevice,MYMESHCONTAINER* pMeshContainer, MYFRAME* pFrame)
 {
@@ -368,7 +362,6 @@ VOID SKIN_MESH::RenderMeshContainer(LPDIRECT3DDEVICE9 pDevice,MYMESHCONTAINER* p
 	}
 }
 //
-//VOID DrawFrame(LPDIRECT3DDEVICE9 pDevice,LPD3DXFRAME pFrameBase)
 //フレームをレンダリングする。
 VOID SKIN_MESH::DrawFrame(LPDIRECT3DDEVICE9 pDevice,LPD3DXFRAME pFrameBase)
 {
@@ -391,7 +384,6 @@ VOID SKIN_MESH::DrawFrame(LPDIRECT3DDEVICE9 pDevice,LPD3DXFRAME pFrameBase)
     }
 }
 //
-//VOID UpdateFrameMatrices(LPD3DXFRAME pFrameBase, LPD3DXMATRIX pParentMatrix)
 //フレーム内のメッシュ毎にワールド変換行列を更新する
 VOID SKIN_MESH::UpdateFrameMatrices(LPD3DXFRAME pFrameBase, LPD3DXMATRIX pParentMatrix)
 {

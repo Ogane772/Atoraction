@@ -1,6 +1,5 @@
 #include "BSphere.h"
 //
-//HRESULT InitSphere(LPDIRECT3DDEVICE9 pDevice,THING* pThing)
 //スフィアの計算およびスフィアを視認可能にするためにスフィアメッシュを作成する
 HRESULT InitSphere(LPDIRECT3DDEVICE9 pDevice,THING2* pThing)
 {
@@ -33,8 +32,6 @@ HRESULT InitSphere(LPDIRECT3DDEVICE9 pDevice,THING2* pThing)
 	}		
 	pThing->Sphere.vCenter=vCenter;
 	pThing->Sphere.fRadius=fRadius;
-
-	//これ以降の行は本質ではない。確認のためスフィア自体をレンダリングするための準備に過ぎない
 
 	// 得られた中心と半径を基にメッシュとしてのスフィアを作成する
 	hr=D3DXCreateSphere(pDevice,fRadius,24,24,&pThing->pSphereMesh,NULL);
@@ -117,7 +114,6 @@ HRESULT InitSphere(LPDIRECT3DDEVICE9 pDevice, THING* pThing)
 
 	return S_OK;
 }
-//BOOL Collision(THING* pThingA,THING* pThingB)
 //衝突検出
 BOOL Collision(THING2* pThingA,THING2* pThingB)
 {

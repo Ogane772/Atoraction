@@ -76,6 +76,7 @@ void Cwheel::Initialize()
 	NxVec3 scaleDwarf = NxVec3(WHEEL_SCALE, WHEEL_SCALE, WHEEL_SCALE);	//	モデルスケール
 	NxVec3 BBDwarf = NxVec3(1.5, 2.0, 2.0);	//	当たり判定の大きさ
 	NxVec3 BBDwarf2 = NxVec3(0, 0, 0);
+	Thing_Normal = GetNormalModel(MODELL_WHEEL);
 	NxA_pWheel = CreateMeshAsBox(NxVec3(mtx._41, mtx._42, mtx._43 + 5), mat1, scaleDwarf, BBDwarf, MODELL_WHEEL);
 }
 
@@ -124,8 +125,9 @@ void Cwheel::Draw(void)
 	//DebugFont_Draw(900, 60, "Bugoki = %d\n,", Bugoki);
 	if (m_Enable)
 	{
-		DrawDX2(m_mtxWorld, NxA_pWheel, MODELL_WHEEL);
-		//DrawDirectXMesh(NxA_pSmall);
+		Thing_Normal->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+
+		RenderThing(m_mtxWorld, NxA_pWheel, MODELL_WHEEL, Thing_Normal);
 	}
 }
 

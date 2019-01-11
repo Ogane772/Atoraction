@@ -60,7 +60,8 @@ protected:
 	D3DXMATRIX m_mtxRotation;		//	移動行列
 	D3DXMATRIX m_mtxScaling;		//	移動行列
 
-	
+	THING *Thing_Anime;//アニメモデル情報
+	THING2 *Thing_Normal;//通常モデル情報
 	float m_Angle;			//	角度
 	D3DXVECTOR3 m_front;	//	前ベクトル
 	D3DXVECTOR3 m_right;	//	右ベクトル

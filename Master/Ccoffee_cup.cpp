@@ -31,7 +31,7 @@
 //=============================================================================
 //	ƒOƒ[ƒoƒ‹•Ï”
 //=============================================================================
-
+THING2 *thing_cup2,*thing_cup3, *thing_cup4;
 //=============================================================================
 //	¶¬
 //=============================================================================
@@ -81,6 +81,10 @@ void CCoffeeCup::Initialize()
 
 	NxA_pCoffeeTable = CreateMeshAsBox(NxVec3(mtx._41, 0, mtx._43), mat1, scaleDwarf2, BBDwarf2, MODELL_CUP_TABLE, false);
 
+	Thing_Normal = GetNormalModel(MODELL_CUP_BLUE);
+	thing_cup2 = GetNormalModel(MODELL_CUP_YELLOW);
+	thing_cup3 = GetNormalModel(MODELL_CUP_GREEN);
+	thing_cup4 = GetNormalModel(MODELL_CUP_TABLE);
 	m_SphereCollision = {
 		D3DXVECTOR3(m_mtxTranslation._41,m_mtxTranslation._42,m_mtxTranslation._43),COFFEE_SIZE
 	};
@@ -88,6 +92,7 @@ void CCoffeeCup::Initialize()
 
 void CCoffeeCup::Update(void)
 {
+	
 	if (m_Enable)
 	{//‚±‚±‚Å‰ñ“]ŒvŽZ‚ðs‚¤
 	 //‰ñ“]
@@ -159,16 +164,25 @@ void CCoffeeCup::Draw(void)
 	if (m_Enable)
 	{
 
-		DrawDX2(m_mtxWorld, NxA_pCoffeeTable, MODELL_CUP_TABLE);
+	
 		
-		DrawDX2(m_mtxWorld2, NxA_pCoffeeBlue, MODELL_CUP_BLUE);
+		//DrawDX2(m_mtxWorld2, NxA_pCoffeeBlue, MODELL_CUP_BLUE);
 		
-		DrawDX2(m_mtxWorld3, NxA_pCoffeeYellow, MODELL_CUP_YELLOW);
+		//DrawDX2(m_mtxWorld3, NxA_pCoffeeYellow, MODELL_CUP_YELLOW);
 
-		DrawDX2(m_mtxWorld4, NxA_pCoffeeGreen, MODELL_CUP_GREEN);
+		//DrawDX2(m_mtxWorld4, NxA_pCoffeeGreen, MODELL_CUP_GREEN);
 		
+		Thing_Normal->vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
+		thing_cup2->vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
+		thing_cup3->vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
+		thing_cup4->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+		RenderThing(m_mtxWorld, NxA_pCoffeeTable, MODELL_CUP_TABLE, thing_cup4);
 
+		RenderThing(m_mtxWorld2, NxA_pCoffeeBlue, MODELL_CUP_BLUE, Thing_Normal);
 		
+		RenderThing(m_mtxWorld3, NxA_pCoffeeYellow, MODELL_CUP_YELLOW, thing_cup2);
+
+		RenderThing(m_mtxWorld4, NxA_pCoffeeGreen, MODELL_CUP_GREEN, thing_cup3);
 	//	Debug_Collision(m_SphereCollision, m_mtxTranslation);
 		
 	}

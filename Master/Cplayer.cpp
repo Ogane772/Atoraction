@@ -39,7 +39,6 @@ CPlayer *CPlayer::m_pPlayer[PLAYER_MAX] = {};
 int CPlayer::m_PlayerNum = 0;
 int CPlayer::m_KO_Count = 0;
 bool CPlayer::m_delete = false;
-THING2 *Thing;
 //=============================================================================
 // 生成
 //=============================================================================
@@ -242,13 +241,13 @@ void CPlayer::Draw(void)
 	
 	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 	m_SphereCollision.CenterPos = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-	Thing->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+	Thing_Normal->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 
 	myData* mydata = (myData*)NxA_pPlayer->userData;
 
 	//DrawDX2(m_mtxWorld, NxA_pPlayer, MODELL_PLAYER);
 
-	RenderThing(m_mtxWorld, NxA_pPlayer, MODELL_PLAYER, Thing);
+	RenderThing(m_mtxWorld, NxA_pPlayer, MODELL_PLAYER, Thing_Normal);
 
 	//	デバッグ
 	//DebugFont_Draw(300, 50, "%f\n%f\n%f\n%f", m_front.x, m_front.y, m_front.z, m_Angle);
@@ -291,7 +290,7 @@ void CPlayer::Player_Initialize(void)
 
 	
 												//モデル情報取得
-	Thing = GetNormalModel(0);
+	Thing_Normal = GetNormalModel(MODELL_PLAYER);
 
 	NxA_pPlayer = CreateMeshAsSphere(NxVec3(0, 1, 0), 1.0, MODELL_PLAYER);
 	/*m_SphereCollision = {

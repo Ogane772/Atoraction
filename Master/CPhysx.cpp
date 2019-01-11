@@ -40,9 +40,6 @@
 CPhysx::ModelFileData CPhysx::m_NormalModelFileData[] = {
 	{},
 	{ "asset/model/emi-ru2.x" },
-	{ "asset/model/zako.x" },
-	{ "asset/model/boss.x" },
-	{ "asset/model/CoffeeCup.blend.x" },
 	{ "asset/model/dish.blend.x" },
 	{ "asset/model/enban.x" },
 	{ "asset/model/hasira.x" },
@@ -119,42 +116,20 @@ void CPhysx::CPhysX_Initialize(void)
 // Geometryの初期化（モデルの読み込み）
 HRESULT CPhysx::InitGeometry()
 {
-	/*if (FAILED(LoadMesh("asset/model/boss.x", BOSS)))
-	return E_FAIL;
-	if (FAILED(LoadMesh("asset/model/emi-ru2.x", PLAYER)))
-	return E_FAIL;
-	if (FAILED(LoadMesh("asset/model/slime.x", SMALL)))
-	return E_FAIL;
-	*/
-	/*
-	for (int i = 1; i < m_NORMALMODELFAIL_MAX - 1; i++)
-	{
-		InitThing(&Thing2[i], m_NormalModelFileData[i].filename);
-	}*/
-	InitThing(&Thing2[0], m_NormalModelFileData[1].filename);
-	InitSphere(m_pD3DDevice, &Thing2[0]);
 
-//	InitThing(&Thing2[1], m_NormalModelFileData[2].filename);
-//	InitSphere(m_pD3DDevice, &Thing2[1]);
-	/*
-	// メッシュごとのバウンディングスフィア（境界球）の作成
+	//通常モデル読み込み	
 	for (int i = 0; i < m_NORMALMODELFAIL_MAX - 1; i++)
 	{
-		InitSphere(m_pD3DDevice, &Thing2[i]);
-	}*/
-	/*
-	for (int i = 0;i < m_NORMALMODELFAIL_MAX - 1;i++)
-	{
-		if (FAILED(LoadMesh(m_NormalModelFileData[i+1].filename, i+1)))
-			return E_FAIL;
-	}*/
+		InitThing(&Thing2[i], m_NormalModelFileData[i+1].filename);
+		InitSphere(m_pD3DDevice, &Thing2[i]);//当たり判定の表示
+	}
 	//アニメーションモデル読み込み
 	//THINGにxファイルを読み込む
 	for (int i = 0; i < ANIME_MODEL_MAX; i++)
 	{
 		SkinMesh.InitThing(m_pD3DDevice, &Thing[i], m_AnimeModelFileData[i].filename);
+		SkinMesh.InitSphere(m_pD3DDevice, &Thing[i]);
 	}
-	SkinMesh.InitSphere(m_pD3DDevice, &Thing[0]);
 	if (FAILED(CreateDebugBase()))
 		return E_FAIL;
 	return S_OK;

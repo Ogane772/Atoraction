@@ -29,8 +29,7 @@ enum ANIMATION {
 //=============================================================================
 //	静的変数
 //=============================================================================
-THING *Thing_small;
-THING2 *Thing2_small;
+
 static LPD3DXANIMATIONSET pAnimSet[10] = { 0 };//選択したモデルに10個までのアニメーションをセット
 static FLOAT fAnimTime = 0.0f;
 static BOOL boPlayAnim = true;
@@ -86,21 +85,20 @@ void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 	NxVec3 BBDwarf = NxVec3(1.0f, 1.5f, 1.5f);	//	当たり判定の大きさ
 
 												//モデル情報取得
-	//Thing2_small = GetNormalModel(1);
 	//モデル情報取得
-	Thing_small = GetAnimeModel(MODELL_ANIME_SMALL);
+	Thing_Anime = GetAnimeModel(MODELL_ANIME_SMALL);
 	//アニメーショントラックを得る
-	for (DWORD i = 0; i < Thing_small->pAnimController->GetNumAnimationSets(); i++)
+	for (DWORD i = 0; i < Thing_Anime->pAnimController->GetNumAnimationSets(); i++)
 	{//AnimSetにアニメーション情報格納
-		Thing_small->pAnimController->GetAnimationSet(i, &pAnimSet[i]);
+		Thing_Anime->pAnimController->GetAnimationSet(i, &pAnimSet[i]);
 	}
 	//アニメーション情報初期化
 	TrackDesc.Weight = 1;
 	TrackDesc.Enable = true;
 	TrackDesc.Position = 0;//アニメーションタイムリセット
 	TrackDesc.Speed = 0.001;//モーションスピード
-	Thing_small->pAnimController->SetTrackDesc(0, &TrackDesc);//アニメ情報セット
-	Thing_small->pAnimController->SetTrackAnimationSet(0, pAnimSet[WALK]);//初期アニメーションセット
+	Thing_Anime->pAnimController->SetTrackDesc(0, &TrackDesc);//アニメ情報セット
+	Thing_Anime->pAnimController->SetTrackAnimationSet(0, pAnimSet[WALK]);//初期アニメーションセット
 
 	NxA_pSmall = CreateMeshAsSphere(NxVec3(Emitter->InitPos.x, Emitter->InitPos.y, Emitter->InitPos.z), 1.7, MODELL_ANIME_SMALL);
 	
@@ -133,9 +131,9 @@ void CEnemy_Small::Update(void)
 				TrackDesc.Enable = true;
 				TrackDesc.Position = 0;
 				TrackDesc.Speed = 0.001;//モーションスピード
-				Thing_small->pAnimController->SetTrackDesc(0, &TrackDesc);
-				Thing_small->pAnimController->SetTrackAnimationSet(0, pAnimSet[DEATH]);
-				Thing_small->pAnimController->SetTrackEnable(1, false);//アニメーション乗算OFF
+				Thing_Anime->pAnimController->SetTrackDesc(0, &TrackDesc);
+				Thing_Anime->pAnimController->SetTrackAnimationSet(0, pAnimSet[DEATH]);
+				Thing_Anime->pAnimController->SetTrackEnable(1, false);//アニメーション乗算OFF
 			}
 			if (Keyboard_IsPress(DIK_2))
 			{
@@ -143,9 +141,9 @@ void CEnemy_Small::Update(void)
 				TrackDesc.Enable = true;
 				TrackDesc.Position = 0;
 				TrackDesc.Speed = 0.001;//モーションスピード
-				Thing_small->pAnimController->SetTrackDesc(0, &TrackDesc);
-				Thing_small->pAnimController->SetTrackAnimationSet(0, pAnimSet[WALK]);
-				Thing_small->pAnimController->SetTrackEnable(1, false);//アニメーション乗算OFF
+				Thing_Anime->pAnimController->SetTrackDesc(0, &TrackDesc);
+				Thing_Anime->pAnimController->SetTrackAnimationSet(0, pAnimSet[WALK]);
+				Thing_Anime->pAnimController->SetTrackEnable(1, false);//アニメーション乗算OFF
 			}
 			if (Keyboard_IsPress(DIK_1))
 			{
@@ -153,9 +151,9 @@ void CEnemy_Small::Update(void)
 				TrackDesc.Enable = true;
 				TrackDesc.Position = 0;
 				TrackDesc.Speed = 0.001;//モーションスピード
-				Thing_small->pAnimController->SetTrackDesc(0, &TrackDesc);
-				Thing_small->pAnimController->SetTrackAnimationSet(0, pAnimSet[ATTACK]);
-				Thing_small->pAnimController->SetTrackEnable(1, false);//アニメーション乗算OFF
+				Thing_Anime->pAnimController->SetTrackDesc(0, &TrackDesc);
+				Thing_Anime->pAnimController->SetTrackAnimationSet(0, pAnimSet[ATTACK]);
+				Thing_Anime->pAnimController->SetTrackEnable(1, false);//アニメーション乗算OFF
 			}
 			if (Keyboard_IsPress(DIK_9))
 			{
@@ -255,9 +253,8 @@ void CEnemy_Small::Draw(void)
 	{
 		if (m_DrawCheck)
 		{
-			Thing_small->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-			DrawDX_Anime(m_mtxWorld, NxA_pSmall, MODELL_ANIME_SMALL, Thing_small);
-			//RenderThing(m_mtxWorld, NxA_pSmall, MODELL_PLAYER, Thing2_small);
+			Thing_Anime->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+			DrawDX_Anime(m_mtxWorld, NxA_pSmall, MODELL_ANIME_SMALL, Thing_Anime);
 		}
 	}
 }
