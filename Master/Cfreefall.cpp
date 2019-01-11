@@ -28,7 +28,7 @@
 
 #define FREEFALL_UP		(25.0f)
 #define FREEFALL_DOWN	(0.0f)
-
+THING2 *fall;
 /*static float ugoki;//円盤の上下の動き
 static bool Bugoki = false;
 static float moveY = 0.0f;//円盤の座標
@@ -76,6 +76,8 @@ void Cfreefall::Initialize()
 	NxVec3 scaleDwarf = NxVec3(FREEFALL_SCALE, FREEFALL_SCALE, FREEFALL_SCALE);	//	モデルスケール
 	NxVec3 BBDwarf = NxVec3(5.0, 1.0, 5.0);	//	当たり判定の大きさ
 	NxVec3 BBDwarf2 = NxVec3(0, 0, 0);
+	Thing_Normal = GetNormalModel(MODELL_HASIRA);
+	fall = GetNormalModel(MODELL_ENBAN);
 	NxA_pEnban = CreateMeshAsBox(NxVec3(mtx._41, mtx._42, mtx._43 + 5), mat1, scaleDwarf, BBDwarf, MODELL_ENBAN, false);
 	NxA_pHasira = CreateMeshAsBox(NxVec3(mtx._41, mtx._42, mtx._43 + 5), mat2, scaleDwarf, BBDwarf2, MODELL_HASIRA, false);
 }
@@ -140,8 +142,12 @@ void Cfreefall::Draw(void)
 //	DebugFont_Draw(800, 60, "Bugoki = %d\n,", Bugoki);
 	if (m_Enable)
 	{
-		DrawDX2(m_mtxWorld, NxA_pEnban, MODELL_ENBAN);
-		DrawDX2(m_mtxWorld2, NxA_pHasira, MODELL_HASIRA);
+
+		Thing_Normal->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+		fall->vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
+
+		RenderThing(m_mtxWorld2, NxA_pHasira, MODELL_HASIRA, Thing_Normal);
+		RenderThing(m_mtxWorld, NxA_pEnban, MODELL_ENBAN,fall);
 	}
 }
 
