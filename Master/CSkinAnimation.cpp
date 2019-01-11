@@ -282,7 +282,7 @@ HRESULT SKIN_MESH::UpdateSphere(LPDIRECT3DDEVICE9 pDevice, THING* pThing)
 	D3DXFrameCalculateBoundingSphere(pThing->pFrameRoot, &pThing->Sphere.vCenter,
 		&pThing->Sphere.fRadius);
 	pThing->pSphereMesh->Release();
-	D3DXCreateSphere(pDevice, pThing->Sphere.fRadius, 24, 24, &pThing->pSphereMesh, NULL);
+	D3DXCreateSphere(pDevice, pThing->Sphere.fRadius, 5, 5, &pThing->pSphereMesh, NULL);
 
 	return S_OK;
 }

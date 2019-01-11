@@ -48,7 +48,7 @@ public:
 	SphereCollision* Get_Collision(void) { return &m_SphereCollision; }
 
 	static THING* GetAnimeModel(int index);//取得したいモデル情報取得
-
+	static void HitCheck(void);//当たり判定確認
 protected:
 
 	enum NORMAL_MODEL{
@@ -135,6 +135,7 @@ protected:
 	void DrawDirectXMesh(NxActor* actor);
 	// PhysXの描画　PhysXRender
 	void RenderPhysX(void);
+
 
 	
 

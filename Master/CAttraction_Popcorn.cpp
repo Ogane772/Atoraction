@@ -74,8 +74,7 @@ void Popcorn::Initialize()
 	NxA_pPopcorn = CreateMeshAsBox(NxVec3(mtx._41, 0, mtx._43), mat1, scaleDwarf, BBDwarf, MODELL_POPCORN, false);
 
 	Thing_Normal = GetNormalModel(MODELL_POPCORN);
-	Thing_Normal->Sphere.vCenter = Thing_Normal->Sphere.vCenter * 0.5;
-	Thing_Normal->Sphere.fRadius = Thing_Normal->Sphere.fRadius * 0.5;
+
 	m_SphereCollision = {
 		D3DXVECTOR3(m_mtxTranslation._41,m_mtxTranslation._42,m_mtxTranslation._43),POPCORN_SIZE
 	};
