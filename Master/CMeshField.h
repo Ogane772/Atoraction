@@ -56,6 +56,7 @@ private:
 
 	float m_meshW;		//	メッシュ幅
 	void Mesh_Field_Initialize(void);	//	メッシュフィールド初期化(頂点設定)
+	void Mesh_Field_Initialize2(void);	//	メッシュフィールド初期化(頂点設定)UV値変更
 
 	static CMeshField *m_pMeshFielde;
 };

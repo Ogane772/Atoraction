@@ -79,6 +79,8 @@ void CMeshField::Draw(void)
 
 	m_pD3DDevice->SetTexture(0, Texture_GetTexture(m_TexIndex));
 
+	m_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
+	m_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
 
 	m_pD3DDevice->SetStreamSource(0, m_pVertexBuffer, 0, sizeof(MeshFieldVertex));
 	m_pD3DDevice->SetIndices(m_pIndexBuffer);
@@ -186,5 +188,25 @@ void CMeshField::Mesh_Field_Initialize(void)
 
 
 
+void CMeshField::Mesh_Field_Initialize2(void)
+{
+	// 頂点バッファの確保
+	m_pD3DDevice->CreateVertexBuffer(sizeof(MeshFieldVertex) * m_VertexCount, D3DUSAGE_WRITEONLY, FVF_MESH_FIELD_VERTEX, D3DPOOL_MANAGED, &m_pVertexBuffer, NULL);
+	// インデックスバッファの確保
+	m_pD3DDevice->CreateIndexBuffer(sizeof(WORD) * m_IndexCount, D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, D3DPOOL_MANAGED, &m_pIndexBuffer, NULL);
 
+	for (int h = 0;h < m_VertexH;h++)
+	{
+		for (int w = 0;w < m_VertexW;w++)
+		{
+			int n = w + m_VertexW * h;
+			m_Mfield[n].pos = D3DXVECTOR3(((float)m_meshWnum * 0.5f * -m_meshW) + (m_meshW * w), 0, ((float)m_meshHnum * 0.5 * m_meshW) + (-m_meshW * h));
+			m_Mfield[n].color = D3DCOLOR(0xffffffff);
+			m_Mfield[n].uv = D3DXVECTOR2(w, h);
+		}
+
+	}
+
+	Buffer_Write();
+}
 
