@@ -42,7 +42,7 @@ CMeshField::CMeshField(int TexIndex, float meshW, int meshXnum, int meshZnum) : 
 	m_VertexCount = m_VertexW * m_VertexH;
 	m_IndexCount = (meshXnum + 2) * (meshZnum * 2) - 2;
 	m_PrimitiveCount = (meshXnum * 2 + 4) * meshZnum - 4;
-	Mesh_Field_Initialize();
+	Mesh_Field_Initialize2();
 }
 //=============================================================================
 //	”jŠü
