@@ -36,7 +36,7 @@ bool boRenderSphere = true;
 //モデルアニメーション関係変数
 #define MODEL_MAX (9)
 SKIN_MESH SkinMesh;
-THING_NORMAL Thing_Normal[MODEL_MAX - 1];//読み込むモデルの最大数+1
+THING_NORMAL Thing_Normal[MODEL_MAX+1];//読み込むモデルの最大数+1
 THING Thing[THING_AMOUNT + 1];//読み込むモデルの最大数+1
 LPD3DXANIMATIONSET pAnimSet[THING_AMOUNT][10] = { 0 };//選択したモデルに10個までのアニメーションをセット
 FLOAT fAnimTime = 0.0f;

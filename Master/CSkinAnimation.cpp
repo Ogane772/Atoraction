@@ -39,7 +39,6 @@ HRESULT MY_HIERARCHY::CreateMeshContainer(LPCSTR Name, CONST D3DXMESHDATA* pMesh
                             LPD3DXMESHCONTAINER *ppMeshContainer) 
 {
 
-    HRESULT hr;
     MYMESHCONTAINER *pMeshContainer = NULL;
     int iFacesAmount;
     int iMaterial;
@@ -88,7 +87,7 @@ HRESULT MY_HIERARCHY::CreateMeshContainer(LPCSTR Name, CONST D3DXMESHDATA* pMesh
     {
         memcpy(pMeshContainer->pMaterials, pMaterials, sizeof(D3DXMATERIAL) * NumMaterials);
 
-        for (iMaterial = 0; iMaterial < NumMaterials; iMaterial++)
+        for (iMaterial = 0; iMaterial < (signed)NumMaterials; iMaterial++)
         {
             if (pMeshContainer->pMaterials[iMaterial].pTextureFilename != NULL)
             {
@@ -177,7 +176,7 @@ HRESULT MY_HIERARCHY::DestroyMeshContainer(LPD3DXMESHCONTAINER pMeshContainerBas
 	
     if (pMeshContainer->ppTextures != NULL)
     {
-        for (iMaterial = 0; iMaterial < pMeshContainer->NumMaterials; iMaterial++)
+        for (iMaterial = 0; iMaterial < (signed)pMeshContainer->NumMaterials; iMaterial++)
         {
             SAFE_RELEASE( pMeshContainer->ppTextures[iMaterial] );
         }
@@ -309,8 +308,8 @@ HRESULT SKIN_MESH::InitThing(LPDIRECT3DDEVICE9 pDevice,THING *pThing,LPSTR szXFi
 VOID SKIN_MESH::RenderMeshContainer(LPDIRECT3DDEVICE9 pDevice,MYMESHCONTAINER* pMeshContainer, MYFRAME* pFrame)
 {
 
-	DWORD i,k,m;
-	DWORD dwBoneIndex,dwBlendMatrixNum;    
+	DWORD i,k;
+	DWORD dwBlendMatrixNum;    
     DWORD dwPrevBoneID;
     LPD3DXBONECOMBINATION pBoneCombination;
     UINT iMatrixIndex;

@@ -23,7 +23,7 @@
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================
-#define SPEED (0.2)
+#define SPEED (0.2f)
 #define PLAYER_SAIZ (1)
 #define MPSTOCK_INIT (5)
 #define ANGLE (3)
@@ -352,6 +352,7 @@ C3DObj *CPlayer::Get_Player(void)
 			return pplayer;
 		}
 	}
+	return 0;
 }
 
 

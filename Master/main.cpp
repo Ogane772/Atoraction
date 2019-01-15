@@ -23,7 +23,6 @@
 #include "gamepad.h"
 #include "fade.h"
 #include "sound.h"
-
 //#include "CGameObj.h"
 #include "C2DObj.h"
 
@@ -76,55 +75,71 @@ static BYTE KeyTbl[256];
 //=============================================================================
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hprevInstance, LPSTR lpCmdline, int nCmdShow)
 {
+	// 使用しない一時変数を明示
 	UNREFERENCED_PARAMETER(hprevInstance);
 	UNREFERENCED_PARAMETER(lpCmdline);
 
-	WNDCLASS wc = {};									//WINDOWCLASS		構造体 = {};　←０で初期化
-														//WNDCLASSEX　もある
-	wc.lpfnWndProc = WndProc;							//ウィンドプロシージャ
-	wc.lpszClassName = CLASS_NAME;						//クラス名
-	wc.hInstance = hInstance;							//インスタンスハンドル
-	wc.hCursor = LoadCursor(NULL, IDC_ARROW);			//マウスカーソル
-	wc.hbrBackground = (HBRUSH)(COLOR_BACKGROUND + 1);	//背景カラー	COLOR_WINDOW　←白	「+1」は必要
+	// ウィンドウクラス構造体の設定
+	WNDCLASS wc = {};
+	wc.lpfnWndProc = WndProc;                          // ウィンドウプロシージャの指定
+	wc.lpszClassName = CLASS_NAME;                     // クラス名の設定
+	wc.hInstance = hInstance;                          // インスタンスハンドルの指定
+	wc.hCursor = LoadCursor(NULL, IDC_ARROW);          // マウスカーソルを指定
+	wc.hbrBackground = (HBRUSH)(COLOR_BACKGROUND + 1); // ウインドウのクライアント領域の背景色を設定
 
-	RegisterClass(&wc);		//クラスを登録		WNDCLASSEXの場合はRegisterClassEx
+													   // クラス登録
+	RegisterClass(&wc);
 
-	DWORD window_style = WINDOW_STYLE;
 
-	//　window幅
-	RECT window_rect = { 0,0,WINDOW_WIDTH,WINDOW_HIGHT };	//	左、上、右、下
-	AdjustWindowRect(&window_rect, window_style, FALSE);	//　windowサイズを得る
-	
+	// ウィンドウスタイル
+	DWORD window_style = WS_OVERLAPPEDWINDOW & ~(WS_MAXIMIZEBOX | WS_THICKFRAME);
+
+	// 基本矩形座標
+	RECT window_rect = { 0, 0, (LONG)WINDOW_WIDTH, (LONG)WINDOW_HIGHT };
+
+	// 指定したクライアント領域を確保するために新たな矩形座標を計算
+	AdjustWindowRect(&window_rect, window_style, FALSE);
+	int window_width = 0;
+	int window_height = 0;
 	// 新たなWindowの矩形座標から幅と高さを算出
-	int window_width = window_rect.right - window_rect.left;
-	int window_hight = window_rect.bottom - window_rect.top;
+	window_width = window_rect.right - window_rect.left;
+	window_height = window_rect.bottom - window_rect.top;
 
+	int screen_width = 0;
+	int screen_hight = 0;
+	// プライマリモニターの画面解像度取得
 	//　window座標 プライマリモニターの画面解像度取得
-	int screen_width = GetSystemMetrics(SM_CXSCREEN);				 //　画面サイズの幅　
-	int screen_hight = GetSystemMetrics(SM_CYSCREEN);
+	screen_width = GetSystemMetrics(SM_CXSCREEN);
+	screen_hight = GetSystemMetrics(SM_CYSCREEN);
+
 	// デスクトップの真ん中にウィンドウが生成されるように座標を計算
 	// ※ただし万が一、デスクトップよりウィンドウが大きい場合は左上に表示
 	int window_x = (((screen_width - window_width) / 2 > (0)) ? ((screen_width - window_width) / 2) : (0));  //　max(a,b) a>bならa a<bならb
-	int window_y = (screen_hight / 2) - (window_hight / 2);
-
+	int window_y = (screen_hight / 2) - (window_height / 2);
 
 	// ウィンドウの生成
-	hWnd = CreateWindow(
-		CLASS_NAME,				//　ウィンドウクラス名
-		WINDOW_CAPTION,			//　キャプション
-		window_style		,	//　ウィンドウスタイルフラグ(ビット)
-		window_x,				//	ウィンドウ座標x		USEDEFAULT←適当にしてくれる
-		window_y,				//	ウィンドウ座標y
-		window_width,			//	ウィンドウの幅
-		window_hight,			//	ウィンドウの高さ
-		NULL,					//	親ウィンドウハンドル
-		NULL,					//　メニュー
-		hInstance,				//　インスタンスハンドル
-		NULL					//　ウィンドウメッセージで送れるオリジナルデータなどのポインタ	NULL入れておけばおｋ
-		);	//　ウィンドウハンドルがもらえる		※失敗すると０が入る
+	HWND hWnd = CreateWindow(
+		CLASS_NAME,     // ウィンドウクラス
+		WINDOW_CAPTION, // ウィンドウテキスト
+		window_style,   // ウィンドウスタイル
+		-8,       // ウィンドウ座標x
+		window_y + 160,       // ウィンドウ座標y
+		window_width,   // ウィンドウの幅
+		window_height,  // ウィンドウの高さ
+		NULL,           // 親ウィンドウハンドル
+		NULL,           // メニューハンドル
+		hInstance,      // インスタンスハンドル
+		NULL            // 追加のアプリケーションデータ
+	);
 
-	ShowWindow(hWnd, nCmdShow);		//(ウィンドウハンドル,出かた);
-	UpdateWindow(hWnd);
+	if (hWnd == NULL) {
+		// ウィンドウハンドルが何らかの理由で生成出来なかった
+		return -1;
+	}
+
+	// 指定のウィンドウハンドルのウィンドウを指定の方法で表示
+	ShowWindow(hWnd, nCmdShow);
+
 
 	// ゲームの初期化　(Direct3Dの初期化)
 	if (!Begin(hInstance,hWnd))

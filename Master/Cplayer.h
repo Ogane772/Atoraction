@@ -26,12 +26,12 @@ public:
 	static void Add_KoCount(void) { m_KO_Count++; }
 	static bool m_delete;
 	static C3DObj *Get_Player(void);
-	
+	bool Get_DrawCheck(void) { return m_DrawCheck; }
 	
 protected:
 	
 	D3DXMATRIX m_mtxKeepTranslation;	//	ˆÚ“®•Ûs—ñ
-	
+	bool m_DrawCheck;			//	•`‰æƒtƒ‰ƒO
 private:
 	void  AngleChange(bool Angle_Flg);
 	void Player_Initialize(void);	//	‰Šú‰»

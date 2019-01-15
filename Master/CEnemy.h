@@ -46,6 +46,9 @@ public:
 	void EnemyDamage(void);
 	static int Get_EnemyMaxNum(void) { return m_ENEMY_MAX; }
 	static C3DObj *Get_Enemy(int type);
+	bool Get_DrawCheck(void) { return m_DrawCheck; }
+
+	static C3DObj *Get_Map_Enemy(int Index);
 protected:
 
 	enum

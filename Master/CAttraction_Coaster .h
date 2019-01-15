@@ -20,8 +20,9 @@ public:
 	void Finalize(void);
 	void Coaster_Create(void);
 	static C3DObj *Get_Coaster(void);
-
+	bool Get_DrawCheck(void) { return m_DrawCheck; }
 private:
+	bool m_DrawCheck;
 	void Initialize();
 	int u;	//ƒ‚ƒfƒ‹‚ÌŠp“x
 };

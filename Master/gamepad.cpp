@@ -33,7 +33,7 @@ LPDIRECTINPUTDEVICE8 pJoyDevice = NULL;
 BOOL CALLBACK EnumJoysticksCallback(const DIDEVICEINSTANCE* pdidInstance, VOID* pContext)
 {
 	//複数列挙される場合、ユーザーに選択・確認させる
-	TCHAR szConfirm[MAX_PATH + 1];
+	//TCHAR szConfirm[MAX_PATH + 1];
 	// 「DirectInputデバイス」オブジェクトの作成
 	if (FAILED(pDinput->CreateDevice(pdidInstance->guidInstance,
 		&pJoyDevice, NULL)))
@@ -88,7 +88,7 @@ BOOL CALLBACK EnumObjectsCallback(const DIDEVICEOBJECTINSTANCE* pdidoi, VOID* pC
 //=============================================================================
 // ゲームパッドの初期化
 //=============================================================================
-bool Gamepad_Initialize(HINSTANCE hInstance, HWND hWnd)
+HRESULT Gamepad_Initialize(HINSTANCE hInstance, HWND hWnd)
 {
 	// 「DirectInput」オブジェクトの作成
 	if (FAILED(DirectInput8Create(GetModuleHandle(NULL),
