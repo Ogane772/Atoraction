@@ -75,7 +75,7 @@ void Cfreefall::Update(void)
 {
 	if (m_Enable)
 	{//Ç±Ç±Ç≈à⁄ìÆåvéZÇçsÇ§
-
+		D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41, ugoki, m_mtxWorld._43);
 		D3DXMatrixScaling(&m_mtxScaling, FREEFALL_SCALE, FREEFALL_SCALE, FREEFALL_SCALE);
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(0));
 		m_mtxWorld = m_mtxScaling *m_mtxRotation * m_mtxTranslation;
@@ -113,6 +113,7 @@ void Cfreefall::Update(void)
 			}
 		}
 
+		D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld2._41, 0, m_mtxWorld2._43);
 		D3DXMatrixScaling(&m_mtxScaling, FREEFALL_SCALE, FREEFALL_SCALE, FREEFALL_SCALE);
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(0));
 		m_mtxWorld2 = m_mtxScaling * m_mtxRotation * m_mtxTranslation;

@@ -9,7 +9,7 @@
 //=============================================================================
 //	定数定義
 //=============================================================================
-#define SPEED (0.2)
+#define SPEED (0.2f)
 //=============================================================================
 //	グローバル宣言
 //=============================================================================
@@ -42,6 +42,7 @@ D3DXMATRIX Move(int direction)
 		D3DXMatrixTranslation(&mtxTranslation, right.x, right.y, right.z);
 		return mtxTranslation;
 	}
+	return mtxTranslation;
 }
 
 D3DXMATRIX Move(int direction,float speed)
@@ -71,4 +72,5 @@ D3DXMATRIX Move(int direction,float speed)
 		D3DXMatrixTranslation(&mtxTranslation, right.x, right.y, right.z);
 		return mtxTranslation;
 	}
+	return mtxTranslation;
 }

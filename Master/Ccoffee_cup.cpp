@@ -66,14 +66,10 @@ void CCoffeeCup::Initialize()
 	D3DXMatrixScaling(&m_mtxScaling, COFFEE_SCALE, COFFEE_SCALE, COFFEE_SCALE);
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 
-	//NxA_pCoffee = CreateMeshAsBox(NxVec3(mtx._41, 0, mtx._43), mat1, scaleDwarf, BBDwarf, MODELL_CUP, false);
-
-
 	Thing_Normal_model = GetNormalModel(MODELL_CUP_BLUE);
 	thing_cup2 = GetNormalModel(MODELL_CUP_YELLOW);
 	thing_cup3 = GetNormalModel(MODELL_CUP_GREEN);
 	thing_cup4 = GetNormalModel(MODELL_CUP_TABLE);
-
 }
 
 void CCoffeeCup::Update(void)
@@ -104,7 +100,7 @@ void CCoffeeCup::Update(void)
 			B_CoolTime = true;
 			CoolTime = 0;
 		}
-		D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41, 0.0, m_mtxWorld._43);
+		D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angCup));
 		m_mtxWorld = m_mtxScaling* m_mtxRotation  * m_mtxTranslation;
 
