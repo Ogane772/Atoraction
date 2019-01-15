@@ -13,7 +13,7 @@
 #include "move.h"
 #include "CAttraction.h"
 #include "debug_font.h"
-
+#include "gamepad.h"
 #include "CEnemy.h"
 #include "Cwheel.h"
 #include "CEnemy_Small.h"
@@ -42,7 +42,7 @@ bool CPlayer::m_delete = false;
 //=============================================================================
 // 生成
 //=============================================================================
-CPlayer::CPlayer():C3DObj(C3DObj::TYPE_PLAYER)
+CPlayer::CPlayer() :C3DObj(C3DObj::TYPE_PLAYER)
 {
 	Player_Initialize();
 	m_PlayerIndex = m_PlayerNum;
@@ -200,36 +200,36 @@ void CPlayer::Update(void)
 			m_Mp = 0;
 		}
 	}
-/*	int atrnum = CAttraction::Get_AttractionNum(CAttraction::TYPE_ALL);
+	/*	int atrnum = CAttraction::Get_AttractionNum(CAttraction::TYPE_ALL);
 	for (int j = 0;j < atrnum;j++)
 	{
-		CAttraction *patr = CAttraction::Get_Attraction(j, CAttraction::TYPE_WHEEL);
-		if (patr)
-		{
-			int enemynum = CEnemy::Get_EnemyMaxNum();
-			for (int i = 0;i < enemynum;i++)
-			{
-				CEnemy *penemy = CEnemy_Small::Get_Enemy(i);
-				if (penemy)
-				{
-					NxActor* act = penemy->Get_Actor();
-					NxActor* act2 = patr->Get_Actor();
-					myData* mydata = (myData*)act2->userData;
-					if (mydata->hit)
-					{
-						penemy->Damage();
-						mydata->hit = false;
-					}
-					NxScene* scene = Get_PhysX_Scene();
-					scene->setUserContactReport(new ContactCallBack());
-					scene->setActorPairFlags(*act2,
-						*act,
-						NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH);
+	CAttraction *patr = CAttraction::Get_Attraction(j, CAttraction::TYPE_WHEEL);
+	if (patr)
+	{
+	int enemynum = CEnemy::Get_EnemyMaxNum();
+	for (int i = 0;i < enemynum;i++)
+	{
+	CEnemy *penemy = CEnemy_Small::Get_Enemy(i);
+	if (penemy)
+	{
+	NxActor* act = penemy->Get_Actor();
+	NxActor* act2 = patr->Get_Actor();
+	myData* mydata = (myData*)act2->userData;
+	if (mydata->hit)
+	{
+	penemy->Damage();
+	mydata->hit = false;
+	}
+	NxScene* scene = Get_PhysX_Scene();
+	scene->setUserContactReport(new ContactCallBack());
+	scene->setActorPairFlags(*act2,
+	*act,
+	NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH);
 
 
-				}
-			}
-		}
+	}
+	}
+	}
 	}*/
 }
 //=============================================================================
@@ -238,16 +238,13 @@ void CPlayer::Update(void)
 
 void CPlayer::Draw(void)
 {
-	
-	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
-	m_SphereCollision.CenterPos = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-	Thing_Normal->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 
-	myData* mydata = (myData*)NxA_pPlayer->userData;
+	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
+	Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 
 	//DrawDX2(m_mtxWorld, NxA_pPlayer, MODELL_PLAYER);
 
-	RenderThing(m_mtxWorld, NxA_pPlayer, MODELL_PLAYER, Thing_Normal);
+	DrawDX_Normal(m_mtxWorld, MODELL_PLAYER, Thing_Normal_model);
 
 	//	デバッグ
 	//DebugFont_Draw(300, 50, "%f\n%f\n%f\n%f", m_front.x, m_front.y, m_front.z, m_Angle);
@@ -284,17 +281,11 @@ void CPlayer::Player_Initialize(void)
 	D3DXVec3Cross(&m_up, &m_right, &m_front);
 	D3DXVec3Normalize(&m_up, &m_up);
 
-	NxMat33 mat1;
-	NxVec3 scaleDwarf = NxVec3(1, 1, 1);	//	モデルスケール
-	NxVec3 BBDwarf = NxVec3(1.0f, 1.0f, 1.0f);	//	当たり判定の大きさ
+	//モデル情報取得
+	Thing_Normal_model = GetNormalModel(MODELL_PLAYER);
 
-	
-												//モデル情報取得
-	Thing_Normal = GetNormalModel(MODELL_PLAYER);
-
-	NxA_pPlayer = CreateMeshAsSphere(NxVec3(0, 1, 0), 1.0, MODELL_PLAYER);
 	/*m_SphereCollision = {
-		D3DXVECTOR3(m_mtxWorld._41,m_mtxWorld._42,m_mtxWorld._43),PLAYER_SAIZ
+	D3DXVECTOR3(m_mtxWorld._41,m_mtxWorld._42,m_mtxWorld._43),PLAYER_SAIZ
 	};*/
 	//コントローラー情報取得
 	js = { 0 };
@@ -308,7 +299,7 @@ void CPlayer::Player_Initialize(void)
 //	終了処理
 void CPlayer::Finalize(void)
 {
-	for (int i = 0;i < m_PlayerNum;i++)
+	for (int i = 0; i < m_PlayerNum; i++)
 	{
 		if (m_pPlayer[i])
 		{
@@ -353,7 +344,7 @@ void  CPlayer::AngleChange(bool Angle_Flg)
 
 C3DObj *CPlayer::Get_Player(void)
 {
-	for (int i = 0;i < MAX_GAMEOBJ;i++)
+	for (int i = 0; i < MAX_GAMEOBJ; i++)
 	{
 		C3DObj *pplayer = C3DObj::Get(i);
 		if (pplayer->Get_3DObjType() == C3DObj::TYPE_PLAYER)

@@ -20,13 +20,10 @@ public:
 	void Draw(void);
 	void Finalize(void);
 	void Damage(void);
-	NxActor* Get_Actor(void) { return NxA_pSmall; }
-	static C3DObj *Get_EnemySmall(int Index);
-
 private:
 	void EnemySmall_Create(void);
 	void Initialize(ENEMY_EMITTER *Emitter);
-	
-	NxActor* NxA_pSmall;
+	bool m_playercheck;
+	bool PlayerCheck(void);
 };
 #endif;

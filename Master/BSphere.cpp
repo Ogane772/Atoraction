@@ -1,7 +1,7 @@
 #include "BSphere.h"
 //
 //スフィアの計算およびスフィアを視認可能にするためにスフィアメッシュを作成する
-HRESULT InitSphere(LPDIRECT3DDEVICE9 pDevice,THING2* pThing)
+HRESULT InitSphere(LPDIRECT3DDEVICE9 pDevice,THING_NORMAL* pThing)
 {
 	HRESULT hr = NULL;
 	LPDIRECT3DVERTEXBUFFER9 pVB = NULL;

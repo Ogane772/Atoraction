@@ -13,7 +13,7 @@ struct SPHERE
 	FLOAT fRadius;
 };
 
-struct THING2
+struct THING_NORMAL
 {
 	LPD3DXMESH pMesh;
 	LPD3DXMESH pSphereMesh;
@@ -28,14 +28,14 @@ struct THING2
 	FLOAT fYaw;
 	FLOAT fPitch;
 
-	THING2()
+	THING_NORMAL()
 	{
-		ZeroMemory(this, sizeof(THING2));
+		ZeroMemory(this, sizeof(THING_NORMAL));
 		D3DXMatrixIdentity(&mRotation);
 		D3DXMatrixIdentity(&mWorld);
 	}
 };
 
-HRESULT InitSphere(LPDIRECT3DDEVICE9, THING2*);
+HRESULT InitSphere(LPDIRECT3DDEVICE9, THING_NORMAL*);
 
 #endif

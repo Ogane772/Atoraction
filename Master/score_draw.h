@@ -4,7 +4,8 @@
 #include "number.h"
 #include "fade.h"
 #include "scene.h"
-#include "Cplayer.h"
+#include "player.h"
+
 void Score_Draw(float x, float y, int score, int fig, bool bLeft, bool bZero);
 void Score_Draw(float x, float y, int cache, int fig);
 void Score_Initialize(void);

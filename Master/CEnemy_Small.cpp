@@ -11,14 +11,17 @@
 #include "CEnemy_Small.h"
 #include "Cplayer.h"
 #include "input.h"
+#include "CSkinAnimation.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
+
 #define SMALL_SIZE (0.8f)
 #define SMALL_ATTACK (3)
 #define SMALL_HP (1)
 #define SMALL_MP (2)
 #define SMALL_SCORE (1)
+//エネミースモールのアニメーション番号定義
 enum ANIMATION {
 	STOP,
 	WALK,
@@ -29,11 +32,10 @@ enum ANIMATION {
 //=============================================================================
 //	静的変数
 //=============================================================================
-
 static LPD3DXANIMATIONSET pAnimSet[10] = { 0 };//選択したモデルに10個までのアニメーションをセット
-static FLOAT fAnimTime = 0.0f;
-static BOOL boPlayAnim = true;
-static D3DXTRACK_DESC TrackDesc;
+static FLOAT fAnimTime = 0.0f;//アニメ経過時間
+static BOOL boPlayAnim = true;//アニメ再生するかどうか
+static D3DXTRACK_DESC TrackDesc;//アニメーショントラック変数
 
 //=============================================================================
 //	グローバル変数
@@ -66,7 +68,20 @@ void CEnemy_Small::EnemySmall_Create(void)
 void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 {
 	m_EnemyIndex = Get_EnemyIndex(TYPE_ALL);
-
+	//モデル情報取得
+	Thing_Anime_model = GetAnimeModel(MODELL_ANIME_SMALL);
+	//アニメーショントラックを得る
+	for (DWORD i = 0; i < Thing_Anime_model->pAnimController->GetNumAnimationSets(); i++)
+	{//AnimSetにアニメーション情報格納
+		Thing_Anime_model->pAnimController->GetAnimationSet(i, &pAnimSet[i]);
+	}
+	//アニメーション情報初期化
+	TrackDesc.Weight = 1;
+	TrackDesc.Enable = true;
+	TrackDesc.Position = 0;//アニメーションタイムリセット
+	TrackDesc.Speed = 0.001;//モーションスピード
+	Thing_Anime_model->pAnimController->SetTrackDesc(0, &TrackDesc);//アニメ情報セット
+	Thing_Anime_model->pAnimController->SetTrackAnimationSet(0, pAnimSet[WALK]);//初期アニメーションセット
 	m_Enable = true;
 	m_MoveCheck = false;
 	m_DrawCheck = true;
@@ -79,30 +94,6 @@ void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 	D3DXMatrixScaling(&m_mtxScaling, 1, 1, 1);
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 
-	NxMat33 mat1;
-	//mat1.rotZ(0);
-	NxVec3 scaleDwarf = NxVec3(1, 1, 1);	//	モデルスケール
-	NxVec3 BBDwarf = NxVec3(1.0f, 1.5f, 1.5f);	//	当たり判定の大きさ
-
-												//モデル情報取得
-	//モデル情報取得
-	Thing_Anime = GetAnimeModel(MODELL_ANIME_SMALL);
-	//アニメーショントラックを得る
-	for (DWORD i = 0; i < Thing_Anime->pAnimController->GetNumAnimationSets(); i++)
-	{//AnimSetにアニメーション情報格納
-		Thing_Anime->pAnimController->GetAnimationSet(i, &pAnimSet[i]);
-	}
-	//アニメーション情報初期化
-	TrackDesc.Weight = 1;
-	TrackDesc.Enable = true;
-	TrackDesc.Position = 0;//アニメーションタイムリセット
-	TrackDesc.Speed = 0.001;//モーションスピード
-	Thing_Anime->pAnimController->SetTrackDesc(0, &TrackDesc);//アニメ情報セット
-	Thing_Anime->pAnimController->SetTrackAnimationSet(0, pAnimSet[WALK]);//初期アニメーションセット
-
-	NxA_pSmall = CreateMeshAsSphere(NxVec3(Emitter->InitPos.x, Emitter->InitPos.y, Emitter->InitPos.z), 1.7, MODELL_ANIME_SMALL);
-	
-
 }
 
 
@@ -110,10 +101,6 @@ void CEnemy_Small::Finalize(void)
 {
 	
 	Enemy_Finalize(m_EnemyIndex);
-	
-	/*USERDATA* pUserData = (USERDATA*)NxA_pSmall->userData;
-	pUserData->ContactPairFlag = 0;*/
-	NxA_pSmall = NULL;
 	
 }
 
@@ -131,9 +118,9 @@ void CEnemy_Small::Update(void)
 				TrackDesc.Enable = true;
 				TrackDesc.Position = 0;
 				TrackDesc.Speed = 0.001;//モーションスピード
-				Thing_Anime->pAnimController->SetTrackDesc(0, &TrackDesc);
-				Thing_Anime->pAnimController->SetTrackAnimationSet(0, pAnimSet[DEATH]);
-				Thing_Anime->pAnimController->SetTrackEnable(1, false);//アニメーション乗算OFF
+				Thing_Anime_model->pAnimController->SetTrackDesc(0, &TrackDesc);
+				Thing_Anime_model->pAnimController->SetTrackAnimationSet(0, pAnimSet[DEATH]);
+				Thing_Anime_model->pAnimController->SetTrackEnable(1, false);//アニメーション乗算OFF
 			}
 			if (Keyboard_IsPress(DIK_2))
 			{
@@ -141,9 +128,9 @@ void CEnemy_Small::Update(void)
 				TrackDesc.Enable = true;
 				TrackDesc.Position = 0;
 				TrackDesc.Speed = 0.001;//モーションスピード
-				Thing_Anime->pAnimController->SetTrackDesc(0, &TrackDesc);
-				Thing_Anime->pAnimController->SetTrackAnimationSet(0, pAnimSet[WALK]);
-				Thing_Anime->pAnimController->SetTrackEnable(1, false);//アニメーション乗算OFF
+				Thing_Anime_model->pAnimController->SetTrackDesc(0, &TrackDesc);
+				Thing_Anime_model->pAnimController->SetTrackAnimationSet(0, pAnimSet[WALK]);
+				Thing_Anime_model->pAnimController->SetTrackEnable(1, false);//アニメーション乗算OFF
 			}
 			if (Keyboard_IsPress(DIK_1))
 			{
@@ -151,45 +138,70 @@ void CEnemy_Small::Update(void)
 				TrackDesc.Enable = true;
 				TrackDesc.Position = 0;
 				TrackDesc.Speed = 0.001;//モーションスピード
-				Thing_Anime->pAnimController->SetTrackDesc(0, &TrackDesc);
-				Thing_Anime->pAnimController->SetTrackAnimationSet(0, pAnimSet[ATTACK]);
-				Thing_Anime->pAnimController->SetTrackEnable(1, false);//アニメーション乗算OFF
+				Thing_Anime_model->pAnimController->SetTrackDesc(0, &TrackDesc);
+				Thing_Anime_model->pAnimController->SetTrackAnimationSet(0, pAnimSet[ATTACK]);
+				Thing_Anime_model->pAnimController->SetTrackEnable(1, false);//アニメーション乗算OFF
 			}
-			if (Keyboard_IsPress(DIK_9))
-			{
-				NxA_pSmall->addForce(NxVec3(500000, -2000000, 0));
-				NxA_pSmall->setLinearVelocity(NxVec3(20, 0, 0));
-				NxA_pSmall->addLocalTorque(NxVec3(100000, 0, 0), NX_FORCE);
-			}
+			///////////////
 			if (m_DrawCheck)
 			{
-				if (!m_MoveCheck)
+				if (!PlayerCheck())
 				{
-					m_Direction++;
-					if (m_Direction >= 10)
+					if (!m_MoveCheck)
 					{
-						m_Direction = 0;
+						m_Direction++;
+						if (m_Direction >= 9)
+						{
+							m_Direction = 0;
+						}
+						//EnemyAngleChange(NULL, m_Direction);
+						D3DXMatrixRotationY(&m_mtxRotation, m_EnemyMove[m_Direction].Angle);
+						m_TimeKeep = m_FrameCount;
+						t = rand() % 3 + 1;
+						m_MoveCheck = true;
 					}
-					EnemyAngleChange(NxA_pSmall, m_Direction);
-					D3DXMatrixRotationY(&m_mtxRotation, m_EnemyMove[m_Direction].Angle);
-					m_TimeKeep = m_FrameCount;
-					t = rand() % 3 + 1;
-					m_MoveCheck = true;
+					else
+					{
+						//EnemyMove(NULL, m_Direction, SMALL_SPEED);
+						D3DXMATRIX mtxtrans;
+						D3DXMatrixTranslation(&mtxtrans, m_EnemyMove[m_Direction].Move.x * SMALL_SPEED, m_EnemyMove[m_Direction].Move.y * SMALL_SPEED, m_EnemyMove[m_Direction].Move.z * SMALL_SPEED);
+						m_mtxTranslation *= mtxtrans;
+						if (m_FrameCount - m_TimeKeep >= 60 * t)
+						{
+							m_MoveCheck = false;
+						}
+					}
 				}
 				else
 				{
-					EnemyMove(NxA_pSmall, m_Direction, SMALL_SPEED);
-					if (m_FrameCount - m_TimeKeep >= 60 *t)
-					{
-						m_MoveCheck = false;
-					}
+					C3DObj *pplayer = CPlayer::Get_Player();
+					D3DXMATRIX playerworld = pplayer->Get_mtxWorld();
+					float x = playerworld._41 - m_mtxWorld._41;
+					float z = playerworld._43 - m_mtxWorld._43;
+
+					D3DXMATRIX mtxtrans;
+					D3DXMatrixTranslation(&mtxtrans, x * 0.015, 0.0, z * 0.015);
+					m_mtxTranslation *= mtxtrans;
+
+					float angle = atan2(-z, x);
+					D3DXMatrixRotationY(&m_mtxRotation, angle);
+
+					/*myData* mydata = (myData*)NxA_pSmall->userData;
+					mydata->meshTranslation.x += x*SMALL_SPEED;
+					//mydata->meshTranslation.y += move.y;
+					mydata->meshTranslation.z += z*SMALL_SPEED;
+					NxA_pSmall->setGlobalPosition(mydata->meshTranslation);*/
 				}
 			}
 			else
 			{
 				if (m_MoveCheck)
 				{
-					EnemyMove(NxA_pSmall, m_Direction, SMALL_SPEED);
+					//EnemyMove(NxA_pSmall, m_Direction, SMALL_SPEED);
+					D3DXMATRIX mtxtrans;
+					D3DXMatrixTranslation(&mtxtrans, m_EnemyMove[m_Direction].Move.x * SMALL_SPEED, m_EnemyMove[m_Direction].Move.y * SMALL_SPEED, m_EnemyMove[m_Direction].Move.z * SMALL_SPEED);
+					m_mtxTranslation *= mtxtrans;
+					
 					if (m_FrameCount - m_TimeKeep >= 180)
 					{
 						m_MoveCheck = false;
@@ -201,12 +213,18 @@ void CEnemy_Small::Update(void)
 					float angle = atan2(-m_mtxWorld._43, -m_mtxWorld._41);
 					D3DXMatrixRotationY(&m_mtxRotation, angle);
 					D3DXVECTOR3 move = D3DXVECTOR3(cos(angle), 0, sin(angle));
-					move *= SMALL_SPEED;
-					myData* mydata = (myData*)NxA_pSmall->userData;
+					//move *= SMALL_SPEED;
+
+					D3DXMATRIX mtxtrans;
+					D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41 + move.x, m_mtxWorld._42, m_mtxWorld._43 + move.z);
+					//m_mtxTranslation *= mtxtrans;
+
+					
+					/*myData* mydata = (myData*)NxA_pSmall->userData;
 					mydata->meshTranslation.x += move.x;
 					mydata->meshTranslation.y += move.y;
 					mydata->meshTranslation.z += move.z;
-					NxA_pSmall->setGlobalPosition(mydata->meshTranslation);
+					NxA_pSmall->setGlobalPosition(mydata->meshTranslation);*/
 				}
 			}
 		}
@@ -216,12 +234,12 @@ void CEnemy_Small::Update(void)
 
 
 
-		NxVec3 tr = NxA_pSmall->getGlobalPosition();
-		D3DXMatrixTranslation(&m_mtxTranslation, tr.x, tr.y, tr.z);
+	//	NxVec3 tr = NxA_pSmall->getGlobalPosition();
+	//	D3DXMatrixTranslation(&m_mtxTranslation, tr.x, tr.y, tr.z);
 		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 		
 		
-
+		
 
 		if (45.0*45.0 < (m_mtxWorld._41*m_mtxWorld._41) + (m_mtxWorld._43 * m_mtxWorld._43))
 		{
@@ -249,12 +267,13 @@ void CEnemy_Small::Update(void)
 
 void CEnemy_Small::Draw(void)
 {
+	
 	if (m_Enable)
 	{
 		if (m_DrawCheck)
-		{
-			Thing_Anime->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-			DrawDX_Anime(m_mtxWorld, NxA_pSmall, MODELL_ANIME_SMALL, Thing_Anime);
+		{//当たり判定位置更新
+			Thing_Anime_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+			DrawDX_Anime(m_mtxWorld, MODELL_ANIME_SMALL, Thing_Anime_model);
 		}
 	}
 }
@@ -271,22 +290,19 @@ void CEnemy_Small::Damage(void)
 			CPlayer::Add_KoCount();
 		}
 	}
-	
-	
 }
 
 
-C3DObj *CEnemy_Small::Get_EnemySmall(int Index)
+bool CEnemy_Small::PlayerCheck(void)
 {
-	C3DObj *pEnemy = C3DObj::Get(Index);
-	if (pEnemy)
-	{
-		if (pEnemy->Get_3DObjType() == C3DObj::TYPE_ENEMYSMALL)
-		{
-			return pEnemy;
-		}
-	}
-	return NULL;
+	C3DObj *pplayer = CPlayer::Get_Player();
+	float l = 10;
+	D3DXMATRIX playerworld = pplayer->Get_mtxWorld();
+	float cc = (playerworld._41 - m_mtxWorld._41) * (playerworld._41 - m_mtxWorld._41) + (playerworld._43 - m_mtxWorld._43) *  (playerworld._43 - m_mtxWorld._43);
+
+
+	return cc < (l * l);
+
 }
 
 

@@ -20,20 +20,17 @@ public:
 	void Finalize(void);
 	void CoffeeCup_Create(void);
 	bool Get_DrawCheck(void) { return false; }
-	NxActor* Get_Actor(void) { return NxA_pCoffee; }
 private:
 	void Initialize();
-	
+
 	float angCup = 0.0f;				//カップの回転
 	int CoolTime = 0;					//クールタイム
 	bool B_CoolTime;					//クールタイムのブール
-	
+
 	D3DXMATRIX m_mtxTranslation2;	//	移動行列
 
 	D3DXMATRIX m_mtxWorld2;				//	ワールド変換用行列2
 	D3DXMATRIX m_mtxWorld3;				//	ワールド変換用行列3
 	D3DXMATRIX m_mtxWorld4;				//	ワールド変換用行列4
-
-	NxActor *NxA_pCoffee, *NxA_pCoffeeTable, *NxA_pCoffeeBlue, *NxA_pCoffeeYellow, *NxA_pCoffeeGreen;
 };
 #endif;

@@ -7,11 +7,11 @@
 #ifndef _ENEMY_H_
 #define _ENEMY_H_
 
-#include "CCharacter.h"
+#include "C3DObj.h"
 
 #define ENEMY_MAX (100)
 
-class CEnemy:public CCharacter
+class CEnemy:virtual public C3DObj
 {
 public:
 	// 敵の種類
@@ -44,13 +44,8 @@ public:
 	int Get_Score(void) { return m_Score; }
 	int Get_Type(void) { return m_Type; }
 	void EnemyDamage(void);
-	virtual NxActor* Get_Actor(void) = 0;
 	static int Get_EnemyMaxNum(void) { return m_ENEMY_MAX; }
-	bool Get_DrawCheck(void) { return m_DrawCheck; }
-
-	static C3DObj *Get_Map_Enemy(int Index);
-
-	
+	static C3DObj *Get_Enemy(int type);
 protected:
 
 	enum
@@ -80,6 +75,7 @@ protected:
 	bool m_DrawCheck;			//	描画フラグ
 
 	
+	static C3DObj *Get_AllEnemy(void);
 	typedef struct{
 		int CreateFrame;		//	生成フレーム
 		int Type;				//	エネミータイプ
@@ -89,8 +85,8 @@ protected:
 	}ENEMY_EMITTER;
 
 	int m_EnemyIndex;
-	void EnemyMove(NxActor *actor, int direction, float speed);		//	移動処理
-	void EnemyAngleChange(NxActor *actor, int direction);			//	向き変更処理
+	void EnemyMove(int direction, float speed);		//	移動処理
+	void EnemyAngleChange(int direction);			//	向き変更処理
 private:
 
 	int m_Type;			// 種類

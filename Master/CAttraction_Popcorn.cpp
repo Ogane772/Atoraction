@@ -10,7 +10,6 @@
 
 #include "CAttraction_Popcorn.h"
 #include "Cplayer.h"
-#include "Cphysx.h"
 #include "debug_font.h"
 //=============================================================================
 //	定数定義
@@ -65,19 +64,9 @@ void Popcorn::Initialize()
 	D3DXMatrixScaling(&m_mtxScaling, POPCORN_SCALE, POPCORN_SCALE, POPCORN_SCALE);
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 
-	NxMat33 mat1;
-	mat1.rotZ(0);
-	NxVec3 scaleDwarf = NxVec3(POPCORN_SCALE, POPCORN_SCALE, POPCORN_SCALE);	//	モデルスケール
-	NxVec3 BBDwarf = NxVec3(0.7, 1.0, 0.7);	//	当たり判定の大きさ
-	//NxA_pCoffee = CreateMeshAsBox(NxVec3(mtx._41, 0, mtx._43), mat1, scaleDwarf, BBDwarf, MODELL_CUP, false);
 
-	NxA_pPopcorn = CreateMeshAsBox(NxVec3(mtx._41, 0, mtx._43), mat1, scaleDwarf, BBDwarf, MODELL_POPCORN, false);
+	Thing_Normal_model = GetNormalModel(MODELL_POPCORN);
 
-	Thing_Normal = GetNormalModel(MODELL_POPCORN);
-
-	m_SphereCollision = {
-		D3DXVECTOR3(m_mtxTranslation._41,m_mtxTranslation._42,m_mtxTranslation._43),POPCORN_SIZE
-	};
 }
 
 void Popcorn::Update(void)
@@ -95,16 +84,13 @@ void Popcorn::Draw(void)
 	if (m_Enable)
 	{
 
-		Thing_Normal->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 
-		RenderThing(m_mtxWorld, NxA_pPopcorn, MODELL_POPCORN, Thing_Normal);
-
-
+		DrawDX_Normal(m_mtxWorld, MODELL_POPCORN, Thing_Normal_model);
 	}
 }
 
 void Popcorn::Finalize(void)
 {
 	Attraction_Finalize(m_AttractionIndex);
-	NxA_pPopcorn = NULL;
 }

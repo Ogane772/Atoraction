@@ -32,8 +32,7 @@ public:
 		TEX_NUM2,
 		TEX_MAP,
 		TEX_Player_Icon,
-		TEX_ENEMY_ICON,
-		TEX_ENEMY_SCREENSHOT,
+
 
 		TYPE_MAX
 	};
