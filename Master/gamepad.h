@@ -13,7 +13,7 @@
 #define DIRECTINPUT_VERSION (0x0800)
 #include <dinput.h>
 
-bool Gamepad_Initialize(HINSTANCE hInstance, HWND hWnd);
+HRESULT Gamepad_Initialize(HINSTANCE hInstance, HWND hWnd);
 void Gamepad_Finalize(void);
 LPDIRECTINPUTDEVICE8* JoyDevice_Get(void);//コントローラー取得情報を返す
 #endif

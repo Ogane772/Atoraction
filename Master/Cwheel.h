@@ -18,7 +18,7 @@ public:
 	void Update(void);
 	void Draw(void);
 	void Finalize(void);
-	
+	bool Get_DrawCheck(void) { return m_DrawCheck; }
 private:
 	void Initialize();
 	int m_AttractionIndex;
@@ -28,6 +28,7 @@ private:
 	int ferris_counter;				 //ŠÏ——ŽÔ’âŽ~
 	float rotate_ferris;			//ŠÏ——ŽÔ‚ÌŠp“x
 	float angle;
+	bool m_DrawCheck;
 	D3DXMATRIX mtxR;
 	D3DXVECTOR3 move;
 	D3DXVECTOR3 Wheel_position;

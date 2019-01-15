@@ -26,42 +26,42 @@
 
 //	エネミー移動用構造体
 CEnemy::ENEMY_MOVE CEnemy::m_EnemyMove[8] = {
-	{ D3DXVECTOR3(0.0f,0.0f,1.0f),D3DXToRadian(-90.0) },
-	{ D3DXVECTOR3(1.0f,0.0f,1.0f),D3DXToRadian(-45.0) },
-	{ D3DXVECTOR3(1.0f,0.0f,0.0f),D3DXToRadian(0.0) },
-	{ D3DXVECTOR3(1.0f,0.0f,-1.0f),D3DXToRadian(45.0) },
-	{ D3DXVECTOR3(-1.0f,0.0f,-1.0f),D3DXToRadian(135.0) },
-	{ D3DXVECTOR3(-1.0f,0.0f,1.0f),D3DXToRadian(-135.0) },
-	{ D3DXVECTOR3(0.0f,0.0f,-1.0f),D3DXToRadian(90.0) },
+	{ D3DXVECTOR3(0.0f,0.0f,1.0f),D3DXToRadian(-90.0f) },
+	{ D3DXVECTOR3(1.0f,0.0f,1.0f),D3DXToRadian(-45.0f) },
+	{ D3DXVECTOR3(1.0f,0.0f,0.0f),D3DXToRadian(0.0f) },
+	{ D3DXVECTOR3(1.0f,0.0f,-1.0f),D3DXToRadian(45.0f) },
+	{ D3DXVECTOR3(-1.0f,0.0f,-1.0f),D3DXToRadian(135.0f) },
+	{ D3DXVECTOR3(-1.0f,0.0f,1.0f),D3DXToRadian(-135.0f) },
+	{ D3DXVECTOR3(0.0f,0.0f,-1.0f),D3DXToRadian(90.0f) },
 };
 
 //	エネミーエミッター
 CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 {
-	{ 0   , TYPE_SMALL, D3DXVECTOR3( 10.0, 1.6 , 10.0), DIRE_NORTH	   ,false },
-    { 0	  , TYPE_SMALL, D3DXVECTOR3( 20.0, 1.6 , 20.0), DIRE_EAST	   ,false },
-	{ 0	  , TYPE_SMALL, D3DXVECTOR3( 30.0, 1.6 , 30.0), DIRE_NORTHWEST ,false },
-	{ 0	  , TYPE_SMALL, D3DXVECTOR3( 20.0, 1.6 , 10.0), DIRE_SOUTHEAST ,false },
-	{ 0	  , TYPE_SMALL, D3DXVECTOR3( 0.0 , 1.6 , 0.0 ), DIRE_NORTHEAST ,false },
+	{ 0   , TYPE_SMALL, D3DXVECTOR3( 10.0f, 1.6f , 10.0f), DIRE_NORTH	   ,false },
+    { 0	  , TYPE_SMALL, D3DXVECTOR3( 20.0f, 1.6f , 20.0f), DIRE_EAST	   ,false },
+	{ 0	  , TYPE_SMALL, D3DXVECTOR3( 30.0f, 1.6f , 30.0f), DIRE_NORTHWEST ,false },
+	{ 0	  , TYPE_SMALL, D3DXVECTOR3( 20.0f, 1.6f , 10.0f), DIRE_SOUTHEAST ,false },
+	{ 0	  , TYPE_SMALL, D3DXVECTOR3( 0.0f , 1.6f , 0.0f ), DIRE_NORTHEAST ,false },
 
-	{ 100 , TYPE_SMALL, D3DXVECTOR3( 50.0, 1.6 , 10.0), DIRE_SOUTH     ,false },
-	{ 100 , TYPE_SMALL, D3DXVECTOR3( 60.0, 1.6 , 30.0), DIRE_SOUTH     ,false },
-	{ 100 , TYPE_SMALL, D3DXVECTOR3( 70.0, 1.6 , 50.0), DIRE_SOUTH     ,false },
-	{ 100 , TYPE_SMALL, D3DXVECTOR3( 80.0, 1.6 , 80.0), DIRE_SOUTH     ,false },
-	{ 100 , TYPE_SMALL, D3DXVECTOR3( 90.0, 1.6 , 50.0), DIRE_SOUTH     ,false },
-	{ 100 , TYPE_SMALL, D3DXVECTOR3(-50.0, 1.6 , 60.0), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0, 1.6 , 10.0), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0, 1.6 , 20.0), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0, 1.6 , 30.0), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0, 1.6 , 40.0), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0, 1.6 , 50.0), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0, 1.6 , 60.0), DIRE_SOUTH     ,false },
-	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0, 1.6 ,-10.0), DIRE_SOUTH     ,false },
-	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0, 1.6 ,-20.0), DIRE_SOUTH     ,false },
-	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0, 1.6 ,-30.0), DIRE_SOUTH     ,false },
-	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0, 1.6 ,-40.0), DIRE_SOUTH     ,false },
-	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0, 1.6 ,-50.0), DIRE_SOUTH     ,false },
-	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0, 1.6 ,-60.0), DIRE_SOUTH     ,false },
+	{ 100 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 1.6f , 10.0f), DIRE_SOUTH     ,false },
+	{ 100 , TYPE_SMALL, D3DXVECTOR3( 60.0f, 1.6f , 30.0f), DIRE_SOUTH     ,false },
+	{ 100 , TYPE_SMALL, D3DXVECTOR3( 70.0f, 1.6f , 50.0f), DIRE_SOUTH     ,false },
+	{ 100 , TYPE_SMALL, D3DXVECTOR3( 80.0f, 1.6f , 80.0f), DIRE_SOUTH     ,false },
+	{ 100 , TYPE_SMALL, D3DXVECTOR3( 90.0f, 1.6f , 50.0f), DIRE_SOUTH     ,false },
+	{ 100 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 1.6f , 60.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 1.6f , 10.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 1.6f , 20.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 1.6f , 30.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 1.6f , 40.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 1.6f , 50.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 1.6f , 60.0f), DIRE_SOUTH     ,false },
+	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 1.6f ,-10.0f), DIRE_SOUTH     ,false },
+	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 1.6f ,-20.0f), DIRE_SOUTH     ,false },
+	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 1.6f ,-30.0f), DIRE_SOUTH     ,false },
+	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 1.6f ,-40.0f), DIRE_SOUTH     ,false },
+	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 1.6f ,-50.0f), DIRE_SOUTH     ,false },
+	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 1.6f ,-60.0f), DIRE_SOUTH     ,false },
 };
 
 int CEnemy::m_ENEMY_MAX = sizeof(CEnemy_Small::m_EnemyEmitter) / sizeof(m_EnemyEmitter[0]);
@@ -177,4 +177,18 @@ C3DObj *CEnemy::Get_AllEnemy(void)
 	return NULL;
 }
 
-
+C3DObj *CEnemy::Get_Map_Enemy(int Index)
+{
+	C3DObj *pEnemy = C3DObj::Get(Index);
+	if (pEnemy)
+	{
+		if (pEnemy->Get_3DObjType() == C3DObj::TYPE_ENEMY)
+		{
+			if (pEnemy->Get_DrawCheck())
+			{
+				return pEnemy;
+			}
+		}
+	}
+	return NULL;
+}

@@ -64,7 +64,7 @@ public:
 	int Get_3DObjIndex() { return m_3DObjIndex; }	// ワークインデックス取得
 	int Get_3DObjType() { return m_3DObjType; }		// 種類取得
 
-	int Get_Angle(void) { return m_Angle; }			//	角度取得
+	int Get_Angle(void) { return (int)m_Angle; }			//	角度取得
 	D3DXVECTOR3 Get_Front(void) { return m_front; }	//	前ベクトル取得
 	
 	int Get_Hp(void) { return m_Hp; }				//	HP取得
@@ -81,6 +81,8 @@ public:
 	static void Model_Finalize(int index);
 	//当たり判定
 	static void HitCheck(void);
+
+	virtual bool Get_DrawCheck(void) = 0;
 protected:
 	THING *Thing_Anime_model;//アニメモデル情報
 	THING_NORMAL *Thing_Normal_model;//通常モデル情報

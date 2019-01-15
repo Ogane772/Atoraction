@@ -10,7 +10,7 @@ typedef enum SCENE_INDEX
 	SCENE_INDEX_GAME,
 	SCENE_INDEX_RESULT,
 	SCENE_INDEX_MAX
-};
+}Scene;
 
 
 void Scene_Initialize(SCENE_INDEX index);

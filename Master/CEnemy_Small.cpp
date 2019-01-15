@@ -79,7 +79,7 @@ void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 	TrackDesc.Weight = 1;
 	TrackDesc.Enable = true;
 	TrackDesc.Position = 0;//アニメーションタイムリセット
-	TrackDesc.Speed = 0.001;//モーションスピード
+	TrackDesc.Speed = 0.001f;//モーションスピード
 	Thing_Anime_model->pAnimController->SetTrackDesc(0, &TrackDesc);//アニメ情報セット
 	Thing_Anime_model->pAnimController->SetTrackAnimationSet(0, pAnimSet[WALK]);//初期アニメーションセット
 	m_Enable = true;
@@ -117,7 +117,7 @@ void CEnemy_Small::Update(void)
 				TrackDesc.Weight = 1.0;
 				TrackDesc.Enable = true;
 				TrackDesc.Position = 0;
-				TrackDesc.Speed = 0.001;//モーションスピード
+				TrackDesc.Speed = 0.001f;//モーションスピード
 				Thing_Anime_model->pAnimController->SetTrackDesc(0, &TrackDesc);
 				Thing_Anime_model->pAnimController->SetTrackAnimationSet(0, pAnimSet[DEATH]);
 				Thing_Anime_model->pAnimController->SetTrackEnable(1, false);//アニメーション乗算OFF
@@ -127,7 +127,7 @@ void CEnemy_Small::Update(void)
 				TrackDesc.Weight = 1.0;
 				TrackDesc.Enable = true;
 				TrackDesc.Position = 0;
-				TrackDesc.Speed = 0.001;//モーションスピード
+				TrackDesc.Speed = 0.001f;//モーションスピード
 				Thing_Anime_model->pAnimController->SetTrackDesc(0, &TrackDesc);
 				Thing_Anime_model->pAnimController->SetTrackAnimationSet(0, pAnimSet[WALK]);
 				Thing_Anime_model->pAnimController->SetTrackEnable(1, false);//アニメーション乗算OFF
@@ -137,7 +137,7 @@ void CEnemy_Small::Update(void)
 				TrackDesc.Weight = 1.0;
 				TrackDesc.Enable = true;
 				TrackDesc.Position = 0;
-				TrackDesc.Speed = 0.001;//モーションスピード
+				TrackDesc.Speed = 0.001f;//モーションスピード
 				Thing_Anime_model->pAnimController->SetTrackDesc(0, &TrackDesc);
 				Thing_Anime_model->pAnimController->SetTrackAnimationSet(0, pAnimSet[ATTACK]);
 				Thing_Anime_model->pAnimController->SetTrackEnable(1, false);//アニメーション乗算OFF
@@ -180,10 +180,10 @@ void CEnemy_Small::Update(void)
 					float z = playerworld._43 - m_mtxWorld._43;
 
 					D3DXMATRIX mtxtrans;
-					D3DXMatrixTranslation(&mtxtrans, x * 0.015, 0.0, z * 0.015);
+					D3DXMatrixTranslation(&mtxtrans, x * 0.015f, 0.0f, z * 0.015f);
 					m_mtxTranslation *= mtxtrans;
 
-					float angle = atan2(-z, x);
+					float angle = (float)(atan2(-z, x));
 					D3DXMatrixRotationY(&m_mtxRotation, angle);
 
 					/*myData* mydata = (myData*)NxA_pSmall->userData;
@@ -210,9 +210,9 @@ void CEnemy_Small::Update(void)
 				}
 				else
 				{
-					float angle = atan2(-m_mtxWorld._43, -m_mtxWorld._41);
+					float angle = (float)(atan2(-m_mtxWorld._43, -m_mtxWorld._41));
 					D3DXMatrixRotationY(&m_mtxRotation, angle);
-					D3DXVECTOR3 move = D3DXVECTOR3(cos(angle), 0, sin(angle));
+					D3DXVECTOR3 move = (D3DXVECTOR3((float)(cos(angle)), 0.0f, (float)(sin(angle))));
 					//move *= SMALL_SPEED;
 
 					D3DXMATRIX mtxtrans;

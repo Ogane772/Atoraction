@@ -13,6 +13,7 @@
 #include "Cplayer.h"
 #include "CCamera.h"
 #include "common.h"
+#include "CEnemy.h"
 #include "score_draw.h"
 //=============================================================================
 //	定数定義
@@ -21,7 +22,7 @@
 #define HP_GAGE_HEIGHT (40)	//ゲージの高さ
 
 #define MP_GAGE_WIDTH (350)	//MPゲージの幅
-
+#define ENEMY_MAX (100)
 //=============================================================================
 //	静的変数
 //=============================================================================
@@ -78,7 +79,7 @@ void CUserInterFace::Draw(void)
 	//制限時間
 	int t = CGameObj::m_FrameCount / 60;
 	Num_Draw(WINDOW_WIDTH / 2-25, -25, GAMEEND/60-t,2,0,true);
-	int tt = CGameObj::m_FrameCount % 61*1.7;
+	int tt = (int)(CGameObj::m_FrameCount % 61*1.7);
 	if (CGameObj::m_FrameCount >= GAMEEND)
 	{
 		tt = 100;
@@ -87,15 +88,25 @@ void CUserInterFace::Draw(void)
 
 	//	撃破数
 	int ko = CPlayer::Get_KoCount();
-	Num_Draw(WINDOW_WIDTH / 3, WINDOW_HIGHT / 2+90, ko, 3, 1,false);
+	Num_Draw(WINDOW_WIDTH / 3 + 500, WINDOW_HIGHT / 2+300, ko, 3, 1,false);
 
+	//ミニマップ
 	D3DXMATRIX playermatrix = playerget->Get_mtxTranslation();
-	Sprite_Draw(TEX_MAP, 850.0f, 0.0f, 0.0f, 0.0f, 150, 150);
+	Sprite_Draw(TEX_MAP, 1550.0f, 0.0f, 0, 0, 300, 300);
 
-
-
-	Sprite_Draw(TEX_Player_Icon, 880.0f + playermatrix._41, 60.0f - playermatrix._43, 0.0f, 0.0f, 60, 30);
+	Sprite_Draw(TEX_Player_Icon, 1580.0f + playermatrix._41, 60.0f - playermatrix._43, 0, 0, 120, 60);
 	
+	//エネミー
+	for (int i = 0; i < ENEMY_MAX; i++)
+	{
+		C3DObj *enemyget = CEnemy::Get_Map_Enemy(i);
+		if (enemyget)
+		{
+			D3DXMATRIX enemymatrix = enemyget->Get_mtxTranslation();
+
+			Sprite_Draw(TEX_ENEMY_ICON, 1605.0f + enemymatrix._41, 70.0f - enemymatrix._43, 0, 0, 12, 12);
+		}
+	}
 }
 
 void CUserInterFace::Finalize(void)

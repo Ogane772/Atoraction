@@ -113,7 +113,7 @@ void CMeshField_Cylinder::MeshField_Cylinder_Initialize(void)
 		for (int w = 0;w < m_VertexW;w++)
 		{
 			int n = w + m_VertexW * h;
-			float angle = 360 / m_meshWnum * w;
+			float angle = (float)(360 / m_meshWnum * w);
 			m_Mfield[n].pos = D3DXVECTOR3(m_radius * sinf(D3DXToRadian(angle)), m_meshHnum * m_meshH - (h * m_meshH), m_radius * cosf(D3DXToRadian(angle)));
 			m_Mfield[n].color = D3DCOLOR(0xffff0000);
 			m_Mfield[n].uv = D3DXVECTOR2(w * (1.0f / m_meshWnum), h * (1.0f / m_meshHnum));
