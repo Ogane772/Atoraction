@@ -38,6 +38,4 @@ struct THING2
 
 HRESULT InitSphere(LPDIRECT3DDEVICE9, THING2*);
 
-BOOL Collision(THING2*, THING2*);
-
 #endif

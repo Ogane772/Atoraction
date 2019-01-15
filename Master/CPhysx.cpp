@@ -415,10 +415,34 @@ void CPhysx::RenderPhysX(void)
 
 void CPhysx::HitCheck(void)
 {
-	//当たり判定
-	if (Collision(&Thing2[0], &Thing2[1]))
+	//ノーマルモデル対ノーマルモデル
+	if (Collision_NomalVSNormal(&Thing2[0], &Thing2[1]))
 	{
 		DebugFont_Draw(500, 300, "当たったぞ！！！！！！！！！！！");
+		C3DObj *pplayer = CPlayer::Get_Player();
+		NxActor *pactor = pplayer->Get_Actor();
+	}
+	else
+	{
+		DebugFont_Draw(500, 500, "当たってないぞ！！！！！！！！！！！");
+	}
+	DebugFont_Draw(200, 50, "エネミーポジション= X= %f Y= %f Z = %f", Thing[0].vPosition.x, Thing[0].vPosition.y, Thing[0].vPosition.z);
+	DebugFont_Draw(200, 80, "プレイヤーポジション= X= %f Y= %f Z = %f", Thing2[0].vPosition.x, Thing2[0].vPosition.y, Thing2[0].vPosition.z);
+	//アニメ対ノーマル
+	if (Collision_AnimeVSNormal(&Thing[0], &Thing2[0]))
+	{
+		DebugFont_Draw(500, 300, "当たったぞ！！");
+		C3DObj *pplayer = CPlayer::Get_Player();
+		NxActor *pactor = pplayer->Get_Actor();
+	}
+	else
+	{
+		DebugFont_Draw(500, 500, "当たってないぞ！！！！！！！！！！！");
+	}
+	//アニメ対アニメ
+	if (Collision_AnimeVSAnime(&Thing[0], &Thing[0]))
+	{
+		DebugFont_Draw(500, 300, "当たったぞ！！");
 		C3DObj *pplayer = CPlayer::Get_Player();
 		NxActor *pactor = pplayer->Get_Actor();
 	}
@@ -1276,7 +1300,47 @@ void CPhysx::DrawCapsule(NxActor* actor, D3DXMATRIXA16 &matWorld)
 	m_pD3DDevice->DrawPrimitive(D3DPT_LINESTRIP, 38, 8);
 }
 
+bool CPhysx::Collision_NomalVSNormal(THING2* pThingA, THING2* pThingB)
+{
+	//２つの物体の中心間の距離を求める
+	D3DXVECTOR3 vLength = pThingB->vPosition - pThingA->vPosition;
+	FLOAT fLength = D3DXVec3Length(&vLength);
+	// その距離が、2物体の半径を足したものより小さいということは、
+	//境界球同士が重なっている（衝突している）ということ
+	if (fLength <= pThingA->Sphere.fRadius + pThingB->Sphere.fRadius)
+	{
+		return true;
+	}
+	return false;
+}
 
+bool CPhysx::Collision_AnimeVSNormal(THING* pThingA, THING2* pThingB)
+{
+	//２つの物体の中心間の距離を求める
+	D3DXVECTOR3 vLength = pThingB->vPosition - pThingA->vPosition;
+	FLOAT fLength = D3DXVec3Length(&vLength);
+	// その距離が、2物体の半径を足したものより小さいということは、
+	//境界球同士が重なっている（衝突している）ということ
+	if (fLength <= pThingA->Sphere.fRadius + pThingB->Sphere.fRadius)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool CPhysx::Collision_AnimeVSAnime(THING* pThingA, THING* pThingB)
+{
+	//２つの物体の中心間の距離を求める
+	D3DXVECTOR3 vLength = pThingB->vPosition - pThingA->vPosition;
+	FLOAT fLength = D3DXVec3Length(&vLength);
+	// その距離が、2物体の半径を足したものより小さいということは、
+	//境界球同士が重なっている（衝突している）ということ
+	if (fLength <= pThingA->Sphere.fRadius + pThingB->Sphere.fRadius)
+	{
+		return true;
+	}
+	return false;
+}
 
 //当たり判定イベント通知クラス  　hit相談
 void CPhysx::ContactCallBack::onContactNotify(NxContactPair& pair, NxU32 events)

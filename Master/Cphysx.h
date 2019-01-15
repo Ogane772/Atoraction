@@ -219,6 +219,12 @@ private:
 	// カプセルの描画
 	void DrawCapsule(NxActor* actor, D3DXMATRIXA16 &matWorld);
 
+	//衝突検出 ノーマルモデル対ノーマルモデル
+	static bool Collision_NomalVSNormal(THING2*, THING2*);
+	//衝突検出 アニメモデル対ノーマルモデル
+	static bool Collision_AnimeVSNormal(THING*, THING2*);
+	//衝突検出 アニメモデル対アニメモデル
+	static bool Collision_AnimeVSAnime(THING*, THING*);
 
 	//	モデルデータの構造体
 	typedef struct

@@ -56,18 +56,4 @@ HRESULT InitSphere(LPDIRECT3DDEVICE9 pDevice,THING2* pThing)
 
 	return S_OK;
 }
-//
-//衝突検出
-BOOL Collision(THING2* pThingA,THING2* pThingB)
-{
-	//２つの物体の中心間の距離を求める
-	D3DXVECTOR3 vLength=pThingB->vPosition-pThingA->vPosition;
-	FLOAT fLength=D3DXVec3Length(&vLength);
-	// その距離が、2物体の半径を足したものより小さいということは、
-	//境界球同士が重なっている（衝突している）ということ
-	if(fLength <= pThingA->Sphere.fRadius+pThingB->Sphere.fRadius)
-	{
-		return true;
-	}
-	return false;
-}
+

@@ -102,7 +102,6 @@ void Game_Updata(void)
 	{
 		CGameObj::FrameCountUp();
 	}
-	CPhysx::HitCheck();
 }
 
 //=============================================================================
@@ -116,6 +115,7 @@ void Game_Draw(void)
 
 	gScene->flushStream();
 	gScene->fetchResults(NX_RIGID_BODY_FINISHED, true);
+	CPhysx::HitCheck();
 }
 
 
