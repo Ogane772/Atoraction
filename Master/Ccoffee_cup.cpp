@@ -10,7 +10,6 @@
 
 #include "Ccoffee_cup.h"
 #include "Cplayer.h"
-#include "Cphysx.h"
 #include "debug_font.h"
 //=============================================================================
 //	定数定義
@@ -66,17 +65,7 @@ void CCoffeeCup::Initialize()
 	D3DXMatrixScaling(&m_mtxScaling, COFFEE_SCALE, COFFEE_SCALE, COFFEE_SCALE);
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 
-	NxMat33 mat1;
-	mat1.rotZ(0);
-	NxVec3 scaleDwarf = NxVec3(COFFEE_SCALE, COFFEE_SCALE, COFFEE_SCALE);	//	モデルスケール
-	NxVec3 BBDwarf = NxVec3(0.7, 1.0, 0.7);	//	当たり判定の大きさ
-	NxVec3 BBDwarf2 = NxVec3(0, 0, 0);
-	NxA_pCoffee = CreateMeshAsBox(NxVec3(mtx._41, 0, mtx._43), mat1, scaleDwarf, BBDwarf, MODELL_CUP, false);
-	NxA_pCoffeeTable = CreateMeshAsBox(NxVec3(mtx._41, 0, mtx._43), mat1, scaleDwarf, BBDwarf2, MODELL_CUP_TABLE, false);
-
-	m_SphereCollision = {
-		D3DXVECTOR3(m_mtxTranslation._41,m_mtxTranslation._42,m_mtxTranslation._43),COFFEE_SIZE
-	};
+	
 }
 
 void CCoffeeCup::Update(void)
@@ -106,14 +95,12 @@ void CCoffeeCup::Update(void)
 			CoolTime = 0;
 		}
 
-	
 
-		NxVec3 tr = NxA_pCoffee->getGlobalPosition();
-		D3DXMatrixTranslation(&m_mtxTranslation, tr.x, -0.5, tr.z);
+		D3DXMatrixTranslation(&m_mtxTranslation, m_mtxTranslation._41, -0.3, m_mtxTranslation._43);
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angCup));
 		m_mtxWorld2 = m_mtxScaling* m_mtxRotation  * m_mtxTranslation;
 
-		D3DXMatrixTranslation(&m_mtxTranslation, tr.x, 0, tr.z);
+		D3DXMatrixTranslation(&m_mtxTranslation, m_mtxTranslation._41, 0, m_mtxTranslation._43);
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(0));
 		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 
@@ -122,22 +109,16 @@ void CCoffeeCup::Update(void)
 
 void CCoffeeCup::Draw(void)
 {
-	//DebugFont_Draw(600, 30, "Dodai = %f\n,", angCup);
-	//DebugFont_Draw(600, 60, "CoolTime = %d\n,", CoolTime);
 	if (m_Enable)
 	{
-		DrawDX2(m_mtxWorld2, NxA_pCoffee, MODELL_CUP);
-		DrawDX2(m_mtxWorld, NxA_pCoffeeTable, MODELL_CUP_TABLE);
-	//	Debug_Collision(m_SphereCollision, m_mtxTranslation);
-		
+		Model_Draw(MODELL_CUP_TABLE, m_mtxWorld);
+		Model_Draw(MODELL_CUP, m_mtxWorld2);
 	}
 }
 
 void CCoffeeCup::Finalize(void)
 {
 	Attraction_Finalize(m_AttractionIndex);
-	NxA_pCoffee = NULL;
-	NxA_pCoffeeTable = NULL;
 }
 
 void CCoffeeCup::CoffeeCup_Create(void)

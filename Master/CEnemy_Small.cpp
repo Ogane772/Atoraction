@@ -70,14 +70,6 @@ void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 	D3DXMatrixScaling(&m_mtxScaling, 1, 1, 1);
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 
-	NxMat33 mat1;
-	//mat1.rotZ(0);
-	NxVec3 scaleDwarf = NxVec3(1, 1, 1);	//	モデルスケール
-	NxVec3 BBDwarf = NxVec3(1.0f, 1.5f, 1.5f);	//	当たり判定の大きさ
-
-	
-	NxA_pSmall = CreateMeshAsSphere(NxVec3(Emitter->InitPos.x, Emitter->InitPos.y, Emitter->InitPos.z), 1.7, MODELL_SMALL);
-	
 }
 
 
@@ -85,10 +77,6 @@ void CEnemy_Small::Finalize(void)
 {
 	
 	Enemy_Finalize(m_EnemyIndex);
-	
-	/*USERDATA* pUserData = (USERDATA*)NxA_pSmall->userData;
-	pUserData->ContactPairFlag = 0;*/
-	NxA_pSmall = NULL;
 	
 }
 
@@ -99,37 +87,65 @@ void CEnemy_Small::Update(void)
 	{
 		if (m_Hp > 0)
 		{
-			
 			if (m_DrawCheck)
 			{
-				if (!m_MoveCheck)
+				if (!PlayerCheck())
 				{
-					
-					m_Direction++;
-					if (m_Direction >= 10)
+					if (!m_MoveCheck)
 					{
-						m_Direction = 0;
+						m_Direction++;
+						if (m_Direction >= 9)
+						{
+							m_Direction = 0;
+						}
+						//EnemyAngleChange(NULL, m_Direction);
+						D3DXMatrixRotationY(&m_mtxRotation, m_EnemyMove[m_Direction].Angle);
+						m_TimeKeep = m_FrameCount;
+						t = rand() % 3 + 1;
+						m_MoveCheck = true;
 					}
-					EnemyAngleChange(NxA_pSmall, m_Direction);
-					D3DXMatrixRotationY(&m_mtxRotation, m_EnemyMove[m_Direction].Angle);
-					m_TimeKeep = m_FrameCount;
-					t = rand() % 3 + 1;
-					m_MoveCheck = true;
+					else
+					{
+						//EnemyMove(NULL, m_Direction, SMALL_SPEED);
+						D3DXMATRIX mtxtrans;
+						D3DXMatrixTranslation(&mtxtrans, m_EnemyMove[m_Direction].Move.x * SMALL_SPEED, m_EnemyMove[m_Direction].Move.y * SMALL_SPEED, m_EnemyMove[m_Direction].Move.z * SMALL_SPEED);
+						m_mtxTranslation *= mtxtrans;
+						if (m_FrameCount - m_TimeKeep >= 60 * t)
+						{
+							m_MoveCheck = false;
+						}
+					}
 				}
 				else
 				{
-					EnemyMove(NxA_pSmall, m_Direction, SMALL_SPEED);
-					if (m_FrameCount - m_TimeKeep >= 60 *t)
-					{
-						m_MoveCheck = false;
-					}
+					C3DObj *pplayer = CPlayer::Get_Player();
+					D3DXMATRIX playerworld = pplayer->Get_mtxWorld();
+					float x = playerworld._41 - m_mtxWorld._41;
+					float z = playerworld._43 - m_mtxWorld._43;
+
+					D3DXMATRIX mtxtrans;
+					D3DXMatrixTranslation(&mtxtrans, x * 0.015, 0.0, z * 0.015);
+					m_mtxTranslation *= mtxtrans;
+
+					float angle = atan2(-z, x);
+					D3DXMatrixRotationY(&m_mtxRotation, angle);
+
+					/*myData* mydata = (myData*)NxA_pSmall->userData;
+					mydata->meshTranslation.x += x*SMALL_SPEED;
+					//mydata->meshTranslation.y += move.y;
+					mydata->meshTranslation.z += z*SMALL_SPEED;
+					NxA_pSmall->setGlobalPosition(mydata->meshTranslation);*/
 				}
 			}
 			else
 			{
 				if (m_MoveCheck)
 				{
-					EnemyMove(NxA_pSmall, m_Direction, SMALL_SPEED);
+					//EnemyMove(NxA_pSmall, m_Direction, SMALL_SPEED);
+					D3DXMATRIX mtxtrans;
+					D3DXMatrixTranslation(&mtxtrans, m_EnemyMove[m_Direction].Move.x * SMALL_SPEED, m_EnemyMove[m_Direction].Move.y * SMALL_SPEED, m_EnemyMove[m_Direction].Move.z * SMALL_SPEED);
+					m_mtxTranslation *= mtxtrans;
+					
 					if (m_FrameCount - m_TimeKeep >= 180)
 					{
 						m_MoveCheck = false;
@@ -141,12 +157,18 @@ void CEnemy_Small::Update(void)
 					float angle = atan2(-m_mtxWorld._43, -m_mtxWorld._41);
 					D3DXMatrixRotationY(&m_mtxRotation, angle);
 					D3DXVECTOR3 move = D3DXVECTOR3(cos(angle), 0, sin(angle));
-					move *= SMALL_SPEED;
-					myData* mydata = (myData*)NxA_pSmall->userData;
+					//move *= SMALL_SPEED;
+
+					D3DXMATRIX mtxtrans;
+					D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41 + move.x, m_mtxWorld._42, m_mtxWorld._43 + move.z);
+					//m_mtxTranslation *= mtxtrans;
+
+					
+					/*myData* mydata = (myData*)NxA_pSmall->userData;
 					mydata->meshTranslation.x += move.x;
 					mydata->meshTranslation.y += move.y;
 					mydata->meshTranslation.z += move.z;
-					NxA_pSmall->setGlobalPosition(mydata->meshTranslation);
+					NxA_pSmall->setGlobalPosition(mydata->meshTranslation);*/
 				}
 			}
 		}
@@ -156,12 +178,12 @@ void CEnemy_Small::Update(void)
 
 
 
-		NxVec3 tr = NxA_pSmall->getGlobalPosition();
-		D3DXMatrixTranslation(&m_mtxTranslation, tr.x, tr.y, tr.z);
+	//	NxVec3 tr = NxA_pSmall->getGlobalPosition();
+	//	D3DXMatrixTranslation(&m_mtxTranslation, tr.x, tr.y, tr.z);
 		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 		
 		
-
+		
 
 		if (45.0*45.0 < (m_mtxWorld._41*m_mtxWorld._41) + (m_mtxWorld._43 * m_mtxWorld._43))
 		{
@@ -194,7 +216,8 @@ void CEnemy_Small::Draw(void)
 	{
 		if (m_DrawCheck)
 		{
-			DrawDX2(m_mtxWorld, NxA_pSmall, MODELL_SMALL);
+			//DrawDX2(m_mtxWorld, NxA_pSmall, MODELL_SMALL);
+			Model_Draw(MODELL_SMALL, m_mtxWorld);
 		}
 	}
 }
@@ -211,12 +234,20 @@ void CEnemy_Small::Damage(void)
 			CPlayer::Add_KoCount();
 		}
 	}
-	
-	
 }
 
 
+bool CEnemy_Small::PlayerCheck(void)
+{
+	C3DObj *pplayer = CPlayer::Get_Player();
+	float l = 10;
+	D3DXMATRIX playerworld = pplayer->Get_mtxWorld();
+	float cc = (playerworld._41 - m_mtxWorld._41) * (playerworld._41 - m_mtxWorld._41) + (playerworld._43 - m_mtxWorld._43) *  (playerworld._43 - m_mtxWorld._43);
 
+
+	return cc < (l * l);
+
+}
 
 
 

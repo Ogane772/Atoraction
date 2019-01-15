@@ -10,7 +10,6 @@
 
 #include "Cfreefall.h"
 #include "Cplayer.h"
-#include "Cphysx.h"
 #include "debug_font.h"
 //=============================================================================
 //	定数定義
@@ -29,10 +28,7 @@
 #define FREEFALL_UP		(25.0f)
 #define FREEFALL_DOWN	(0.0f)
 
-/*static float ugoki;//円盤の上下の動き
-static bool Bugoki = false;
-static float moveY = 0.0f;//円盤の座標
-static int CoolTime = 0;//クールタイム*/
+
 //=============================================================================
 //	グローバル変数
 //=============================================================================
@@ -69,15 +65,7 @@ void Cfreefall::Initialize()
 	D3DXMatrixScaling(&m_mtxScaling, FREEFALL_SCALE, FREEFALL_SCALE, FREEFALL_SCALE);
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 
-	NxMat33 mat1;
-	NxMat33 mat2;
-	mat1.rotZ(0);
-	mat2.rotZ(0);
-	NxVec3 scaleDwarf = NxVec3(FREEFALL_SCALE, FREEFALL_SCALE, FREEFALL_SCALE);	//	モデルスケール
-	NxVec3 BBDwarf = NxVec3(5.0, 1.0, 5.0);	//	当たり判定の大きさ
-	NxVec3 BBDwarf2 = NxVec3(0, 0, 0);
-	NxA_pEnban = CreateMeshAsBox(NxVec3(mtx._41, mtx._42, mtx._43 + 5), mat1, scaleDwarf, BBDwarf, MODELL_ENBAN, false);
-	NxA_pHasira = CreateMeshAsBox(NxVec3(mtx._41, mtx._42, mtx._43 + 5), mat2, scaleDwarf, BBDwarf2, MODELL_HASIRA, false);
+	
 }
 
 void Cfreefall::Update(void)
@@ -85,8 +73,8 @@ void Cfreefall::Update(void)
 	if (m_Enable)
 	{//ここで移動計算を行う
 
-		NxVec3 tr = NxA_pEnban->getGlobalPosition();
-		D3DXMatrixTranslation(&m_mtxTranslation, tr.x, ugoki, tr.z);
+	
+		D3DXMatrixTranslation(&m_mtxTranslation, m_mtxTranslation._41, ugoki, m_mtxTranslation._43);
 		D3DXMatrixScaling(&m_mtxScaling, FREEFALL_SCALE, FREEFALL_SCALE, FREEFALL_SCALE);
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(0));
 		m_mtxWorld = m_mtxScaling *m_mtxRotation * m_mtxTranslation;
@@ -125,8 +113,8 @@ void Cfreefall::Update(void)
 		}
 
 
-		NxVec3 tr2 = NxA_pHasira->getGlobalPosition();
-		D3DXMatrixTranslation(&m_mtxTranslation, tr2.x, 0, tr2.z);
+		
+		D3DXMatrixTranslation(&m_mtxTranslation, m_mtxTranslation._41, 0, m_mtxTranslation._43);
 		D3DXMatrixScaling(&m_mtxScaling, FREEFALL_SCALE, FREEFALL_SCALE, FREEFALL_SCALE);
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(0));
 		m_mtxWorld2 = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
@@ -136,18 +124,16 @@ void Cfreefall::Update(void)
 
 void Cfreefall::Draw(void)
 {
-//	DebugFont_Draw(800, 30, "ugoki = %f\n,", ugoki);
-//	DebugFont_Draw(800, 60, "Bugoki = %d\n,", Bugoki);
+
 	if (m_Enable)
 	{
-		DrawDX2(m_mtxWorld, NxA_pEnban, MODELL_ENBAN);
-		DrawDX2(m_mtxWorld2, NxA_pHasira, MODELL_HASIRA);
+		Model_Draw(MODELL_ENBAN, m_mtxWorld);
+		Model_Draw(MODELL_HASIRA, m_mtxWorld2);
 	}
 }
 
 void Cfreefall::Finalize(void)
 {
 	Attraction_Finalize(m_AttractionIndex);
-	NxA_pEnban = NULL;
-	NxA_pHasira = NULL;
+	
 }

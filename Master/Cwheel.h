@@ -18,12 +18,11 @@ public:
 	void Update(void);
 	void Draw(void);
 	void Finalize(void);
-	NxActor* Get_Actor(void) { return NxA_pWheel; }
-
+	
 private:
 	void Initialize();
 	int m_AttractionIndex;
-	NxActor *NxA_pWheel;
+	
 
 	bool ferris_flg;				 //ˆÚ“®‚Æ•ÇŒƒ“Ë‚Ìƒ`ƒFƒ“ƒW
 	int ferris_counter;				 //ŠÏ——ŽÔ’âŽ~

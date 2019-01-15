@@ -10,7 +10,6 @@
 
 #include "Cwheel.h"
 #include "Cplayer.h"
-#include "Cphysx.h"
 #include "debug_font.h"
 #include "CEnemy.h"
 #include "CEnemy_Small.h"
@@ -42,7 +41,7 @@ Cwheel::Cwheel() :CAttraction(TYPE_WHEEL), C3DObj(C3DObj::TYPE_ATTRACTION)
 
 Cwheel::~Cwheel()
 {
-
+	Finalize();
 }
 
 void Cwheel::Initialize()
@@ -72,11 +71,7 @@ void Cwheel::Initialize()
 	Wheel_position = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42*3, m_mtxWorld._43);
 	
 	
-	NxMat33 mat1;
-	NxVec3 scaleDwarf = NxVec3(WHEEL_SCALE, WHEEL_SCALE, WHEEL_SCALE);	//	モデルスケール
-	NxVec3 BBDwarf = NxVec3(1.5, 2.0, 2.0);	//	当たり判定の大きさ
-	NxVec3 BBDwarf2 = NxVec3(0, 0, 0);
-	NxA_pWheel = CreateMeshAsBox(NxVec3(mtx._41, mtx._42, mtx._43 + 5), mat1, scaleDwarf, BBDwarf, MODELL_WHEEL);
+
 }
 
 void Cwheel::Update(void)
@@ -101,18 +96,15 @@ void Cwheel::Update(void)
 		Wheel_position += move*SPEED;
 
 
-		NxVec3 tr = NxA_pWheel->getGlobalPosition();
-		D3DXMatrixTranslation(&m_mtxTranslation, tr.x, tr.y, tr.z);
+
 		D3DXMatrixScaling(&m_mtxScaling, WHEEL_SCALE, WHEEL_SCALE, WHEEL_SCALE);
-		D3DXMATRIX mtxT;
-		D3DXMatrixTranslation(&mtxT, move.x, move.y, move.z);
 		D3DXMatrixTranslation(&m_mtxTranslation, Wheel_position.x, Wheel_position.y, Wheel_position.z);
 		m_mtxWorld =m_mtxScaling * mtxR * m_mtxRotation * m_mtxTranslation;
 
 		if (45.0*45.0 < (m_mtxWorld._41*m_mtxWorld._41) + (m_mtxWorld._43 * m_mtxWorld._43))
 		{
 			m_Enable = false;
-			CPlayer::m_delete = true;
+			C3DObj_delete();
 		}
 
 	}
@@ -120,17 +112,14 @@ void Cwheel::Update(void)
 
 void Cwheel::Draw(void)
 {
-	//DebugFont_Draw(900, 30, "ugoki = %f\n,", ugoki);
-	//DebugFont_Draw(900, 60, "Bugoki = %d\n,", Bugoki);
+	
 	if (m_Enable)
 	{
-		DrawDX2(m_mtxWorld, NxA_pWheel, MODELL_WHEEL);
-		//DrawDirectXMesh(NxA_pSmall);
+		Model_Draw(MODELL_WHEEL, m_mtxWorld);
 	}
 }
 
 void Cwheel::Finalize(void)
 {
-	Attraction_Finalize(m_AttractionIndex);
-	NxA_pWheel = NULL;
+
 }

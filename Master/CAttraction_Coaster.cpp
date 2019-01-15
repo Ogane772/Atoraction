@@ -11,7 +11,6 @@
 #include "CAttraction_Coaster .h"
 #include "input.h"
 #include "Cplayer.h"
-#include "Cphysx.h"
 #include "debug_font.h"
 #include "time.h"
 #include "move.h"
@@ -75,11 +74,6 @@ void Coaster::Initialize()
 	D3DXMatrixScaling(&m_mtxScaling, COSTER_SCALE, COSTER_SCALE, COSTER_SCALE);
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 
-	NxMat33 mat1;
-	NxVec3 scaleDwarf = NxVec3(COSTER_SCALE, COSTER_SCALE, COSTER_SCALE);	//	モデルスケール
-	NxVec3 BBDwarf = NxVec3(0.0, 0.0, 0.0);	//	当たり判定の大きさ
-	NxA_Coaster = CreateMeshAsBox(NxVec3(mtx._41, mtx._42 - 10, mtx._43), mat1, scaleDwarf, BBDwarf, MODELL_COASTER, false);
-
 
 }
 
@@ -96,7 +90,6 @@ void Coaster::Update(void)
 		D3DXMATRIX playermatrix = playerget->Get_mtxTranslation();
 		
 		m_mtxTranslation = playermatrix;
-		NxVec3 tr = NxA_Coaster->getGlobalPosition();
 		D3DXMatrixScaling(&m_mtxScaling, COSTER_SCALE, COSTER_SCALE, COSTER_SCALE);
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(u));
 		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
@@ -109,19 +102,17 @@ void Coaster::Update(void)
 
 void Coaster::Draw(void)
 {
-	//DebugFont_Draw(600, 30, "Coaster  = %d\n,", *coaster);
-	//DebugFont_Draw(600, 60, "CoolTime = %d\n,", endfream);
+	
 	DebugFont_Draw(600, 0, "U = %f\n,", u);
 	if (m_Enable)
 	{
-		DrawDX2(m_mtxWorld, NxA_Coaster, MODELL_COASTER);
+		Model_Draw(MODELL_COASTER, m_mtxWorld);
 	}
 }
 
 void Coaster::Finalize(void)
 {
 	Attraction_Finalize(m_AttractionIndex);
-	NxA_Coaster = NULL;
 }
 
 void Coaster::Coaster_Create(void)

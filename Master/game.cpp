@@ -11,7 +11,6 @@
 #include "CMesh_SkyDome.h"
 #include "Cplayer.h"
 #include "billboard.h"
-#include "Cphysx.h"
 #include "CEnemy.h"
 #include "fade.h"
 #include "scene.h"
@@ -26,8 +25,6 @@
 //=============================================================================
 //	グローバル宣言
 //=============================================================================
-
-static NxScene*	gScene = NULL;	//	フィジックスのシーン登録
 static bool g_bend;				//	フェードインアウトフラグ
 //=============================================================================
 //	初期化処理
@@ -35,10 +32,10 @@ static bool g_bend;				//	フェードインアウトフラグ
 void Game_Initialize(void)
 {
 	g_bend = false;
-	CPhysx::CPhysX_Initialize();			//	物理演算処理の初期化
-	gScene = CPhysx::Get_PhysX_Scene();		//	シーン初期化
+/*	CPhysx::CPhysX_Initialize();			//	物理演算処理の初期化
+	gScene = CPhysx::Get_PhysX_Scene();		//	シーン初期化*/
 	
-
+	C3DObj::Model_Load();
 
 	CPlayer::PlayerCreate();				//	プレイヤー生成		
 	CLight::Light_Create();					//	ライト生成
@@ -62,8 +59,8 @@ void Game_Initialize(void)
 void Game_Finalize(void) 
 {
 	C3DObj::DeleteAll();			//	3Dオブジェクト全消去
-	CGameObj::DeleteAll();			//	2Dオブジェクト全消去
-	CPhysx::ExitNx();				//	物理演算終了処理
+	CGameObj::DeleteAll2D();			//	2Dオブジェクト全消去
+	C3DObj::Model_Finalize();
 	CGameObj::FrameCountReset();	//	フレームカウントリセット
 }
 
@@ -109,8 +106,6 @@ void Game_Draw(void)
 	C3DObj::DrawAll();		//	3Dオブジェクト描画
 	CGameObj::DrawAll();	//	2Dオブジェクト描画
 
-	gScene->flushStream();
-	gScene->fetchResults(NX_RIGID_BODY_FINISHED, true);
 }
 
 

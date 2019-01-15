@@ -16,16 +16,12 @@
 
 #include <d3dx9.h>
 #include "common.h"
-//#include "mochi_d3d.h"
-//#include "nan_sprite.h"
 #include "scene.h"
 #include "input.h"
 #include "system_timer.h"
-//#include "ten_texture.h"
 #include "debug_font.h"
-//#include "debug_primitive.h"
+
 #include "fade.h"
-#include "Cphysx.h"
 #include "sound.h"
 
 //#include "CGameObj.h"
@@ -74,8 +70,6 @@ static float g_FPS = 0.0f;		// FPS
 // LPDIRECT3DTEXTURE9 g_pTexture;	//	テクスチャのアドレス帳
 //　static付ける
 static double g_StaticFrameTime = 0.0f; // フレーム固定用計測時間
-
-static NxScene*	gScene = NULL;	//	フィジックスのシーン登録
 static BYTE KeyTbl[256];
 //=============================================================================
 //	メイン
@@ -207,17 +201,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 bool Begin(HINSTANCE hInstance, HWND hWnd)
 {
 	//　Direct3Dの初期化
-	/*if (!mochi_Init(hWnd))
-	{
-		return false;
-	}*/
 	if(!CGameObj::Device_Initialize(hWnd))
 	{
 		return false;
 	}
-
-	//InitD3D(hWnd);
-	//CPhysx::CPhysX_Initialize();	//	物理演算処理の初期化
 
 	// キーボードの初期化
 	if (!Keyboard_Initialize(hInstance,hWnd))
@@ -228,10 +215,8 @@ bool Begin(HINSTANCE hInstance, HWND hWnd)
 	
 	
 	// スプライトの初期化
-	//Sprite_Initialize();
 	C2DObj::Sprite_Initialize();
 	// テクスチャの初期化
-//	Texture_Load();
 	C2DObj::Texture_Load();
 
 	// サウンドの初期化
@@ -305,11 +290,6 @@ void Update(void)
 //　ゲームの描画関数
 void Draw(void)
 {
-	/* LPDIRECT3DDEVICE9 pD3DDevice = mochi_GetDevice();
-	 if (!pD3DDevice)
-	 {
-		 return ;
-	 }*/
 
 	if (!CGameObj::m_pD3DDevice)
 	{
@@ -343,8 +323,6 @@ void Draw(void)
 	//DebugPrimitive_BatchRun();
 #endif // _DEBUG || DEBUG
 
-	//gScene->flushStream();
-	//gScene->fetchResults(NX_RIGID_BODY_FINISHED, true);
 
 
 	//　描画処理終了
@@ -382,7 +360,6 @@ void End(void)
 	// キーボード終了処理
 	Keyboard_Finalize();
 
-	CPhysx::Cleanup();
 	// デバイスの開放
 	CGameObj::Device_Finalize();
 

@@ -62,6 +62,35 @@ CPlayer::~CPlayer()
 	m_PlayerNum--;
 }
 
+
+//	初期化
+void CPlayer::Player_Initialize(void)
+{
+	m_Hp = HP_MAX;
+	m_Mp = 0;
+	m_MpStock = MPSTOCK_INIT;
+	m_KO_Count = 0;
+	m_Enable = true;
+	m_delete = false;
+	g_CosterMode = false;
+
+	D3DXMatrixTranslation(&m_mtxTranslation, 0, 1, 0);
+	D3DXMatrixScaling(&m_mtxScaling, 0.5f, 1.0f, 0.5f);
+	m_mtxKeepTranslation = m_mtxTranslation;
+	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(200));
+	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
+
+	m_Angle = 180;
+	m_front = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+	D3DXVec3Normalize(&m_front, &m_front);
+	m_up = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+	D3DXVec3Cross(&m_right, &m_front, &m_up);
+	D3DXVec3Normalize(&m_right, &m_right);
+	D3DXVec3Cross(&m_up, &m_right, &m_front);
+	D3DXVec3Normalize(&m_up, &m_up);
+
+}
+
 //=============================================================================
 // 更新
 //=============================================================================
@@ -216,11 +245,13 @@ void CPlayer::Draw(void)
 		
 	
 	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
-	m_SphereCollision.CenterPos = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+
+	Model_Draw(MODELL_PLAYER, m_mtxWorld);
+	/*m_SphereCollision.CenterPos = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 
 	myData* mydata = (myData*)NxA_pPlayer->userData;
 
-	DrawDX2(m_mtxWorld, NxA_pPlayer, MODELL_PLAYER);
+	DrawDX2(m_mtxWorld, NxA_pPlayer, MODELL_PLAYER);*/
 
 	//	デバッグ
 	//DebugFont_Draw(300, 50, "%f\n%f\n%f\n%f", m_front.x, m_front.y, m_front.z, m_Angle);
@@ -229,41 +260,7 @@ void CPlayer::Draw(void)
 	//Debug_Collision(m_SphereCollision, m_mtxTranslation);
 }
 
-//	初期化
-void CPlayer::Player_Initialize(void)
-{
-	m_Hp = HP_MAX;
-	m_Mp = 0;
-	m_MpStock = MPSTOCK_INIT;
-	m_KO_Count = 0;
-	m_Enable = true;
-	m_delete = false;
-	g_CosterMode = false;
-	D3DXMatrixTranslation(&m_mtxTranslation, 0, 1, 0);
-	D3DXMatrixScaling(&m_mtxScaling, 0.5f, 1.0f, 0.5f);
-	m_mtxKeepTranslation = m_mtxTranslation;
-	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(200));
-	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 
-	m_Angle = 180;
-	m_front = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
-	D3DXVec3Normalize(&m_front, &m_front);
-	m_up = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-	D3DXVec3Cross(&m_right, &m_front, &m_up);
-	D3DXVec3Normalize(&m_right, &m_right);
-	D3DXVec3Cross(&m_up, &m_right, &m_front);
-	D3DXVec3Normalize(&m_up, &m_up);
-
-	NxMat33 mat1;
-	NxVec3 scaleDwarf = NxVec3(1, 1, 1);	//	モデルスケール
-	NxVec3 BBDwarf = NxVec3(1.0f, 1.0f, 1.0f);	//	当たり判定の大きさ
-
-	
-	NxA_pPlayer = CreateMeshAsSphere(NxVec3(0, 1, 0), 1.0, MODELL_PLAYER);
-	/*m_SphereCollision = {
-		D3DXVECTOR3(m_mtxWorld._41,m_mtxWorld._42,m_mtxWorld._43),PLAYER_SAIZ
-	};*/
-}
 
 //	終了処理
 void CPlayer::Finalize(void)

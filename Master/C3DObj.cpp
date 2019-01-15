@@ -6,13 +6,34 @@
 
 #include "C3DObj.h"
 #include "debug_font.h"
-
+#include "CTexture.h"
 
 //=============================================================================
 //	静的変数
 //===========================================================================
 C3DObj *C3DObj::p3DObj[MAX_GAMEOBJ];
 int C3DObj::m_3DObjNum = 0;
+
+C3DObj::MaterialFileData C3DObj::MODEL_FILES[] = {
+	{ "asset/model/emi-ru2.x" },
+	{ "asset/model/zako.x" },
+	{ "asset/model/boss.x" },
+	{ "asset/model/CoffeeCup.blend.x" },
+	{ "asset/model/dish.blend.x" },
+	{ "asset/model/enban.x" },
+	{ "asset/model/hasira.x" },
+	{ "asset/model/ferris.x" },
+	{ "asset/model/coaster.x" },
+};
+
+int C3DObj::MODEL_FILES_MAX = sizeof(C3DObj::MODEL_FILES) / sizeof(MODEL_FILES[0]);
+
+
+LPD3DXMESH C3DObj::m_pD3DXMesh[sizeof(C3DObj::MODEL_FILES) / sizeof(MODEL_FILES[0])] = {};
+DWORD C3DObj::m_dwNumMaterials[sizeof(C3DObj::MODEL_FILES) / sizeof(MODEL_FILES[0])] = {};
+LPD3DXBUFFER C3DObj::m_pD3DXMtrBuffer[sizeof(C3DObj::MODEL_FILES) / sizeof(MODEL_FILES[0])] = {};
+LPDIRECT3DTEXTURE9 *C3DObj::m_pTexures[sizeof(C3DObj::MODEL_FILES) / sizeof(MODEL_FILES[0])] = {};
+D3DMATERIAL9 *C3DObj::m_pd3dMaterials[sizeof(C3DObj::MODEL_FILES) / sizeof(MODEL_FILES[0])] = {};
 
 //=============================================================================
 //	生成
@@ -149,10 +170,153 @@ void C3DObj::C3DObj_delete(void)
 
 
 
+//=============================================================================
+// モデル読み込み
+//=============================================================================
+void C3DObj::Model_Load(void)
+{
+
+
+	HRESULT hr;
+	for (int index = 0;index < MODEL_FILES_MAX;index++)
+	{
+		hr = D3DXLoadMeshFromX(MODEL_FILES[index].filename, D3DXMESH_MANAGED, m_pD3DDevice, NULL, &m_pD3DXMtrBuffer[index], NULL, &m_dwNumMaterials[index], &m_pD3DXMesh[index]);
+		if (FAILED(hr))
+		{
+			MessageBox(NULL, "モデルデータを読み込めませんでした", "確認", MB_OK);
+		}
+		/*
+		第1引数　ファイル名
+		第2引数　65535以上の頂点が必要なら
+		D3DXMESH_MANAGED | D3DXMESH_WRITEONLY | D3DXMESH_32BIT にする
+		第3引数　デバイス
+		第4引数　NULL　g_pD3DXAdjacencyBuffer
+		第5引数　g_pD3DXMtrBuffer
+		第6引数　dwNumMaterials
+		第7引数　g_pD3DXMesh
+		*/
+
+		//	マテリアル保存用配列の確保
+		m_pd3dMaterials[index] = new D3DMATERIAL9[m_dwNumMaterials[index]];
+		m_pTexures[index] = new LPDIRECT3DTEXTURE9[m_dwNumMaterials[index]];
+
+		//	マテリアル情報バッファのポインタ取得
+		D3DXMATERIAL* d3dxMaterials = (D3DXMATERIAL*)m_pD3DXMtrBuffer[index]->GetBufferPointer();
+
+		//	各マテリアル情報を保存
+		for (int i = 0;i < m_dwNumMaterials[index];i++)
+		{
+			m_pd3dMaterials[index][i] = d3dxMaterials[i].MatD3D;	//	Xファイルのマテリアルカラーのコピー
+																	/*
+																	ディフーズ
+																	アンビエント
+																	エミッシブ		ライト関係なし　自己発光
+																	スペキュラ
+																	*/
+			m_pd3dMaterials[index][i].Ambient = m_pd3dMaterials[index][i].Diffuse;
+
+			//	テクスチャの読み込み
+			if (d3dxMaterials[i].pTextureFilename == NULL)	//	テクスチャがないマテリアルはファイル名なし
+			{
+				m_pTexures[index][i] = NULL;
+			}
+			else
+			{
+				hr = D3DXCreateTextureFromFile(m_pD3DDevice, d3dxMaterials[i].pTextureFilename, &m_pTexures[index][i]);
+				if (FAILED(hr))
+				{
+					m_pTexures[index][i] = NULL;
+					MessageBox(NULL, "テクスチャデータを読み込めませんでした", "確認", MB_OK);
+				}
+			}
+		}
+
+		//	Xファイルから読み込んだマテリアル情報のバッファを解放
+		if (m_pD3DXMtrBuffer)
+		{
+			m_pD3DXMtrBuffer[index]->Release();
+		}
+	}
+}
+
+
+//=============================================================================
+// モデル破棄
+//=============================================================================
+void C3DObj::Model_Finalize(void)	//	モデルデータの開放　複数化したら全部消すかどれかを消す
+{
+	for (int i = 0;i < MODEL_FILES_MAX;i++)
+	{
+		if (m_pTexures[i] != NULL)
+		{
+			delete[]m_pTexures[i];
+		}
+		if (m_pd3dMaterials[i] != NULL)
+		{
+			delete[]m_pd3dMaterials[i];
+		}
+		if (m_pD3DXMesh[i] != NULL)
+		{
+			m_pD3DXMesh[i]->Release();
+		}
+	}
+}
+
+void C3DObj::Model_Finalize(int index)	//	モデルデータの開放　複数化したら全部消すかどれかを消す
+{
+	if (m_pTexures[index] != NULL)
+	{
+		delete[]m_pTexures[index];
+	}
+	if (m_pd3dMaterials[index] != NULL)
+	{
+		delete[]m_pd3dMaterials[index];
+
+	}
+	if (m_pD3DXMesh[index] != NULL)
+	{
+		m_pD3DXMesh[index]->Release();
+	}
+}
 
 
 
+//=============================================================================
+// モデル描画
+//=============================================================================
+void C3DObj::Model_Draw(int index, D3DXMATRIX mtxWorld)		//	複数化したら引数を変える　行列
+{
+	//m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
+	//m_pD3DDevice->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL);
 
+	m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_COLOR1);
+	m_pD3DDevice->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_COLOR1);
+	m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+
+	for (int i = 0;i < m_dwNumMaterials[index];i++)
+	{
+		m_pD3DDevice->SetMaterial(&m_pd3dMaterials[index][i]);
+		m_pD3DDevice->SetTexture(0, m_pTexures[index][i]);
+		m_pD3DXMesh[index]->DrawSubset(i);
+	}
+}
+
+void C3DObj::Model_Draw(int index, D3DXMATRIX mtxWorld, int texIndex)		//	複数化したら引数を変える　行列
+{
+	//m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
+	//m_pD3DDevice->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL);
+
+	m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_COLOR1);
+	m_pD3DDevice->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_COLOR1);
+	m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+	m_pD3DDevice->SetTexture(0, CTexture::Texture_GetTexture(texIndex));
+	for (int i = 0;i < m_dwNumMaterials[index];i++)
+	{
+		m_pD3DDevice->SetMaterial(&m_pd3dMaterials[index][i]);
+		//m_pD3DDevice->SetTexture(0, m_pTexures[index][i]);
+		m_pD3DXMesh[index]->DrawSubset(i);
+	}
+}
 
 
 
