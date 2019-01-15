@@ -46,7 +46,7 @@ public:
 
 	static void UpdateAll();	// 全オブジェクト更新
 	static void DrawAll();		// 全オブジェクト描画
-	static void DeleteAll();	// 全オブジェクト削除
+	static void DeleteAll2D();	// 全オブジェクト削除
 /*	static CGameObj *Get(int nIdx);				// インスタンス取得
 	int Get_GameObjIndex() { return m_GameObjIndex;}	// ワークインデックス取得*/
 	int Get_GameType(void) {	return m_GameObjType;}		// 種類取得

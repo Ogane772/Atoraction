@@ -10,7 +10,6 @@
 
 #include "Cwheel.h"
 #include "Cplayer.h"
-#include "Cphysx.h"
 #include "debug_font.h"
 #include "CEnemy.h"
 #include "CEnemy_Small.h"
@@ -56,7 +55,7 @@ void Cwheel::Initialize()
 	m_Hp = WHEEL_HP;
 	m_Mp = WHEEL_MP;
 	m_Attack = WHEEL_ATK;
-	
+
 	C3DObj *playerget = CPlayer::Get_Player();	//	プレイヤー取得
 	move = playerget->Get_Front();
 
@@ -68,16 +67,9 @@ void Cwheel::Initialize()
 	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angle));
 
 	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
-	
-	Wheel_position = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42*3, m_mtxWorld._43);
-	
-	
-	NxMat33 mat1;
-	NxVec3 scaleDwarf = NxVec3(WHEEL_SCALE, WHEEL_SCALE, WHEEL_SCALE);	//	モデルスケール
-	NxVec3 BBDwarf = NxVec3(1.5, 2.0, 2.0);	//	当たり判定の大きさ
-	NxVec3 BBDwarf2 = NxVec3(0, 0, 0);
-	Thing_Normal = GetNormalModel(MODELL_WHEEL);
-	NxA_pWheel = CreateMeshAsBox(NxVec3(mtx._41, mtx._42, mtx._43 + 5), mat1, scaleDwarf, BBDwarf, MODELL_WHEEL);
+	Thing_Normal_model = GetNormalModel(MODELL_WHEEL);
+	Wheel_position = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42 * 3, m_mtxWorld._43);
+
 }
 
 void Cwheel::Update(void)
@@ -85,13 +77,13 @@ void Cwheel::Update(void)
 	//動いてる状態
 	if (ferris_flg == true)
 	{
-		
-		
+
+
 	}
 	//静止
 	else
 	{
-		
+
 	}
 
 	if (m_Enable)
@@ -101,14 +93,11 @@ void Cwheel::Update(void)
 		D3DXMatrixRotationX(&mtxR, D3DXToRadian(-rotate_ferris));
 		Wheel_position += move*SPEED;
 
-
-		NxVec3 tr = NxA_pWheel->getGlobalPosition();
-		D3DXMatrixTranslation(&m_mtxTranslation, tr.x, tr.y, tr.z);
 		D3DXMatrixScaling(&m_mtxScaling, WHEEL_SCALE, WHEEL_SCALE, WHEEL_SCALE);
 		D3DXMATRIX mtxT;
 		D3DXMatrixTranslation(&mtxT, move.x, move.y, move.z);
 		D3DXMatrixTranslation(&m_mtxTranslation, Wheel_position.x, Wheel_position.y, Wheel_position.z);
-		m_mtxWorld =m_mtxScaling * mtxR * m_mtxRotation * m_mtxTranslation;
+		m_mtxWorld = m_mtxScaling * mtxR * m_mtxRotation * m_mtxTranslation;
 
 		if (45.0*45.0 < (m_mtxWorld._41*m_mtxWorld._41) + (m_mtxWorld._43 * m_mtxWorld._43))
 		{
@@ -125,14 +114,13 @@ void Cwheel::Draw(void)
 	//DebugFont_Draw(900, 60, "Bugoki = %d\n,", Bugoki);
 	if (m_Enable)
 	{
-		Thing_Normal->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 
-		RenderThing(m_mtxWorld, NxA_pWheel, MODELL_WHEEL, Thing_Normal);
+		DrawDX_Normal(m_mtxWorld, MODELL_WHEEL, Thing_Normal_model);
 	}
 }
 
 void Cwheel::Finalize(void)
 {
 	Attraction_Finalize(m_AttractionIndex);
-	NxA_pWheel = NULL;
 }

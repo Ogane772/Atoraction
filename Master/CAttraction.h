@@ -8,10 +8,9 @@
 #define _ATTRACTION_H_
 
 #include "C3DObj.h"
-#include "Cphysx.h"
 #define ATTRACTION_MAX (100)
 
-class CAttraction : virtual public C3DObj, public CPhysx
+class CAttraction : virtual public C3DObj
 {
 public:
 
@@ -43,7 +42,6 @@ public:
 	static int Get_AttractionNum(int AttractionType) { return m_AttractionNum[AttractionType]; }
 	static int Get_AttractionIndex(int AttractionType) { return m_AttractionNum[AttractionType] - 1; }
 	static bool Get_CreateCheck(void) { return createchack; }
-	virtual NxActor* Get_Actor(void) = 0;
 	
 protected:
 	static CAttraction *Attraction[ATTRACTION_MAX];

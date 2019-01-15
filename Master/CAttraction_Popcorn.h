@@ -20,13 +20,11 @@ public:
 	void Finalize(void);
 
 	bool Get_DrawCheck(void) { return false; }
-	NxActor* Get_Actor(void) { return NxA_pPopcorn; }
 private:
 	void Initialize();
 
 	int CoolTime = 0;					//クールタイム
 	bool B_CoolTime;					//クールタイムのブール
 
-	NxActor *NxA_pPopcorn;
 };
 #endif;

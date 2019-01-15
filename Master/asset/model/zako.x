@@ -1448,7 +1448,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"asset/model/outUV1.jpg";}
+          TextureFilename {"outUV1.jpg";}
         }
       } // End of pSphere1 material list
     } // End of pSphere1 mesh

@@ -18,8 +18,7 @@ public:
 	void Update(void);
 	void Draw(void);
 	void Finalize(void);
-	bool Get_DrawCheck(void) { return false; }
-	NxActor* Get_Actor(void) { return NxA_pEnban; }
+
 private:
 	void Initialize();
 	int m_AttractionIndex;
@@ -29,6 +28,6 @@ private:
 	int CoolTime = 0;
 	D3DXMATRIX m_mtxWorld2;				//	ワールド変換用行列2
 	D3DXMATRIX m_mtxTranslation2;		//	移動行列2
-	NxActor *NxA_pEnban, *NxA_pHasira;
+	
 };
 #endif;
