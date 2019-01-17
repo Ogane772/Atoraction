@@ -337,8 +337,6 @@ void C3DObj::DrawDX_Normal(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing)
 	m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
 	m_pD3DDevice->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL);
 
-	D3DXMATRIXA16 mat;
-	D3DXMATRIXA16 mtxWorld2;
 
 	// マトリックスのセット
 	m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
