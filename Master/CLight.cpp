@@ -75,7 +75,7 @@ void CLight::Finalize(void)
 void CLight::Light_Set(void)
 {
 	// ライティング
-	m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);	//　ライティング有効
+	m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);	//　ライティング有効
 	m_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_RGBA(77, 67, 65, 255));	// アンビエント
 
 	D3DLIGHT9 light;

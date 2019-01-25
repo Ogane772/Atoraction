@@ -47,6 +47,7 @@ public:
 	}ModelFileData;
 	enum ANIME_MODEL
 	{
+		MODELL_ANIME_PLAYER,
 		MODELL_ANIME_SMALL,
 		ANIME_MODEL_MAX,//ƒAƒjƒƒ‚ƒfƒ‹Å‘å”
 	}AnimeModelFileData;;
