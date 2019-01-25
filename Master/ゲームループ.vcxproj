@@ -187,6 +187,7 @@
     <ClCompile Include="CUserInterface.cpp" />
     <ClCompile Include="Cwheel.cpp" />
     <ClCompile Include="debug_font.cpp" />
+    <ClCompile Include="exp.cpp" />
     <ClCompile Include="fede.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gamepad.cpp" />
@@ -232,6 +233,7 @@
     <ClInclude Include="CUserInterface.h" />
     <ClInclude Include="Cwheel.h" />
     <ClInclude Include="debug_font.h" />
+    <ClInclude Include="exp.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gamepad.h" />

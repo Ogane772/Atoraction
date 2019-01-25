@@ -17,6 +17,7 @@
 #include "CUserInterface.h"
 #include "CAttraction.h"
 #include "common.h"
+#include "exp.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -94,7 +95,7 @@ void Game_Updata(void)
 	{
 		CGameObj::FrameCountUp();
 	}
-
+	Exp_Update();
 }
 
 //=============================================================================
@@ -105,7 +106,7 @@ void Game_Draw(void)
 {
 	C3DObj::DrawAll();		//	3Dオブジェクト描画
 	CGameObj::DrawAll();	//	2Dオブジェクト描画
-
+	Exp_Draw();
 	C3DObj::HitCheck();
 }
 

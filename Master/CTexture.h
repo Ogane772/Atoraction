@@ -33,6 +33,7 @@ public:
 		TEX_MAP,
 		TEX_Player_Icon,
 		TEX_ENEMY_ICON,
+		TEX_EFFECT_HIT1,
 		TYPE_MAX,
 	};
 
