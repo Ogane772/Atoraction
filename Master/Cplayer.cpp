@@ -20,6 +20,8 @@
 #include "CAttraction_Coaster .h"
 #include "CAttraction_Popcorn.h"
 #include "gamepad.h"
+#include "exp.h"
+#include "CTexture.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -39,6 +41,7 @@ CPlayer *CPlayer::m_pPlayer[PLAYER_MAX] = {};
 int CPlayer::m_PlayerNum = 0;
 int CPlayer::m_KO_Count = 0;
 bool CPlayer::m_delete = false;
+
 //=============================================================================
 // 生成
 //=============================================================================
@@ -103,6 +106,10 @@ void CPlayer::Update(void)
 
 			// Get系で取得したサーフェイスはAddRefが呼ばれているので忘れずに解放する
 			pBackBuf->Release();
+		}
+		if (Keyboard_IsPress(DIK_1))
+		{
+			Exp_Create(m_mtxTranslation._41, m_mtxTranslation._42 + 1.0f, m_mtxTranslation._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
 		}
 		if (Keyboard_IsPress(DIK_W) || js.lY <= -3)
 		{
