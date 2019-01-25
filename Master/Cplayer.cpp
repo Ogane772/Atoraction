@@ -34,6 +34,13 @@
 //=============================================================================
 enum PlayerAnime
 {
+	PLAYER_DOWN,
+	PLAYER_WHEEL,
+	PLAYER_COASTER,
+	PLAYER_JUMP,
+	PLAYER_DAMAGE,
+	PLAYER_SET,
+	PLAYER_IDLE,
 	PLAYER_WALK,
 };
 //コントローラーに使う変数
