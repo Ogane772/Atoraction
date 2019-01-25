@@ -342,7 +342,7 @@ void CEnemy_Small::Damage(void)
 bool CEnemy_Small::PlayerCheck(void)
 {
 	C3DObj *pplayer = CPlayer::Get_Player();
-	float l = 10;
+	float l = 10;//”ÍˆÍ
 	D3DXMATRIX playerworld = pplayer->Get_mtxWorld();
 	float cc = (playerworld._41 - m_mtxWorld._41) * (playerworld._41 - m_mtxWorld._41) + (playerworld._43 - m_mtxWorld._43) *  (playerworld._43 - m_mtxWorld._43);
 

@@ -1,6 +1,6 @@
 
 //=============================================================================
-//	ƒCƒ“ƒNƒ‹[ƒhƒtƒ@ƒCƒ‹
+//	ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ãƒ•ã‚¡ã‚¤ãƒ«
 //=============================================================================
 #define NOMINMAX
 
@@ -17,35 +17,36 @@
 #include "CUserInterface.h"
 #include "CAttraction.h"
 #include "common.h"
+#include "exp.h"
 //=============================================================================
-//	’è”’è‹`
+//	å®šæ•°å®šç¾©
 //=============================================================================
 
 
 //=============================================================================
-//	ƒOƒ[ƒoƒ‹éŒ¾
+//	ã‚°ãƒ­ãƒ¼ãƒãƒ«å®£è¨€
 //=============================================================================
-static bool g_bend;				//	ƒtƒF[ƒhƒCƒ“ƒAƒEƒgƒtƒ‰ƒO
+static bool g_bend;				//	ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³ã‚¢ã‚¦ãƒˆãƒ•ãƒ©ã‚°
 //=============================================================================
-//	‰Šú‰»ˆ—
+//	åˆæœŸåŒ–å‡¦ç†
 //=============================================================================
 void Game_Initialize(void)
 {
 	g_bend = false;
-/*	CPhysx::CPhysX_Initialize();			//	•¨—‰‰Zˆ—‚Ì‰Šú‰»
-	gScene = CPhysx::Get_PhysX_Scene();		//	ƒV[ƒ“‰Šú‰»*/
+/*	CPhysx::CPhysX_Initialize();			//	ç‰©ç†æ¼”ç®—å‡¦ç†ã®åˆæœŸåŒ–
+	gScene = CPhysx::Get_PhysX_Scene();		//	ã‚·ãƒ¼ãƒ³åˆæœŸåŒ–*/
 	
 	C3DObj::InitModelLoad();
 
-	CPlayer::PlayerCreate();				//	ƒvƒŒƒCƒ„[¶¬		
-	CLight::Light_Create();					//	ƒ‰ƒCƒg¶¬
-	CCamera::Camera_Create();				//	ƒJƒƒ‰¶¬
+	CPlayer::PlayerCreate();				//	ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ç”Ÿæˆ		
+	CLight::Light_Create();					//	ãƒ©ã‚¤ãƒˆç”Ÿæˆ
+	CCamera::Camera_Create();				//	ã‚«ãƒ¡ãƒ©ç”Ÿæˆ
 
-	CMeshField::MeshField_Create(CTexture::TEX_FLORR, 120.0f, 1, 1);							//	’n–Ê¶¬
-	CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_FLORR, 6.0f, 45.0f, 20, 1);	//	ƒJƒx¶¬
-	CMesh_SkyDome::Mesh_SkyDome_Create(CTexture::TEX_SKY, 2.0f, 60.0f, 40, 20);					//	‹ó¶¬
-	CUserInterFace::UICreate();				//	UI¶¬
-	CEnemy::Create();						//	“G¶¬
+	CMeshField::MeshField_Create(CTexture::TEX_FLORR, 120.0f, 1, 1);							//	åœ°é¢ç”Ÿæˆ
+	CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_FLORR, 6.0f, 45.0f, 20, 1);	//	ã‚«ãƒ™ç”Ÿæˆ
+	CMesh_SkyDome::Mesh_SkyDome_Create(CTexture::TEX_SKY, 2.0f, 60.0f, 40, 20);					//	ç©ºç”Ÿæˆ
+	CUserInterFace::UICreate();				//	UIç”Ÿæˆ
+	CEnemy::Create();						//	æ•µç”Ÿæˆ
 
 
 
@@ -53,31 +54,31 @@ void Game_Initialize(void)
 }
 
 //=============================================================================
-//	I—¹ˆ—
+//	çµ‚äº†å‡¦ç†
 //=============================================================================
 
 void Game_Finalize(void) 
 {
-	C3DObj::DeleteAll();			//	3DƒIƒuƒWƒFƒNƒg‘SÁ‹
-	CGameObj::DeleteAll2D();			//	2DƒIƒuƒWƒFƒNƒg‘SÁ‹
+	C3DObj::DeleteAll();			//	3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå…¨æ¶ˆå»
+	CGameObj::DeleteAll2D();			//	2Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå…¨æ¶ˆå»
 	C3DObj::Model_Finalize();
-	CGameObj::FrameCountReset();	//	ƒtƒŒ[ƒ€ƒJƒEƒ“ƒgƒŠƒZƒbƒg
+	CGameObj::FrameCountReset();	//	ãƒ•ãƒ¬ãƒ¼ãƒ ã‚«ã‚¦ãƒ³ãƒˆãƒªã‚»ãƒƒãƒˆ
 }
 
 //=============================================================================
-//	XVˆ—
+//	æ›´æ–°å‡¦ç†
 //=============================================================================
 
 void Game_Updata(void)
 {
 	
 
-	C3DObj::UpdateAll();	//	3DƒIƒuƒWƒFƒNƒgXV
-	CGameObj::UpdateAll();	//	2DƒIƒuƒWƒFƒNƒgXV
+	C3DObj::UpdateAll();	//	3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæ›´æ–°
+	CGameObj::UpdateAll();	//	2Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæ›´æ–°
 	
-	CEnemy::Create();		//	ƒGƒlƒ~[¶¬
+	CEnemy::Create();		//	ã‚¨ãƒãƒŸãƒ¼ç”Ÿæˆ
 
-	if (GAMEEND <= CGameObj::Get_FraemCount())		//	FraemCount‚ªGAMEEND‚É‚È‚é‚Ü‚ÅƒJƒEƒ“ƒgUP@‚È‚Á‚½‚çI—¹
+	if (GAMEEND <= CGameObj::Get_FraemCount())		//	FraemCountãŒGAMEENDã«ãªã‚‹ã¾ã§ã‚«ã‚¦ãƒ³ãƒˆUPã€€ãªã£ãŸã‚‰çµ‚äº†
 	{
 		if (!g_bend)
 		{
@@ -94,19 +95,18 @@ void Game_Updata(void)
 	{
 		CGameObj::FrameCountUp();
 	}
-
+	Exp_Update();
 }
 
 //=============================================================================
-//	•`‰æˆ—
+//	æç”»å‡¦ç†
 //=============================================================================
 
 void Game_Draw(void)
 {
-	C3DObj::DrawAll();		//	3DƒIƒuƒWƒFƒNƒg•`‰æ
-	CGameObj::DrawAll();	//	2DƒIƒuƒWƒFƒNƒg•`‰æ
+	C3DObj::DrawAll();		//	3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»
+	CGameObj::DrawAll();	//	2Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»
 
-	//C3DObj::HitCheck();
 }
 
 
