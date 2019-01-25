@@ -27,15 +27,15 @@
 //	グローバル宣言
 //=============================================================================
 static bool g_bend;				//	フェードインアウトフラグ
-//=============================================================================
-//	初期化処理
-//=============================================================================
+								//=============================================================================
+								//	初期化処理
+								//=============================================================================
 void Game_Initialize(void)
 {
 	g_bend = false;
-/*	CPhysx::CPhysX_Initialize();			//	物理演算処理の初期化
+	/*	CPhysx::CPhysX_Initialize();			//	物理演算処理の初期化
 	gScene = CPhysx::Get_PhysX_Scene();		//	シーン初期化*/
-	
+
 	C3DObj::InitModelLoad();
 
 	CPlayer::PlayerCreate();				//	プレイヤー生成		
@@ -57,7 +57,7 @@ void Game_Initialize(void)
 //	終了処理
 //=============================================================================
 
-void Game_Finalize(void) 
+void Game_Finalize(void)
 {
 	C3DObj::DeleteAll();			//	3Dオブジェクト全消去
 	CGameObj::DeleteAll2D();			//	2Dオブジェクト全消去
@@ -71,24 +71,24 @@ void Game_Finalize(void)
 
 void Game_Updata(void)
 {
-	
+
 
 	C3DObj::UpdateAll();	//	3Dオブジェクト更新
 	CGameObj::UpdateAll();	//	2Dオブジェクト更新
-	
+
 	CEnemy::Create();		//	エネミー生成
 
 	if (GAMEEND <= CGameObj::Get_FraemCount())		//	FraemCountがGAMEENDになるまでカウントUP　なったら終了
 	{
 		if (!g_bend)
 		{
-				Fade_Start(true, 3, 0, 0, 0);
-				g_bend = true;
+			Fade_Start(true, 3, 0, 0, 0);
+			g_bend = true;
 		}
 		else
 		{
-				Fade_Start(false, 3, 0, 0, 0);
-				Scene_Change(SCENE_INDEX_RESULT);
+			Fade_Start(false, 3, 0, 0, 0);
+			Scene_Change(SCENE_INDEX_RESULT);
 		}
 	}
 	else
@@ -107,7 +107,6 @@ void Game_Draw(void)
 	C3DObj::DrawAll();		//	3Dオブジェクト描画
 	CGameObj::DrawAll();	//	2Dオブジェクト描画
 	Exp_Draw();
-	C3DObj::HitCheck();
 }
 
 

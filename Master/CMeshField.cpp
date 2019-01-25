@@ -65,10 +65,8 @@ void CMeshField::Draw(void)
 
 	D3DXMATRIX mtxWorld;		// 4*4行列　d3dx9.h必要
 	D3DXMATRIX mtxTranslation;
-	//D3DXMATRIX mtxRotation;
-	//D3DXMatrixIdentity(&mtxWorld);	// アドレス送ると単位行列を作ってくれる
+	
 
-	//D3DXMatrixRotationZ(&mtxRotation, D3DXToRadian(0));
 	D3DXMatrixTranslation(&mtxTranslation, 0, 0, 0);
 
 	mtxWorld = mtxTranslation;
