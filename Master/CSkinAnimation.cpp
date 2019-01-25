@@ -254,10 +254,10 @@ HRESULT SKIN_MESH::AllocateAllBoneMatrices( THING* pThing,LPD3DXFRAME pFrame )
 HRESULT SKIN_MESH::InitSphere(LPDIRECT3DDEVICE9 pDevice, THING* pThing)
 {
 	// メッシュの外接円の中心と半径を計算する
-	D3DXFrameCalculateBoundingSphere(pThing->pFrameRoot, &pThing->Sphere.vCenter,
-		&pThing->Sphere.fRadius);
+	/*D3DXFrameCalculateBoundingSphere(pThing->pFrameRoot, &pThing->Sphere.vCenter,
+		&pThing->Sphere.fRadius);*/
 	// 得られた中心と半径を基にメッシュとしてのスフィアを作成する
-	D3DXCreateSphere(pDevice, pThing->Sphere.fRadius, 24, 24, &pThing->pSphereMesh, NULL);
+	D3DXCreateSphere(pDevice, pThing->Sphere.fRadius, 5, 5, &pThing->pSphereMesh, NULL);
 	//スフィアメッシュのマテリアル　白色、半透明、光沢強
 	pThing->pSphereMeshMaterials = new D3DMATERIAL9;
 	pThing->pSphereMeshMaterials->Diffuse.r = 1.0f;
@@ -278,9 +278,9 @@ HRESULT SKIN_MESH::InitSphere(LPDIRECT3DDEVICE9 pDevice, THING* pThing)
 //
 HRESULT SKIN_MESH::UpdateSphere(LPDIRECT3DDEVICE9 pDevice, THING* pThing)
 {
-	D3DXFrameCalculateBoundingSphere(pThing->pFrameRoot, &pThing->Sphere.vCenter,
+/*	D3DXFrameCalculateBoundingSphere(pThing->pFrameRoot, &pThing->Sphere.vCenter,
 		&pThing->Sphere.fRadius);
-	pThing->pSphereMesh->Release();
+	pThing->pSphereMesh->Release();*/
 	D3DXCreateSphere(pDevice, pThing->Sphere.fRadius, 5, 5, &pThing->pSphereMesh, NULL);
 
 	return S_OK;
