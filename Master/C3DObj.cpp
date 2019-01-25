@@ -32,9 +32,13 @@ C3DObj::MaterialFileData2 C3DObj::ANIME_MODEL_FILES[] = {
 };
 int C3DObj::MODEL_FILES_MAX = sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0]);
 int C3DObj::ANIME_MODEL_FILES_MAX = sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0]);
+
+
 bool boRenderSphere = true;
 //モデルアニメーション関係変数
+/*
 #define MODEL_MAX (9)
+
 SKIN_MESH SkinMesh;
 THING_NORMAL Thing_Normal[MODEL_MAX+1];//読み込むモデルの最大数+1
 THING Thing[THING_AMOUNT + 1];//読み込むモデルの最大数+1
@@ -42,6 +46,12 @@ LPD3DXANIMATIONSET pAnimSet[THING_AMOUNT][10] = { 0 };//選択したモデルに10個まで
 FLOAT fAnimTime = 0.0f;
 BOOL boPlayAnim = true;
 D3DXTRACK_DESC TrackDesc;
+*/
+
+//SKIN_MESH C3DObj::SkinMesh;
+THING_NORMAL C3DObj::Thing_Normal[(sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0]))];//読み込むモデルの最大数+1
+//THING C3DObj::Thing[sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0])];//読み込むモデルの最大数+1
+
 
 LPD3DXMESH C3DObj::m_pD3DXMesh[sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0])] = {};
 DWORD C3DObj::m_dwNumMaterials[sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0])] = {};
@@ -191,18 +201,19 @@ void C3DObj::C3DObj_delete(void)
 HRESULT C3DObj::InitModelLoad()
 {
 	//通常モデル読み込み	
-	for (int i = 0; i < MODEL_FILES_MAX - 1; i++)
+	for (int i = 0; i < MODEL_FILES_MAX; i++)
 	{
 		InitThing(&Thing_Normal[i], NORMAL_MODEL_FILES[i].filename);
 		InitSphere(m_pD3DDevice, &Thing_Normal[i]);//当たり判定の表示
 	}
+
 	//アニメーションモデル読み込み
 	//THINGにxファイルを読み込む
-	for (int i = 0; i < ANIME_MODEL_FILES_MAX; i++)
+	/*for (int i = 0; i < ANIME_MODEL_FILES_MAX; i++)
 	{
 		SkinMesh.InitThing(m_pD3DDevice, &Thing[i], ANIME_MODEL_FILES[i].filename);
 		SkinMesh.InitSphere(m_pD3DDevice, &Thing[i]);
-	}
+	}*/
 	return S_OK;
 }
 
@@ -286,11 +297,17 @@ void C3DObj::Model_Finalize(int index)	//	モデルデータの開放　複数化したら全部消
 
 
 //=============================================================================
-// モデル描画
+// モデル描画  アニメーション有
 //=============================================================================
 void C3DObj::DrawDX_Anime(D3DXMATRIX mtxWorld, int type, THING* pThing)
 {
-	static float fAnimTimeHold = fAnimTime;
+	//static float fAnimTimeHold = fAnimTime;
+	float fAnimTimeHold = fAnimTime;
+	if (boPlayAnim)
+	{
+		fAnimTime += 0.01f;
+	}
+
 	SKIN_MESH::UpdateSphere(m_pD3DDevice, pThing);
 
 	m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
@@ -323,13 +340,18 @@ void C3DObj::DrawDX_Anime(D3DXMATRIX mtxWorld, int type, THING* pThing)
 	}
 	////////////////////////////////
 	//アニメ再生時間を+
-	fAnimTimeHold = fAnimTime;
+/*	fAnimTimeHold = fAnimTime;
 	if (boPlayAnim)
 	{
 		fAnimTime += 0.01f;
-	}
+	}*/
 }
 
+
+
+//=============================================================================
+// モデル描画  アニメーション無
+//=============================================================================
 void C3DObj::DrawDX_Normal(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing)
 {
 	
@@ -360,6 +382,11 @@ void C3DObj::DrawDX_Normal(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing)
 
 }
 
+
+//=============================================================================
+// 当たり判定
+//=============================================================================
+
 void C3DObj::HitCheck(void)
 {
 	//ノーマルモデル対ノーマルモデル
@@ -372,16 +399,24 @@ void C3DObj::HitCheck(void)
 	{
 		DebugFont_Draw(500, 500, "当たってないぞ！！！！！！！！！！！");
 	}*/
-	DebugFont_Draw(200, 50, "エネミーポジション= X= %f Y= %f Z = %f", Thing[0].vPosition.x, Thing[0].vPosition.y, Thing[0].vPosition.z);
-	DebugFont_Draw(200, 80, "プレイヤーポジション= X= %f Y= %f Z = %f", Thing_Normal[0].vPosition.x, Thing_Normal[0].vPosition.y, Thing_Normal[0].vPosition.z);
+	//DebugFont_Draw(200, 50, "エネミーポジション= X= %f Y= %f Z = %f", Thing[0].vPosition.x, Thing[0].vPosition.y, Thing[0].vPosition.z);
+	//DebugFont_Draw(200, 80, "プレイヤーポジション= X= %f Y= %f Z = %f", Thing_Normal[0].vPosition.x, Thing_Normal[0].vPosition.y, Thing_Normal[0].vPosition.z);
 	//アニメ対ノーマル
-	if (Collision_AnimeVSNormal(&Thing[0], &Thing_Normal[0]))
+	/*if (Collision_AnimeVSNormal(&Thing[0], &Thing_Normal[0]))
 	{
 		DebugFont_Draw(500, 300, "当たったぞ！！");
 	}
 	else
 	{
 		DebugFont_Draw(500, 500, "当たってないぞ！！！！！！！！！！！");
+	}*/
+	if (Collision_AnimeVSNormal(&Thing, &Thing_Normal[0]))
+	{
+	DebugFont_Draw(500, 300, "当たったぞ！！");
+	}
+	else
+	{
+	DebugFont_Draw(500, 500, "当たってないぞ！！！！！！！！！！！");
 	}
 	/*
 	//アニメ対アニメ
@@ -439,7 +474,7 @@ bool C3DObj::Collision_AnimeVSAnime(THING* pThingA, THING* pThingB)
 
 THING* C3DObj::GetAnimeModel(int index)
 {
-	return &Thing[index];
+	return &Thing;
 }
 
 THING_NORMAL* C3DObj::GetNormalModel(int index)

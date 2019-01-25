@@ -106,7 +106,7 @@ void Game_Draw(void)
 	C3DObj::DrawAll();		//	3Dオブジェクト描画
 	CGameObj::DrawAll();	//	2Dオブジェクト描画
 
-	C3DObj::HitCheck();
+	//C3DObj::HitCheck();
 }
 
 

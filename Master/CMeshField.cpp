@@ -42,7 +42,7 @@ CMeshField::CMeshField(int TexIndex, float meshW, int meshXnum, int meshZnum) : 
 	m_VertexCount = m_VertexW * m_VertexH;
 	m_IndexCount = (meshXnum + 2) * (meshZnum * 2) - 2;
 	m_PrimitiveCount = (meshXnum * 2 + 4) * meshZnum - 4;
-	Mesh_Field_Initialize();
+	Mesh_Field_Initialize2();
 }
 //=============================================================================
 //	破棄
@@ -65,10 +65,8 @@ void CMeshField::Draw(void)
 
 	D3DXMATRIX mtxWorld;		// 4*4行列　d3dx9.h必要
 	D3DXMATRIX mtxTranslation;
-	//D3DXMATRIX mtxRotation;
-	//D3DXMatrixIdentity(&mtxWorld);	// アドレス送ると単位行列を作ってくれる
+	
 
-	//D3DXMatrixRotationZ(&mtxRotation, D3DXToRadian(0));
 	D3DXMatrixTranslation(&mtxTranslation, 0, 0, 0);
 
 	mtxWorld = mtxTranslation;
