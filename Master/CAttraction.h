@@ -16,13 +16,14 @@ public:
 
 	enum
 	{
-		TYPE_ALL = 0,
+		AT_ALL = 1,
 
-		TYPE_COASTER,	//	ジェットコースター
-		TYPE_WHEEL,		//	観覧車
-		TYPE_COFFEE,	//	コーヒーカップ
-		TYPE_FALL,		//	フリーフォール
-		TYPE_POPCORN,	//	ポップコーン
+		AT_COASTER = 2,	//	ジェットコースター
+		AT_WHEEL = 3,		//	観覧車
+		AT_COFFEE = 4,	//	コーヒーカップ
+		AT_FALL = 5,		//	フリーフォール
+		AT_POPCORN = 6,	//	ポップコーン
+		AT_STANDBY = 7,   //  建設中
 
 
 		TYPE_MAX

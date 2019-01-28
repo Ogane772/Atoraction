@@ -40,7 +40,7 @@
 //	ê∂ê¨
 //=============================================================================
 
-Coaster::Coaster() :CAttraction(TYPE_COASTER), C3DObj(C3DObj::TYPE_COASTER)
+Coaster::Coaster() :CAttraction(AT_COASTER), C3DObj(AT_COASTER)
 {
 	Initialize();
 }
@@ -52,17 +52,13 @@ Coaster::~Coaster()
 
 void Coaster::Initialize()
 {
-	m_AttractionIndex = Get_AttractionIndex(TYPE_ALL);
+	m_AttractionIndex = Get_AttractionIndex(AT_ALL);
 
 	m_Enable = true;
 
 	m_TimeKeep = m_FrameCount;
 
 	u = 90;
-
-
-
-
 
 	m_Hp = COSTER_HP;
 	m_Mp = COSTER_MP;
@@ -80,9 +76,6 @@ void Coaster::Initialize()
 
 void Coaster::Update(void)
 {
-
-
-
 	//óLå¯éûä‘Çà¯Ç≠
 
 	if (m_FrameCount - m_TimeKeep <= J_TIME)
@@ -124,8 +117,6 @@ void Coaster::Coaster_Create(void)
 
 }
 
-
-
 C3DObj *Coaster::Get_Coaster(void)
 {
 	for (int i = 0; i < MAX_GAMEOBJ; i++)
@@ -133,7 +124,7 @@ C3DObj *Coaster::Get_Coaster(void)
 		C3DObj *Coaster = C3DObj::Get(i);
 		if (Coaster)
 		{
-			if (Coaster->Get_3DObjType() == C3DObj::TYPE_COASTER)
+			if (Coaster->Get_3DObjType() == AT_COASTER)
 			{
 				return Coaster;
 			}

@@ -19,6 +19,7 @@
 #include "CEnemy_Small.h"
 #include "CAttraction_Coaster .h"
 #include "CAttraction_Popcorn.h"
+#include "CAttraction_Standby.h"
 #include "gamepad.h"
 #include "exp.h"
 #include "CTexture.h"
@@ -92,7 +93,11 @@ void CPlayer::Update(void)
 	{
 		pJoyDevice->GetDeviceState(sizeof(DIJOYSTATE2), &js);
 	}
-	/////////////////////////////
+	////////////////////////////
+	if (Keyboard_IsPress(DIK_9))
+	{
+		C3DObj::boRenderSphere = false;
+	}
 	if (g_CosterMode)//コースターの時
 	{
 		C3DObj *pcoaster = Coaster::Get_Coaster();
@@ -214,26 +219,30 @@ void CPlayer::Update(void)
 				m_mtxTranslation *= Move(LEFT, SPEED);
 			}
 		}
-		if (Keyboard_IsRelease(DIK_O))
+		if (Keyboard_IsTrigger(DIK_M))
 		{
-			CAttraction::Create(CAttraction::TYPE_COFFEE);
+			CAttraction::Create(CAttraction::AT_STANDBY);
 		}
-		if (Keyboard_IsRelease(DIK_I))
+		if (Keyboard_IsTrigger(DIK_O))
 		{
-			CAttraction::Create(CAttraction::TYPE_FALL);
+			CAttraction::Create(CAttraction::AT_COFFEE);
 		}
-		if (Keyboard_IsRelease(DIK_U))
+		if (Keyboard_IsTrigger(DIK_I))
 		{
-			CAttraction::Create(CAttraction::TYPE_WHEEL);
+			CAttraction::Create(CAttraction::AT_FALL);
+		}
+		if (Keyboard_IsTrigger(DIK_U))
+		{
+			CAttraction::Create(CAttraction::AT_WHEEL);
 		}
 		if (Keyboard_IsTrigger(DIK_P))
 		{
-			CAttraction::Create(CAttraction::TYPE_COASTER);
+			CAttraction::Create(CAttraction::AT_COASTER);
 			g_CosterMode = true;
 		}
 		if (Keyboard_IsTrigger(DIK_Y))
 		{
-			CAttraction::Create(CAttraction::TYPE_POPCORN);
+			CAttraction::Create(CAttraction::AT_POPCORN);
 		}
 	}
 	D3DXMATRIX mtxr;

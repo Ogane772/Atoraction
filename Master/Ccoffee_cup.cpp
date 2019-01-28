@@ -35,7 +35,7 @@ THING_NORMAL *thing_cup2, *thing_cup3, *thing_cup4;
 //	ê∂ê¨
 //=============================================================================
 
-CCoffeeCup::CCoffeeCup() :CAttraction(TYPE_COFFEE), C3DObj(C3DObj::TYPE_ATTRACTION)
+CCoffeeCup::CCoffeeCup() :CAttraction(AT_COFFEE), C3DObj(AT_COFFEE)
 {
 	Initialize();
 }
@@ -47,7 +47,7 @@ CCoffeeCup::~CCoffeeCup()
 
 void CCoffeeCup::Initialize()
 {
-	m_AttractionIndex = Get_AttractionIndex(TYPE_ALL);
+	m_AttractionIndex = Get_AttractionIndex(AT_ALL);
 
 	m_Enable = true;
 

@@ -15,6 +15,8 @@
 #include "Cfreefall.h"
 #include "CGameObj.h"
 #include "CAttraction_Coaster .h"
+#include "CAttraction_Standby.h"
+#include "CAttraction_Popcorn.h"
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================
@@ -32,14 +34,14 @@ bool CAttraction::createchack;
 
 CAttraction::CAttraction()
 {
-	m_AttractionNum[TYPE_ALL]++;
+	m_AttractionNum[AT_ALL]++;
 }
 
 CAttraction::CAttraction(int nType)
 {
 	m_Type = nType;
 
-	m_AttractionNum[TYPE_ALL]++;
+	m_AttractionNum[AT_ALL]++;
 	m_AttractionNum[nType]++;
 }
 //=============================================================================
@@ -48,30 +50,45 @@ CAttraction::CAttraction(int nType)
 
 CAttraction::~CAttraction()
 {
-	m_AttractionNum[TYPE_ALL]--;
+	m_AttractionNum[AT_ALL]--;
 	m_AttractionNum[m_Type]--;
 }
 
 void CAttraction::Create(int nType)
 {
-	if (nType == TYPE_COFFEE)
+	if (nType == AT_COASTER)
+	{
+		Coaster *m_pAttraction = new Coaster;
+		createchack = true;
+	}
+	if (nType == AT_COFFEE)
 	{
 		CCoffeeCup *m_pAttraction = new CCoffeeCup;
 		createchack = true;
 	}
-	if (nType == TYPE_FALL)
+	if (nType == AT_FALL)
 	{
 		Cfreefall *m_pAttraction = new Cfreefall;
 		createchack = true;
 	}
-	if (nType == TYPE_WHEEL)
+	if (nType == AT_WHEEL)
 	{
 		Cwheel *m_pAttraction = new Cwheel;
 		createchack = true;
 	}
-	if (nType == TYPE_COASTER)
+	if (nType == AT_COASTER)
 	{
 		Coaster *m_pAttraction = new Coaster;
+		createchack = true;
+	}
+	if (nType == AT_POPCORN)
+	{
+		Popcorn *m_pAttraction = new Popcorn;
+		createchack = true;
+	}
+	if (nType == AT_STANDBY)
+	{
+		Standby *m_pAttraction = new Standby;
 		createchack = true;
 	}
 }

@@ -47,10 +47,6 @@ void Game_Initialize(void)
 	CMesh_SkyDome::Mesh_SkyDome_Create(CTexture::TEX_SKY, 2.0f, 60.0f, 40, 20);					//	空生成
 	CUserInterFace::UICreate();				//	UI生成
 	CEnemy::Create();						//	敵生成
-
-
-
-
 }
 
 //=============================================================================
@@ -71,8 +67,6 @@ void Game_Finalize(void)
 
 void Game_Updata(void)
 {
-
-
 	C3DObj::UpdateAll();	//	3Dオブジェクト更新
 	CGameObj::UpdateAll();	//	2Dオブジェクト更新
 

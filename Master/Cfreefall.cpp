@@ -39,7 +39,7 @@ static int CoolTime = 0;//クールタイム*/
 //=============================================================================
 //	生成
 //=============================================================================
-Cfreefall::Cfreefall() :CAttraction(TYPE_FALL), C3DObj(C3DObj::TYPE_ATTRACTION)
+Cfreefall::Cfreefall() :CAttraction(AT_FALL), C3DObj(AT_FALL)
 {
 	Initialize();
 }
@@ -51,7 +51,7 @@ Cfreefall::~Cfreefall()
 
 void Cfreefall::Initialize()
 {
-	m_AttractionIndex = Get_AttractionIndex(TYPE_ALL);
+	m_AttractionIndex = Get_AttractionIndex(AT_ALL);
 
 	m_Enable = true;
 	Bugoki = false;
