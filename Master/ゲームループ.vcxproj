@@ -168,6 +168,7 @@
     <ClCompile Include="CAttraction.cpp" />
     <ClCompile Include="CAttraction_Coaster.cpp" />
     <ClCompile Include="CAttraction_Popcorn.cpp" />
+    <ClCompile Include="CAttraction_Standby.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="Ccoffee_cup.cpp" />
     <ClCompile Include="CEnemy.cpp" />
@@ -199,6 +200,7 @@
     <ClCompile Include="result.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="score_draw.cpp" />
+    <ClCompile Include="shadow.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="system_timer.cpp" />
     <ClCompile Include="tex_animation.cpp" />
@@ -213,6 +215,7 @@
     <ClInclude Include="CAttraction.h" />
     <ClInclude Include="CAttraction_Coaster .h" />
     <ClInclude Include="CAttraction_Popcorn.h" />
+    <ClInclude Include="CAttraction_Standby.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="Ccoffee_cup.h" />
     <ClInclude Include="CEnemy.h" />
@@ -244,6 +247,7 @@
     <ClInclude Include="result.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="score_draw.h" />
+    <ClInclude Include="shadow.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="system_timer.h" />
     <ClInclude Include="tex_animation.h" />

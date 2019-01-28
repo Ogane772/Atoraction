@@ -25,6 +25,7 @@ C3DObj::MaterialFileData C3DObj::NORMAL_MODEL_FILES[] = {
 	{ "asset/model/cup_kiiro.x" },
 	{ "asset/model/cup_midori.x" },
 	{ "asset/model/popcorn.x" },
+	{ "asset/model/kensetutyuu.x" },
 };
 //	使いたいアニメモデルの数だけ書く
 C3DObj::MaterialFileData2 C3DObj::ANIME_MODEL_FILES[] = {
@@ -34,8 +35,7 @@ C3DObj::MaterialFileData2 C3DObj::ANIME_MODEL_FILES[] = {
 int C3DObj::MODEL_FILES_MAX = sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0]);
 int C3DObj::ANIME_MODEL_FILES_MAX = sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0]);
 
-
-bool boRenderSphere = true;
+bool C3DObj::boRenderSphere = true;
 //モデルアニメーション関係変数
 /*
 #define MODEL_MAX (9)

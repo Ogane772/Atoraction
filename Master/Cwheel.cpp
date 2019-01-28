@@ -34,7 +34,7 @@
 //=============================================================================
 //	ê∂ê¨
 //===========
-Cwheel::Cwheel() :CAttraction(TYPE_WHEEL), C3DObj(C3DObj::TYPE_ATTRACTION)
+Cwheel::Cwheel() :CAttraction(AT_WHEEL), C3DObj(AT_WHEEL)
 {
 	Initialize();
 }
@@ -46,7 +46,7 @@ Cwheel::~Cwheel()
 
 void Cwheel::Initialize()
 {
-	m_AttractionIndex = Get_AttractionIndex(TYPE_ALL);
+	m_AttractionIndex = Get_AttractionIndex(AT_ALL);
 
 	m_Enable = true;
 	ferris_flg = true;

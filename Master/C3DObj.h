@@ -25,7 +25,8 @@ public:
 		TYPE_ENEMY,		// エネミー
 		TYPE_ATTRACTION,// アトラクション
 		TYPE_COASTER,	// ジェットコースター
-		TYPE_POPCORN,	// ジェットコースター
+		TYPE_POPCORN,	// ポップコーン
+		TYPE_STADBY,    // 建設中
 		TYPE_ORNAMENT,	// 障害物
 		TYPE_etc,		// その他
 
@@ -44,6 +45,7 @@ public:
 		MODELL_CUP_YELLOW,
 		MODELL_CUP_GREEN,
 		MODELL_POPCORN,
+		MODELL_STANDBY,
 	}ModelFileData;
 	enum ANIME_MODEL
 	{
@@ -71,7 +73,7 @@ public:
 	int Get_Hp(void) { return m_Hp; }				//	HP取得
 	int Get_Mp(void) { return m_Mp; }				//	MP取得
 	int Get_MpStock(void) { return m_MpStock; }		//	MPストック取得
-	
+	static bool boRenderSphere;//当たり判定を可視化するかどうか？ true 可視化
 	//	モデル読み込み
 	static HRESULT InitModelLoad();
 	//モデル情報取得
