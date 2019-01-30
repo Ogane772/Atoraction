@@ -12,7 +12,7 @@
 class CCoffeeCup : public CAttraction
 {
 public:
-	CCoffeeCup();
+	CCoffeeCup(D3DXMATRIX mtxWorld);
 	~CCoffeeCup();
 
 	void Update(void);
@@ -21,7 +21,7 @@ public:
 	void CoffeeCup_Create(void);
 	bool Get_DrawCheck(void) { return false; }
 private:
-	void Initialize();
+	void Initialize(D3DXMATRIX mtxWorld);
 
 	float angCup = 0.0f;				//カップの回転
 	int CoolTime = 0;					//クールタイム

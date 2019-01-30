@@ -103,7 +103,7 @@ protected:
 	int m_Hp;				//	HP
 	int m_Mp;				//	MP
 	int m_Attack;			//	UŒ‚
-
+	int shadow_number;      //  ‰e‚Ì”Ô†
 	// •`‰æˆ—
 	void DrawDX_Anime(D3DXMATRIX mtxWorld, int type, THING* pThing);
 	void C3DObj::DrawDX_Normal(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing);

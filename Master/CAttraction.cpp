@@ -17,6 +17,7 @@
 #include "CAttraction_Coaster .h"
 #include "CAttraction_Standby.h"
 #include "CAttraction_Popcorn.h"
+#include "CGauge.h"
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================
@@ -63,7 +64,8 @@ void CAttraction::Create(int nType)
 	}
 	if (nType == AT_COFFEE)
 	{
-		CCoffeeCup *m_pAttraction = new CCoffeeCup;
+		Standby *m_pAttraction = new Standby(nType);
+		//CCoffeeCup *m_pAttraction = new CCoffeeCup;
 		createchack = true;
 	}
 	if (nType == AT_FALL)
@@ -88,7 +90,7 @@ void CAttraction::Create(int nType)
 	}
 	if (nType == AT_STANDBY)
 	{
-		Standby *m_pAttraction = new Standby;
+		Standby *m_pAttraction = new Standby(nType);
 		createchack = true;
 	}
 }

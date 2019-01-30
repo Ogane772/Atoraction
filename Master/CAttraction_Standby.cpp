@@ -9,15 +9,18 @@
 //=============================================================================
 
 #include "CAttraction_Standby.h"
+#include "Ccoffee_cup.h"
+#include "CAttraction_Popcorn.h"
+#include "Cfreefall.h"
 #include "input.h"
 #include "Cplayer.h"
 #include "debug_font.h"
 #include "time.h"
 #include "move.h"
+#include "CGauge.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
-//コースターモデルはここで表示 時間管理も
 #define SPEED (0.05f)
 #define SIZE (0.8f)
 #define END_TIME (120)	//待機時間	
@@ -40,9 +43,10 @@
 //	生成
 //=============================================================================
 
-Standby::Standby() :CAttraction(AT_STANDBY), C3DObj(AT_STANDBY)
+Standby::Standby(int nType) :CAttraction(AT_STANDBY), C3DObj(AT_STANDBY)
 {
-	Initialize();
+	Initialize(nType);
+	
 }
 
 Standby::~Standby()
@@ -50,45 +54,45 @@ Standby::~Standby()
 
 }
 
-void Standby::Initialize()
+void Standby::Initialize(int nType)
 {
 	m_AttractionIndex = Get_AttractionIndex(AT_ALL);
 
 	m_Enable = true;
 
-	CoolTime = 0;//クールタイム
-	B_CoolTime;//クールタイムのブール
+	m_TimeKeep = m_FrameCount;
 
-	B_CoolTime = true;
-
+	attraction_type = nType;//どのアトラクションを出すか格納
 	C3DObj *playerget = CPlayer::Get_Player();
 	D3DXMATRIX mtx = playerget->Get_mtxWorld();
 	D3DXMatrixTranslation(&m_mtxTranslation, mtx._41, 0, mtx._43);//X,Y,Zを渡す
 	D3DXMatrixScaling(&m_mtxScaling, STANDBY_SCALE, STANDBY_SCALE, STANDBY_SCALE);
-	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
+	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(90));
+	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 
 	Thing_Normal_model = GetNormalModel(MODELL_STANDBY);
+	CGAUGE::CGAUGE_Create(m_mtxWorld);
+	
 }
 
 void Standby::Update(void)
 {
-	//有効時間を引く
-	/*
-	if (m_FrameCount - m_TimeKeep <= END_TIME)
+	if (m_FrameCount - m_TimeKeep >= END_TIME)
 	{
-		
-		C3DObj *playerget = CPlayer::Get_Player();
-		D3DXMATRIX playermatrix = playerget->Get_mtxTranslation();
-
-		m_mtxTranslation = playermatrix;
-		D3DXMatrixScaling(&m_mtxScaling, STANDBY_SCALE, STANDBY_SCALE, STANDBY_SCALE);
-		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(0));
-		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
-	}
-	else
-	{
+		if (attraction_type == AT_COFFEE)
+		{
+			CCoffeeCup *m_pAttraction = new CCoffeeCup(m_mtxWorld);
+		}
+		if (attraction_type == AT_FALL)
+		{
+			Cfreefall *m_pAttraction = new Cfreefall;
+		}
+		if (attraction_type == AT_POPCORN)
+		{
+			Popcorn *m_pAttraction = new Popcorn;
+		}
 		C3DObj_delete();
-	}*/
+	}
 }
 
 void Standby::Draw(void)
@@ -123,7 +127,7 @@ C3DObj *Standby::Get_Standby(void)
 		C3DObj *Standby = C3DObj::Get(i);
 		if (Standby)
 		{
-			if (Standby->Get_3DObjType() == C3DObj::TYPE_STADBY)
+			if (Standby->Get_3DObjType() == AT_STANDBY)
 			{
 				return Standby;
 			}

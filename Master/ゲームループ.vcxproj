@@ -178,6 +178,7 @@
     <ClCompile Include="CEnemy_Special.cpp" />
     <ClCompile Include="Cfreefall.cpp" />
     <ClCompile Include="CGameObj.cpp" />
+    <ClCompile Include="CGauge.cpp" />
     <ClCompile Include="CLight.cpp" />
     <ClCompile Include="CMeshField.cpp" />
     <ClCompile Include="CMeshField_Cylinder.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="fade.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gamepad.h" />
+    <ClInclude Include="CGauge.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="CMesh_SkyDome.h" />
     <ClInclude Include="move.h" />

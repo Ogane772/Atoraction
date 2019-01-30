@@ -35,9 +35,9 @@ THING_NORMAL *thing_cup2, *thing_cup3, *thing_cup4;
 //	生成
 //=============================================================================
 
-CCoffeeCup::CCoffeeCup() :CAttraction(AT_COFFEE), C3DObj(AT_COFFEE)
+CCoffeeCup::CCoffeeCup(D3DXMATRIX mtxWorld) :CAttraction(AT_COFFEE), C3DObj(AT_COFFEE)
 {
-	Initialize();
+	Initialize(mtxWorld);
 }
 
 CCoffeeCup::~CCoffeeCup()
@@ -45,7 +45,7 @@ CCoffeeCup::~CCoffeeCup()
 
 }
 
-void CCoffeeCup::Initialize()
+void CCoffeeCup::Initialize(D3DXMATRIX mtxWorld)
 {
 	m_AttractionIndex = Get_AttractionIndex(AT_ALL);
 
@@ -59,10 +59,10 @@ void CCoffeeCup::Initialize()
 	m_Hp = COFFEE_CUP_HP;
 	m_Mp = COFFEE_CUP_MP;
 	m_Attack = COFFEE_CUP_ATK;
-
+	//コーヒーカップテーブルのみブレンダーで大きさを変えること
 	C3DObj *playerget = CPlayer::Get_Player();
 	D3DXMATRIX mtx = playerget->Get_mtxWorld();
-	D3DXMatrixTranslation(&m_mtxTranslation, mtx._41, 0, mtx._43);//X,Y,Zを渡す
+	D3DXMatrixTranslation(&m_mtxTranslation, mtxWorld._41, 0, mtxWorld._43);//X,Y,Zを渡す
 	D3DXMatrixScaling(&m_mtxScaling, COFFEE_SCALE, COFFEE_SCALE, COFFEE_SCALE);
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 

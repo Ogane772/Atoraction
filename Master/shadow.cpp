@@ -1,4 +1,3 @@
-/*
 #include "shadow.h"
 #include "CTexture.h"
 
@@ -21,7 +20,7 @@ static const Vertex3D v[] = {
 
 }; typedef struct Shadow_tag
 {
-	float *cx, *cz;//座標 リンクさせる必要があるのでポインタにする
+	float cx, cz;//座標 リンクさせる必要があるのでポインタにする
 	float sx, sz;//拡大率
 	bool create;//フラグ
 }Shadow;
@@ -43,13 +42,12 @@ void Shadow_Initialize(void)
 		shadow[i].create = false;
 	}
 
-	LPDIRECT3DDEVICE9 pDevice = MyDirect3D_GetDevice();
-	if (!pDevice) return;
+	if (!CGameObj::m_pD3DDevice) return;
 
 	// 頂点バッファの確保（頂点４つ分）
-	pDevice->CreateVertexBuffer(sizeof(v), D3DUSAGE_WRITEONLY, FVF_VERTEX3D, D3DPOOL_MANAGED, &g_pVertexBuffer, NULL);
+	CGameObj::m_pD3DDevice->CreateVertexBuffer(sizeof(v), D3DUSAGE_WRITEONLY, FVF_VERTEX3D, D3DPOOL_MANAGED, &g_pVertexBuffer, NULL);
 	// インデックスバッファの確保（インデックス６個分）
-	pDevice->CreateIndexBuffer(sizeof(WORD) * 6, D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, D3DPOOL_MANAGED, &g_pIndexBuffer2, NULL);
+	CGameObj::m_pD3DDevice->CreateIndexBuffer(sizeof(WORD) * 6, D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, D3DPOOL_MANAGED, &g_pIndexBuffer2, NULL);
 
 	// 頂点インデックスバッファへ頂点インデックスの書き込み
 
@@ -67,7 +65,7 @@ void Shadow_Initialize(void)
 	g_pIndexBuffer2->Unlock();
 }
 
-void Shadow_Create(float* x, float* y, float scaleX, float scaleY, int* shadow_number)
+void Shadow_Create(float x, float y, float scaleX, float scaleY, int shadow_number)
 {
 	for (int i = 0; i < SHADOW_MAX; i++)
 	{
@@ -78,7 +76,7 @@ void Shadow_Create(float* x, float* y, float scaleX, float scaleY, int* shadow_n
 			shadow[i].sx = scaleX;
 			shadow[i].sz = scaleY;
 			shadow[i].create = true;
-			*shadow_number = i;
+			shadow_number = i;
 			break;
 		}
 	}
@@ -96,17 +94,15 @@ void Shadow_Update(void)
 
 void Shadow_Draw(void)
 {
-	LPDIRECT3DDEVICE9 pDevice = MyDirect3D_GetDevice();//ゲッター
-	/*4×4行列*//*D3DXMATRIX mtx;
-	/*4×4行列*///D3DXMATRIX mtx2;
-	/*4×4行列*///D3DXMATRIX mtx3;
-	/*4×4行列*///D3DXMATRIX mtx4;
+	/*4×4行列*/D3DXMATRIX mtx;
+	/*4×4行列*/D3DXMATRIX mtx2;
+	/*4×4行列*/D3DXMATRIX mtx3;
+	/*4×4行列*/D3DXMATRIX mtx4;
 	//D3DXMatrixTranslation(&mtx, 1, 1, 1);//平行移動 x y z
 	//D3DXMatrixRotationYawPitchRoll(&mtx2, D3DXToRadian(radian), D3DXToRadian(radian), D3DXToRadian(radian));
 	//D3DXMatrixRotationX(&mtx2, D3DXToRadian(radian));
-	
-	/*4×4行列*//*D3DXMATRIX mtxworld;
-	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);//ライトOFF
+	/*4×4行列*/D3DXMATRIX mtxworld;
+	CGameObj::m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);//ライトOFF
 	for (int i = 0; i < SHADOW_MAX; i++)
 	{
 		if (shadow[i].create)
@@ -114,30 +110,30 @@ void Shadow_Draw(void)
 			//減算合成(設定して●影を書いたら戻す(アルファブレンドを行う))
 			//D3DXMatrixRotationY(mtx2, D3DXToRadian(radian));
 			D3DXMatrixIdentity(&mtxworld);//単位行列を作る。単位行列を作る関数には大抵Identityが付いてる
-			D3DXMatrixTranslation(&mtx, *shadow[i].cx, 0.001f, *shadow[i].cz);//平行移動 x y z
+			D3DXMatrixTranslation(&mtx, shadow[i].cx, 0.001f, shadow[i].cz);//平行移動 x y z
 			D3DXMatrixScaling(&mtx2, shadow[i].sx, 0.1f, shadow[i].sz);//拡大　x y zの拡大
 			D3DXMatrixRotationY(&mtx3, D3DXToRadian(0));
 
 			mtxworld = mtx3 * mtx2 * mtx;//原点が中心！
-			pDevice->SetTransform(D3DTS_WORLD, &mtxworld);//セットした行列をワールド座標にする
+			CGameObj::m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxworld);//セットした行列をワールド座標にする
 
-			pDevice->SetTexture(0, Texture_GetTexture(TEXTURE_INDEX_EFF));
+			CGameObj::m_pD3DDevice->SetTexture(0, CTexture::Texture_GetTexture(CTexture::TEX_SHADOW));
 
-			pDevice->SetFVF(FVF_VERTEX3D);
+			CGameObj::m_pD3DDevice->SetFVF(FVF_VERTEX3D);
 
-			pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_REVSUBTRACT);
-			pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
-			pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);//引き算する量をSRCALPHAで調節
+			CGameObj::m_pD3DDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_REVSUBTRACT);
+			CGameObj::m_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+			CGameObj::m_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);//引き算する量をSRCALPHAで調節
 
-			pDevice->SetStreamSource(0, g_pVertexBuffer, 0, sizeof(Vertex3D)); // 頂点バッファの設定
-			pDevice->SetIndices(g_pIndexBuffer2);
+			CGameObj::m_pD3DDevice->SetStreamSource(0, g_pVertexBuffer, 0, sizeof(Vertex3D)); // 頂点バッファの設定
+			CGameObj::m_pD3DDevice->SetIndices(g_pIndexBuffer2);
 
-			pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 4, 0, 12);
+			CGameObj::m_pD3DDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 4, 0, 12);
 
-			pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
-			pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-			pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-			pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);			
+			CGameObj::m_pD3DDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+			CGameObj::m_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+			CGameObj::m_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+			CGameObj::m_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);			
 		}
 	}
 }
@@ -149,4 +145,4 @@ void Shadow_Destroy(int number)
 	shadow[number].sx = 0.0f;
 	shadow[number].sz = 0.0f;
 	shadow[number].create = false;
-}*/
+}

@@ -34,6 +34,9 @@ public:
 		TEX_Player_Icon,
 		TEX_ENEMY_ICON,
 		TEX_EFFECT_HIT1,
+		TEX_SHADOW,
+		TEX_GAUGE,
+		TEX_WHITE_BAR,
 		TYPE_MAX,
 	};
 

@@ -64,7 +64,7 @@ void Cwheel::Initialize()
 	D3DXMatrixScaling(&m_mtxScaling, WHEEL_SCALE, WHEEL_SCALE, WHEEL_SCALE);
 
 	angle = (float)(playerget->Get_Angle());
-	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angle));
+	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(-angle));
 
 	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 	Thing_Normal_model = GetNormalModel(MODELL_WHEEL);

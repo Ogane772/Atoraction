@@ -12,7 +12,7 @@
 class Standby : public CAttraction
 {
 public:
-	Standby();
+	Standby(int nType);
 	~Standby();
 
 	void Update(void);
@@ -23,10 +23,7 @@ public:
 	bool Get_DrawCheck(void) { return m_DrawCheck; }
 private:
 	bool m_DrawCheck;
-	void Initialize();
-
-	int CoolTime = 0;					//クールタイム
-
-	bool B_CoolTime;					//クールタイムのブール
+	void Initialize(int nType);
+	int attraction_type;//アトラクションタイプを格納し消えるときに生成する
 };
 #endif;
