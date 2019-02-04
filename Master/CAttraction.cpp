@@ -70,7 +70,8 @@ void CAttraction::Create(int nType)
 	}
 	if (nType == AT_FALL)
 	{
-		Cfreefall *m_pAttraction = new Cfreefall;
+		Standby *m_pAttraction = new Standby(nType);
+		//Cfreefall *m_pAttraction = new Cfreefall;
 		createchack = true;
 	}
 	if (nType == AT_WHEEL)
@@ -85,7 +86,8 @@ void CAttraction::Create(int nType)
 	}
 	if (nType == AT_POPCORN)
 	{
-		Popcorn *m_pAttraction = new Popcorn;
+		Standby *m_pAttraction = new Standby(nType);
+		//Popcorn *m_pAttraction = new Popcorn;
 		createchack = true;
 	}
 	if (nType == AT_STANDBY)

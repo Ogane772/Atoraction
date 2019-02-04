@@ -85,11 +85,11 @@ void Standby::Update(void)
 		}
 		if (attraction_type == AT_FALL)
 		{
-			Cfreefall *m_pAttraction = new Cfreefall;
+			Cfreefall *m_pAttraction = new Cfreefall(m_mtxWorld);
 		}
 		if (attraction_type == AT_POPCORN)
 		{
-			Popcorn *m_pAttraction = new Popcorn;
+			Popcorn *m_pAttraction = new Popcorn(m_mtxWorld);
 		}
 		C3DObj_delete();
 	}

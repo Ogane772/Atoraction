@@ -100,6 +100,11 @@ void CGAUGE::GaugeDraw(void)
 {
 	D3DXMatrixIdentity(&m_mtxWorld);
 
+	g_bb[0] = { D3DXVECTOR3(-3, 0.5,0.0),D3DXVECTOR3(0.0,0.0,0.0),D3DCOLOR(0xffffffff),D3DXVECTOR2(0.0,0.0) };
+	g_bb[1] = { D3DXVECTOR3(3, 0.5,0.),D3DXVECTOR3(0.0,0.0,0.0),D3DCOLOR(0xffffffff),D3DXVECTOR2(1.0,0.0) };
+	g_bb[2] = { D3DXVECTOR3(-3,-0.5,0.0),D3DXVECTOR3(0.0,0.0,0.0),D3DCOLOR(0xffffffff),D3DXVECTOR2(0.0,1.0) };
+	g_bb[3] = { D3DXVECTOR3(3,-0.5,0.0),D3DXVECTOR3(0.0,0.0,0.0),D3DCOLOR(0xffffffff),D3DXVECTOR2(1.0,1.0) };
+
 	D3DXMATRIX mtxView = CCamera::Get_ViewMtx();
 
 	D3DXMATRIX mtxInvV;
@@ -122,7 +127,10 @@ void CGAUGE::GaugeDraw(void)
 void CGAUGE::UpdateGaugeDraw(void)
 {
 	D3DXMatrixIdentity(&m_mtxWorld);
-
+	g_bb[0] = { D3DXVECTOR3(-3, 0.5,0.0),D3DXVECTOR3(0.0,0.0,0.0),D3DCOLOR(0xffffffff),D3DXVECTOR2(0.0,0.0) };
+	g_bb[1] = { D3DXVECTOR3(3, 0.5,0.),D3DXVECTOR3(0.0,0.0,0.0),D3DCOLOR(0xffffffff),D3DXVECTOR2(1.0f / bar_width,0.0) };
+	g_bb[2] = { D3DXVECTOR3(-3,-0.5,0.0),D3DXVECTOR3(0.0,0.0,0.0),D3DCOLOR(0xffffffff),D3DXVECTOR2(0.0,1.0f / bar_width) };
+	g_bb[3] = { D3DXVECTOR3(3,-0.5,0.0),D3DXVECTOR3(0.0,0.0,0.0),D3DCOLOR(0xffffffff),D3DXVECTOR2(1.0f / bar_width,1.0f / bar_width) };
 	D3DXMATRIX mtxView = CCamera::Get_ViewMtx();
 
 	D3DXMATRIX mtxInvV;
@@ -147,7 +155,10 @@ void CGAUGE::WhiteGaugeDraw(void)
 	D3DXMatrixIdentity(&m_mtxWorld);
 
 	D3DXMATRIX mtxView = CCamera::Get_ViewMtx();
-
+	g_bb[0] = { D3DXVECTOR3(-3, 0.5,0.0),D3DXVECTOR3(0.0,0.0,0.0),D3DCOLOR(0xffffffff),D3DXVECTOR2(0.0,0.0) };
+	g_bb[1] = { D3DXVECTOR3(3, 0.5,0.),D3DXVECTOR3(0.0,0.0,0.0),D3DCOLOR(0xffffffff),D3DXVECTOR2(1.0,0.0) };
+	g_bb[2] = { D3DXVECTOR3(-3,-0.5,0.0),D3DXVECTOR3(0.0,0.0,0.0),D3DCOLOR(0xffffffff),D3DXVECTOR2(0.0,1.0) };
+	g_bb[3] = { D3DXVECTOR3(3,-0.5,0.0),D3DXVECTOR3(0.0,0.0,0.0),D3DCOLOR(0xffffffff),D3DXVECTOR2(1.0,1.0) };
 	D3DXMATRIX mtxInvV;
 	mtxView._41 = 0.0f;
 	mtxView._42 = 0.0f;

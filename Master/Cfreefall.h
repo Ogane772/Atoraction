@@ -12,7 +12,7 @@
 class Cfreefall : public CAttraction
 {
 public:
-	Cfreefall();
+	Cfreefall(D3DXMATRIX mtxWorld);
 	~Cfreefall();
 
 	void Update(void);
@@ -20,7 +20,7 @@ public:
 	void Finalize(void);
 	bool Get_DrawCheck(void) { return m_DrawCheck; }
 private:
-	void Initialize();
+	void Initialize(D3DXMATRIX mtxWorld);
 	int m_AttractionIndex;
 	float ugoki;
 	bool Bugoki = false;
