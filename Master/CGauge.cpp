@@ -77,7 +77,7 @@ void CGAUGE::Update(void)
 {
 	if (m_FrameCount - m_TimeKeep <= END_TIME)
 	{
-		bar_width += 0.0083f;
+		bar_width += 0.022f;
 	}
 	else
 	{
@@ -127,10 +127,10 @@ void CGAUGE::GaugeDraw(void)
 void CGAUGE::UpdateGaugeDraw(void)
 {
 	D3DXMatrixIdentity(&m_mtxWorld);
-	g_bb[0] = { D3DXVECTOR3(-3, 0.5,0.0),D3DXVECTOR3(0.0,0.0,0.0),D3DCOLOR(0xffffffff),D3DXVECTOR2(0.0,0.0) };
-	g_bb[1] = { D3DXVECTOR3(3, 0.5,0.),D3DXVECTOR3(0.0,0.0,0.0),D3DCOLOR(0xffffffff),D3DXVECTOR2(1.0f / bar_width,0.0) };
-	g_bb[2] = { D3DXVECTOR3(-3,-0.5,0.0),D3DXVECTOR3(0.0,0.0,0.0),D3DCOLOR(0xffffffff),D3DXVECTOR2(0.0,1.0f / bar_width) };
-	g_bb[3] = { D3DXVECTOR3(3,-0.5,0.0),D3DXVECTOR3(0.0,0.0,0.0),D3DCOLOR(0xffffffff),D3DXVECTOR2(1.0f / bar_width,1.0f / bar_width) };
+	g_bb[0] = { D3DXVECTOR3(-bar_width, 0.5,0.0),D3DXVECTOR3(0.0,0.0,0.0),D3DCOLOR(0xffffffff),D3DXVECTOR2(0.0,0.0) };
+	g_bb[1] = { D3DXVECTOR3(bar_width, 0.5,0.),D3DXVECTOR3(0.0,0.0,0.0),D3DCOLOR(0xffffffff),D3DXVECTOR2(1.0f / bar_width,0.0) };
+	g_bb[2] = { D3DXVECTOR3(-bar_width,-0.5,0.0),D3DXVECTOR3(0.0,0.0,0.0),D3DCOLOR(0xffffffff),D3DXVECTOR2(0.0,1.0f / bar_width) };
+	g_bb[3] = { D3DXVECTOR3(bar_width,-0.5,0.0),D3DXVECTOR3(0.0,0.0,0.0),D3DCOLOR(0xffffffff),D3DXVECTOR2(1.0f / bar_width,1.0f / bar_width) };
 	D3DXMATRIX mtxView = CCamera::Get_ViewMtx();
 
 	D3DXMATRIX mtxInvV;
@@ -140,7 +140,7 @@ void CGAUGE::UpdateGaugeDraw(void)
 	D3DXMatrixInverse(&mtxInvV, NULL, &mtxView);
 
 //	D3DXMatrixTranslation(&m_mtxTranslation, 0.0f, 5.0f, 0.0f);//•½s
-	D3DXMatrixScaling(&m_mtxScaling, bar_width, 1.0f, 1);
+	D3DXMatrixScaling(&m_mtxScaling, 1.0f, 1.0f, 1);
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 	m_mtxWorld = (mtxInvV * m_mtxWorld);
 	CGameObj::m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);

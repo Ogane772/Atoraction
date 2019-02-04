@@ -73,8 +73,8 @@ void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 
 
 	SkinMesh.InitThing(m_pD3DDevice, &Thing, ANIME_MODEL_FILES[MODELL_ANIME_SMALL].filename);
-	Thing.Sphere.fRadius = 1.3;
-	Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2, 0);
+	Thing.Sphere.fRadius = 1.3f;
+	Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2f, 0);
 	SkinMesh.InitSphere(m_pD3DDevice, &Thing);
 
 	m_EnemyIndex = Get_EnemyIndex(TYPE_ALL);
@@ -106,7 +106,7 @@ void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 	D3DXMatrixScaling(&m_mtxScaling, 1, 1, 1);
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 
-
+	Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
 }
 
 

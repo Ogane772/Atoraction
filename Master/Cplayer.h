@@ -41,6 +41,9 @@ private:
 	static int m_KO_Count;
 	
 	bool g_CosterMode;
+	int m_DrawCount;
+	
+	void PlayerDamage(void);
 };
 
 

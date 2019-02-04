@@ -26,6 +26,10 @@ C3DObj::MaterialFileData C3DObj::NORMAL_MODEL_FILES[] = {
 	{ "asset/model/cup_midori.x" },
 	{ "asset/model/popcorn.x" },
 	{ "asset/model/kensetutyuu.x" },
+	{ "asset/model/ornament/lamp.x" },
+	{ "asset/model/ornament/gomibako.x" },
+	{ "asset/model/ornament/bench.x" },
+	{ "asset/model/ornament/hunsui.x" },
 };
 //	使いたいアニメモデルの数だけ書く
 C3DObj::MaterialFileData2 C3DObj::ANIME_MODEL_FILES[] = {
@@ -35,7 +39,7 @@ C3DObj::MaterialFileData2 C3DObj::ANIME_MODEL_FILES[] = {
 int C3DObj::MODEL_FILES_MAX = sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0]);
 int C3DObj::ANIME_MODEL_FILES_MAX = sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0]);
 
-bool C3DObj::boRenderSphere = true;
+bool C3DObj::boRenderSphere = false;
 //モデルアニメーション関係変数
 /*
 #define MODEL_MAX (9)
@@ -311,7 +315,7 @@ void C3DObj::DrawDX_Anime(D3DXMATRIX mtxWorld, int type, THING* pThing)
 
 	SKIN_MESH::UpdateSphere(m_pD3DDevice, pThing);
 
-	m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
+	m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 //	m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_COLOR1);
 //	m_pD3DDevice->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_COLOR1);
 	//m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
@@ -358,7 +362,7 @@ void C3DObj::DrawDX_Anime(D3DXMATRIX mtxWorld, int type, THING* pThing)
 void C3DObj::DrawDX_Normal(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing)
 {
 	
-	m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+	m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 	m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
 	m_pD3DDevice->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL);
 

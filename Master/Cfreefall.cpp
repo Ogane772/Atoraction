@@ -69,9 +69,9 @@ void Cfreefall::Initialize(D3DXMATRIX mtxWorld)
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 	Thing_Normal_model = GetNormalModel(MODELL_HASIRA);
 	fall = GetNormalModel(MODELL_ENBAN);
-	Thing_Normal_model->Sphere.vCenter = D3DXVECTOR3(0, 60.0, 0);
-	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 60.0, 0),3.0f);//“–‚½‚è”»’è‚Ì•ÏX
-	
+	Thing_Normal_model->Sphere.vCenter = D3DXVECTOR3(0, 0.0, 0);
+	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0),3.0f);//“–‚½‚è”»’è‚Ì•ÏX
+	//InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 3.0f);//“–‚½‚è”»’è‚Ì•ÏX
 }
 
 void Cfreefall::Update(void)

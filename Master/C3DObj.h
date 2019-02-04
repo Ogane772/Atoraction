@@ -46,6 +46,10 @@ public:
 		MODELL_CUP_GREEN,
 		MODELL_POPCORN,
 		MODELL_STANDBY,
+		MODELL_LAMP,
+		MODELL_GOMIBAKO,
+		MODELL_BENCH,
+		MODELL_HUNSUI,
 	}ModelFileData;
 	enum ANIME_MODEL
 	{
@@ -84,6 +88,13 @@ public:
 	static void Model_Finalize(int index);
 	//当たり判定
 	//static void HitCheck(void);
+	//衝突検出 ノーマルモデル対ノーマルモデル
+	static bool Collision_NomalVSNormal(THING_NORMAL*, THING_NORMAL*);
+	//衝突検出 アニメモデル対ノーマルモデル
+	static bool Collision_AnimeVSNormal(THING*, THING_NORMAL*);
+	//衝突検出 アニメモデル対アニメモデル
+	static bool Collision_AnimeVSAnime(THING*, THING*);
+
 	void HitCheck(void);
 
 	virtual bool Get_DrawCheck(void) = 0;
@@ -141,12 +152,7 @@ private:
 	int m_3DObjType;		//	3Dオブジェクトタイプ
 	static int m_3DObjNum;	//	ゲームオブジェクト総数
 	static C3DObj *p3DObj[MAX_GAMEOBJ];
-	//衝突検出 ノーマルモデル対ノーマルモデル
-	static bool Collision_NomalVSNormal(THING_NORMAL*, THING_NORMAL*);
-	//衝突検出 アニメモデル対ノーマルモデル
-	static bool Collision_AnimeVSNormal(THING*, THING_NORMAL*);
-	//衝突検出 アニメモデル対アニメモデル
-	static bool Collision_AnimeVSAnime(THING*, THING*);
+
 	
 	
 

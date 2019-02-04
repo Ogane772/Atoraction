@@ -19,11 +19,10 @@
 #include "CEnemy_Small.h"
 #include "CAttraction_Coaster .h"
 #include "CAttraction_Popcorn.h"
-#include "CAttraction_Standby.h"
 #include "gamepad.h"
 #include "exp.h"
 #include "CTexture.h"
-#include "shadow.h"
+#include "CEnemy.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -36,21 +35,22 @@
 //=============================================================================
 enum PlayerAnime
 {
-	PLAYER_DOWN,
-	PLAYER_WHEEL,
-	PLAYER_COASTER,
-	PLAYER_JUMP,
-	PLAYER_DAMAGE,
-	PLAYER_SET,
-	PLAYER_IDLE,
 	PLAYER_WALK,
+	PLAYER_IDLE,
+	PLAYER_SET,
+	PLAYER_DAMAGE,
+	PLAYER_JUMP,
+	PLAYER_COASTER,
+	PLAYER_WHEEL,
+	PLAYER_DOWN,
+
 };
 //コントローラーに使う変数
 static DIJOYSTATE2 js;
 static LPDIRECTINPUTDEVICE8 pJoyDevice;
 static HRESULT hr;
 static int doubleflag;//キー二つ押しを格納
-//D3DXMATRIX CPlayer::m_mtxWorld;
+					  //D3DXMATRIX CPlayer::m_mtxWorld;
 CPlayer *CPlayer::m_pPlayer[PLAYER_MAX] = {};
 int CPlayer::m_PlayerNum = 0;
 int CPlayer::m_KO_Count = 0;
@@ -94,11 +94,7 @@ void CPlayer::Update(void)
 	{
 		pJoyDevice->GetDeviceState(sizeof(DIJOYSTATE2), &js);
 	}
-	////////////////////////////
-	if (Keyboard_IsPress(DIK_9))
-	{
-		C3DObj::boRenderSphere = false;
-	}
+	/////////////////////////////
 	if (g_CosterMode)//コースターの時
 	{
 		C3DObj *pcoaster = Coaster::Get_Coaster();
@@ -131,28 +127,28 @@ void CPlayer::Update(void)
 		}
 		if (Keyboard_IsPress(DIK_D) && (Keyboard_IsPress(DIK_W)))
 		{
-			m_mtxTranslation *= Move(FLONT, SPEED / 2);
+			m_mtxTranslation *= Move(FLONT, SPEED);
 			m_mtxTranslation *= Move(RIGHT, SPEED / 2);
 			m_Angle = -40;
 			doubleflag = true;
 		}
 		if (Keyboard_IsPress(DIK_W) && (Keyboard_IsPress(DIK_A)))
 		{
-			m_mtxTranslation *= Move(FLONT, SPEED / 2);
+			m_mtxTranslation *= Move(FLONT, SPEED);
 			m_mtxTranslation *= Move(LEFT, SPEED / 2);
 			m_Angle = -120;
 			doubleflag = true;
 		}
 		if (Keyboard_IsPress(DIK_S) && (Keyboard_IsPress(DIK_A)))
 		{
-			m_mtxTranslation *= Move(BACK, SPEED / 2);
+			m_mtxTranslation *= Move(BACK, SPEED);
 			m_mtxTranslation *= Move(LEFT, SPEED / 2);
 			m_Angle = -230;
 			doubleflag = true;
 		}
 		if (Keyboard_IsPress(DIK_S) && (Keyboard_IsPress(DIK_D)))
 		{
-			m_mtxTranslation *= Move(BACK, SPEED / 2);
+			m_mtxTranslation *= Move(BACK, SPEED);
 			m_mtxTranslation *= Move(RIGHT, SPEED / 2);
 			m_Angle = 30;
 			doubleflag = true;
@@ -161,68 +157,28 @@ void CPlayer::Update(void)
 		{
 			if (Keyboard_IsPress(DIK_W) || js.lY <= -3)
 			{
-				/*
-				if ((m_Angle < 90) || (m_Angle > 270))
-				{
-					AngleChange(false);
-				}
-				if ((m_Angle >= 90) && (m_Angle < 270))
-				{
-					AngleChange(true);
-				}*/
 				m_Angle = -90;
 
 				m_mtxTranslation *= Move(FLONT, SPEED);
 			}
 			if (Keyboard_IsPress(DIK_S) || js.lY >= 3)
 			{
-				/*
-				if ((m_Angle > 90) && (m_Angle <= 270))
-				{
-					AngleChange(false);
-				}
-				if ((m_Angle < 90) || (m_Angle > 270))
-				{
-					AngleChange(true);
-				}*/
 				m_Angle = 90;
 
 				m_mtxTranslation *= Move(BACK, SPEED);
 			}
 			if (Keyboard_IsPress(DIK_D) || js.lX >= 3)
 			{
-				/*
-				if ((m_Angle > 0) && (m_Angle < 180))
-				{
-					AngleChange(false);
-				}
-				if ((m_Angle < 360) && (m_Angle >= 180))
-				{
-					AngleChange(true);
-				}*/
 				m_Angle = 0;
 
 				m_mtxTranslation *= Move(RIGHT, SPEED);
 			}
 			if (Keyboard_IsPress(DIK_A) || js.lX <= -3)
 			{
-				/*
-				if ((m_Angle < 180) && (m_Angle >= 0))
-				{
-					AngleChange(true);
-				}
-				if ((m_Angle > 180) && (m_Angle <= 360))
-				{
-					AngleChange(false);
-				}*/
 				m_Angle = 180;
 
 				m_mtxTranslation *= Move(LEFT, SPEED);
 			}
-		}
-		if (Keyboard_IsTrigger(DIK_M))
-		{
-			CAttraction::Create(CAttraction::AT_STANDBY);
 		}
 		if (Keyboard_IsTrigger(DIK_O))
 		{
@@ -301,6 +257,13 @@ void CPlayer::Update(void)
 	}
 	}
 	}*/
+
+	if (m_DrawCheck)
+	{
+		PlayerDamage();
+	}
+
+	//Animation_Change(PLAYER_DAMAGE, 0.05);
 	doubleflag = false;
 }
 //=============================================================================
@@ -311,18 +274,38 @@ void CPlayer::Draw(void)
 {
 
 	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
-	Thing_Anime_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+	Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+	if (!m_DrawCheck)
+	{
+		if (m_FrameCount % 2 == 0)
+		{
+			//DrawDX2(m_mtxWorld, NxA_pPlayer, MODELL_PLAYER);
+			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);	//　ライティング有効
+			DrawDX_Anime(m_mtxWorld, MODELL_ANIME_PLAYER, &Thing);
+			
 
-	//DrawDX2(m_mtxWorld, NxA_pPlayer, MODELL_PLAYER);
-
-	DrawDX_Anime(m_mtxWorld, MODELL_ANIME_PLAYER, Thing_Anime_model);
-
+			m_DrawCount++;
+			if (m_DrawCount >= 20)
+			{
+				m_DrawCount = 0;
+				m_DrawCheck = true;
+			}
+		}
+	}
+	else
+	{
+		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);	//　ライティング有効
+		DrawDX_Anime(m_mtxWorld, MODELL_ANIME_PLAYER, &Thing);
+		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+	}
 	//	デバッグ
 	//DebugFont_Draw(300, 50, "%f\n%f\n%f\n%f", m_front.x, m_front.y, m_front.z, m_Angle);
 	//RenderPhysX();
 	//コントローラーのスティック取得
 	//DebugFont_Draw(300, 50, "X = %ld , Y= %ld", js.lX, js.lY);
 	//Debug_Collision(m_SphereCollision, m_mtxTranslation);
+	PlayerDamage();
+	m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 }
 
 //	初期化
@@ -330,22 +313,22 @@ void CPlayer::Player_Initialize(void)
 {
 
 	SkinMesh.InitThing(m_pD3DDevice, &Thing, ANIME_MODEL_FILES[MODELL_ANIME_PLAYER].filename);
-	Thing.Sphere.fRadius = 1.3;
-	Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2, 0);
+	Thing.Sphere.fRadius = 1.3f;
+	Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2f, 0);
 	SkinMesh.InitSphere(m_pD3DDevice, &Thing);
 	//モデル情報取得
-	Thing_Anime_model = GetAnimeModel(MODELL_ANIME_PLAYER);
-	for (DWORD i = 0; i < Thing_Anime_model->pAnimController->GetNumAnimationSets(); i++)
+	//Thing_Anime_model = GetAnimeModel();
+	for (DWORD i = 0; i < Thing.pAnimController->GetNumAnimationSets(); i++)
 	{//AnimSetにアニメーション情報格納
-		Thing_Anime_model->pAnimController->GetAnimationSet(i, &pAnimSet[i]);
+		Thing.pAnimController->GetAnimationSet(i, &pAnimSet[i]);
 	}
 	//アニメーション情報初期化
 	TrackDesc.Weight = 1;
 	TrackDesc.Enable = true;
 	TrackDesc.Position = 0;//アニメーションタイムリセット
-	TrackDesc.Speed = 0.001f;//モーションスピード
-	Thing_Anime_model->pAnimController->SetTrackDesc(0, &TrackDesc);//アニメ情報セット
-	Thing_Anime_model->pAnimController->SetTrackAnimationSet(0, pAnimSet[PLAYER_WALK]);//初期アニメーションセット
+	TrackDesc.Speed = 0.01f;//モーションスピード
+	Thing.pAnimController->SetTrackDesc(0, &TrackDesc);//アニメ情報セット
+	Thing.pAnimController->SetTrackAnimationSet(0, pAnimSet[PLAYER_WALK]);//初期アニメーションセット
 	m_Hp = HP_MAX;
 	m_Mp = 0;
 	m_MpStock = MPSTOCK_INIT;
@@ -353,6 +336,7 @@ void CPlayer::Player_Initialize(void)
 	m_Enable = true;
 	m_delete = false;
 	g_CosterMode = false;
+	m_DrawCheck = true;
 	D3DXMatrixTranslation(&m_mtxTranslation, 0, 1, 0);
 	D3DXMatrixScaling(&m_mtxScaling, PLAYER_SAIZ, PLAYER_SAIZ, PLAYER_SAIZ);
 	m_mtxKeepTranslation = m_mtxTranslation;
@@ -377,13 +361,12 @@ void CPlayer::Player_Initialize(void)
 	{
 		hr = pJoyDevice->Acquire();
 	}
-	Shadow_Create(m_mtxWorld._41, m_mtxWorld._43, 2.5f, 2.5f, shadow_number);
+	Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
 }
 
 //	終了処理
 void CPlayer::Finalize(void)
 {
-	Shadow_Destroy(shadow_number);
 	for (int i = 0; i < m_PlayerNum; i++)
 	{
 		if (m_pPlayer[i])
@@ -443,4 +426,23 @@ C3DObj *CPlayer::Get_Player(void)
 
 
 
+void CPlayer::PlayerDamage(void)
+{
+	for (int i = 0;i < MAX_GAMEOBJ;i++)
+	{
+		C3DObj *enemy = CEnemy::Get_Enemy(i);
+		if (enemy)
+		{
+			Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
+			THING *thingenemy = enemy->GetAnimeModel(i);
+			if (C3DObj::Collision_AnimeVSAnime(&Thing, thingenemy))
+			{
+				m_Hp--;
+				//Animation_Change(PLAYER_WALK, 0.05);
+				m_DrawCheck = false;
+				break;
+			}
 
+		}
+	}
+}
