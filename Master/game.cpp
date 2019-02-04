@@ -19,6 +19,7 @@
 #include "common.h"
 #include "exp.h"
 #include "shadow.h"
+#include "COrnament.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -48,6 +49,7 @@ void Game_Initialize(void)
 	CMesh_SkyDome::Mesh_SkyDome_Create(CTexture::TEX_SKY, 2.0f, 60.0f, 40, 20);					//	空生成
 	CUserInterFace::UICreate();				//	UI生成
 	CEnemy::Create();						//	敵生成
+	COrnament::Create();						//	オブジェクト生成
 	Shadow_Initialize();
 }
 
@@ -73,7 +75,7 @@ void Game_Updata(void)
 	CGameObj::UpdateAll();	//	2Dオブジェクト更新
 
 	CEnemy::Create();		//	エネミー生成
-
+	COrnament::Create();    //  オブジェクト生成
 	if (GAMEEND <= CGameObj::Get_FraemCount())		//	FraemCountがGAMEENDになるまでカウントUP　なったら終了
 	{
 		if (!g_bend)

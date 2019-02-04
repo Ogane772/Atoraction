@@ -183,6 +183,10 @@
     <ClCompile Include="CMeshField.cpp" />
     <ClCompile Include="CMeshField_Cylinder.cpp" />
     <ClCompile Include="COrnament.cpp" />
+    <ClCompile Include="COrnament_Bench.cpp" />
+    <ClCompile Include="COrnament_DustBox.cpp" />
+    <ClCompile Include="COrnament_Fountain.cpp" />
+    <ClCompile Include="COrnament_Lamp.cpp" />
     <ClCompile Include="Cplayer.cpp" />
     <ClCompile Include="CSkinAnimation.cpp" />
     <ClCompile Include="CTexture.cpp" />
@@ -231,6 +235,10 @@
     <ClInclude Include="CMeshField_Cylinder.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="COrnament.h" />
+    <ClInclude Include="COrnament_Bench.h" />
+    <ClInclude Include="COrnament_DustBox.h" />
+    <ClInclude Include="COrnament_Fountain.h" />
+    <ClInclude Include="COrnament_Lamp.h" />
     <ClInclude Include="Cplayer.h" />
     <ClInclude Include="CSkinAnimation.h" />
     <ClInclude Include="CTexture.h" />

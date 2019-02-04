@@ -18,7 +18,7 @@ CTexture::TextureFileData CTexture::TEXTURE_FILES[] = {
 	{ "asset/floor.png",600,600 },
 	{ "asset/bullet000.png",80,80 },
 	{ "asset/3031.JPG",4000,992 },
-	{ "asset/title.png",1024,576},
+	{ "asset/title.png",1920,1080},
 	{ "asset/gameover.png",1024,576 },
 	{ "asset/HP_Gage.png",200,50},
 	{ "asset/HP_Gage_2.png",200,50 },
