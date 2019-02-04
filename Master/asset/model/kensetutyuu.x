@@ -4012,14 +4012,14 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"asset/model/kouzityu.png";}
+          TextureFilename {"asset/model/kensetutyu.png";}
         }
         Material Material_014 {
            0.640000; 0.640000; 0.640000; 1.000000;;
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"asset/model/kouzityu.png";}
+          TextureFilename {"asset/model/kensetutyu.png";}
         }
         Material Material {
            0.023279; 0.000000; 0.004622; 1.000000;;

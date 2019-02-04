@@ -11,6 +11,7 @@
 #include "Cfreefall.h"
 #include "Cplayer.h"
 #include "debug_font.h"
+#include "BSphere.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -39,9 +40,9 @@ static int CoolTime = 0;//クールタイム*/
 //=============================================================================
 //	生成
 //=============================================================================
-Cfreefall::Cfreefall() :CAttraction(AT_FALL), C3DObj(AT_FALL)
+Cfreefall::Cfreefall(D3DXMATRIX mtxWorld) :CAttraction(AT_FALL), C3DObj(AT_FALL)
 {
-	Initialize();
+	Initialize(mtxWorld);
 }
 
 Cfreefall::~Cfreefall()
@@ -49,10 +50,9 @@ Cfreefall::~Cfreefall()
 
 }
 
-void Cfreefall::Initialize()
+void Cfreefall::Initialize(D3DXMATRIX mtxWorld)
 {
 	m_AttractionIndex = Get_AttractionIndex(AT_ALL);
-
 	m_Enable = true;
 	Bugoki = false;
 	ugoki = 0.0f;
@@ -64,11 +64,14 @@ void Cfreefall::Initialize()
 
 	C3DObj *playerget = CPlayer::Get_Player();
 	D3DXMATRIX mtx = playerget->Get_mtxWorld();
-	D3DXMatrixTranslation(&m_mtxTranslation, mtx._41, mtx._42, mtx._43);//X,Y,Zを渡す
+	D3DXMatrixTranslation(&m_mtxTranslation, mtxWorld._41, 0, mtxWorld._43);//X,Y,Zを渡す
 	D3DXMatrixScaling(&m_mtxScaling, FREEFALL_SCALE, FREEFALL_SCALE, FREEFALL_SCALE);
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 	Thing_Normal_model = GetNormalModel(MODELL_HASIRA);
 	fall = GetNormalModel(MODELL_ENBAN);
+	Thing_Normal_model->Sphere.vCenter = D3DXVECTOR3(0, 60.0, 0);
+	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 60.0, 0),3.0f);//当たり判定の変更
+	
 }
 
 void Cfreefall::Update(void)

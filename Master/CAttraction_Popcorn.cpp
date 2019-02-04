@@ -34,9 +34,9 @@
 //	¶¬
 //=============================================================================
 
-Popcorn::Popcorn() :CAttraction(AT_POPCORN), C3DObj(AT_POPCORN)
+Popcorn::Popcorn(D3DXMATRIX mtxWorld) :CAttraction(AT_POPCORN), C3DObj(AT_POPCORN)
 {
-	Initialize();
+	Initialize(mtxWorld);
 }
 
 Popcorn::~Popcorn()
@@ -44,7 +44,7 @@ Popcorn::~Popcorn()
 
 }
 
-void Popcorn::Initialize()
+void Popcorn::Initialize(D3DXMATRIX mtxWorld)
 {
 	m_AttractionIndex = Get_AttractionIndex(AT_ALL);
 
@@ -60,7 +60,7 @@ void Popcorn::Initialize()
 
 	C3DObj *playerget = CPlayer::Get_Player();
 	D3DXMATRIX mtx = playerget->Get_mtxWorld();
-	D3DXMatrixTranslation(&m_mtxTranslation, mtx._41, 0, mtx._43);//X,Y,Z‚ð“n‚·
+	D3DXMatrixTranslation(&m_mtxTranslation, mtxWorld._41, 0, mtxWorld._43);//X,Y,Z‚ð“n‚·
 	D3DXMatrixScaling(&m_mtxScaling, POPCORN_SCALE, POPCORN_SCALE, POPCORN_SCALE);
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 

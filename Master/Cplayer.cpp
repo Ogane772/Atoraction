@@ -23,6 +23,7 @@
 #include "gamepad.h"
 #include "exp.h"
 #include "CTexture.h"
+#include "shadow.h"
 //=============================================================================
 //	’è”’è‹`
 //=============================================================================
@@ -376,11 +377,13 @@ void CPlayer::Player_Initialize(void)
 	{
 		hr = pJoyDevice->Acquire();
 	}
+	Shadow_Create(m_mtxWorld._41, m_mtxWorld._43, 2.5f, 2.5f, shadow_number);
 }
 
 //	I—¹ˆ—
 void CPlayer::Finalize(void)
 {
+	Shadow_Destroy(shadow_number);
 	for (int i = 0; i < m_PlayerNum; i++)
 	{
 		if (m_pPlayer[i])

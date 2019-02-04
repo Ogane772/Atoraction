@@ -30,6 +30,9 @@ CTexture::TextureFileData CTexture::TEXTURE_FILES[] = {
 	{ "asset/player_icon.png",120,60 },		//12
 	{ "asset/Enemy_mark.png",12,12 },
 	{ "asset/hit1.png",3360,960 },
+	{ "asset/eff.jpg",80,80 },
+	{ "asset/gauge.png",100,20 },
+	{ "asset/whitebar.png",100,20 },
 };
 
 int CTexture::TEXTURE_MAX = sizeof(CTexture::TEXTURE_FILES) / sizeof(TEXTURE_FILES[0]);

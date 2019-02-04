@@ -24,6 +24,7 @@ public:
 		AT_FALL = 5,		//	フリーフォール
 		AT_POPCORN = 6,	//	ポップコーン
 		AT_STANDBY = 7,   //  建設中
+		AT_GAUGE,        //建設中の進行ゲージ
 
 
 		TYPE_MAX

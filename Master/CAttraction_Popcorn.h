@@ -12,7 +12,7 @@
 class Popcorn : public CAttraction
 {
 public:
-	Popcorn();
+	Popcorn(D3DXMATRIX mtxWorld);
 	~Popcorn();
 
 	void Update(void);
@@ -21,7 +21,7 @@ public:
 
 	bool Get_DrawCheck(void) { return false; }
 private:
-	void Initialize();
+	void Initialize(D3DXMATRIX mtxWorld);
 
 	int CoolTime = 0;					//クールタイム
 	bool B_CoolTime;					//クールタイムのブール

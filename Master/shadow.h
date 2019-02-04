@@ -8,7 +8,7 @@
 #include <d3d9.h>
 #include <windows.h>
 void Shadow_Initialize(void);
-void Shadow_Create(float* x, float* y, float scaleX, float scaleY, int* shadow_number);//‰e‚ğÁ‚·‚Æ‚«‚É•K—v‚ÈŠi”[”Ô†‚ğó‚¯æ‚é‚½‚ß‚Éˆø”‚Å“n‚·
+void Shadow_Create(float x, float y, float scaleX, float scaleY, int shadow_number);//‰e‚ğÁ‚·‚Æ‚«‚É•K—v‚ÈŠi”[”Ô†‚ğó‚¯æ‚é‚½‚ß‚Éˆø”‚Å“n‚·
 void Shadow_Finalize(void);
 void Shadow_Update(void);
 void Shadow_Draw(void);

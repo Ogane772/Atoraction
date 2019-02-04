@@ -18,6 +18,7 @@
 #include "CAttraction.h"
 #include "common.h"
 #include "exp.h"
+#include "shadow.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -47,6 +48,7 @@ void Game_Initialize(void)
 	CMesh_SkyDome::Mesh_SkyDome_Create(CTexture::TEX_SKY, 2.0f, 60.0f, 40, 20);					//	空生成
 	CUserInterFace::UICreate();				//	UI生成
 	CEnemy::Create();						//	敵生成
+	Shadow_Initialize();
 }
 
 //=============================================================================
@@ -101,6 +103,7 @@ void Game_Draw(void)
 	C3DObj::DrawAll();		//	3Dオブジェクト描画
 	CGameObj::DrawAll();	//	2Dオブジェクト描画
 	Exp_Draw();
+	Shadow_Draw();
 	//C3DObj::HitCheck();
 }
 
