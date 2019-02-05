@@ -20,7 +20,7 @@
 #define SPEED (0.05f)
 #define POPCORN_SIZE (4)//“–‚½‚è”»’è‘å‚«‚³
 #define POPCORN_SCALE (1) //ƒ‚ƒfƒ‹‚Ì‘å‚«‚³
-#define POPCORN_HP (3)
+#define POPCORN_HP (1)
 #define POPCORN_MP (1)
 #define POPCORN_ATK (1)
 #define SCORE (1)
@@ -106,6 +106,7 @@ void Popcorn::Draw(void)
 {
 	if (m_Enable)
 	{
+		D3DXVECTOR3 position = D3DXVECTOR3(0.0f, 2.0f, 0.0f);
 		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 
 		if (!m_DrawCheck)
@@ -113,8 +114,7 @@ void Popcorn::Draw(void)
 			if (m_FrameCount % 2 == 0)
 			{
 				m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-				DrawDX_Normal(m_mtxWorld, MODELL_POPCORN, Thing_Normal_model);
-
+				DrawDX_NormalAdd(m_mtxWorld, MODELL_POPCORN, Thing_Normal_model, position);
 				m_DrawCount++;
 				if (m_DrawCount >= ATTRACITION_WAIT_TIME)
 				{
@@ -126,7 +126,7 @@ void Popcorn::Draw(void)
 		else
 		{
 			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-			DrawDX_Normal(m_mtxWorld, MODELL_POPCORN, Thing_Normal_model);
+			DrawDX_NormalAdd(m_mtxWorld, MODELL_POPCORN, Thing_Normal_model, position);
 		}
 	}
 }
@@ -164,7 +164,7 @@ void Popcorn::PopcornDamage(void)
 				m_DrawCheck = false;
 				if (m_Hp <= 0)
 				{
-					Exp_Create(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
+					Exp_Create(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43, 4.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
 					C3DObj_delete();
 				}
 				break;
