@@ -24,6 +24,7 @@
 #include "CTexture.h"
 #include "CEnemy.h"
 #include "CCamera.h"
+#include "common.h"
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================
@@ -129,61 +130,7 @@ void CPlayer::Update(void)
 		{
 			Exp_Create(m_mtxTranslation._41, m_mtxTranslation._42 + 1.0f, m_mtxTranslation._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
 		}
-		/*if (Keyboard_IsPress(DIK_D) && (Keyboard_IsPress(DIK_W)))
-		{
-			m_mtxTranslation *= Move(FLONT, SPEED);
-			m_mtxTranslation *= Move(RIGHT, SPEED / 2);
-			m_Angle = -40;
-			doubleflag = true;
-		}
-		if (Keyboard_IsPress(DIK_W) && (Keyboard_IsPress(DIK_A)))
-		{
-			m_mtxTranslation *= Move(FLONT, SPEED);
-			m_mtxTranslation *= Move(LEFT, SPEED / 2);
-			m_Angle = -120;
-			doubleflag = true;
-		}
-		if (Keyboard_IsPress(DIK_S) && (Keyboard_IsPress(DIK_A)))
-		{
-			m_mtxTranslation *= Move(BACK, SPEED);
-			m_mtxTranslation *= Move(LEFT, SPEED / 2);
-			m_Angle = -230;
-			doubleflag = true;
-		}
-		if (Keyboard_IsPress(DIK_S) && (Keyboard_IsPress(DIK_D)))
-		{
-			m_mtxTranslation *= Move(BACK, SPEED);
-			m_mtxTranslation *= Move(RIGHT, SPEED / 2);
-			m_Angle = 30;
-			doubleflag = true;
-		}
-		if (doubleflag == false)
-		{
-			if (Keyboard_IsPress(DIK_W) || js.lY <= -3)
-			{
-				m_Angle = -90;
-
-				m_mtxTranslation *= Move(FLONT, SPEED);
-			}
-			if (Keyboard_IsPress(DIK_S) || js.lY >= 3)
-			{
-				m_Angle = 90;
-
-				m_mtxTranslation *= Move(BACK, SPEED);
-			}
-			if (Keyboard_IsPress(DIK_D) || js.lX >= 3)
-			{
-				m_Angle = 0;
-
-				m_mtxTranslation *= Move(RIGHT, SPEED);
-			}
-			if (Keyboard_IsPress(DIK_A) || js.lX <= -3)
-			{
-				m_Angle = 180;
-
-				m_mtxTranslation *= Move(LEFT, SPEED);
-			}
-		}*/
+		
 
 		Player_Move();
 
@@ -213,7 +160,7 @@ void CPlayer::Update(void)
 	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(m_Angle));
 	//m_mtxRotation *= mtxr;
 
-	if (45.0*45.0 < (m_mtxTranslation._41*m_mtxTranslation._41) + (m_mtxTranslation._43 * m_mtxTranslation._43))
+	if (FIELDSIZE*FIELDSIZE < (m_mtxTranslation._41*m_mtxTranslation._41) + (m_mtxTranslation._43 * m_mtxTranslation._43))
 	{
 		m_mtxTranslation = m_mtxKeepTranslation;
 	}

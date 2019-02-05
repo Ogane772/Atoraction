@@ -16,14 +16,14 @@ class CMeshField_Cylinder:public CMeshField
 public:
 
 	CMeshField_Cylinder();
-	CMeshField_Cylinder(int TexIndex, float meshH, float radius, int meshXnum, int meshYnum);
+	CMeshField_Cylinder(int TexIndex, float meshH, float radius, int meshXnum, int meshYnum, bool type);
 	~CMeshField_Cylinder();
 
 
 	void Update(void);
 	void Draw(void);
 	void Finalize(void);	//	I—¹ˆ—
-	static CMeshField_Cylinder *MeshField_Cylinder_Create(int TexIndex, float meshH, float radius, int meshXnum, int meshYnum);
+	static CMeshField_Cylinder *MeshField_Cylinder_Create(int TexIndex, float meshH, float radius, int meshXnum, int meshYnum, bool type);
 
 protected:
 
@@ -32,6 +32,8 @@ private:
 	float m_radius;		//	”¼Œa
 	void MeshField_Cylinder_Initialize(void);
 	static CMeshField_Cylinder *m_pMeshField_Cylinder;
+
+	bool m_Type; // true : “®‚­@false : “®‚©‚È‚¢
 };
 #endif // !1
 

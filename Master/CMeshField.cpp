@@ -86,6 +86,27 @@ void CMeshField::Draw(void)
 
 }
 
+//	•`‰æ
+void CMeshField::DrawSky(D3DXMATRIX mtxw)
+{
+
+
+	//pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	mtxw._42 = 0.0f;
+	m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxw);
+	m_pD3DDevice->SetFVF(FVF_MESH_FIELD_VERTEX);
+	m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+
+	m_pD3DDevice->SetTexture(0, Texture_GetTexture(m_TexIndex));
+
+	m_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
+	m_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
+
+	m_pD3DDevice->SetStreamSource(0, m_pVertexBuffer, 0, sizeof(MeshFieldVertex));
+	m_pD3DDevice->SetIndices(m_pIndexBuffer);
+	m_pD3DDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, m_VertexCount, 0, m_PrimitiveCount);
+
+}
 
 CMeshField *CMeshField::MeshField_Create(int TexIndex, float meshW, int meshXnum, int meshZnum)
 {

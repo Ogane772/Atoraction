@@ -52,6 +52,9 @@ protected:
 	int m_TexIndex;			//	テクスチャインデックス
 
 	void Buffer_Write(void);	//	バッファ書き込み
+
+	void DrawSky(D3DXMATRIX mtxw);
+	D3DXMATRIX m_mtxWorld;
 private:
 
 	float m_meshW;		//	メッシュ幅

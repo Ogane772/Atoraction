@@ -11,6 +11,7 @@
 //=============================================================================
 
 #include "CMeshField_Cylinder.h"
+#include "Cplayer.h"
 
 //=============================================================================
 //	定数定義
@@ -31,7 +32,7 @@ CMeshField_Cylinder::CMeshField_Cylinder()
 {
 
 }
-CMeshField_Cylinder::CMeshField_Cylinder(int TexIndex, float meshH, float radius, int meshXnum, int meshYnum) :CGameObj(CGameObj::TYPE_MESH)
+CMeshField_Cylinder::CMeshField_Cylinder(int TexIndex, float meshH, float radius, int meshXnum, int meshYnum, bool type) :CGameObj(CGameObj::TYPE_MESH)
 {
 	m_TexIndex = TexIndex;
 	m_meshH = meshH;
@@ -44,6 +45,7 @@ CMeshField_Cylinder::CMeshField_Cylinder(int TexIndex, float meshH, float radius
 	m_IndexCount = (meshXnum + 2) * (meshYnum * 2) - 2;
 	m_PrimitiveCount = (meshXnum * 2 + 4) * meshYnum - 4;
 	MeshField_Cylinder_Initialize();
+	m_Type = type;
 }
 //=============================================================================
 //	破棄
@@ -57,20 +59,31 @@ CMeshField_Cylinder::~CMeshField_Cylinder()
 //	更新
 void CMeshField_Cylinder::Update(void)
 {
-
+	if (m_Type)
+	{
+		C3DObj *pplayer = CPlayer::Get_Player();
+		m_mtxWorld = pplayer->Get_mtxTranslation();
+	}
 }
 
 //	描画
 void CMeshField_Cylinder::Draw(void)
 {
-	CMeshField::Draw();
+	if (m_Type)
+	{
+		CMeshField::DrawSky(m_mtxWorld);
+	}
+	else
+	{
+		CMeshField::Draw();
+	}
 }
 
 
 //	メッシュフィールドシリンダー作成
-CMeshField_Cylinder *CMeshField_Cylinder::MeshField_Cylinder_Create(int TexIndex, float meshH, float radius, int meshXnum, int meshYnum)
+CMeshField_Cylinder *CMeshField_Cylinder::MeshField_Cylinder_Create(int TexIndex, float meshH, float radius, int meshXnum, int meshYnum,bool type)
 {
-	CMeshField_Cylinder *m_pMeshField_Cylinder = new CMeshField_Cylinder(TexIndex, meshH, radius, meshXnum, meshYnum);
+	CMeshField_Cylinder *m_pMeshField_Cylinder = new CMeshField_Cylinder(TexIndex, meshH, radius, meshXnum, meshYnum, type);
 	return m_pMeshField_Cylinder;
 }
 
