@@ -14,7 +14,7 @@
 #include "CEnemy_Middle.h"
 #include "CEnemy_Big.h"
 #include "CEnemy_Special.h"
-
+#include "Cplayer.h"
 //=============================================================================
 //	’è”’è‹`
 //=============================================================================
@@ -39,10 +39,10 @@ CEnemy::ENEMY_MOVE CEnemy::m_EnemyMove[8] = {
 CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 {
 	{ 0   , TYPE_SMALL, D3DXVECTOR3( 10.0f, 0.0f , 10.0f), DIRE_NORTH	   ,false },
-    { 0	  , TYPE_SMALL, D3DXVECTOR3( 20.0f, 0.0f , 20.0f), DIRE_EAST	   ,false },
-	{ 0	  , TYPE_SMALL, D3DXVECTOR3( 30.0f, 0.0f , 30.0f), DIRE_NORTHWEST ,false },
-	{ 0	  , TYPE_SMALL, D3DXVECTOR3( 20.0f, 0.0f , 10.0f), DIRE_SOUTHEAST ,false },
-	{ 0	  , TYPE_SMALL, D3DXVECTOR3( 0.0f , 0.0f , 0.0f ), DIRE_NORTHEAST ,false },
+    { 0	  , TYPE_MIDDLE, D3DXVECTOR3( 20.0f, 0.0f , 20.0f), DIRE_EAST	   ,false },
+	{ 0	  , TYPE_SPECIAL, D3DXVECTOR3( 30.0f, 0.0f , 30.0f), DIRE_NORTHWEST ,false },
+	{ 0	  , TYPE_BIG, D3DXVECTOR3( 20.0f, 0.0f , 10.0f), DIRE_SOUTHEAST ,false },
+/*	{ 0	  , TYPE_SMALL, D3DXVECTOR3( 0.0f , 0.0f , 0.0f ), DIRE_NORTHEAST ,false },
 
 	{ 100 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
 	{ 130 , TYPE_SMALL, D3DXVECTOR3( 60.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
@@ -113,6 +113,21 @@ void CEnemy::Create(void)
 				if (m_EnemyEmitter[i].Type == TYPE_SMALL)
 				{
 					CEnemy_Small *penemysmall = new CEnemy_Small(&m_EnemyEmitter[i]);
+					m_EnemyEmitter[i].CreateCheck = true;
+				}
+				if (m_EnemyEmitter[i].Type == TYPE_MIDDLE)
+				{
+					CEnemy_Middle *penemymiddle = new CEnemy_Middle(&m_EnemyEmitter[i]);
+					m_EnemyEmitter[i].CreateCheck = true;
+				}
+				if (m_EnemyEmitter[i].Type == TYPE_SPECIAL)
+				{
+					CEnemy_Special *penemyspecial = new CEnemy_Special(&m_EnemyEmitter[i]);
+					m_EnemyEmitter[i].CreateCheck = true;
+				}
+				if (m_EnemyEmitter[i].Type == TYPE_BIG)
+				{
+					CEnemy_Big *penemybig = new CEnemy_Big(&m_EnemyEmitter[i]);
 					m_EnemyEmitter[i].CreateCheck = true;
 				}
 			}
@@ -191,4 +206,17 @@ C3DObj *CEnemy::Get_Map_Enemy(int Index)
 		}
 	}
 	return NULL;
+}
+
+
+bool CEnemy::PlayerCheck(void)
+{
+	C3DObj *pplayer = CPlayer::Get_Player();
+	float l = 10;//”ÍˆÍ
+	D3DXMATRIX playerworld = pplayer->Get_mtxWorld();
+	float cc = (playerworld._41 - m_mtxWorld._41) * (playerworld._41 - m_mtxWorld._41) + (playerworld._43 - m_mtxWorld._43) *  (playerworld._43 - m_mtxWorld._43);
+
+
+	return cc < (l * l);
+
 }

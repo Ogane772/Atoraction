@@ -3,6 +3,7 @@
 //スフィアの計算およびスフィアを視認可能にするためにスフィアメッシュを作成する
 HRESULT InitSphere(LPDIRECT3DDEVICE9 pDevice,THING_NORMAL* pThing)
 {
+
 	HRESULT hr = NULL;
 	LPDIRECT3DVERTEXBUFFER9 pVB = NULL;
     VOID* pVertices = NULL;
@@ -19,7 +20,7 @@ HRESULT InitSphere(LPDIRECT3DDEVICE9 pDevice,THING_NORMAL* pThing)
         SAFE_RELEASE( pVB );
         return E_FAIL;
     }
-	// メッシュの外接円の中心と半径を計算する
+	//// メッシュの外接円の中心と半径を計算する
 	hr=D3DXComputeBoundingSphere( (D3DXVECTOR3*)pVertices, pThing->pMesh->GetNumVertices(), 
                                     D3DXGetFVFVertexSize(pThing->pMesh->GetFVF()), &vCenter, 
                                     &fRadius );

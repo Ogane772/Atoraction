@@ -55,6 +55,9 @@ public:
 	{
 		MODELL_ANIME_PLAYER,
 		MODELL_ANIME_SMALL,
+		MODELL_ANIME_MIDDLE,
+		MODELL_ANIME_SPECIAL,
+		MODELL_ANIME_BIG,
 		ANIME_MODEL_MAX,//アニメモデル最大数
 	}AnimeModelFileData;;
 	virtual void Update(void) = 0;	//	更新
@@ -81,8 +84,8 @@ public:
 	//	モデル読み込み
 	static HRESULT InitModelLoad();
 	//モデル情報取得
-	THING* C3DObj::GetAnimeModel(int index);
-	static THING_NORMAL* C3DObj::GetNormalModel(int index);
+	THING* C3DObj::GetAnimeModel(void);
+	THING_NORMAL* C3DObj::GetNormalModel(int index);
 	//	終了処理
 	static void Model_Finalize(void);
 	static void Model_Finalize(int index);
@@ -119,6 +122,7 @@ protected:
 	void DrawDX_Anime(D3DXMATRIX mtxWorld, int type, THING* pThing);
 	void C3DObj::DrawDX_Normal(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing);
 
+	void Animation_Change(int index, float speed);
 	LPD3DXANIMATIONSET pAnimSet[10];//選択したモデルに10個までのアニメーションをセット
 	D3DXTRACK_DESC TrackDesc;
 	SKIN_MESH SkinMesh;
