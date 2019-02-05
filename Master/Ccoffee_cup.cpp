@@ -64,12 +64,43 @@ void CCoffeeCup::Initialize(D3DXMATRIX mtxWorld)
 	D3DXMATRIX mtx = playerget->Get_mtxWorld();
 	D3DXMatrixTranslation(&m_mtxTranslation, mtxWorld._41, 0, mtxWorld._43);//X,Y,Z‚ð“n‚·
 	D3DXMatrixScaling(&m_mtxScaling, COFFEE_SCALE, COFFEE_SCALE, COFFEE_SCALE);
+	
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 
 	Thing_Normal_model = GetNormalModel(MODELL_CUP_BLUE);
 	thing_cup2 = GetNormalModel(MODELL_CUP_YELLOW);
 	thing_cup3 = GetNormalModel(MODELL_CUP_GREEN);
 	thing_cup4 = GetNormalModel(MODELL_CUP_TABLE);
+
+	D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41, m_mtxWorld._42+0.5f, m_mtxWorld._43);
+	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angCup));
+	m_mtxWorld = m_mtxScaling* m_mtxRotation  * m_mtxTranslation;
+
+	D3DXMatrixTranslation(&m_mtxTranslation, -1.5, -0.5, -1);
+	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angCup));
+	m_mtxWorld2 = m_mtxScaling * m_mtxRotation  * m_mtxTranslation;
+
+	D3DXMatrixTranslation(&m_mtxTranslation, 0, -0.5, 1.5);
+
+	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angCup));
+	m_mtxWorld3 = m_mtxScaling* m_mtxRotation  * m_mtxTranslation;
+
+
+	D3DXMatrixTranslation(&m_mtxTranslation, 1.5, -0.5, -1);
+
+	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angCup));
+	m_mtxWorld4 = m_mtxScaling* m_mtxRotation  * m_mtxTranslation;
+
+	m_mtxWorld2 = m_mtxScaling2 * m_mtxWorld;
+
+	D3DXMatrixMultiply(&m_mtxWorld3, &m_mtxWorld3, &m_mtxWorld);
+
+	D3DXMatrixMultiply(&m_mtxWorld4, &m_mtxWorld4, &m_mtxWorld);	
+
+	Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
+	thing_cup2->vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
+	thing_cup3->vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
+	thing_cup4->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 }
 
 void CCoffeeCup::Update(void)
@@ -100,6 +131,7 @@ void CCoffeeCup::Update(void)
 			B_CoolTime = true;
 			CoolTime = 0;
 		}
+
 		D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angCup));
 		m_mtxWorld = m_mtxScaling* m_mtxRotation  * m_mtxTranslation;
@@ -111,22 +143,23 @@ void CCoffeeCup::Update(void)
 		D3DXMatrixTranslation(&m_mtxTranslation, 0, -0.5, 1.5);
 
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angCup));
-		m_mtxWorld3 = m_mtxScaling* m_mtxRotation  * m_mtxTranslation;
+		m_mtxWorld3 = m_mtxScaling * m_mtxRotation  * m_mtxTranslation;
 
 
 		D3DXMatrixTranslation(&m_mtxTranslation, 1.5, -0.5, -1);
 
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angCup));
-		m_mtxWorld4 = m_mtxScaling* m_mtxRotation  * m_mtxTranslation;
+		m_mtxWorld4 = m_mtxScaling * m_mtxRotation  * m_mtxTranslation;
 
+		D3DXMatrixScaling(&m_mtxScaling2, 0.5f, 0.5f, 0.5f);
 
+		//D3DXMatrixMultiply(&m_mtxWorld2, &m_mtxWorld2, &m_mtxWorld);
 
-		D3DXMatrixMultiply(&m_mtxWorld2, &m_mtxWorld2, &m_mtxWorld);
+		m_mtxWorld2 = m_mtxWorld * m_mtxScaling2;
 
 		D3DXMatrixMultiply(&m_mtxWorld3, &m_mtxWorld3, &m_mtxWorld);
 
 		D3DXMatrixMultiply(&m_mtxWorld4, &m_mtxWorld4, &m_mtxWorld);
-
 	}
 }
 

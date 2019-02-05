@@ -71,6 +71,8 @@ void Cfreefall::Initialize(D3DXMATRIX mtxWorld)
 	fall = GetNormalModel(MODELL_ENBAN);
 	Thing_Normal_model->Sphere.vCenter = D3DXVECTOR3(0, 0.0, 0);
 	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0),3.0f);//“–‚½‚è”»’è‚Ì•ÏX
+	Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+	fall->vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
 }
 
 void Cfreefall::Update(void)

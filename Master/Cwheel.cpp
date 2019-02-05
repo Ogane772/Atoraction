@@ -69,7 +69,7 @@ void Cwheel::Initialize()
 	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 	Thing_Normal_model = GetNormalModel(MODELL_WHEEL);
 	Wheel_position = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42 * 3, m_mtxWorld._43);
-
+	Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 }
 
 void Cwheel::Update(void)

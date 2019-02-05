@@ -71,7 +71,7 @@ void Coaster::Initialize()
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 
 	Thing_Normal_model = GetNormalModel(MODELL_COASTER);
-
+	Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 }
 
 void Coaster::Update(void)

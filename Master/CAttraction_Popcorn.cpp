@@ -84,6 +84,7 @@ void Popcorn::Initialize(D3DXMATRIX mtxWorld)
 
 	Thing_Normal_model = GetNormalModel(MODELL_POPCORN);
 	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0),4.0f);//“–‚½‚è”»’è‚Ì•ÏX
+	Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 }
 
 void Popcorn::Update(void)

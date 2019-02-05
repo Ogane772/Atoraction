@@ -28,6 +28,7 @@ private:
 	bool B_CoolTime;					//クールタイムのブール
 
 	D3DXMATRIX m_mtxTranslation2;	//	移動行列
+	D3DXMATRIX m_mtxScaling2;	//	拡大行列
 
 	D3DXMATRIX m_mtxWorld2;				//	ワールド変換用行列2
 	D3DXMATRIX m_mtxWorld3;				//	ワールド変換用行列3
