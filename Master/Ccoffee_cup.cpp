@@ -177,7 +177,7 @@ void CCoffeeCup::Draw(void)
 	//DebugFont_Draw(600, 60, "CoolTime = %d\n,", CoolTime);
 	if (m_Enable)
 	{
-
+		D3DXVECTOR3 position = D3DXVECTOR3(0.0f, 2.0f, 0.0f);
 		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
 		thing_cup2->vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
 		thing_cup3->vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
@@ -190,11 +190,11 @@ void CCoffeeCup::Draw(void)
 				m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 				DrawDX_Normal(m_mtxWorld, MODELL_CUP_TABLE, thing_cup4);
 
-				DrawDX_Normal(m_mtxWorld2, MODELL_CUP_BLUE, Thing_Normal_model);
+				DrawDX_NormalAdd(m_mtxWorld2, MODELL_CUP_BLUE, Thing_Normal_model, position);
 
-				DrawDX_Normal(m_mtxWorld3, MODELL_CUP_YELLOW, thing_cup2);
+				DrawDX_NormalAdd(m_mtxWorld3, MODELL_CUP_YELLOW, thing_cup2, position);
 
-				DrawDX_Normal(m_mtxWorld4, MODELL_CUP_GREEN, thing_cup3);
+				DrawDX_NormalAdd(m_mtxWorld4, MODELL_CUP_GREEN, thing_cup3, position);
 
 				m_DrawCount++;
 				if (m_DrawCount >= ATTRACITION_WAIT_TIME)
@@ -208,11 +208,11 @@ void CCoffeeCup::Draw(void)
 		{
 			DrawDX_Normal(m_mtxWorld, MODELL_CUP_TABLE, thing_cup4);
 
-			DrawDX_Normal(m_mtxWorld2, MODELL_CUP_BLUE, Thing_Normal_model);
+			DrawDX_NormalAdd(m_mtxWorld2, MODELL_CUP_BLUE, Thing_Normal_model, position);
 
-			DrawDX_Normal(m_mtxWorld3, MODELL_CUP_YELLOW, thing_cup2);
+			DrawDX_NormalAdd(m_mtxWorld3, MODELL_CUP_YELLOW, thing_cup2, position);
 
-			DrawDX_Normal(m_mtxWorld4, MODELL_CUP_GREEN, thing_cup3);
+			DrawDX_NormalAdd(m_mtxWorld4, MODELL_CUP_GREEN, thing_cup3, position);
 		}
 
 		
