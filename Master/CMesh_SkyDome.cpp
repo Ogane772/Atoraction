@@ -11,6 +11,8 @@
 //=============================================================================
 
 #include "CMesh_SkyDome.h"
+#include "Cplayer.h"
+#include "C3DObj.h"
 
 //=============================================================================
 //	’è”’è‹`
@@ -58,13 +60,14 @@ CMesh_SkyDome::~CMesh_SkyDome()
 //	XV
 void CMesh_SkyDome::Update(void)
 {
-
+	C3DObj *pplayer = CPlayer::Get_Player();
+	m_mtxWorld = pplayer->Get_mtxTranslation();
 }
 
 //	•`‰æ
 void CMesh_SkyDome::Draw(void)
 {
-	CMeshField::Draw();
+	CMeshField::DrawSky(m_mtxWorld);
 }
 
 

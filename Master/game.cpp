@@ -45,8 +45,9 @@ void Game_Initialize(void)
 	CCamera::Camera_Create();				//	カメラ生成
 
 	CMeshField::MeshField_Create(CTexture::TEX_FLORR, 120.0f, 1, 1);							//	地面生成
-	CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_FLORR, 6.0f, 45.0f, 20, 1);	//	カベ生成
-	CMesh_SkyDome::Mesh_SkyDome_Create(CTexture::TEX_SKY, 2.0f, 60.0f, 40, 20);					//	空生成
+	CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_FLORR, 10.0f, SYLINDERSIZE, 20, 1,true);	//	カベ生成
+	CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_FLORR, 10.0f, FIELDSIZE, 20, 1, false);	//	カベ生成
+	CMesh_SkyDome::Mesh_SkyDome_Create(CTexture::TEX_SKY, 15.0f, SKYSIZE, 40, 20);					//	空生成
 	CUserInterFace::UICreate();				//	UI生成
 	CEnemy::Create();						//	敵生成
 	COrnament::Create();						//	オブジェクト生成

@@ -32,6 +32,8 @@ private:
 	float m_radius;		//	”¼Œa
 	void Mesh_SkyDome_Initialize(void);
 	static CMesh_SkyDome *m_pMesh_SkyDome;
+
+	
 };
 #endif // !1
 
