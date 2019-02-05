@@ -317,10 +317,9 @@ void CPlayer::Draw(void)
 //	初期化
 void CPlayer::Player_Initialize(void)
 {
-
 	SkinMesh.InitThing(m_pD3DDevice, &Thing, ANIME_MODEL_FILES[MODELL_ANIME_PLAYER].filename);
-	Thing.Sphere.fRadius = 1.3;
-	Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2, 0);
+	Thing.Sphere.fRadius = 1.3f;
+	Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2f, 0);
 	SkinMesh.InitSphere(m_pD3DDevice, &Thing);
 	//モデル情報取得
 	//Thing_Anime_model = GetAnimeModel();
@@ -362,9 +361,7 @@ void CPlayer::Player_Initialize(void)
 	D3DXVec3Normalize(&m_right, &m_right);
 	D3DXVec3Cross(&m_up, &m_right, &m_front);
 	D3DXVec3Normalize(&m_up, &m_up);
-	/*m_SphereCollision = {
-	D3DXVECTOR3(m_mtxWorld._41,m_mtxWorld._42,m_mtxWorld._43),PLAYER_SAIZ
-	};*/
+
 	//コントローラー情報取得
 	js = { 0 };
 	pJoyDevice = *JoyDevice_Get();
@@ -449,7 +446,7 @@ void CPlayer::PlayerDamage(void)
 			if (C3DObj::Collision_AnimeVSAnime(&Thing, thingenemy))
 			{
 				m_Hp--;
-				Animation_Change(PLAYER_WALK, 0.05);
+				Animation_Change(PLAYER_WALK, 0.05f);
 				m_DrawCheck = false;
 				break;
 			}
@@ -658,7 +655,7 @@ void CPlayer::Player_Move(void)
 		//	十字移動
 		if (Keyboard_IsPress(DIK_W))
 		{
-			Animation_Change(PLAYER_WALK, 0.01);
+			Animation_Change(PLAYER_WALK, 0.01f);
 			if ((Keyboard_IsRelease(DIK_D)) || (Keyboard_IsRelease(DIK_A)))
 			{
 				AngleChange(DIRE_UP);
@@ -673,7 +670,7 @@ void CPlayer::Player_Move(void)
 		}
 		if (Keyboard_IsPress(DIK_S))
 		{
-			Animation_Change(PLAYER_WALK, 0.01);
+			Animation_Change(PLAYER_WALK, 0.01f);
 			if ((Keyboard_IsRelease(DIK_D)) || (Keyboard_IsRelease(DIK_A)))
 			{
 				AngleChange(DIRE_DOWN);
@@ -688,7 +685,7 @@ void CPlayer::Player_Move(void)
 		}
 		if (Keyboard_IsPress(DIK_D))
 		{
-			Animation_Change(PLAYER_WALK, 0.01);
+			Animation_Change(PLAYER_WALK, 0.01f);
 			if ((Keyboard_IsRelease(DIK_W)) || (Keyboard_IsRelease(DIK_S)) || (Keyboard_IsRelease(DIK_A)))
 			{
 				AngleChange(DIRE_RIGHT);
@@ -703,7 +700,7 @@ void CPlayer::Player_Move(void)
 		}
 		if (Keyboard_IsPress(DIK_A))
 		{
-			Animation_Change(PLAYER_WALK, 0.01);
+			Animation_Change(PLAYER_WALK, 0.01f);
 			if ((Keyboard_IsRelease(DIK_W)) || (Keyboard_IsRelease(DIK_S)) || (Keyboard_IsRelease(DIK_D)))
 			{
 				AngleChange(DIRE_LEFT);

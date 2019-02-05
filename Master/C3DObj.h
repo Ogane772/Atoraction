@@ -79,6 +79,7 @@ public:
 	
 	int Get_Hp(void) { return m_Hp; }				//	HP取得
 	int Get_Mp(void) { return m_Mp; }				//	MP取得
+	int Get_Attck(void) { return m_Attack; }				//	MP取得
 	int Get_MpStock(void) { return m_MpStock; }		//	MPストック取得
 	static bool boRenderSphere;//当たり判定を可視化するかどうか？ true 可視化
 	//	モデル読み込み
@@ -121,6 +122,7 @@ protected:
 	// 描画処理
 	void DrawDX_Anime(D3DXMATRIX mtxWorld, int type, THING* pThing);
 	void C3DObj::DrawDX_Normal(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing);
+	void C3DObj::DrawDX_NormalAdd(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing, D3DXVECTOR3 position);
 
 	void Animation_Change(int index, float speed);
 	LPD3DXANIMATIONSET pAnimSet[10];//選択したモデルに10個までのアニメーションをセット
