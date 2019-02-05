@@ -9,7 +9,7 @@
 
 #include "C3DObj.h"
 #define ATTRACTION_MAX (100)
-
+#define ATTRACITION_WAIT_TIME (15)//–³“GŽžŠÔ
 class CAttraction : virtual public C3DObj
 {
 public:

@@ -12,16 +12,20 @@
 #include "Cplayer.h"
 #include "debug_font.h"
 #include "BSphere.h"
+#include "CEnemy.h"
+#include "CTexture.h"
+#include "exp.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
 #define SPEED (0.05f)
 #define SIZE (0.8f)
-#define FREEFALL_HP (40)
+#define FREEFALL_HP (3)
 #define FREEFALL_MP (1)
 #define FREEFALL_ATK (1)
 #define SCORE (1)
 #define FREEFALL_SCALE (1)
+#define ATTACK_TIME (5)//円盤が落ちてからの攻撃時間
 //=============================================================================
 //	静的変数
 //=============================================================================
@@ -29,10 +33,6 @@
 #define FREEFALL_UP		(25.0f)
 #define FREEFALL_DOWN	(0.0f)
 THING_NORMAL *fall;
-/*static float ugoki;//円盤の上下の動き
-static bool Bugoki = false;
-static float moveY = 0.0f;//円盤の座標
-static int CoolTime = 0;//クールタイム*/
 //=============================================================================
 //	グローバル変数
 //=============================================================================
@@ -55,13 +55,14 @@ void Cfreefall::Initialize(D3DXMATRIX mtxWorld)
 	m_AttractionIndex = Get_AttractionIndex(AT_ALL);
 	m_Enable = true;
 	Bugoki = false;
+	attackon = false;
 	ugoki = 0.0f;
 	CoolTime = 0;
 	moveY = 0.0f;
 	m_Hp = FREEFALL_HP;
 	m_Mp = FREEFALL_MP;
 	m_Attack = FREEFALL_ATK;
-
+	m_DrawCount = 0;
 	C3DObj *playerget = CPlayer::Get_Player();
 	D3DXMATRIX mtx = playerget->Get_mtxWorld();
 	D3DXMatrixTranslation(&m_mtxTranslation, mtxWorld._41, 0, mtxWorld._43);//X,Y,Zを渡す
@@ -70,7 +71,10 @@ void Cfreefall::Initialize(D3DXMATRIX mtxWorld)
 	Thing_Normal_model = GetNormalModel(MODELL_HASIRA);
 	fall = GetNormalModel(MODELL_ENBAN);
 	Thing_Normal_model->Sphere.vCenter = D3DXVECTOR3(0, 0.0, 0);
-	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0),3.0f);//当たり判定の変更
+	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0),4.2f);//当たり判定の変更
+	InitSphere(m_pD3DDevice, fall, D3DXVECTOR3(0, 0.0, 0), 1.0f);//当たり判定の変更
+	Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+	fall->vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
 }
 
 void Cfreefall::Update(void)
@@ -81,7 +85,6 @@ void Cfreefall::Update(void)
 		D3DXMatrixScaling(&m_mtxScaling, FREEFALL_SCALE, FREEFALL_SCALE, FREEFALL_SCALE);
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(0));
 		m_mtxWorld = m_mtxScaling *m_mtxRotation * m_mtxTranslation;
-
 		if (!Bugoki)
 		{
 			if (ugoki <= 25.0f)
@@ -94,6 +97,7 @@ void Cfreefall::Update(void)
 				if (CoolTime >= 120)
 				{
 					Bugoki = true;
+					attackon = true;
 					CoolTime = 0;
 				}
 			}
@@ -107,6 +111,10 @@ void Cfreefall::Update(void)
 			if (ugoki <= 0.0f)
 			{
 				CoolTime++;
+				if (CoolTime == ATTACK_TIME)
+				{
+					attackon = false;
+				}
 				if (CoolTime >= 120)
 				{
 					Bugoki = false;
@@ -120,25 +128,93 @@ void Cfreefall::Update(void)
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(0));
 		m_mtxWorld2 = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 
+		if (m_DrawCheck)
+		{
+			EnemyDamage();
+			FreeFallDamage();
+		}
 	}
 }
 
 void Cfreefall::Draw(void)
 {
-	//	DebugFont_Draw(800, 30, "ugoki = %f\n,", ugoki);
-	//	DebugFont_Draw(800, 60, "Bugoki = %d\n,", Bugoki);
 	if (m_Enable)
 	{
-
+		D3DXVECTOR3 position = D3DXVECTOR3(0.0f, 2.0f, 0.0f);
+		Thing_Normal_model->Sphere.vCenter = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 		fall->vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
-		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-		DrawDX_Normal(m_mtxWorld2, MODELL_HASIRA, Thing_Normal_model);
-		DrawDX_Normal(m_mtxWorld,  MODELL_ENBAN, fall);
+		if (!m_DrawCheck)
+		{
+			if (m_FrameCount % 2 == 0)
+			{
+				m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+				DrawDX_Normal(m_mtxWorld, MODELL_ENBAN, fall);
+				DrawDX_NormalAdd(m_mtxWorld2, MODELL_HASIRA, Thing_Normal_model, position);
+
+				m_DrawCount++;
+				if (m_DrawCount >= ATTRACITION_WAIT_TIME)
+				{
+					m_DrawCount = 0;
+					m_DrawCheck = true;
+				}
+			}
+		}
+		else
+		{
+			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+			DrawDX_Normal(m_mtxWorld, MODELL_ENBAN, fall);
+			DrawDX_NormalAdd(m_mtxWorld2, MODELL_HASIRA, Thing_Normal_model, position);
+		}
 	}
 }
 
 void Cfreefall::Finalize(void)
 {
 	Attraction_Finalize(m_AttractionIndex);
+}
+
+void Cfreefall::EnemyDamage(void)
+{
+	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	{
+		C3DObj *enemy = CEnemy::Get_Enemy(i);
+		if (attackon && enemy)
+		{
+			Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);			
+			THING *thingenemy = enemy->GetAnimeModel();
+			int hp = enemy->Get_Hp();
+			if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
+			{
+				hp--;
+				//Animation_Change(PLAYER_WALK, 0.05);
+			}
+		}
+	}
+}
+
+void Cfreefall::FreeFallDamage(void)
+{
+	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	{
+		C3DObj *enemy = CEnemy::Get_Enemy(i);
+		if (enemy && m_DrawCheck)
+		{
+			fall->vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);			
+			THING *thingenemy = enemy->GetAnimeModel();
+			int attack = enemy->Get_Attck();
+			if (C3DObj::Collision_AnimeVSNormal(thingenemy, fall))
+			{
+				m_Hp -= attack;
+				//Animation_Change(PLAYER_WALK, 0.05);
+				m_DrawCheck = false;
+				if (m_Hp <= 0)
+				{
+					Exp_Create(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
+					C3DObj_delete();
+				}
+				break;
+			}
+		}
+	}
 }

@@ -18,13 +18,14 @@ public:
 	void Update(void);
 	void Draw(void);
 	void Finalize(void);
-
+	void PopcornDamage(void);
 	bool Get_DrawCheck(void) { return false; }
 private:
 	void Initialize(D3DXMATRIX mtxWorld);
 	bool PlayerCheck(void);
-	int CoolTime = 0;					//クールタイム
+	int CoolTime;//クールタイム
+	int m_DrawCount;
 	bool B_CoolTime;					//クールタイムのブール
-
+	bool m_DrawCheck;
 };
 #endif;
