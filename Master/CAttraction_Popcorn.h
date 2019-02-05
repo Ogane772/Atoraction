@@ -22,7 +22,7 @@ public:
 	bool Get_DrawCheck(void) { return false; }
 private:
 	void Initialize(D3DXMATRIX mtxWorld);
-
+	bool PlayerCheck(void);
 	int CoolTime = 0;					//クールタイム
 	bool B_CoolTime;					//クールタイムのブール
 

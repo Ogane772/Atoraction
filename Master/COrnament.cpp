@@ -32,7 +32,7 @@ COrnament::ORNAMENT_EMITTER COrnament::m_OrnamentEmitter[]
 	{ 0	  , TYPE_LAMP, D3DXVECTOR3(20.0f, 0.0f , 10.0f), 0 ,false },
 	{ 0	  , TYPE_FOUNTAIN, D3DXVECTOR3(0.0f , 0.0f , 0.0f),  0 ,false },
 	{ 0	  , TYPE_FOUNTAIN, D3DXVECTOR3(50.0f, 0.0f , 10.0f),90     ,false },
-	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(25.0f, 0.0f , 10.0f),90     ,false },
+	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(35.0f, 0.0f , 10.0f),90     ,false },
 	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(30.0f, 0.0f , 30.0f),90     ,false },
 	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(45.0f, 0.0f , 15.0f),90     ,false },
 	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(60.0f, 0.0f , 40.0f),90     ,false },
@@ -132,8 +132,6 @@ void COrnament::OrnamentDamage(void)
 	}
 
 }
-
-
 
 C3DObj *COrnament::Get_Ornament(int type)
 {

@@ -23,6 +23,7 @@
 #include "exp.h"
 #include "CTexture.h"
 #include "CEnemy.h"
+#include "CCamera.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -30,6 +31,7 @@
 #define PLAYER_SAIZ (0.5f)
 #define MPSTOCK_INIT (5)
 #define ANGLE (3)
+#define SLANT (45)
 //=============================================================================
 //	静的変数
 //=============================================================================
@@ -89,6 +91,8 @@ CPlayer::~CPlayer()
 //=============================================================================
 void CPlayer::Update(void)
 {
+	Player_Camera();
+
 	//コントローラー情報があるときのみ取得
 	if (pJoyDevice)
 	{
@@ -125,7 +129,7 @@ void CPlayer::Update(void)
 		{
 			Exp_Create(m_mtxTranslation._41, m_mtxTranslation._42 + 1.0f, m_mtxTranslation._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
 		}
-		if (Keyboard_IsPress(DIK_D) && (Keyboard_IsPress(DIK_W)))
+		/*if (Keyboard_IsPress(DIK_D) && (Keyboard_IsPress(DIK_W)))
 		{
 			m_mtxTranslation *= Move(FLONT, SPEED);
 			m_mtxTranslation *= Move(RIGHT, SPEED / 2);
@@ -179,7 +183,10 @@ void CPlayer::Update(void)
 
 				m_mtxTranslation *= Move(LEFT, SPEED);
 			}
-		}
+		}*/
+
+		Player_Move();
+
 		if (Keyboard_IsTrigger(DIK_O))
 		{
 			CAttraction::Create(CAttraction::AT_COFFEE);
@@ -264,7 +271,7 @@ void CPlayer::Update(void)
 	}
 
 	//Animation_Change(PLAYER_DAMAGE, 0.05);
-	doubleflag = false;
+	//doubleflag = false;
 }
 //=============================================================================
 // 描画
@@ -304,7 +311,6 @@ void CPlayer::Draw(void)
 	//コントローラーのスティック取得
 	//DebugFont_Draw(300, 50, "X = %ld , Y= %ld", js.lX, js.lY);
 	//Debug_Collision(m_SphereCollision, m_mtxTranslation);
-	PlayerDamage();
 	m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 }
 
@@ -313,8 +319,8 @@ void CPlayer::Player_Initialize(void)
 {
 
 	SkinMesh.InitThing(m_pD3DDevice, &Thing, ANIME_MODEL_FILES[MODELL_ANIME_PLAYER].filename);
-	Thing.Sphere.fRadius = 1.3f;
-	Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2f, 0);
+	Thing.Sphere.fRadius = 1.3;
+	Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2, 0);
 	SkinMesh.InitSphere(m_pD3DDevice, &Thing);
 	//モデル情報取得
 	//Thing_Anime_model = GetAnimeModel();
@@ -329,6 +335,7 @@ void CPlayer::Player_Initialize(void)
 	TrackDesc.Speed = 0.01f;//モーションスピード
 	Thing.pAnimController->SetTrackDesc(0, &TrackDesc);//アニメ情報セット
 	Thing.pAnimController->SetTrackAnimationSet(0, pAnimSet[PLAYER_WALK]);//初期アニメーションセット
+	
 	m_Hp = HP_MAX;
 	m_Mp = 0;
 	m_MpStock = MPSTOCK_INIT;
@@ -337,6 +344,10 @@ void CPlayer::Player_Initialize(void)
 	m_delete = false;
 	g_CosterMode = false;
 	m_DrawCheck = true;
+	m_MoveCheck = false;
+	m_Direction = DIRE_UP;
+	m_DrawCount = 0;
+
 	D3DXMatrixTranslation(&m_mtxTranslation, 0, 1, 0);
 	D3DXMatrixScaling(&m_mtxScaling, PLAYER_SAIZ, PLAYER_SAIZ, PLAYER_SAIZ);
 	m_mtxKeepTranslation = m_mtxTranslation;
@@ -434,11 +445,11 @@ void CPlayer::PlayerDamage(void)
 		if (enemy)
 		{
 			Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
-			THING *thingenemy = enemy->GetAnimeModel(i);
+			THING *thingenemy = enemy->GetAnimeModel();
 			if (C3DObj::Collision_AnimeVSAnime(&Thing, thingenemy))
 			{
 				m_Hp--;
-				//Animation_Change(PLAYER_WALK, 0.05);
+				Animation_Change(PLAYER_WALK, 0.05);
 				m_DrawCheck = false;
 				break;
 			}
@@ -446,3 +457,420 @@ void CPlayer::PlayerDamage(void)
 		}
 	}
 }
+
+
+//=============================================================================
+// 移動処理
+//=============================================================================
+
+void CPlayer::Player_Move(void)
+{
+	//	斜め向き変更
+	if( ((Keyboard_IsPress(DIK_D)) && (Keyboard_IsTrigger(DIK_W)))|| ((Keyboard_IsTrigger(DIK_D)) && (Keyboard_IsPress(DIK_W))) || ((Keyboard_IsTrigger(DIK_D)) && (Keyboard_IsTrigger(DIK_W))))
+	{
+		if (!doubleflag)
+		{
+			AngleChange(DIRE_UP_RIGHT);
+			m_Direction = DIRE_UP_RIGHT;
+			m_MoveCheck = true;
+			doubleflag = true;
+		}
+	}
+	if (((Keyboard_IsPress(DIK_A)) && (Keyboard_IsTrigger(DIK_W))) || ((Keyboard_IsTrigger(DIK_A)) && (Keyboard_IsPress(DIK_W))) || ((Keyboard_IsTrigger(DIK_A)) && (Keyboard_IsTrigger(DIK_W))))
+	{
+		if (!doubleflag)
+		{
+			AngleChange(DIRE_UP_LEFT);
+			m_Direction = DIRE_UP_LEFT;
+			m_MoveCheck = true;
+			doubleflag = true;
+		}
+	}
+	if (((Keyboard_IsPress(DIK_D)) && (Keyboard_IsTrigger(DIK_S))) || ((Keyboard_IsTrigger(DIK_D)) && (Keyboard_IsPress(DIK_S))) || ((Keyboard_IsTrigger(DIK_D)) && (Keyboard_IsTrigger(DIK_S))))
+	{
+		if (!doubleflag)
+		{
+			AngleChange(DIRE_DOWN_RIGHT);
+			m_Direction = DIRE_DOWN_RIGHT;
+			m_MoveCheck = true;
+			doubleflag = true;
+		}
+	}
+	if (((Keyboard_IsPress(DIK_A)) && (Keyboard_IsTrigger(DIK_S))) || ((Keyboard_IsTrigger(DIK_A)) && (Keyboard_IsPress(DIK_S))) || ((Keyboard_IsTrigger(DIK_A)) && (Keyboard_IsTrigger(DIK_S))))
+	{
+		if (!doubleflag)
+		{
+			AngleChange(DIRE_DOWN_LEFT);
+			m_Direction = DIRE_DOWN_LEFT;
+			m_MoveCheck = true;
+			doubleflag = true;
+		}
+	}
+
+
+	//	斜め移動終了
+	if ((Keyboard_IsRelease(DIK_D)) && (Keyboard_IsPress(DIK_W)))
+	{
+		if (doubleflag)
+		{
+			m_Angle -= SLANT;
+			m_Direction = DIRE_UP;
+			AngleChange(m_Direction);
+			doubleflag = false;
+		}
+	}
+	if ((Keyboard_IsPress(DIK_D)) && (Keyboard_IsRelease(DIK_W)))
+	{
+		if (doubleflag)
+		{
+			m_Angle += SLANT;
+			m_Direction = DIRE_RIGHT;
+			AngleChange(m_Direction);
+			doubleflag = false;
+		}
+	}
+	if ((Keyboard_IsRelease(DIK_A)) && (Keyboard_IsPress(DIK_W)))
+	{
+		if (doubleflag)
+		{
+			m_Angle += SLANT;
+			m_Direction = DIRE_UP;
+			AngleChange(m_Direction);
+			doubleflag = false;
+		}
+	}
+	if ((Keyboard_IsPress(DIK_A)) && (Keyboard_IsRelease(DIK_W)))
+	{
+		if (doubleflag)
+		{
+			m_Angle -= SLANT;
+			m_Direction = DIRE_LEFT;
+			AngleChange(m_Direction);
+			doubleflag = false;
+		}
+	}
+	if ((Keyboard_IsRelease(DIK_D)) && (Keyboard_IsPress(DIK_S)))
+	{
+		if (doubleflag)
+		{
+			m_Angle += SLANT;
+			m_Direction = DIRE_DOWN;
+			AngleChange(m_Direction);
+			doubleflag = false;
+		}
+	}
+	if ((Keyboard_IsPress(DIK_D)) && (Keyboard_IsRelease(DIK_S)))
+	{
+		if (doubleflag)
+		{
+			m_Angle -= SLANT;
+			m_Direction = DIRE_RIGHT;
+			AngleChange(m_Direction);
+			doubleflag = false;
+		}
+	}
+	if ((Keyboard_IsRelease(DIK_A)) && (Keyboard_IsPress(DIK_S)))
+	{
+		if (doubleflag)
+		{
+			m_Angle -= SLANT;
+			m_Direction = DIRE_DOWN;
+			AngleChange(m_Direction);
+			doubleflag = false;
+		}
+	}
+	if ((Keyboard_IsPress(DIK_A)) && (Keyboard_IsRelease(DIK_S)))
+	{
+		if (doubleflag)
+		{
+			m_Angle += SLANT;
+			m_Direction = DIRE_LEFT;
+			AngleChange(m_Direction);
+			doubleflag = false;
+		}
+	}
+	
+
+	//	斜め移動
+	if (Keyboard_IsPress(DIK_D) && (Keyboard_IsPress(DIK_W)))
+	{
+		m_mtxTranslation *= Move(FLONT, SPEED);
+		m_mtxTranslation *= Move(RIGHT, SPEED / 2);
+		AngleChange(DIRE_UP_RIGHT);
+		m_Direction = DIRE_UP_RIGHT;
+		doubleflag = true;
+	}
+	if (Keyboard_IsPress(DIK_W) && (Keyboard_IsPress(DIK_A)))
+	{
+		m_mtxTranslation *= Move(FLONT, SPEED);
+		m_mtxTranslation *= Move(LEFT, SPEED / 2);
+		AngleChange(DIRE_UP_LEFT);
+		m_Direction = DIRE_UP_LEFT;
+		doubleflag = true;
+	}
+	if (Keyboard_IsPress(DIK_S) && (Keyboard_IsPress(DIK_A)))
+	{
+		m_mtxTranslation *= Move(BACK, SPEED);
+		m_mtxTranslation *= Move(LEFT, SPEED / 2);
+		AngleChange(DIRE_DOWN_LEFT);
+		m_Direction = DIRE_DOWN_LEFT;
+		doubleflag = true;
+	}
+	if (Keyboard_IsPress(DIK_S) && (Keyboard_IsPress(DIK_D)))
+	{
+		m_mtxTranslation *= Move(BACK, SPEED);
+		m_mtxTranslation *= Move(RIGHT, SPEED / 2);
+		AngleChange(DIRE_DOWN_RIGHT);
+		m_Direction = DIRE_DOWN_RIGHT;
+		doubleflag = true;
+	}
+	if (doubleflag == false)
+	{
+		//	十字移動　向き変更
+		if (Keyboard_IsTrigger(DIK_W) && (m_Direction != DIRE_UP) && (!m_MoveCheck))
+		{
+			AngleChange(DIRE_UP);
+			m_MoveCheck = true;
+		}
+		if (Keyboard_IsTrigger(DIK_S) && (m_Direction != DIRE_DOWN) && (!m_MoveCheck))
+		{
+			AngleChange(DIRE_DOWN);
+			m_MoveCheck = true;
+		}
+		if (Keyboard_IsTrigger(DIK_D) && (m_Direction != DIRE_RIGHT) && (!m_MoveCheck))
+		{
+			AngleChange(DIRE_RIGHT);
+			m_MoveCheck = true;
+		}
+		if (Keyboard_IsTrigger(DIK_A) && (m_Direction != DIRE_LEFT) && (!m_MoveCheck))
+		{
+			AngleChange(DIRE_LEFT);
+			m_MoveCheck = true;
+		}
+
+		//	移動終了　待機アニメーション
+		if ((Keyboard_IsRelease(DIK_W)) || (Keyboard_IsRelease(DIK_S)) || (Keyboard_IsRelease(DIK_D)) || (Keyboard_IsRelease(DIK_A)))
+		{
+			m_MoveCheck = false;
+			Animation_Change(PLAYER_IDLE, 0.005f);
+		}
+
+		//	十字移動
+		if (Keyboard_IsPress(DIK_W))
+		{
+			Animation_Change(PLAYER_WALK, 0.01);
+			if ((Keyboard_IsRelease(DIK_D)) || (Keyboard_IsRelease(DIK_A)))
+			{
+				AngleChange(DIRE_UP);
+			}
+			if (!Keyboard_IsPress(DIK_S))
+			{
+				m_Direction = DIRE_UP;
+				AngleChange(DIRE_UP);
+				m_mtxTranslation *= Move(FLONT, SPEED);
+				m_MoveCheck = true;
+			}
+		}
+		if (Keyboard_IsPress(DIK_S))
+		{
+			Animation_Change(PLAYER_WALK, 0.01);
+			if ((Keyboard_IsRelease(DIK_D)) || (Keyboard_IsRelease(DIK_A)))
+			{
+				AngleChange(DIRE_DOWN);
+			}
+			if (!Keyboard_IsPress(DIK_W))
+			{
+				m_Direction = DIRE_DOWN;
+				AngleChange(DIRE_DOWN);
+				m_mtxTranslation *= Move(BACK, SPEED);
+				m_MoveCheck = true;
+			}
+		}
+		if (Keyboard_IsPress(DIK_D))
+		{
+			Animation_Change(PLAYER_WALK, 0.01);
+			if ((Keyboard_IsRelease(DIK_W)) || (Keyboard_IsRelease(DIK_S)) || (Keyboard_IsRelease(DIK_A)))
+			{
+				AngleChange(DIRE_RIGHT);
+			}
+			if (!Keyboard_IsPress(DIK_A))
+			{
+				m_Direction = DIRE_RIGHT;
+				AngleChange(DIRE_RIGHT);
+				m_mtxTranslation *= Move(RIGHT, SPEED);
+				m_MoveCheck = true;
+			}
+		}
+		if (Keyboard_IsPress(DIK_A))
+		{
+			Animation_Change(PLAYER_WALK, 0.01);
+			if ((Keyboard_IsRelease(DIK_W)) || (Keyboard_IsRelease(DIK_S)) || (Keyboard_IsRelease(DIK_D)))
+			{
+				AngleChange(DIRE_LEFT);
+			}
+			if (!Keyboard_IsPress(DIK_D))
+			{
+				m_Direction = DIRE_LEFT;
+				AngleChange(DIRE_LEFT);
+				m_mtxTranslation *= Move(LEFT, SPEED);
+				m_MoveCheck = true;
+			}
+		}
+	}
+	//doubleflag = false;
+}
+
+
+//=============================================================================
+// 方向変更
+//=============================================================================
+
+void CPlayer::AngleChange(int index)
+{
+
+	if (index == DIRE_UP)
+	{
+		if (m_Direction == DIRE_RIGHT)
+		{
+			m_Angle -= 90;
+		}
+		if (m_Direction == DIRE_LEFT)
+		{
+			m_Angle += 90;
+		}
+		if (m_Direction == DIRE_DOWN)
+		{
+			m_Angle += 180;
+		}
+	}
+
+	if (index == DIRE_DOWN)
+	{
+		if (m_Direction == DIRE_RIGHT)
+		{
+			m_Angle += 90;
+		}
+		if (m_Direction == DIRE_LEFT)
+		{
+			m_Angle -= 90;
+		}
+		if (m_Direction == DIRE_UP)
+		{
+			m_Angle -= 180;
+		}
+	}
+
+	if (index == DIRE_RIGHT)
+	{
+		if (m_Direction == DIRE_DOWN)
+		{
+			m_Angle -= 90;
+		}
+		if (m_Direction == DIRE_LEFT)
+		{
+			m_Angle += 180;
+		}
+		if (m_Direction == DIRE_UP)
+		{
+			m_Angle += 90;
+		}
+	}
+
+	if (index == DIRE_LEFT)
+	{
+		if (m_Direction == DIRE_DOWN)
+		{
+			m_Angle += 90;
+		}
+		if (m_Direction == DIRE_RIGHT)
+		{
+			m_Angle += 180;
+		}
+		if (m_Direction == DIRE_UP)
+		{
+			m_Angle -= 90;
+		}
+	}
+
+	if (index == DIRE_UP_RIGHT)
+	{
+		if (m_Direction == DIRE_UP)
+		{
+			m_Angle += SLANT;
+		}
+		if (m_Direction == DIRE_RIGHT)
+		{
+			m_Angle -= SLANT;
+		}
+		
+	}
+
+	if (index == DIRE_UP_LEFT)
+	{
+		if (m_Direction == DIRE_UP)
+		{
+			m_Angle -= SLANT;
+		}
+		if (m_Direction == DIRE_LEFT)
+		{
+			m_Angle += SLANT;
+		}
+	}
+
+	if (index == DIRE_DOWN_RIGHT)
+	{
+		if (m_Direction == DIRE_DOWN)
+		{
+			m_Angle -= SLANT;
+		}
+		if (m_Direction == DIRE_RIGHT)
+		{
+			m_Angle += SLANT;
+		}
+	}
+
+	if (index == DIRE_DOWN_LEFT)
+	{
+		if (m_Direction == DIRE_DOWN)
+		{
+			m_Angle += SLANT;
+		}
+		if (m_Direction == DIRE_LEFT)
+		{
+			m_Angle -= SLANT;
+		}
+	}
+}
+
+//=============================================================================
+// プレイヤーカメラ処理
+//=============================================================================
+
+void CPlayer::Player_Camera(void)
+{
+	//	カメラ向き変更
+	if (CCamera::Get_CameraAngleCheck())
+	{
+		m_Angle = CCamera::Get_Angle();
+	}
+	//	カメラリセット
+	if ((Keyboard_IsRelease(DIK_RIGHT)) || (Keyboard_IsRelease(DIK_LEFT)))
+	{
+		if (m_Direction % 2 == 0)
+		{
+			AngleChange(DIRE_UP);
+		}
+		else
+		{
+			if (m_Direction == DIRE_RIGHT)
+			{
+				AngleChange(DIRE_DOWN);
+			}
+			else
+			{
+				AngleChange(DIRE_DOWN);
+			}
+		}
+	}
+}
+

@@ -21,6 +21,8 @@
 #define POPCORN_MP (1)
 #define POPCORN_ATK (1)
 #define SCORE (1)
+#define POPCORN_HEAL (1)
+#define POPCORN_EREA (10)
 //=============================================================================
 //	静的変数
 //=============================================================================
@@ -40,8 +42,23 @@ Popcorn::Popcorn(D3DXMATRIX mtxWorld) :CAttraction(AT_POPCORN), C3DObj(AT_POPCOR
 }
 
 Popcorn::~Popcorn()
-{
-
+{//範囲内にいたらプレイヤー回復
+	if (m_Enable)
+	{
+		C3DObj *playerget = CPlayer::Get_Player();
+		if (PlayerCheck())
+		{
+			if (m_FrameCount % 60 == 0)
+			{
+				int hp = playerget->Get_Hp();
+				hp++;
+				if (hp > HP_MAX)
+				{
+					hp = HP_MAX;
+				}
+			}
+		}
+	}
 }
 
 void Popcorn::Initialize(D3DXMATRIX mtxWorld)
@@ -66,7 +83,7 @@ void Popcorn::Initialize(D3DXMATRIX mtxWorld)
 
 
 	Thing_Normal_model = GetNormalModel(MODELL_POPCORN);
-
+	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0),4.0f);//当たり判定の変更
 }
 
 void Popcorn::Update(void)
@@ -85,7 +102,7 @@ void Popcorn::Draw(void)
 	{
 
 		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-
+		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 		DrawDX_Normal(m_mtxWorld, MODELL_POPCORN, Thing_Normal_model);
 	}
 }
@@ -93,4 +110,16 @@ void Popcorn::Draw(void)
 void Popcorn::Finalize(void)
 {
 	Attraction_Finalize(m_AttractionIndex);
+}
+
+bool Popcorn::PlayerCheck(void)
+{
+	C3DObj *pplayer = CPlayer::Get_Player();
+	float l = POPCORN_EREA;//範囲
+	D3DXMATRIX playerworld = pplayer->Get_mtxWorld();
+	float cc = (playerworld._41 - m_mtxWorld._41) * (playerworld._41 - m_mtxWorld._41) + (playerworld._43 - m_mtxWorld._43) *  (playerworld._43 - m_mtxWorld._43);
+
+
+	return cc < (l * l);
+
 }

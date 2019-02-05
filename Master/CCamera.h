@@ -24,10 +24,13 @@ public:
 	static D3DXVECTOR3 Get_RightVec(void) { return m_Right; }	//	ライトベクトル取得	
 	static const D3DXMATRIX Get_ViewMtx(void) { return m_mtxView; }		//	ビューマトリクス取得
 	static CCamera* Camera_Create(void);	//	カメラクラス作成
-	
-	//	デバッグ用
+
+											//	デバッグ用
 	void DebugDraw(void);
 	static CCamera* Get_CCamera(void) { return m_pCamera; }
+
+	static bool Get_CameraAngleCheck(void) { return m_AngleCheck; }
+	static float Get_Angle(void) { return angle; }
 protected:
 
 
@@ -42,10 +45,14 @@ private:
 	static D3DXVECTOR3 m_Right;	//	ライトベクトル
 	D3DXVECTOR3 m_Up;			//	アップベクトル
 
-	float m_Angle = 0.0;	//	回転角度
+	float m_Angle;	//	回転角度
+	static float angle;
 	static D3DXMATRIX m_mtxView;	//	ビュー変換用行列
 
 	static CCamera *m_pCamera;
+
+	static bool m_AngleCheck;
+
 };
 
 #endif // !1

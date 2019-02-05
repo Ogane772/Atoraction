@@ -69,6 +69,8 @@ void COrnament_Lamp::Initialize(ORNAMENT_EMITTER *Emitter)
 	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 
 	Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
+	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 1.1f);//“–‚½‚è”»’è‚Ì•ÏX
+
 }
 
 
@@ -95,7 +97,7 @@ void COrnament_Lamp::Draw(void)
 	if (m_Enable)
 	{
 		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-
+		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 		DrawDX_Normal(m_mtxWorld, MODELL_LAMP, Thing_Normal_model);
 	}
 }

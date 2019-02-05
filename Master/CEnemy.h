@@ -90,6 +90,8 @@ protected:
 	int m_EnemyIndex;
 	void EnemyMove(int direction, float speed);		//	移動処理
 	void EnemyAngleChange(int direction);			//	向き変更処理
+
+	bool CEnemy::PlayerCheck(void);		//	プレイヤーに向かう処理
 private:
 
 	int m_Type;			// 種類

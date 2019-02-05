@@ -35,6 +35,27 @@ protected:
 private:
 	void  AngleChange(bool Angle_Flg);
 	void Player_Initialize(void);	//	初期化
+	
+	void Player_Move(void);			//	移動処理
+	void AngleChange(int index);	//	方向変換
+	void Player_Camera(void);		//	カメラ処理
+
+	int m_Direction;				//	方向
+	bool m_MoveCheck;				//	移動フラグ
+	enum
+	{
+		DIRE_UP,		//　上
+		DIRE_RIGHT,		//	右
+		DIRE_DOWN,		//　下
+		DIRE_LEFT,		//　左
+		DIRE_UP_RIGHT,	//	右上
+		DIRE_UP_LEFT,	//	左上
+		DIRE_DOWN_RIGHT,//	右下
+		DIRE_DOWN_LEFT,	//	左下
+
+	};//　方向
+
+	
 	static CPlayer *m_pPlayer[PLAYER_MAX];
 	static int m_PlayerNum;
 	int m_PlayerIndex;

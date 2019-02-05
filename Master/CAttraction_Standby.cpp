@@ -103,7 +103,7 @@ void Standby::Draw(void)
 	if (m_Enable)
 	{
 		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-
+		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 		DrawDX_Normal(m_mtxWorld, MODELL_STANDBY, Thing_Normal_model);
 	}
 }

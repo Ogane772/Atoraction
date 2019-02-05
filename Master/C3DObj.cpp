@@ -35,6 +35,9 @@ C3DObj::MaterialFileData C3DObj::NORMAL_MODEL_FILES[] = {
 C3DObj::MaterialFileData2 C3DObj::ANIME_MODEL_FILES[] = {
 	{ "asset/anime_model/hewplayer.x" },
 	{ "asset/anime_model/small_enemy.x" },
+	{ "asset/anime_model/middle_enemy.x" },
+	{ "asset/anime_model/special_enemy.x" },
+	{ "asset/anime_model/big_enemy.x" },
 };
 int C3DObj::MODEL_FILES_MAX = sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0]);
 int C3DObj::ANIME_MODEL_FILES_MAX = sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0]);
@@ -362,7 +365,7 @@ void C3DObj::DrawDX_Anime(D3DXMATRIX mtxWorld, int type, THING* pThing)
 void C3DObj::DrawDX_Normal(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing)
 {
 	
-	m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
+	//m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 	m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
 	m_pD3DDevice->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL);
 
@@ -477,7 +480,7 @@ bool C3DObj::Collision_AnimeVSAnime(THING* pThingA, THING* pThingB)
 	return false;
 }
 
-THING* C3DObj::GetAnimeModel(int index)
+THING* C3DObj::GetAnimeModel(void)
 {
 	return &Thing;
 }
@@ -485,4 +488,20 @@ THING* C3DObj::GetAnimeModel(int index)
 THING_NORMAL* C3DObj::GetNormalModel(int index)
 {
 	return &Thing_Normal[index];
+}
+
+//=============================================================================
+// アニメーション変更
+//=============================================================================
+
+void C3DObj::Animation_Change(int index, float speed)
+{
+	if (TrackDesc.Speed != speed)
+	{
+		TrackDesc.Speed = speed;//モーションスピード
+		Thing.pAnimController->SetTrackDesc(0, &TrackDesc);//アニメ情報セット
+	}
+
+	Thing.pAnimController->SetTrackAnimationSet(0, pAnimSet[index]);
+
 }

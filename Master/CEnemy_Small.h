@@ -24,10 +24,12 @@ private:
 	void EnemySmall_Create(void);
 	void Initialize(ENEMY_EMITTER *Emitter);
 	bool m_playercheck;
-	bool PlayerCheck(void);
+	
 	int m_Movetime = 0;
 
 	bool m_AttackCheck = false;
 	int m_AttackTime = 0;
+
+	
 };
 #endif;

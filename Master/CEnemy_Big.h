@@ -9,18 +9,27 @@
 
 #include "CEnemy.h"
 
+#define BIG_SPEED (0.05f)
+
 class CEnemy_Big : public CEnemy
 {
 public:
-	CEnemy_Big();
+	CEnemy_Big(ENEMY_EMITTER *Emitter);
 	~CEnemy_Big();
 
 	void Update(void);
 	void Draw(void);
 	void Finalize(void);
-
+	void Damage(void);
 private:
-	void Initialize(void);
+
+	void Initialize(ENEMY_EMITTER *Emitter);
+	bool m_playercheck;
+
+	int m_Movetime = 0;
+
+	bool m_AttackCheck = false;
+	int m_AttackTime = 0;
 
 
 };
