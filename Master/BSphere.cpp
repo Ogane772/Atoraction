@@ -89,7 +89,7 @@ HRESULT InitSphere(LPDIRECT3DDEVICE9 pDevice, THING_NORMAL* pThing, D3DXVECTOR3 
 	pThing->Sphere.fRadius = fRadius;
 
 	// 得られた中心と半径を基にメッシュとしてのスフィアを作成する
-	hr = D3DXCreateSphere(pDevice, fRadius, 16, 8, &pThing->pSphereMesh, NULL);
+	hr = D3DXCreateSphere(pDevice, pThing->Sphere.fRadius, 16, 8, &pThing->pSphereMesh, NULL);
 	if (FAILED(hr))
 	{
 		return hr;

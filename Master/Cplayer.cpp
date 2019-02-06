@@ -1,11 +1,11 @@
 //=============================================================================
 //
-//	PlayerƒNƒ‰ƒX
+//	Playerã‚¯ãƒ©ã‚¹
 //
 //=============================================================================
 
 //=============================================================================
-//	ƒCƒ“ƒNƒ‹[ƒhƒtƒ@ƒCƒ‹
+//	ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ãƒ•ã‚¡ã‚¤ãƒ«
 //=============================================================================
 
 #include "Cplayer.h"
@@ -26,7 +26,7 @@
 #include "CCamera.h"
 #include "common.h"
 //=============================================================================
-//	’è”’è‹`
+//	å®šæ•°å®šç¾©
 //=============================================================================
 #define SPEED (0.2f)
 #define PLAYER_SAIZ (0.5f)
@@ -40,7 +40,7 @@
 #define COOLTIME_COASTER (1200)
 #define COOLTIME_POPCORN    (0)
 //=============================================================================
-//	Ã“I•Ï”
+//	é™çš„å¤‰æ•°
 //=============================================================================
 enum PlayerAnime
 {
@@ -54,11 +54,11 @@ enum PlayerAnime
 	PLAYER_DOWN,
 
 };
-//ƒRƒ“ƒgƒ[ƒ‰[‚Ég‚¤•Ï”
+//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã«ä½¿ã†å¤‰æ•°
 static DIJOYSTATE2 js;
 static LPDIRECTINPUTDEVICE8 pJoyDevice;
 static HRESULT hr;
-static int doubleflag;//ƒL[“ñ‚Â‰Ÿ‚µ‚ğŠi”[
+static int doubleflag;//ã‚­ãƒ¼äºŒã¤æŠ¼ã—ã‚’æ ¼ç´
 					  //D3DXMATRIX CPlayer::m_mtxWorld;
 CPlayer *CPlayer::m_pPlayer[PLAYER_MAX] = {};
 int CPlayer::m_PlayerNum = 0;
@@ -66,7 +66,7 @@ int CPlayer::m_KO_Count = 0;
 bool CPlayer::m_delete = false;
 
 //=============================================================================
-// ¶¬
+// ç”Ÿæˆ
 //=============================================================================
 CPlayer::CPlayer() :C3DObj(C3DObj::TYPE_PLAYER)
 {
@@ -85,7 +85,7 @@ CPlayer *CPlayer::PlayerCreate(void)
 
 
 //=============================================================================
-// ”jŠü
+// ç ´æ£„
 //=============================================================================
 CPlayer::~CPlayer()
 {
@@ -93,7 +93,7 @@ CPlayer::~CPlayer()
 	m_PlayerNum--;
 }
 
-//	‰Šú‰»
+//	åˆæœŸåŒ–
 void CPlayer::Player_Initialize(void)
 {
 
@@ -101,19 +101,19 @@ void CPlayer::Player_Initialize(void)
 	Thing.Sphere.fRadius = 1.3;
 	Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2, 0);
 	SkinMesh.InitSphere(m_pD3DDevice, &Thing);
-	//ƒ‚ƒfƒ‹î•ñæ“¾
+	//ãƒ¢ãƒ‡ãƒ«æƒ…å ±å–å¾—
 	//Thing_Anime_model = GetAnimeModel();
 	for (DWORD i = 0; i < Thing.pAnimController->GetNumAnimationSets(); i++)
-	{//AnimSet‚ÉƒAƒjƒ[ƒVƒ‡ƒ“î•ñŠi”[
+	{//AnimSetã«ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æƒ…å ±æ ¼ç´
 		Thing.pAnimController->GetAnimationSet(i, &pAnimSet[i]);
 	}
-	//ƒAƒjƒ[ƒVƒ‡ƒ“î•ñ‰Šú‰»
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æƒ…å ±åˆæœŸåŒ–
 	TrackDesc.Weight = 1;
 	TrackDesc.Enable = true;
-	TrackDesc.Position = 0;//ƒAƒjƒ[ƒVƒ‡ƒ“ƒ^ƒCƒ€ƒŠƒZƒbƒg
-	TrackDesc.Speed = 0.01f;//ƒ‚[ƒVƒ‡ƒ“ƒXƒs[ƒh
-	Thing.pAnimController->SetTrackDesc(0, &TrackDesc);//ƒAƒjƒî•ñƒZƒbƒg
-	Thing.pAnimController->SetTrackAnimationSet(0, pAnimSet[PLAYER_WALK]);//‰ŠúƒAƒjƒ[ƒVƒ‡ƒ“ƒZƒbƒg
+	TrackDesc.Position = 0;//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¿ã‚¤ãƒ ãƒªã‚»ãƒƒãƒˆ
+	TrackDesc.Speed = 0.01f;//ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã‚¹ãƒ”ãƒ¼ãƒ‰
+	Thing.pAnimController->SetTrackDesc(0, &TrackDesc);//ã‚¢ãƒ‹ãƒ¡æƒ…å ±ã‚»ãƒƒãƒˆ
+	Thing.pAnimController->SetTrackAnimationSet(0, pAnimSet[PLAYER_WALK]);//åˆæœŸã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚»ãƒƒãƒˆ
 
 	m_Hp = HP_MAX;
 	m_Mp = 0;
@@ -145,7 +145,7 @@ void CPlayer::Player_Initialize(void)
 	/*m_SphereCollision = {
 	D3DXVECTOR3(m_mtxWorld._41,m_mtxWorld._42,m_mtxWorld._43),PLAYER_SAIZ
 	};*/
-	//ƒRƒ“ƒgƒ[ƒ‰[î•ñæ“¾
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼æƒ…å ±å–å¾—
 	js = { 0 };
 	pJoyDevice = *JoyDevice_Get();
 	if (pJoyDevice)
@@ -157,19 +157,19 @@ void CPlayer::Player_Initialize(void)
 
 
 //=============================================================================
-// XV
+// æ›´æ–°
 //=============================================================================
 void CPlayer::Update(void)
 {
 	Player_Camera();
 
-	//ƒRƒ“ƒgƒ[ƒ‰[î•ñ‚ª‚ ‚é‚Æ‚«‚Ì‚İæ“¾
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼æƒ…å ±ãŒã‚ã‚‹ã¨ãã®ã¿å–å¾—
 	if (pJoyDevice)
 	{
 		pJoyDevice->GetDeviceState(sizeof(DIJOYSTATE2), &js);
 	}
 	/////////////////////////////
-	if (g_CosterMode)//ƒR[ƒXƒ^[‚Ì
+	if (g_CosterMode)//ã‚³ãƒ¼ã‚¹ã‚¿ãƒ¼ã®æ™‚
 	{
 		C3DObj *pcoaster = Coaster::Get_Coaster();
 		if (pcoaster)
@@ -183,16 +183,16 @@ void CPlayer::Update(void)
 	}
 	else
 	{
-		//\šƒL[‚ ‚é‚¢‚ÍƒXƒeƒBƒbƒN‚É‚æ‚èˆÚ“®
-		if (Keyboard_IsPress(DIK_T))//ƒXƒNƒŠ[ƒ“ƒVƒ‡ƒbƒg
-		{													   // ƒoƒbƒNƒoƒtƒ@‚Ìæ“¾
+		//åå­—ã‚­ãƒ¼ã‚ã‚‹ã„ã¯ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã«ã‚ˆã‚Šç§»å‹•
+		if (Keyboard_IsPress(DIK_T))//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚·ãƒ§ãƒƒãƒˆ
+		{													   // ãƒãƒƒã‚¯ãƒãƒ•ã‚¡ã®å–å¾—
 			LPDIRECT3DSURFACE9 pBackBuf;
 			m_pD3DDevice->GetRenderTarget(0, &pBackBuf);
 
-			// ƒXƒNƒVƒ‡o—Í
+			// ã‚¹ã‚¯ã‚·ãƒ§å‡ºåŠ›
 			D3DXSaveSurfaceToFile("asset/screenshot.bmp", D3DXIFF_BMP, pBackBuf, NULL, NULL);
 
-			// GetŒn‚Åæ“¾‚µ‚½ƒT[ƒtƒFƒCƒX‚ÍAddRef‚ªŒÄ‚Î‚ê‚Ä‚¢‚é‚Ì‚Å–Y‚ê‚¸‚É‰ğ•ú‚·‚é
+			// Getç³»ã§å–å¾—ã—ãŸã‚µãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã¯AddRefãŒå‘¼ã°ã‚Œã¦ã„ã‚‹ã®ã§å¿˜ã‚Œãšã«è§£æ”¾ã™ã‚‹
 			pBackBuf->Release();
 		}
 		if (Keyboard_IsPress(DIK_1))
@@ -225,7 +225,7 @@ void CPlayer::Update(void)
 	
 }
 //=============================================================================
-// •`‰æ
+// æç”»
 //=============================================================================
 
 void CPlayer::Draw(void)
@@ -233,7 +233,7 @@ void CPlayer::Draw(void)
 
 	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 	Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-	m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);	//@ƒ‰ƒCƒeƒBƒ“ƒO—LŒø
+	m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);	//ã€€ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°æœ‰åŠ¹
 
 	if (!m_DrawCheck)
 	{
@@ -254,9 +254,10 @@ void CPlayer::Draw(void)
 		DrawDX_Anime(m_mtxWorld, MODELL_ANIME_PLAYER, &Thing);
 	}
 
+
 	m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 
-	//	ƒfƒoƒbƒO
+	//	ãƒ‡ãƒãƒƒã‚°
 	if (m_SummonsNum == SUMMONS_COFFEE)
 	{
 		DebugFont_Draw(10, 500, "COFFEE");
@@ -276,14 +277,18 @@ void CPlayer::Draw(void)
 	if (m_SummonsNum == SUMMONS_POPCORN)
 	{
 		DebugFont_Draw(10, 500, "POPCORN");
+
+
 	}
+
 
 	for (int i = 0;i < SUMMONS_MAX
 		;i++)
+
 	{
 		DebugFont_Draw(10, 530+(30*i), "%d" ,m_CoolTime[i]);
 	}
-	//ƒRƒ“ƒgƒ[ƒ‰[‚ÌƒXƒeƒBƒbƒNæ“¾
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®ã‚¹ãƒ†ã‚£ãƒƒã‚¯å–å¾—
 	//DebugFont_Draw(300, 50, "X = %ld , Y= %ld", js.lX, js.lY);
 	//Debug_Collision(m_SphereCollision, m_mtxTranslation);
 	
@@ -291,7 +296,7 @@ void CPlayer::Draw(void)
 
 
 
-//	I—¹ˆ—
+//	çµ‚äº†å‡¦ç†
 void CPlayer::Finalize(void)
 {
 	for (int i = 0; i < m_PlayerNum; i++)
@@ -321,7 +326,7 @@ C3DObj *CPlayer::Get_Player(void)
 
 
 //=============================================================================
-// ƒ_ƒ[ƒWˆ—
+// ãƒ€ãƒ¡ãƒ¼ã‚¸å‡¦ç†
 //=============================================================================
 
 void CPlayer::Player_Damage(void)
@@ -333,6 +338,7 @@ void CPlayer::Player_Damage(void)
 			C3DObj *enemy = CEnemy::Get_Enemy(i);
 			if (enemy)
 			{
+
 				Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
 				THING *thingenemy = enemy->GetAnimeModel();
 				if (C3DObj::Collision_AnimeVSAnime(&Thing, thingenemy))
@@ -349,12 +355,12 @@ void CPlayer::Player_Damage(void)
 
 
 //=============================================================================
-// ˆÚ“®ˆ—
+// ç§»å‹•å‡¦ç†
 //=============================================================================
 
 void CPlayer::Player_Move(void)
 {
-	//	Î‚ßŒü‚«•ÏX
+	//	æ–œã‚å‘ãå¤‰æ›´
 	if( ((Keyboard_IsPress(DIK_D)) && (Keyboard_IsTrigger(DIK_W)))|| ((Keyboard_IsTrigger(DIK_D)) && (Keyboard_IsPress(DIK_W))) || ((Keyboard_IsTrigger(DIK_D)) && (Keyboard_IsTrigger(DIK_W))))
 	{
 		if (!doubleflag)
@@ -397,7 +403,7 @@ void CPlayer::Player_Move(void)
 	}
 
 
-	//	Î‚ßˆÚ“®I—¹
+	//	æ–œã‚ç§»å‹•çµ‚äº†
 	if ((Keyboard_IsRelease(DIK_D)) && (Keyboard_IsPress(DIK_W)))
 	{
 		if (doubleflag)
@@ -480,7 +486,7 @@ void CPlayer::Player_Move(void)
 	}
 	
 
-	//	Î‚ßˆÚ“®
+	//	æ–œã‚ç§»å‹•
 	if (Keyboard_IsPress(DIK_D) && (Keyboard_IsPress(DIK_W)))
 	{
 		m_mtxTranslation *= Move(FLONT, SPEED);
@@ -515,7 +521,7 @@ void CPlayer::Player_Move(void)
 	}
 	if (doubleflag == false)
 	{
-		//	\šˆÚ“®@Œü‚«•ÏX
+		//	åå­—ç§»å‹•ã€€å‘ãå¤‰æ›´
 		if (Keyboard_IsTrigger(DIK_W) && (m_Direction != DIRE_UP) && (!m_MoveCheck))
 		{
 			Angle_Change(DIRE_UP);
@@ -537,17 +543,17 @@ void CPlayer::Player_Move(void)
 			m_MoveCheck = true;
 		}
 
-		//	ˆÚ“®I—¹@‘Ò‹@ƒAƒjƒ[ƒVƒ‡ƒ“
+		//	ç§»å‹•çµ‚äº†ã€€å¾…æ©Ÿã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 		if ((Keyboard_IsRelease(DIK_W)) || (Keyboard_IsRelease(DIK_S)) || (Keyboard_IsRelease(DIK_D)) || (Keyboard_IsRelease(DIK_A)))
 		{
 			m_MoveCheck = false;
 			Animation_Change(PLAYER_IDLE, 0.005f);
 		}
 
-		//	\šˆÚ“®
+		//	åå­—ç§»å‹•
 		if (Keyboard_IsPress(DIK_W))
 		{
-			Animation_Change(PLAYER_WALK, 0.01);
+			Animation_Change(PLAYER_WALK, 0.01f);
 			if ((Keyboard_IsRelease(DIK_D)) || (Keyboard_IsRelease(DIK_A)))
 			{
 				Angle_Change(DIRE_UP);
@@ -562,7 +568,7 @@ void CPlayer::Player_Move(void)
 		}
 		if (Keyboard_IsPress(DIK_S))
 		{
-			Animation_Change(PLAYER_WALK, 0.01);
+			Animation_Change(PLAYER_WALK, 0.01f);
 			if ((Keyboard_IsRelease(DIK_D)) || (Keyboard_IsRelease(DIK_A)))
 			{
 				Angle_Change(DIRE_DOWN);
@@ -577,7 +583,7 @@ void CPlayer::Player_Move(void)
 		}
 		if (Keyboard_IsPress(DIK_D))
 		{
-			Animation_Change(PLAYER_WALK, 0.01);
+			Animation_Change(PLAYER_WALK, 0.01f);
 			if ((Keyboard_IsRelease(DIK_W)) || (Keyboard_IsRelease(DIK_S)) || (Keyboard_IsRelease(DIK_A)))
 			{
 				Angle_Change(DIRE_RIGHT);
@@ -592,7 +598,7 @@ void CPlayer::Player_Move(void)
 		}
 		if (Keyboard_IsPress(DIK_A))
 		{
-			Animation_Change(PLAYER_WALK, 0.01);
+			Animation_Change(PLAYER_WALK, 0.01f);
 			if ((Keyboard_IsRelease(DIK_W)) || (Keyboard_IsRelease(DIK_S)) || (Keyboard_IsRelease(DIK_D)))
 			{
 				Angle_Change(DIRE_LEFT);
@@ -610,7 +616,7 @@ void CPlayer::Player_Move(void)
 
 
 //=============================================================================
-// •ûŒü•ÏX
+// æ–¹å‘å¤‰æ›´
 //=============================================================================
 
 void CPlayer::Angle_Change(int index)
@@ -731,17 +737,17 @@ void CPlayer::Angle_Change(int index)
 }
 
 //=============================================================================
-// ƒvƒŒƒCƒ„[ƒJƒƒ‰ˆ—
+// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚«ãƒ¡ãƒ©å‡¦ç†
 //=============================================================================
 
 void CPlayer::Player_Camera(void)
 {
-	//	ƒJƒƒ‰Œü‚«•ÏX
+	//	ã‚«ãƒ¡ãƒ©å‘ãå¤‰æ›´
 	if (CCamera::Get_CameraAngleCheck())
 	{
 		m_Angle = CCamera::Get_Angle();
 	}
-	//	ƒJƒƒ‰ƒŠƒZƒbƒg
+	//	ã‚«ãƒ¡ãƒ©ãƒªã‚»ãƒƒãƒˆ
 	if ((Keyboard_IsRelease(DIK_RIGHT)) || (Keyboard_IsRelease(DIK_LEFT)))
 	{
 		if (m_Direction % 2 == 0)
@@ -765,7 +771,7 @@ void CPlayer::Player_Camera(void)
 
 
 //=============================================================================
-// ƒJƒx”»’è
+// ã‚«ãƒ™åˆ¤å®š
 //=============================================================================
 
 void CPlayer::Wall_Check(void)
@@ -782,7 +788,7 @@ void CPlayer::Wall_Check(void)
 
 
 //=============================================================================
-// ƒAƒgƒ‰ƒNƒVƒ‡ƒ“¢Š«
+// ã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³å¬å–š
 //=============================================================================
 
 void CPlayer::Summons_Attraction(void)
@@ -800,7 +806,7 @@ void CPlayer::Summons_Attraction(void)
 
 	if (Keyboard_IsTrigger(DIK_RETURN))
 	{
-		//	ƒR[ƒq[ƒJƒbƒv
+		//	ã‚³ãƒ¼ãƒ’ãƒ¼ã‚«ãƒƒãƒ—
 		if (m_SummonsNum == SUMMONS_COFFEE)
 		{
 			if ((m_MpStock >= 1) && (m_CoolTime[SUMMONS_COFFEE] == 0))
@@ -811,7 +817,7 @@ void CPlayer::Summons_Attraction(void)
 			}
 		}
 
-		//	ƒtƒŠ[ƒtƒH[ƒ‹
+		//	ãƒ•ãƒªãƒ¼ãƒ•ã‚©ãƒ¼ãƒ«
 		if (m_SummonsNum == SUMMONS_FALL)
 		{
 			if ((m_MpStock >= 2) && (m_CoolTime[SUMMONS_FALL] == 0))
@@ -822,7 +828,7 @@ void CPlayer::Summons_Attraction(void)
 			}
 		}
 
-		//	ŠÏ——Ô
+		//	è¦³è¦§è»Š
 		if (m_SummonsNum == SUMMONS_WHEEL)
 		{
 			if ((m_MpStock >= 3) && (m_CoolTime[SUMMONS_WHEEL] == 0))
@@ -833,7 +839,7 @@ void CPlayer::Summons_Attraction(void)
 			}
 		}
 
-		//	ƒWƒFƒbƒgƒR[ƒXƒ^[
+		//	ã‚¸ã‚§ãƒƒãƒˆã‚³ãƒ¼ã‚¹ã‚¿ãƒ¼
 		if (m_SummonsNum == SUMMONS_COASTER)
 		{
 			if ((m_MpStock >= 3) && (m_CoolTime[SUMMONS_COASTER] == 0))
@@ -845,7 +851,7 @@ void CPlayer::Summons_Attraction(void)
 			}
 		}
 
-		//	ƒ|ƒbƒvƒR[ƒ“
+		//	ãƒãƒƒãƒ—ã‚³ãƒ¼ãƒ³
 		if (m_SummonsNum == SUMMONS_POPCORN)
 		{
 			if ((m_MpStock >= 3) && (m_CoolTime[SUMMONS_POPCORN] == 0))
@@ -861,7 +867,7 @@ void CPlayer::Summons_Attraction(void)
 }
 
 //=============================================================================
-// ƒN[ƒ‹ƒ^ƒCƒ€ˆ—
+// ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ å‡¦ç†
 //=============================================================================
 
 void CPlayer::Cool_Time(void)
@@ -882,7 +888,7 @@ void CPlayer::Cool_Time(void)
 
 
 //=============================================================================
-// MP‘‰Áˆ—
+// MPå¢—åŠ å‡¦ç†
 //=============================================================================
 
 void CPlayer::Mp_Add(void)

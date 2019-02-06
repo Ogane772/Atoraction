@@ -96,9 +96,11 @@ void COrnament_Lamp::Draw(void)
 {
 	if (m_Enable)
 	{
+		D3DXVECTOR3 position = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
-		DrawDX_Normal(m_mtxWorld, MODELL_LAMP, Thing_Normal_model);
+		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
+
+		DrawDX_NormalAdd(m_mtxWorld, MODELL_LAMP, Thing_Normal_model, position);
 	}
 }
 

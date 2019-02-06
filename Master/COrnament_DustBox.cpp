@@ -68,7 +68,7 @@ void COrnament_DustBox::Initialize(ORNAMENT_EMITTER *Emitter)
 	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 
 	Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
-	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 3.1f);//“–‚½‚è”»’è‚Ì•ÏX
+	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 2.1f);//“–‚½‚è”»’è‚Ì•ÏX
 }
 
 
@@ -94,9 +94,10 @@ void COrnament_DustBox::Draw(void)
 {
 	if (m_Enable)
 	{
+		D3DXVECTOR3 position = D3DXVECTOR3(-0.75f, 1.2f, 1.5f);
 		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
-		DrawDX_Normal(m_mtxWorld, MODELL_GOMIBAKO, Thing_Normal_model);
+		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
+		DrawDX_NormalAdd(m_mtxWorld, MODELL_GOMIBAKO, Thing_Normal_model, position);
 	}
 }
 

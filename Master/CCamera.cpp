@@ -23,7 +23,7 @@
 
 
 #define ASPECT ((float)WINDOW_WIDTH / WINDOW_HIGHT)
-#define ATLENGTH (4.0f)
+#define ATLENGTH (14.0f)
 #define CAMERA_SPEED (0.00f)
 
 

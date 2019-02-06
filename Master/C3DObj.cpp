@@ -42,7 +42,7 @@ C3DObj::MaterialFileData2 C3DObj::ANIME_MODEL_FILES[] = {
 int C3DObj::MODEL_FILES_MAX = sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0]);
 int C3DObj::ANIME_MODEL_FILES_MAX = sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0]);
 
-bool C3DObj::boRenderSphere = false;
+bool C3DObj::boRenderSphere = true;
 //モデルアニメーション関係変数
 /*
 #define MODEL_MAX (9)
@@ -390,6 +390,37 @@ void C3DObj::DrawDX_Normal(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing)
 
 }
 
+// モデル描画  アニメーション無 コリジョン位置変更
+void C3DObj::DrawDX_NormalAdd(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing, D3DXVECTOR3 position)
+{
+
+	//m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
+	m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
+	m_pD3DDevice->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL);
+
+
+	// マトリックスのセット
+	m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+
+	//モデルのレンダリング
+	for (DWORD i = 0; i<pThing->dwNumMaterials; i++)
+	{
+		m_pD3DDevice->SetMaterial(&pThing->pMeshMaterials[i]);
+		m_pD3DDevice->SetTexture(0, pThing->pMeshTextures[i]);
+		pThing->pMesh->DrawSubset(i);
+	}
+	D3DXMATRIX mtx;
+	D3DXMatrixTranslation(&mtx, mtxWorld._41 + position.x, mtxWorld._42 + position.y, mtxWorld._43 + position.z);
+	m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtx);
+	//　バウンディングスフィアのレンダリング	
+	if (boRenderSphere && pThing->pSphereMeshMaterials)
+	{
+		m_pD3DDevice->SetTexture(0, NULL);
+		m_pD3DDevice->SetMaterial(pThing->pSphereMeshMaterials);
+		pThing->pSphereMesh->DrawSubset(0);
+	}
+
+}
 
 //=============================================================================
 // 当たり判定
