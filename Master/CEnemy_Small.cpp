@@ -65,6 +65,10 @@ void CEnemy_Small::EnemySmall_Create(void)
 
 }
 
+//=============================================================================
+//	初期化
+//=============================================================================
+
 void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 {
 
@@ -76,7 +80,6 @@ void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 
 	m_EnemyIndex = Get_EnemyIndex(TYPE_ALL);
 	//モデル情報取得
-	//Thing_Anime_model = GetAnimeModel();
 	//アニメーショントラックを得る
 	for (DWORD i = 0; i < Thing.pAnimController->GetNumAnimationSets(); i++)
 	{//AnimSetにアニメーション情報格納
@@ -106,7 +109,9 @@ void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 	Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
 }
 
-
+//=============================================================================
+//	終了処理
+//=============================================================================
 void CEnemy_Small::Finalize(void)
 {
 	
@@ -114,131 +119,48 @@ void CEnemy_Small::Finalize(void)
 	
 }
 
-
+//=============================================================================
+//	更新処理
+//=============================================================================
 void CEnemy_Small::Update(void)
 {
-	if (m_Enable)
+	if (m_Hp > 0)
 	{
-		if (m_Hp > 0)
+		if (Draw_Check())	//	範囲内にいるか
 		{
-			if (m_DrawCheck)
+			if (!PlayerCheck())	//	近くにプレイヤーがいるか
 			{
-				if (!PlayerCheck())
-				{
-					if (!m_MoveCheck)
-					{
-						m_Direction++;
-						if (m_Direction >= 9)
-						{
-							m_Direction = 0;
-						}
-						Animation_Change(WALK, 0.001);
-						D3DXMatrixRotationY(&m_mtxRotation, m_EnemyMove[m_Direction].Angle);
-						m_TimeKeep = m_FrameCount;
-						m_Movetime = rand() % 3 + 1;
-						m_MoveCheck = true;
-					}
-					else
-					{
-
-						D3DXMATRIX mtxtrans;
-						D3DXMatrixTranslation(&mtxtrans, m_EnemyMove[m_Direction].Move.x * SMALL_SPEED, m_EnemyMove[m_Direction].Move.y * SMALL_SPEED, m_EnemyMove[m_Direction].Move.z * SMALL_SPEED);
-						m_mtxTranslation *= mtxtrans;
-
-						if (m_FrameCount - m_TimeKeep >= 60 * m_Movetime)
-						{
-							m_MoveCheck = false;
-						}
-					}
-				}
-				else
-				{
-					C3DObj *pplayer = CPlayer::Get_Player();
-					D3DXMATRIX playerworld = pplayer->Get_mtxWorld();
-					float x = playerworld._41 - m_mtxWorld._41;
-					float z = playerworld._43 - m_mtxWorld._43;
-
-					D3DXMATRIX mtxtrans;
-					D3DXMatrixTranslation(&mtxtrans, x * 0.015f, 0.0f, z * 0.015f);
-					m_mtxTranslation *= mtxtrans;
-
-					float angle = (float)(atan2(-z, x));
-					D3DXMatrixRotationY(&m_mtxRotation, angle);
-
-					if (!m_AttackCheck)
-					{
-						m_AttackTime = m_FrameCount;
-						m_AttackCheck = true;
-						
-						Animation_Change(ATTACK, 0.05);
-					}
-					else
-					{
-						if (m_FrameCount - m_AttackTime >= 350)
-						{
-							
-							m_AttackCheck = false;
-							m_AttackTime = 0;
-						}
-					}
-					
-				}
+				Small_Move();
 			}
 			else
 			{
-				if (m_MoveCheck)
-				{
-					D3DXMATRIX mtxtrans;
-					D3DXMatrixTranslation(&mtxtrans, m_EnemyMove[m_Direction].Move.x * SMALL_SPEED, m_EnemyMove[m_Direction].Move.y * SMALL_SPEED, m_EnemyMove[m_Direction].Move.z * SMALL_SPEED);
-					m_mtxTranslation *= mtxtrans;
-					
-					if (m_FrameCount - m_TimeKeep >= 180)
-					{
-						m_MoveCheck = false;
-						m_Direction += 2;
-					}
-				}
-				else
-				{
-					float angle = (float)(atan2(-m_mtxWorld._43, -m_mtxWorld._41));
-					D3DXMatrixRotationY(&m_mtxRotation, angle);
-					D3DXVECTOR3 move = (D3DXVECTOR3((float)(cos(angle)), 0.0f, (float)(sin(angle))));
+				Chase_Player();
 
-					D3DXMATRIX mtxtrans;
-					D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41 + move.x, m_mtxWorld._42, m_mtxWorld._43 + move.z);
+				Small_Attack();
 
-				}
-			}
-		}
-
-		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
-		
-		
-		
-
-		if (45.0*45.0 < (m_mtxWorld._41*m_mtxWorld._41) + (m_mtxWorld._43 * m_mtxWorld._43))
-		{
-			if (m_Hp <= 0)
-			{
-				m_Enable = false;
-				CPlayer::m_delete = true;
-			}
-			else
-			{
-				m_DrawCheck = false;
 			}
 		}
 		else
 		{
-			m_DrawCheck = true;
+			Comeback_Move(SMALL_SPEED);
 		}
 	}
 
-	
+	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
+
+
+
+
+
 }
 
+	
 
 
+
+//=============================================================================
+//	描画処理
+//=============================================================================
 void CEnemy_Small::Draw(void)
 {
 	
@@ -251,11 +173,13 @@ void CEnemy_Small::Draw(void)
 			DrawDX_Anime(m_mtxWorld, MODELL_ANIME_SMALL, &Thing);
 		}
 	}
-	C3DObj::HitCheck();
+	
 	//DebugFont_Draw(500, 400, "%d", TrackDesc.Speed);
 }
 
-
+//=============================================================================
+//	ダメージ処理
+//=============================================================================
 void CEnemy_Small::Damage(void)
 {
 	
@@ -269,6 +193,57 @@ void CEnemy_Small::Damage(void)
 	}
 }
 
+//=============================================================================
+//	移動処理
+//=============================================================================
+void CEnemy_Small::Small_Move(void)
+{
+	if (!m_MoveCheck)
+	{
+		m_Direction++;
+		if (m_Direction >= 9)
+		{
+			m_Direction = 0;
+		}
+		Animation_Change(WALK, 0.001);
+		D3DXMatrixRotationY(&m_mtxRotation, m_EnemyMove[m_Direction].Angle);
+		m_TimeKeep = m_FrameCount;
+		m_Movetime = rand() % 3 + 1;
+		m_MoveCheck = true;
+	}
+	else
+	{
 
+		D3DXMATRIX mtxtrans;
+		D3DXMatrixTranslation(&mtxtrans, m_EnemyMove[m_Direction].Move.x * SMALL_SPEED, m_EnemyMove[m_Direction].Move.y * SMALL_SPEED, m_EnemyMove[m_Direction].Move.z * SMALL_SPEED);
+		m_mtxTranslation *= mtxtrans;
 
+		if (m_FrameCount - m_TimeKeep >= 60 * m_Movetime)
+		{
+			m_MoveCheck = false;
+		}
+	}
+}
 
+//=============================================================================
+//	攻撃処理
+//=============================================================================
+void CEnemy_Small::Small_Attack(void)
+{
+	if (!m_AttackCheck)
+	{
+		m_AttackTime = m_FrameCount;
+		m_AttackCheck = true;
+
+		Animation_Change(ATTACK, 0.05);
+	}
+	else
+	{
+		if (m_FrameCount - m_AttackTime >= 350)
+		{
+
+			m_AttackCheck = false;
+			m_AttackTime = 0;
+		}
+	}
+}

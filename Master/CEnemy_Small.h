@@ -30,6 +30,7 @@ private:
 	bool m_AttackCheck = false;
 	int m_AttackTime = 0;
 
-	
+	void Small_Move(void);
+	void Small_Attack(void);
 };
 #endif;

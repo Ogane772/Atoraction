@@ -15,6 +15,7 @@
 #include "CEnemy_Big.h"
 #include "CEnemy_Special.h"
 #include "Cplayer.h"
+#include "common.h"
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================
@@ -219,4 +220,64 @@ bool CEnemy::PlayerCheck(void)
 
 	return cc < (l * l);
 
+}
+
+void CEnemy::Chase_Player(void)
+{
+	C3DObj *pplayer = CPlayer::Get_Player();
+	D3DXMATRIX playerworld = pplayer->Get_mtxWorld();
+	float x = playerworld._41 - m_mtxWorld._41;
+	float z = playerworld._43 - m_mtxWorld._43;
+
+	D3DXMATRIX mtxtrans;
+	D3DXMatrixTranslation(&mtxtrans, x * 0.015f, 0.0f, z * 0.015f);
+	m_mtxTranslation *= mtxtrans;
+
+	float angle = (float)(atan2(-z, x));
+	D3DXMatrixRotationY(&m_mtxRotation, angle);
+}
+
+bool CEnemy::Draw_Check(void)
+{
+	C3DObj *pplayer = CPlayer::Get_Player();
+	//float l = SYLINDERSIZE;//îÕàÕ
+	D3DXMATRIX playerworld = pplayer->Get_mtxWorld();
+	float cc = (playerworld._41 - m_mtxWorld._41) * (playerworld._41 - m_mtxWorld._41) + (playerworld._43 - m_mtxWorld._43) *  (playerworld._43 - m_mtxWorld._43);
+
+	if (cc < (FIELDSIZE * FIELDSIZE))
+	{
+		m_DrawCheck = true;
+	}
+	else
+	{
+		m_DrawCheck = false;
+	}
+
+	return m_DrawCheck;
+}
+
+void CEnemy::Comeback_Move(float speed)
+{
+	if (m_MoveCheck)
+	{
+		D3DXMATRIX mtxtrans;
+		D3DXMatrixTranslation(&mtxtrans, m_EnemyMove[m_Direction].Move.x * speed, m_EnemyMove[m_Direction].Move.y * speed, m_EnemyMove[m_Direction].Move.z * speed);
+		m_mtxTranslation *= mtxtrans;
+
+		if (m_FrameCount - m_TimeKeep >= 180)
+		{
+			m_MoveCheck = false;
+			m_Direction += 2;
+		}
+	}
+	else
+	{
+		float angle = (float)(atan2(-m_mtxWorld._43, -m_mtxWorld._41));
+		D3DXMatrixRotationY(&m_mtxRotation, angle);
+		D3DXVECTOR3 move = (D3DXVECTOR3((float)(cos(angle)), 0.0f, (float)(sin(angle))));
+
+		D3DXMATRIX mtxtrans;
+		D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41 + move.x, m_mtxWorld._42, m_mtxWorld._43 + move.z);
+
+	}
 }
