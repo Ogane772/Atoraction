@@ -1,11 +1,11 @@
 //=============================================================================
 //
-//	PlayerÉNÉâÉX
+//	Player„ÇØ„É©„Çπ
 //
 //=============================================================================
 
 //=============================================================================
-//	ÉCÉìÉNÉãÅ[ÉhÉtÉ@ÉCÉã
+//	„Ç§„É≥„ÇØ„É´„Éº„Éâ„Éï„Ç°„Ç§„É´
 //=============================================================================
 
 #include "Cplayer.h"
@@ -26,15 +26,21 @@
 #include "CCamera.h"
 #include "common.h"
 //=============================================================================
-//	íËêîíËã`
+//	ÂÆöÊï∞ÂÆöÁæ©
 //=============================================================================
 #define SPEED (0.2f)
 #define PLAYER_SAIZ (0.5f)
 #define MPSTOCK_INIT (5)
 #define ANGLE (3)
 #define SLANT (45)
+
+#define COOLTIME_COFFEE   (300)
+#define COOLTIME_FALL	  (400)
+#define COOLTIME_WHEEL	 (1800)
+#define COOLTIME_COASTER (1200)
+#define COOLTIME_POPCORN    (0)
 //=============================================================================
-//	ê√ìIïœêî
+//	ÈùôÁöÑÂ§âÊï∞
 //=============================================================================
 enum PlayerAnime
 {
@@ -48,11 +54,11 @@ enum PlayerAnime
 	PLAYER_DOWN,
 
 };
-//ÉRÉìÉgÉçÅ[ÉâÅ[Ç…égÇ§ïœêî
+//„Ç≥„É≥„Éà„É≠„Éº„É©„Éº„Å´‰Ωø„ÅÜÂ§âÊï∞
 static DIJOYSTATE2 js;
 static LPDIRECTINPUTDEVICE8 pJoyDevice;
 static HRESULT hr;
-static int doubleflag;//ÉLÅ[ìÒÇ¬âüÇµÇäiî[
+static int doubleflag;//„Ç≠„Éº‰∫å„Å§Êäº„Åó„ÇíÊ†ºÁ¥ç
 					  //D3DXMATRIX CPlayer::m_mtxWorld;
 CPlayer *CPlayer::m_pPlayer[PLAYER_MAX] = {};
 int CPlayer::m_PlayerNum = 0;
@@ -60,7 +66,7 @@ int CPlayer::m_KO_Count = 0;
 bool CPlayer::m_delete = false;
 
 //=============================================================================
-// ê∂ê¨
+// ÁîüÊàê
 //=============================================================================
 CPlayer::CPlayer() :C3DObj(C3DObj::TYPE_PLAYER)
 {
@@ -79,7 +85,7 @@ CPlayer *CPlayer::PlayerCreate(void)
 
 
 //=============================================================================
-// îjä¸
+// Á†¥Ê£Ñ
 //=============================================================================
 CPlayer::~CPlayer()
 {
@@ -87,201 +93,28 @@ CPlayer::~CPlayer()
 	m_PlayerNum--;
 }
 
-//=============================================================================
-// çXêV
-//=============================================================================
-void CPlayer::Update(void)
-{
-	Player_Camera();
-
-	//ÉRÉìÉgÉçÅ[ÉâÅ[èÓïÒÇ™Ç†ÇÈÇ∆Ç´ÇÃÇ›éÊìæ
-	if (pJoyDevice)
-	{
-		pJoyDevice->GetDeviceState(sizeof(DIJOYSTATE2), &js);
-	}
-	/////////////////////////////
-	if (g_CosterMode)//ÉRÅ[ÉXÉ^Å[ÇÃéû
-	{
-		C3DObj *pcoaster = Coaster::Get_Coaster();
-		if (pcoaster)
-		{
-			m_mtxTranslation *= Move(FLONT, SPEED);
-		}
-		else
-		{
-			g_CosterMode = false;
-		}
-	}
-	else
-	{
-		//è\éöÉLÅ[Ç†ÇÈÇ¢ÇÕÉXÉeÉBÉbÉNÇ…ÇÊÇËà⁄ìÆ
-		if (Keyboard_IsPress(DIK_T))//ÉXÉNÉäÅ[ÉìÉVÉáÉbÉg
-		{													   // ÉoÉbÉNÉoÉtÉ@ÇÃéÊìæ
-			LPDIRECT3DSURFACE9 pBackBuf;
-			m_pD3DDevice->GetRenderTarget(0, &pBackBuf);
-
-			// ÉXÉNÉVÉáèoóÕ
-			D3DXSaveSurfaceToFile("asset/screenshot.bmp", D3DXIFF_BMP, pBackBuf, NULL, NULL);
-
-			// GetånÇ≈éÊìæÇµÇΩÉTÅ[ÉtÉFÉCÉXÇÕAddRefÇ™åƒÇŒÇÍÇƒÇ¢ÇÈÇÃÇ≈ñYÇÍÇ∏Ç…âï˙Ç∑ÇÈ
-			pBackBuf->Release();
-		}
-		if (Keyboard_IsPress(DIK_1))
-		{
-			Exp_Create(m_mtxTranslation._41, m_mtxTranslation._42 + 1.0f, m_mtxTranslation._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
-		}
-		
-
-		Player_Move();
-
-		if (Keyboard_IsTrigger(DIK_O))
-		{
-			CAttraction::Create(CAttraction::AT_COFFEE);
-		}
-		if (Keyboard_IsTrigger(DIK_I))
-		{
-			CAttraction::Create(CAttraction::AT_FALL);
-		}
-		if (Keyboard_IsTrigger(DIK_U))
-		{
-			CAttraction::Create(CAttraction::AT_WHEEL);
-		}
-		if (Keyboard_IsTrigger(DIK_P))
-		{
-			CAttraction::Create(CAttraction::AT_COASTER);
-			g_CosterMode = true;
-		}
-		if (Keyboard_IsTrigger(DIK_Y))
-		{
-			CAttraction::Create(CAttraction::AT_POPCORN);
-		}
-	}
-	D3DXMATRIX mtxr;
-	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(m_Angle));
-	//m_mtxRotation *= mtxr;
-
-	if (FIELDSIZE*FIELDSIZE < (m_mtxTranslation._41*m_mtxTranslation._41) + (m_mtxTranslation._43 * m_mtxTranslation._43))
-	{
-		m_mtxTranslation = m_mtxKeepTranslation;
-	}
-	else
-	{
-		m_mtxKeepTranslation = m_mtxTranslation;
-	}
-
-	//	MP
-	if (m_FrameCount % 60 == 0)
-	{
-
-		m_Mp++;
-		if (m_Mp >= MP_MAX)
-		{
-			m_MpStock++;
-			m_Mp = 0;
-		}
-	}
-	/*	int atrnum = CAttraction::Get_AttractionNum(CAttraction::TYPE_ALL);
-	for (int j = 0;j < atrnum;j++)
-	{
-	CAttraction *patr = CAttraction::Get_Attraction(j, CAttraction::TYPE_WHEEL);
-	if (patr)
-	{
-	int enemynum = CEnemy::Get_EnemyMaxNum();
-	for (int i = 0;i < enemynum;i++)
-	{
-	CEnemy *penemy = CEnemy_Small::Get_Enemy(i);
-	if (penemy)
-	{
-	NxActor* act = penemy->Get_Actor();
-	NxActor* act2 = patr->Get_Actor();
-	myData* mydata = (myData*)act2->userData;
-	if (mydata->hit)
-	{
-	penemy->Damage();
-	mydata->hit = false;
-	}
-	NxScene* scene = Get_PhysX_Scene();
-	scene->setUserContactReport(new ContactCallBack());
-	scene->setActorPairFlags(*act2,
-	*act,
-	NX_NOTIFY_ON_START_TOUCH | NX_NOTIFY_ON_END_TOUCH);
-
-
-	}
-	}
-	}
-	}*/
-
-	if (m_DrawCheck)
-	{
-		PlayerDamage();
-	}
-
-	//Animation_Change(PLAYER_DAMAGE, 0.05);
-	//doubleflag = false;
-}
-//=============================================================================
-// ï`âÊ
-//=============================================================================
-
-void CPlayer::Draw(void)
-{
-
-	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
-	Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-	if (!m_DrawCheck)
-	{
-		if (m_FrameCount % 2 == 0)
-		{
-			//DrawDX2(m_mtxWorld, NxA_pPlayer, MODELL_PLAYER);
-			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);	//Å@ÉâÉCÉeÉBÉìÉOóLå¯
-			DrawDX_Anime(m_mtxWorld, MODELL_ANIME_PLAYER, &Thing);
-			
-
-			m_DrawCount++;
-			if (m_DrawCount >= 20)
-			{
-				m_DrawCount = 0;
-				m_DrawCheck = true;
-			}
-		}
-	}
-	else
-	{
-		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);	//Å@ÉâÉCÉeÉBÉìÉOóLå¯
-		DrawDX_Anime(m_mtxWorld, MODELL_ANIME_PLAYER, &Thing);
-		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-	}
-	//	ÉfÉoÉbÉO
-	//DebugFont_Draw(300, 50, "%f\n%f\n%f\n%f", m_front.x, m_front.y, m_front.z, m_Angle);
-	//RenderPhysX();
-	//ÉRÉìÉgÉçÅ[ÉâÅ[ÇÃÉXÉeÉBÉbÉNéÊìæ
-	//DebugFont_Draw(300, 50, "X = %ld , Y= %ld", js.lX, js.lY);
-	//Debug_Collision(m_SphereCollision, m_mtxTranslation);
-	m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-}
-
-//	èâä˙âª
+//	ÂàùÊúüÂåñ
 void CPlayer::Player_Initialize(void)
 {
+
 	SkinMesh.InitThing(m_pD3DDevice, &Thing, ANIME_MODEL_FILES[MODELL_ANIME_PLAYER].filename);
-	Thing.Sphere.fRadius = 1.3f;
-	Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2f, 0);
+	Thing.Sphere.fRadius = 1.3;
+	Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2, 0);
 	SkinMesh.InitSphere(m_pD3DDevice, &Thing);
-	//ÉÇÉfÉãèÓïÒéÊìæ
+	//„É¢„Éá„É´ÊÉÖÂ†±ÂèñÂæó
 	//Thing_Anime_model = GetAnimeModel();
 	for (DWORD i = 0; i < Thing.pAnimController->GetNumAnimationSets(); i++)
-	{//AnimSetÇ…ÉAÉjÉÅÅ[ÉVÉáÉìèÓïÒäiî[
+	{//AnimSet„Å´„Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥ÊÉÖÂ†±Ê†ºÁ¥ç
 		Thing.pAnimController->GetAnimationSet(i, &pAnimSet[i]);
 	}
-	//ÉAÉjÉÅÅ[ÉVÉáÉìèÓïÒèâä˙âª
+	//„Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥ÊÉÖÂ†±ÂàùÊúüÂåñ
 	TrackDesc.Weight = 1;
 	TrackDesc.Enable = true;
-	TrackDesc.Position = 0;//ÉAÉjÉÅÅ[ÉVÉáÉìÉ^ÉCÉÄÉäÉZÉbÉg
-	TrackDesc.Speed = 0.01f;//ÉÇÅ[ÉVÉáÉìÉXÉsÅ[Éh
-	Thing.pAnimController->SetTrackDesc(0, &TrackDesc);//ÉAÉjÉÅèÓïÒÉZÉbÉg
-	Thing.pAnimController->SetTrackAnimationSet(0, pAnimSet[PLAYER_WALK]);//èâä˙ÉAÉjÉÅÅ[ÉVÉáÉìÉZÉbÉg
-	
+	TrackDesc.Position = 0;//„Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥„Çø„Ç§„É†„É™„Çª„ÉÉ„Éà
+	TrackDesc.Speed = 0.01f;//„É¢„Éº„Ç∑„Éß„É≥„Çπ„Éî„Éº„Éâ
+	Thing.pAnimController->SetTrackDesc(0, &TrackDesc);//„Ç¢„Éã„É°ÊÉÖÂ†±„Çª„ÉÉ„Éà
+	Thing.pAnimController->SetTrackAnimationSet(0, pAnimSet[PLAYER_WALK]);//ÂàùÊúü„Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥„Çª„ÉÉ„Éà
+
 	m_Hp = HP_MAX;
 	m_Mp = 0;
 	m_MpStock = MPSTOCK_INIT;
@@ -293,6 +126,7 @@ void CPlayer::Player_Initialize(void)
 	m_MoveCheck = false;
 	m_Direction = DIRE_UP;
 	m_DrawCount = 0;
+	m_SummonsNum = 0;
 
 	D3DXMatrixTranslation(&m_mtxTranslation, 0, 1, 0);
 	D3DXMatrixScaling(&m_mtxScaling, PLAYER_SAIZ, PLAYER_SAIZ, PLAYER_SAIZ);
@@ -308,8 +142,10 @@ void CPlayer::Player_Initialize(void)
 	D3DXVec3Normalize(&m_right, &m_right);
 	D3DXVec3Cross(&m_up, &m_right, &m_front);
 	D3DXVec3Normalize(&m_up, &m_up);
-
-	//ÉRÉìÉgÉçÅ[ÉâÅ[èÓïÒéÊìæ
+	/*m_SphereCollision = {
+	D3DXVECTOR3(m_mtxWorld._41,m_mtxWorld._42,m_mtxWorld._43),PLAYER_SAIZ
+	};*/
+	//„Ç≥„É≥„Éà„É≠„Éº„É©„ÉºÊÉÖÂ†±ÂèñÂæó
 	js = { 0 };
 	pJoyDevice = *JoyDevice_Get();
 	if (pJoyDevice)
@@ -319,7 +155,148 @@ void CPlayer::Player_Initialize(void)
 	Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
 }
 
-//	èIóπèàóù
+
+//=============================================================================
+// Êõ¥Êñ∞
+//=============================================================================
+void CPlayer::Update(void)
+{
+	Player_Camera();
+
+	//„Ç≥„É≥„Éà„É≠„Éº„É©„ÉºÊÉÖÂ†±„Åå„ÅÇ„Çã„Å®„Åç„ÅÆ„ÅøÂèñÂæó
+	if (pJoyDevice)
+	{
+		pJoyDevice->GetDeviceState(sizeof(DIJOYSTATE2), &js);
+	}
+	/////////////////////////////
+	if (g_CosterMode)//„Ç≥„Éº„Çπ„Çø„Éº„ÅÆÊôÇ
+	{
+		C3DObj *pcoaster = Coaster::Get_Coaster();
+		if (pcoaster)
+		{
+			m_mtxTranslation *= Move(FLONT, SPEED);
+		}
+		else
+		{
+			g_CosterMode = false;
+		}
+	}
+	else
+	{
+		//ÂçÅÂ≠ó„Ç≠„Éº„ÅÇ„Çã„ÅÑ„ÅØ„Çπ„ÉÜ„Ç£„ÉÉ„ÇØ„Å´„Çà„ÇäÁßªÂãï
+		if (Keyboard_IsPress(DIK_T))//„Çπ„ÇØ„É™„Éº„É≥„Ç∑„Éß„ÉÉ„Éà
+		{													   // „Éê„ÉÉ„ÇØ„Éê„Éï„Ç°„ÅÆÂèñÂæó
+			LPDIRECT3DSURFACE9 pBackBuf;
+			m_pD3DDevice->GetRenderTarget(0, &pBackBuf);
+
+			// „Çπ„ÇØ„Ç∑„ÉßÂá∫Âäõ
+			D3DXSaveSurfaceToFile("asset/screenshot.bmp", D3DXIFF_BMP, pBackBuf, NULL, NULL);
+
+			// GetÁ≥ª„ÅßÂèñÂæó„Åó„Åü„Çµ„Éº„Éï„Çß„Ç§„Çπ„ÅØAddRef„ÅåÂëº„Å∞„Çå„Å¶„ÅÑ„Çã„ÅÆ„ÅßÂøò„Çå„Åö„Å´Ëß£Êîæ„Åô„Çã
+			pBackBuf->Release();
+		}
+		if (Keyboard_IsPress(DIK_1))
+		{
+			Exp_Create(m_mtxTranslation._41, m_mtxTranslation._42 + 1.0f, m_mtxTranslation._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
+		}
+		
+
+		Player_Move();
+
+		
+	}
+
+
+	D3DXMATRIX mtxr;
+	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(m_Angle));
+	
+
+	Wall_Check();
+
+	//	MP
+	Mp_Add();
+	
+	Summons_Attraction();
+
+	
+	Player_Damage();
+	
+
+	
+}
+//=============================================================================
+// ÊèèÁîª
+//=============================================================================
+
+void CPlayer::Draw(void)
+{
+
+	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
+	Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+	m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);	//„ÄÄ„É©„Ç§„ÉÜ„Ç£„É≥„Ç∞ÊúâÂäπ
+
+	if (!m_DrawCheck)
+	{
+		if (m_FrameCount % 2 == 0)
+		{
+			DrawDX_Anime(m_mtxWorld, MODELL_ANIME_PLAYER, &Thing);
+		
+			m_DrawCount++;
+			if (m_DrawCount >= 20)
+			{
+				m_DrawCount = 0;
+				m_DrawCheck = true;
+			}
+		}
+	}
+	else
+	{
+		DrawDX_Anime(m_mtxWorld, MODELL_ANIME_PLAYER, &Thing);
+	}
+
+
+	m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+
+	//	„Éá„Éê„ÉÉ„Ç∞
+	if (m_SummonsNum == SUMMONS_COFFEE)
+	{
+		DebugFont_Draw(10, 500, "COFFEE");
+	}
+	if (m_SummonsNum == SUMMONS_FALL)
+	{
+		DebugFont_Draw(10, 500, "FALL");
+	}
+	if (m_SummonsNum == SUMMONS_WHEEL)
+	{
+		DebugFont_Draw(10, 500, "WHEEL");
+	}
+	if (m_SummonsNum == SUMMONS_COASTER)
+	{
+		DebugFont_Draw(10, 500, "COASTER");
+	}
+	if (m_SummonsNum == SUMMONS_POPCORN)
+	{
+		DebugFont_Draw(10, 500, "POPCORN");
+
+
+	}
+
+
+	for (int i = 0;i < SUMMONS_MAX
+		;i++)
+
+	{
+		DebugFont_Draw(10, 530+(30*i), "%d" ,m_CoolTime[i]);
+	}
+	//„Ç≥„É≥„Éà„É≠„Éº„É©„Éº„ÅÆ„Çπ„ÉÜ„Ç£„ÉÉ„ÇØÂèñÂæó
+	//DebugFont_Draw(300, 50, "X = %ld , Y= %ld", js.lX, js.lY);
+	//Debug_Collision(m_SphereCollision, m_mtxTranslation);
+	
+}
+
+
+
+//	ÁµÇ‰∫ÜÂá¶ÁêÜ
 void CPlayer::Finalize(void)
 {
 	for (int i = 0; i < m_PlayerNum; i++)
@@ -328,39 +305,6 @@ void CPlayer::Finalize(void)
 		{
 			delete m_pPlayer[i];
 		}
-	}
-}
-
-
-
-void  CPlayer::AngleChange(bool Angle_Flg)
-{
-
-	if (Angle_Flg == true)
-	{
-		m_Angle += ANGLE;
-		D3DXMATRIX mtxR;
-		if (m_Angle > 360)
-		{
-			m_Angle = m_Angle - 360;
-		}
-		//à¯êî(&, é≤, angle)
-		D3DXMatrixRotationAxis(&mtxR, &m_up, D3DXToRadian(ANGLE));
-		D3DXVec3TransformNormal(&m_front, &m_front, &mtxR);
-		D3DXVec3TransformNormal(&m_right, &m_right, &mtxR);
-	}
-	else
-	{
-		m_Angle += -ANGLE;
-		D3DXMATRIX mtxR;
-		if (m_Angle < 0)
-		{
-			m_Angle = 360 - m_Angle;
-		}
-		//à¯êî(&, é≤, angle)
-		D3DXMatrixRotationAxis(&mtxR, &m_up, D3DXToRadian(-ANGLE));
-		D3DXVec3TransformNormal(&m_front, &m_front, &mtxR);
-		D3DXVec3TransformNormal(&m_right, &m_right, &mtxR);
 	}
 }
 
@@ -381,40 +325,47 @@ C3DObj *CPlayer::Get_Player(void)
 
 
 
-void CPlayer::PlayerDamage(void)
-{
-	for (int i = 0;i < MAX_GAMEOBJ;i++)
-	{
-		C3DObj *enemy = CEnemy::Get_Enemy(i);
-		if (enemy)
-		{
-			Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
-			THING *thingenemy = enemy->GetAnimeModel();
-			if (C3DObj::Collision_AnimeVSAnime(&Thing, thingenemy))
-			{
-				m_Hp--;
-				Animation_Change(PLAYER_WALK, 0.05f);
-				m_DrawCheck = false;
-				break;
-			}
+//=============================================================================
+// „ÉÄ„É°„Éº„Ç∏Âá¶ÁêÜ
+//=============================================================================
 
+void CPlayer::Player_Damage(void)
+{
+	if (m_DrawCheck)
+	{
+		for (int i = 0;i < MAX_GAMEOBJ;i++)
+		{
+			C3DObj *enemy = CEnemy::Get_Enemy(i);
+			if (enemy)
+			{
+
+				Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
+				THING *thingenemy = enemy->GetAnimeModel();
+				if (C3DObj::Collision_AnimeVSAnime(&Thing, thingenemy))
+				{
+					m_Hp--;
+					Animation_Change(PLAYER_WALK, 0.05);
+					m_DrawCheck = false;
+					break;
+				}
+			}
 		}
 	}
 }
 
 
 //=============================================================================
-// à⁄ìÆèàóù
+// ÁßªÂãïÂá¶ÁêÜ
 //=============================================================================
 
 void CPlayer::Player_Move(void)
 {
-	//	éŒÇﬂå¸Ç´ïœçX
+	//	Êñú„ÇÅÂêë„ÅçÂ§âÊõ¥
 	if( ((Keyboard_IsPress(DIK_D)) && (Keyboard_IsTrigger(DIK_W)))|| ((Keyboard_IsTrigger(DIK_D)) && (Keyboard_IsPress(DIK_W))) || ((Keyboard_IsTrigger(DIK_D)) && (Keyboard_IsTrigger(DIK_W))))
 	{
 		if (!doubleflag)
 		{
-			AngleChange(DIRE_UP_RIGHT);
+			Angle_Change(DIRE_UP_RIGHT);
 			m_Direction = DIRE_UP_RIGHT;
 			m_MoveCheck = true;
 			doubleflag = true;
@@ -424,7 +375,7 @@ void CPlayer::Player_Move(void)
 	{
 		if (!doubleflag)
 		{
-			AngleChange(DIRE_UP_LEFT);
+			Angle_Change(DIRE_UP_LEFT);
 			m_Direction = DIRE_UP_LEFT;
 			m_MoveCheck = true;
 			doubleflag = true;
@@ -434,7 +385,7 @@ void CPlayer::Player_Move(void)
 	{
 		if (!doubleflag)
 		{
-			AngleChange(DIRE_DOWN_RIGHT);
+			Angle_Change(DIRE_DOWN_RIGHT);
 			m_Direction = DIRE_DOWN_RIGHT;
 			m_MoveCheck = true;
 			doubleflag = true;
@@ -444,7 +395,7 @@ void CPlayer::Player_Move(void)
 	{
 		if (!doubleflag)
 		{
-			AngleChange(DIRE_DOWN_LEFT);
+			Angle_Change(DIRE_DOWN_LEFT);
 			m_Direction = DIRE_DOWN_LEFT;
 			m_MoveCheck = true;
 			doubleflag = true;
@@ -452,14 +403,14 @@ void CPlayer::Player_Move(void)
 	}
 
 
-	//	éŒÇﬂà⁄ìÆèIóπ
+	//	Êñú„ÇÅÁßªÂãïÁµÇ‰∫Ü
 	if ((Keyboard_IsRelease(DIK_D)) && (Keyboard_IsPress(DIK_W)))
 	{
 		if (doubleflag)
 		{
 			m_Angle -= SLANT;
 			m_Direction = DIRE_UP;
-			AngleChange(m_Direction);
+			Angle_Change(m_Direction);
 			doubleflag = false;
 		}
 	}
@@ -469,7 +420,7 @@ void CPlayer::Player_Move(void)
 		{
 			m_Angle += SLANT;
 			m_Direction = DIRE_RIGHT;
-			AngleChange(m_Direction);
+			Angle_Change(m_Direction);
 			doubleflag = false;
 		}
 	}
@@ -479,7 +430,7 @@ void CPlayer::Player_Move(void)
 		{
 			m_Angle += SLANT;
 			m_Direction = DIRE_UP;
-			AngleChange(m_Direction);
+			Angle_Change(m_Direction);
 			doubleflag = false;
 		}
 	}
@@ -489,7 +440,7 @@ void CPlayer::Player_Move(void)
 		{
 			m_Angle -= SLANT;
 			m_Direction = DIRE_LEFT;
-			AngleChange(m_Direction);
+			Angle_Change(m_Direction);
 			doubleflag = false;
 		}
 	}
@@ -499,7 +450,7 @@ void CPlayer::Player_Move(void)
 		{
 			m_Angle += SLANT;
 			m_Direction = DIRE_DOWN;
-			AngleChange(m_Direction);
+			Angle_Change(m_Direction);
 			doubleflag = false;
 		}
 	}
@@ -509,7 +460,7 @@ void CPlayer::Player_Move(void)
 		{
 			m_Angle -= SLANT;
 			m_Direction = DIRE_RIGHT;
-			AngleChange(m_Direction);
+			Angle_Change(m_Direction);
 			doubleflag = false;
 		}
 	}
@@ -519,7 +470,7 @@ void CPlayer::Player_Move(void)
 		{
 			m_Angle -= SLANT;
 			m_Direction = DIRE_DOWN;
-			AngleChange(m_Direction);
+			Angle_Change(m_Direction);
 			doubleflag = false;
 		}
 	}
@@ -529,18 +480,18 @@ void CPlayer::Player_Move(void)
 		{
 			m_Angle += SLANT;
 			m_Direction = DIRE_LEFT;
-			AngleChange(m_Direction);
+			Angle_Change(m_Direction);
 			doubleflag = false;
 		}
 	}
 	
 
-	//	éŒÇﬂà⁄ìÆ
+	//	Êñú„ÇÅÁßªÂãï
 	if (Keyboard_IsPress(DIK_D) && (Keyboard_IsPress(DIK_W)))
 	{
 		m_mtxTranslation *= Move(FLONT, SPEED);
 		m_mtxTranslation *= Move(RIGHT, SPEED / 2);
-		AngleChange(DIRE_UP_RIGHT);
+		Angle_Change(DIRE_UP_RIGHT);
 		m_Direction = DIRE_UP_RIGHT;
 		doubleflag = true;
 	}
@@ -548,7 +499,7 @@ void CPlayer::Player_Move(void)
 	{
 		m_mtxTranslation *= Move(FLONT, SPEED);
 		m_mtxTranslation *= Move(LEFT, SPEED / 2);
-		AngleChange(DIRE_UP_LEFT);
+		Angle_Change(DIRE_UP_LEFT);
 		m_Direction = DIRE_UP_LEFT;
 		doubleflag = true;
 	}
@@ -556,7 +507,7 @@ void CPlayer::Player_Move(void)
 	{
 		m_mtxTranslation *= Move(BACK, SPEED);
 		m_mtxTranslation *= Move(LEFT, SPEED / 2);
-		AngleChange(DIRE_DOWN_LEFT);
+		Angle_Change(DIRE_DOWN_LEFT);
 		m_Direction = DIRE_DOWN_LEFT;
 		doubleflag = true;
 	}
@@ -564,53 +515,53 @@ void CPlayer::Player_Move(void)
 	{
 		m_mtxTranslation *= Move(BACK, SPEED);
 		m_mtxTranslation *= Move(RIGHT, SPEED / 2);
-		AngleChange(DIRE_DOWN_RIGHT);
+		Angle_Change(DIRE_DOWN_RIGHT);
 		m_Direction = DIRE_DOWN_RIGHT;
 		doubleflag = true;
 	}
 	if (doubleflag == false)
 	{
-		//	è\éöà⁄ìÆÅ@å¸Ç´ïœçX
+		//	ÂçÅÂ≠óÁßªÂãï„ÄÄÂêë„ÅçÂ§âÊõ¥
 		if (Keyboard_IsTrigger(DIK_W) && (m_Direction != DIRE_UP) && (!m_MoveCheck))
 		{
-			AngleChange(DIRE_UP);
+			Angle_Change(DIRE_UP);
 			m_MoveCheck = true;
 		}
 		if (Keyboard_IsTrigger(DIK_S) && (m_Direction != DIRE_DOWN) && (!m_MoveCheck))
 		{
-			AngleChange(DIRE_DOWN);
+			Angle_Change(DIRE_DOWN);
 			m_MoveCheck = true;
 		}
 		if (Keyboard_IsTrigger(DIK_D) && (m_Direction != DIRE_RIGHT) && (!m_MoveCheck))
 		{
-			AngleChange(DIRE_RIGHT);
+			Angle_Change(DIRE_RIGHT);
 			m_MoveCheck = true;
 		}
 		if (Keyboard_IsTrigger(DIK_A) && (m_Direction != DIRE_LEFT) && (!m_MoveCheck))
 		{
-			AngleChange(DIRE_LEFT);
+			Angle_Change(DIRE_LEFT);
 			m_MoveCheck = true;
 		}
 
-		//	à⁄ìÆèIóπÅ@ë“ã@ÉAÉjÉÅÅ[ÉVÉáÉì
+		//	ÁßªÂãïÁµÇ‰∫Ü„ÄÄÂæÖÊ©ü„Ç¢„Éã„É°„Éº„Ç∑„Éß„É≥
 		if ((Keyboard_IsRelease(DIK_W)) || (Keyboard_IsRelease(DIK_S)) || (Keyboard_IsRelease(DIK_D)) || (Keyboard_IsRelease(DIK_A)))
 		{
 			m_MoveCheck = false;
 			Animation_Change(PLAYER_IDLE, 0.005f);
 		}
 
-		//	è\éöà⁄ìÆ
+		//	ÂçÅÂ≠óÁßªÂãï
 		if (Keyboard_IsPress(DIK_W))
 		{
 			Animation_Change(PLAYER_WALK, 0.01f);
 			if ((Keyboard_IsRelease(DIK_D)) || (Keyboard_IsRelease(DIK_A)))
 			{
-				AngleChange(DIRE_UP);
+				Angle_Change(DIRE_UP);
 			}
 			if (!Keyboard_IsPress(DIK_S))
 			{
 				m_Direction = DIRE_UP;
-				AngleChange(DIRE_UP);
+				Angle_Change(DIRE_UP);
 				m_mtxTranslation *= Move(FLONT, SPEED);
 				m_MoveCheck = true;
 			}
@@ -620,12 +571,12 @@ void CPlayer::Player_Move(void)
 			Animation_Change(PLAYER_WALK, 0.01f);
 			if ((Keyboard_IsRelease(DIK_D)) || (Keyboard_IsRelease(DIK_A)))
 			{
-				AngleChange(DIRE_DOWN);
+				Angle_Change(DIRE_DOWN);
 			}
 			if (!Keyboard_IsPress(DIK_W))
 			{
 				m_Direction = DIRE_DOWN;
-				AngleChange(DIRE_DOWN);
+				Angle_Change(DIRE_DOWN);
 				m_mtxTranslation *= Move(BACK, SPEED);
 				m_MoveCheck = true;
 			}
@@ -635,12 +586,12 @@ void CPlayer::Player_Move(void)
 			Animation_Change(PLAYER_WALK, 0.01f);
 			if ((Keyboard_IsRelease(DIK_W)) || (Keyboard_IsRelease(DIK_S)) || (Keyboard_IsRelease(DIK_A)))
 			{
-				AngleChange(DIRE_RIGHT);
+				Angle_Change(DIRE_RIGHT);
 			}
 			if (!Keyboard_IsPress(DIK_A))
 			{
 				m_Direction = DIRE_RIGHT;
-				AngleChange(DIRE_RIGHT);
+				Angle_Change(DIRE_RIGHT);
 				m_mtxTranslation *= Move(RIGHT, SPEED);
 				m_MoveCheck = true;
 			}
@@ -650,26 +601,25 @@ void CPlayer::Player_Move(void)
 			Animation_Change(PLAYER_WALK, 0.01f);
 			if ((Keyboard_IsRelease(DIK_W)) || (Keyboard_IsRelease(DIK_S)) || (Keyboard_IsRelease(DIK_D)))
 			{
-				AngleChange(DIRE_LEFT);
+				Angle_Change(DIRE_LEFT);
 			}
 			if (!Keyboard_IsPress(DIK_D))
 			{
 				m_Direction = DIRE_LEFT;
-				AngleChange(DIRE_LEFT);
+				Angle_Change(DIRE_LEFT);
 				m_mtxTranslation *= Move(LEFT, SPEED);
 				m_MoveCheck = true;
 			}
 		}
 	}
-	//doubleflag = false;
 }
 
 
 //=============================================================================
-// ï˚å¸ïœçX
+// ÊñπÂêëÂ§âÊõ¥
 //=============================================================================
 
-void CPlayer::AngleChange(int index)
+void CPlayer::Angle_Change(int index)
 {
 
 	if (index == DIRE_UP)
@@ -787,34 +737,169 @@ void CPlayer::AngleChange(int index)
 }
 
 //=============================================================================
-// ÉvÉåÉCÉÑÅ[ÉJÉÅÉâèàóù
+// „Éó„É¨„Ç§„É§„Éº„Ç´„É°„É©Âá¶ÁêÜ
 //=============================================================================
 
 void CPlayer::Player_Camera(void)
 {
-	//	ÉJÉÅÉâå¸Ç´ïœçX
+	//	„Ç´„É°„É©Âêë„ÅçÂ§âÊõ¥
 	if (CCamera::Get_CameraAngleCheck())
 	{
 		m_Angle = CCamera::Get_Angle();
 	}
-	//	ÉJÉÅÉâÉäÉZÉbÉg
+	//	„Ç´„É°„É©„É™„Çª„ÉÉ„Éà
 	if ((Keyboard_IsRelease(DIK_RIGHT)) || (Keyboard_IsRelease(DIK_LEFT)))
 	{
 		if (m_Direction % 2 == 0)
 		{
-			AngleChange(DIRE_UP);
+			Angle_Change(DIRE_UP);
 		}
 		else
 		{
 			if (m_Direction == DIRE_RIGHT)
 			{
-				AngleChange(DIRE_DOWN);
+				Angle_Change(DIRE_DOWN);
 			}
 			else
 			{
-				AngleChange(DIRE_DOWN);
+				Angle_Change(DIRE_DOWN);
 			}
 		}
 	}
 }
 
+
+
+//=============================================================================
+// „Ç´„ÉôÂà§ÂÆö
+//=============================================================================
+
+void CPlayer::Wall_Check(void)
+{
+	if ((FIELDSIZE - 2.0)*(FIELDSIZE - 2.0) < (m_mtxTranslation._41*m_mtxTranslation._41) + (m_mtxTranslation._43 * m_mtxTranslation._43))
+	{
+		m_mtxTranslation = m_mtxKeepTranslation;
+	}
+	else
+	{
+		m_mtxKeepTranslation = m_mtxTranslation;
+	}
+}
+
+
+//=============================================================================
+// „Ç¢„Éà„É©„ÇØ„Ç∑„Éß„É≥Âè¨Âñö
+//=============================================================================
+
+void CPlayer::Summons_Attraction(void)
+{
+	Cool_Time();
+
+	if ((Keyboard_IsTrigger(DIK_LSHIFT)) || (Keyboard_IsTrigger(DIK_RSHIFT)))
+	{
+		m_SummonsNum++;
+		if (m_SummonsNum >= SUMMONS_MAX)
+		{
+			m_SummonsNum = 0;
+		}
+	}
+
+	if (Keyboard_IsTrigger(DIK_RETURN))
+	{
+		//	„Ç≥„Éº„Éí„Éº„Ç´„ÉÉ„Éó
+		if (m_SummonsNum == SUMMONS_COFFEE)
+		{
+			if ((m_MpStock >= 1) && (m_CoolTime[SUMMONS_COFFEE] == 0))
+			{
+				CAttraction::Create(CAttraction::AT_COFFEE);
+				m_MpStock -= 1;
+				m_CoolTime[SUMMONS_COFFEE] = COOLTIME_COFFEE;
+			}
+		}
+
+		//	„Éï„É™„Éº„Éï„Ç©„Éº„É´
+		if (m_SummonsNum == SUMMONS_FALL)
+		{
+			if ((m_MpStock >= 2) && (m_CoolTime[SUMMONS_FALL] == 0))
+			{
+				CAttraction::Create(CAttraction::AT_FALL);
+				m_MpStock -= 2;
+				m_CoolTime[SUMMONS_FALL] = COOLTIME_FALL;
+			}
+		}
+
+		//	Ë¶≥Ë¶ßËªä
+		if (m_SummonsNum == SUMMONS_WHEEL)
+		{
+			if ((m_MpStock >= 3) && (m_CoolTime[SUMMONS_WHEEL] == 0))
+			{
+				CAttraction::Create(CAttraction::AT_WHEEL);
+				m_MpStock -= 3;
+				m_CoolTime[SUMMONS_WHEEL] = COOLTIME_WHEEL;
+			}
+		}
+
+		//	„Ç∏„Çß„ÉÉ„Éà„Ç≥„Éº„Çπ„Çø„Éº
+		if (m_SummonsNum == SUMMONS_COASTER)
+		{
+			if ((m_MpStock >= 3) && (m_CoolTime[SUMMONS_COASTER] == 0))
+			{
+				CAttraction::Create(CAttraction::AT_COASTER);
+				m_MpStock -= 3;
+				m_CoolTime[SUMMONS_COASTER] = COOLTIME_COASTER;
+				g_CosterMode = true;
+			}
+		}
+
+		//	„Éù„ÉÉ„Éó„Ç≥„Éº„É≥
+		if (m_SummonsNum == SUMMONS_POPCORN)
+		{
+			if ((m_MpStock >= 3) && (m_CoolTime[SUMMONS_POPCORN] == 0))
+			{
+				CAttraction::Create(CAttraction::AT_POPCORN);
+				m_MpStock -= 3;
+				m_CoolTime[SUMMONS_POPCORN] = COOLTIME_POPCORN;
+				
+			}
+		}
+	}
+
+}
+
+//=============================================================================
+// „ÇØ„Éº„É´„Çø„Ç§„É†Âá¶ÁêÜ
+//=============================================================================
+
+void CPlayer::Cool_Time(void)
+{
+	for (int i = 0;i < SUMMONS_MAX;i++)
+	{
+		if (m_CoolTime[i] > 0)
+		{
+			m_CoolTime[i]--;
+
+			if (m_CoolTime[i] <= 0)
+			{
+				m_CoolTime[i] = 0;
+			}
+		}
+	}
+}
+
+
+//=============================================================================
+// MPÂ¢óÂä†Âá¶ÁêÜ
+//=============================================================================
+
+void CPlayer::Mp_Add(void)
+{
+	if (m_FrameCount % 60 == 0)
+	{
+		m_Mp++;
+		if (m_Mp >= MP_MAX)
+		{
+			m_MpStock++;
+			m_Mp = 0;
+		}
+	}
+}

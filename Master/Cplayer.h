@@ -33,15 +33,40 @@ protected:
 	D3DXMATRIX m_mtxKeepTranslation;	//	移動保持行列
 	bool m_DrawCheck;			//	描画フラグ
 private:
-	void  AngleChange(bool Angle_Flg);
+	void Summons_Attraction(void);	//	アトラクション召喚
 	void Player_Initialize(void);	//	初期化
-	
 	void Player_Move(void);			//	移動処理
-	void AngleChange(int index);	//	方向変換
+	void Angle_Change(int index);	//	方向変換
 	void Player_Camera(void);		//	カメラ処理
+	void Wall_Check(void);			//	カベ判定
+	void Player_Damage(void);		//	プレイヤーダメージ
+	void Cool_Time(void);			//	クールタイム処理
+	void Mp_Add(void);				//	MP増加処理
 
 	int m_Direction;				//	方向
 	bool m_MoveCheck;				//	移動フラグ
+	int m_SummonsNum;				//	召喚するアトラクションの番号
+	
+									
+	//  0 coffee
+	//  1 fall
+	//  2 wheel
+	//  3 coaster
+	//  4 popcorn
+	int m_CoolTime[5] = {0};
+
+	enum
+	{
+		SUMMONS_COFFEE,
+		SUMMONS_FALL,
+		SUMMONS_WHEEL,
+		SUMMONS_COASTER,
+		SUMMONS_POPCORN,
+
+		SUMMONS_MAX,
+	};
+
+
 	enum
 	{
 		DIRE_UP,		//　上
@@ -64,7 +89,7 @@ private:
 	bool g_CosterMode;
 	int m_DrawCount;
 	
-	void PlayerDamage(void);
+	
 };
 
 

@@ -91,7 +91,10 @@ protected:
 	void EnemyMove(int direction, float speed);		//	移動処理
 	void EnemyAngleChange(int direction);			//	向き変更処理
 
-	bool CEnemy::PlayerCheck(void);		//	プレイヤーに向かう処理
+	bool PlayerCheck(void);		//	プレイヤーが近くにいるか
+	void Chase_Player(void);	//	プレイヤーに向かう処理
+	bool Draw_Check(void);
+	void Comeback_Move(float speed);
 private:
 
 	int m_Type;			// 種類

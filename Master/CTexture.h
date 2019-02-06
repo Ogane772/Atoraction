@@ -37,6 +37,7 @@ public:
 		TEX_SHADOW,
 		TEX_GAUGE,
 		TEX_WHITE_BAR,
+		TEX_SMALL_ATTACK,
 		TYPE_MAX,
 	};
 
