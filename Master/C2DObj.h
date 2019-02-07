@@ -24,6 +24,7 @@ public:
 
 	void m_Sprite_Draw(int texture_index, float dx, float dy, int tx, int ty, int tw, int th);	//	スプライト描画
 	void Sprite_Draw(int texture_index, float dx, float dy, int tx, int ty, int tw, int th);	//	スプライト描画タイトルリザルト用
+	void Sprite_Draw(int texture_index, float dx, float dy, int tx, int ty, int tw, int th, float cx, float cy, float sx, float sy, float rotation);
 	/*	
 		texture_index:テクスチャ番号
 		dx:表示したいスプライトの左上座標X
