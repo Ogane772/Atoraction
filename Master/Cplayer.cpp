@@ -199,30 +199,30 @@ void CPlayer::Update(void)
 		{
 			Exp_Create(m_mtxTranslation._41, m_mtxTranslation._42 + 1.0f, m_mtxTranslation._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
 		}
-		
+
 
 		Player_Move();
 
-		
+
 	}
 
 
 	D3DXMATRIX mtxr;
 	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(m_Angle));
-	
+
 
 	Wall_Check();
 
 	//	MP
 	Mp_Add();
-	
+
 	Summons_Attraction();
 
-	
-	Player_Damage();
-	
 
-	
+	Player_Damage();
+
+
+
 }
 //=============================================================================
 // 描画
@@ -240,7 +240,7 @@ void CPlayer::Draw(void)
 		if (m_FrameCount % 2 == 0)
 		{
 			DrawDX_Anime(m_mtxWorld, MODELL_ANIME_PLAYER, &Thing);
-		
+
 			m_DrawCount++;
 			if (m_DrawCount >= 20)
 			{
@@ -286,12 +286,12 @@ void CPlayer::Draw(void)
 		;i++)
 
 	{
-		DebugFont_Draw(10, 530+(30*i), "%d" ,m_CoolTime[i]);
+		DebugFont_Draw(10, 530 + (30 * i), "%d", m_CoolTime[i]);
 	}
 	//コントローラーのスティック取得
 	//DebugFont_Draw(300, 50, "X = %ld , Y= %ld", js.lX, js.lY);
 	//Debug_Collision(m_SphereCollision, m_mtxTranslation);
-	
+
 }
 
 
@@ -361,7 +361,7 @@ void CPlayer::Player_Damage(void)
 void CPlayer::Player_Move(void)
 {
 	//	斜め向き変更
-	if( ((Keyboard_IsPress(DIK_D)) && (Keyboard_IsTrigger(DIK_W)))|| ((Keyboard_IsTrigger(DIK_D)) && (Keyboard_IsPress(DIK_W))) || ((Keyboard_IsTrigger(DIK_D)) && (Keyboard_IsTrigger(DIK_W))))
+	if (((Keyboard_IsPress(DIK_D)) && (Keyboard_IsTrigger(DIK_W))) || ((Keyboard_IsTrigger(DIK_D)) && (Keyboard_IsPress(DIK_W))) || ((Keyboard_IsTrigger(DIK_D)) && (Keyboard_IsTrigger(DIK_W))))
 	{
 		if (!doubleflag)
 		{
@@ -484,7 +484,7 @@ void CPlayer::Player_Move(void)
 			doubleflag = false;
 		}
 	}
-	
+
 
 	//	斜め移動
 	if (Keyboard_IsPress(DIK_D) && (Keyboard_IsPress(DIK_W)))
@@ -696,7 +696,7 @@ void CPlayer::Angle_Change(int index)
 		{
 			m_Angle -= SLANT;
 		}
-		
+
 	}
 
 	if (index == DIRE_UP_LEFT)
@@ -859,7 +859,7 @@ void CPlayer::Summons_Attraction(void)
 				CAttraction::Create(CAttraction::AT_POPCORN);
 				m_MpStock -= 3;
 				m_CoolTime[SUMMONS_POPCORN] = COOLTIME_POPCORN;
-				
+
 			}
 		}
 	}

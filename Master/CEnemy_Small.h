@@ -19,11 +19,10 @@ public:
 	void Update(void);
 	void Draw(void);
 	void Finalize(void);
-	void Damage(void);
+
 private:
-	void EnemySmall_Create(void);
+
 	void Initialize(ENEMY_EMITTER *Emitter);
-	bool m_playercheck;
 	
 	int m_Movetime = 0;
 

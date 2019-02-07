@@ -19,18 +19,18 @@ public:
 	void Update(void);
 	void Draw(void);
 	void Finalize(void);
-	void Damage(void);
+	
 private:
 	
 	void Initialize(ENEMY_EMITTER *Emitter);
-	bool m_playercheck;
 
 	int m_Movetime = 0;
 
 	bool m_AttackCheck = false;
 	int m_AttackTime = 0;
 
-	
+	void Special_Move(void);
+	void Special_Attack(void);
 };
 #endif;
 

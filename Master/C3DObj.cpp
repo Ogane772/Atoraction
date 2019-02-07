@@ -115,6 +115,7 @@ C3DObj::C3DObj(int type)
 	D3DXMatrixIdentity(&m_mtxRotation);
 	D3DXMatrixIdentity(&m_mtxScaling);
 	m_Enable = false;
+	m_DamageFlag = false;
 }
 //=============================================================================
 //	”jŠü
@@ -535,4 +536,21 @@ void C3DObj::Animation_Change(int index, float speed)
 
 	Thing.pAnimController->SetTrackAnimationSet(0, pAnimSet[index]);
 
+}
+
+void C3DObj::DamageFlag_Change(void)
+{
+	if (m_DamageFlag)
+	{
+		m_DamageFlag = false;
+	}
+	else
+	{
+		m_DamageFlag = true;
+	}
+}
+
+void C3DObj::Position_Keep(D3DXMATRIX mtxT)
+{
+	m_PosKeep = D3DXVECTOR3(mtxT._41, mtxT._42, mtxT._43);
 }

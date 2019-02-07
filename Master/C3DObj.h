@@ -102,6 +102,8 @@ public:
 	void HitCheck(void);
 
 	virtual bool Get_DrawCheck(void) = 0;
+	void DamageFlag_Change(void);	//	ダメージフラグチェンジ
+	void Position_Keep(D3DXMATRIX mtxT);
 protected:
 	THING *Thing_Anime_model;//アニメモデル情報
 	THING_NORMAL *Thing_Normal_model;//通常モデル情報
@@ -119,6 +121,9 @@ protected:
 	int m_Mp;				//	MP
 	int m_Attack;			//	攻撃
 	int shadow_number;      //  影の番号
+	bool m_DamageFlag;	//	ダメージフラグ
+	D3DXVECTOR3 m_PosKeep;	//	ポジション保持
+
 	// 描画処理
 	void DrawDX_Anime(D3DXMATRIX mtxWorld, int type, THING* pThing);
 	void C3DObj::DrawDX_Normal(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing);
@@ -151,6 +156,8 @@ protected:
 
 	static int MODEL_FILES_MAX;	//	テクスチャ構造体総数
 	static int ANIME_MODEL_FILES_MAX;	//	テクスチャ構造体総数
+
+
 private:
 	
 	static HRESULT InitThing(THING_NORMAL *pThing, LPSTR szXFileName);//ノーマルモデルの読み込み
@@ -174,7 +181,7 @@ private:
 	#define MODEL_MAX (9)
 
 	
-
+	
 	
 	
 	FLOAT fAnimTime = 0.0f;

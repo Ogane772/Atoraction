@@ -18,10 +18,14 @@
 //=============================================================================
 
 #define SMALL_SIZE (0.8f)
-#define SMALL_ATTACK (1)
+#define SMALL_ATTACK (3)
 #define SMALL_HP (1)
 #define SMALL_MP (2)
-#define SMALL_SCORE (1)
+#define SMALL_SCORE (100)
+#define FRY_HEIGHT (0.5f)
+#define FRY_SPEED (0.05f)
+#define WALK_SPEED (0.01f)
+#define ATTACK_SPEED (0.05f)
 //エネミースモールのアニメーション番号定義
 enum ANIMATION {
 	STOP,
@@ -60,11 +64,6 @@ CEnemy_Small::~CEnemy_Small()
 }
 
 
-void CEnemy_Small::EnemySmall_Create(void)
-{
-
-}
-
 //=============================================================================
 //	初期化
 //=============================================================================
@@ -91,7 +90,7 @@ void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 	TrackDesc.Weight = 1;
 	TrackDesc.Enable = true;
 	TrackDesc.Position = 0;//アニメーションタイムリセット
-	TrackDesc.Speed = 0.001f;//モーションスピード
+	TrackDesc.Speed = WALK_SPEED;//モーションスピード
 	Thing.pAnimController->SetTrackDesc(0, &TrackDesc);//アニメ情報セット
 	Thing.pAnimController->SetTrackAnimationSet(0, pAnimSet[WALK]);//初期アニメーションセット
 	m_Enable = true;
@@ -124,9 +123,10 @@ void CEnemy_Small::Finalize(void)
 //=============================================================================
 void CEnemy_Small::Update(void)
 {
-	if (m_Hp > 0)
+	if (!m_DamageFlag)
 	{
-		if (Draw_Check())	//	範囲内にいるか
+
+		if (m_DrawCheck)	//	範囲内にいるか
 		{
 			if (!PlayerCheck())	//	近くにプレイヤーがいるか
 			{
@@ -143,15 +143,28 @@ void CEnemy_Small::Update(void)
 		else
 		{
 			Comeback_Move(SMALL_SPEED);
+			
+		}
+
+	}
+	else
+	{
+		Enemy_Damage(FRY_HEIGHT);
+		Enemy_Flying(FRY_SPEED);
+
+
+
+	}
+	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
+	Draw_Check();
+
+	if (m_Hp <= 0)
+	{
+		if (!m_DrawCheck)
+		{
+			C3DObj_delete();
 		}
 	}
-
-	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
-
-
-
-
-
 }
 
 	
@@ -168,30 +181,14 @@ void CEnemy_Small::Draw(void)
 	{
 		if (m_DrawCheck)
 		{//当たり判定位置更新
-			
+			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);	//　ライティング有効
 			Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 			DrawDX_Anime(m_mtxWorld, MODELL_ANIME_SMALL, &Thing);
+			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);	//　ライティング有効
 		}
 	}
-	
-	//DebugFont_Draw(500, 400, "%d", TrackDesc.Speed);
 }
 
-//=============================================================================
-//	ダメージ処理
-//=============================================================================
-void CEnemy_Small::Damage(void)
-{
-	
-	if (m_Hp > 0)
-	{
-		m_Hp -= 1;
-		if (m_Hp == 0)
-		{
-			CPlayer::Add_KoCount();
-		}
-	}
-}
 
 //=============================================================================
 //	移動処理
@@ -205,7 +202,7 @@ void CEnemy_Small::Small_Move(void)
 		{
 			m_Direction = 0;
 		}
-		Animation_Change(WALK, 0.001);
+		Animation_Change(WALK, WALK_SPEED);
 		D3DXMatrixRotationY(&m_mtxRotation, m_EnemyMove[m_Direction].Angle);
 		m_TimeKeep = m_FrameCount;
 		m_Movetime = rand() % 3 + 1;
@@ -235,7 +232,7 @@ void CEnemy_Small::Small_Attack(void)
 		m_AttackTime = m_FrameCount;
 		m_AttackCheck = true;
 
-		Animation_Change(ATTACK, 0.05);
+		Animation_Change(ATTACK, ATTACK_SPEED);
 	}
 	else
 	{

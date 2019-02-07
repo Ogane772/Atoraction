@@ -89,6 +89,10 @@ CEnemy::CEnemy(int EnemyType)
 	m_Direction = 0;
 	m_DirectionAngle = 0;
 	m_MoveCheck = 0;
+	m_EnemyFlying = false;
+	m_EnemyFlyingDown = false;
+	m_FlyingCount = 0;
+
 	
 }
 
@@ -160,15 +164,7 @@ void CEnemy::EnemyAngleChange(int direction)
 }
 
 
-void CEnemy::EnemyDamage(void)
-{
-	m_Hp--;
-	if (m_Hp <= 0)
-	{
-		m_TimeKeep = m_FrameCount;
-	}
 
-}
 
 
 
@@ -279,5 +275,53 @@ void CEnemy::Comeback_Move(float speed)
 		D3DXMATRIX mtxtrans;
 		D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41 + move.x, m_mtxWorld._42, m_mtxWorld._43 + move.z);
 
+	}
+}
+
+void CEnemy::Enemy_Damage(float flyinghigh)
+{
+	if (!m_EnemyFlying)
+	{
+		m_Hp--;
+		m_EnemyFlying = true;
+		m_FlyingMove = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43) - m_PosKeep;
+		m_FlyingMove.y = flyinghigh;
+
+	}
+}
+
+void CEnemy::Enemy_Flying(float speed)
+{
+	if (m_EnemyFlying)
+	{
+		if (m_Hp != 0)
+		{
+			if (!m_EnemyFlyingDown)
+			{
+				D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41 + m_FlyingMove.x * speed, m_mtxWorld._42 + m_FlyingMove.y, m_mtxWorld._43 + m_FlyingMove.z * speed);
+				m_FlyingCount++;
+				if (m_FlyingCount >= 60)
+				{
+					m_EnemyFlyingDown = true;
+				}
+			}
+			else
+			{
+				
+				D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41 + m_FlyingMove.x * speed, m_mtxWorld._42 - m_FlyingMove.y, m_mtxWorld._43 + m_FlyingMove.z * speed);
+				m_FlyingCount--;
+				if (m_FlyingCount <= 0)
+				{
+					m_EnemyFlying = false;
+					m_EnemyFlyingDown = false;
+					m_DamageFlag = false;
+					
+				}
+			}
+		}
+		else
+		{
+			D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41 + m_FlyingMove.x * (speed * 2), m_mtxWorld._42 + m_FlyingMove.y, m_mtxWorld._43 + m_FlyingMove.z * (speed * 2));
+		}
 	}
 }
