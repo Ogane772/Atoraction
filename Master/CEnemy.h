@@ -33,7 +33,7 @@ public:
 
 	virtual void Update(void) = 0;
 	virtual void Draw(void) = 0;
-
+	virtual void Damage(void) = 0;
 
 	void Enemy_Finalize(int Index);
 
@@ -43,6 +43,7 @@ public:
 	static int Get_EnemyIndex(int EnemyType) { return m_EnemyNum[EnemyType] - 1; }
 	int Get_Score(void) { return m_Score; }
 	int Get_Type(void) { return m_Type; }
+	void EnemyDamage(void);
 	static int Get_EnemyMaxNum(void) { return m_ENEMY_MAX; }
 	static C3DObj *Get_Enemy(int type);
 	bool Get_DrawCheck(void) { return m_DrawCheck; }
@@ -94,10 +95,6 @@ protected:
 	void Chase_Player(void);	//	ÉvÉåÉCÉÑÅ[Ç…å¸Ç©Ç§èàóù
 	bool Draw_Check(void);
 	void Comeback_Move(float speed);
-
-	void Enemy_Damage(float flyinghigh);
-	void Enemy_Flying(float speed);
-	bool m_playercheck;
 private:
 
 	int m_Type;			// éÌóﬁ
@@ -105,14 +102,6 @@ private:
 
 	static ENEMY_EMITTER m_EnemyEmitter[];
 	static int m_ENEMY_MAX;
-
-	int m_FlyingCount;
-	bool m_EnemyFlying;
-	bool m_EnemyFlyingDown;
-	D3DXVECTOR3 m_FlyingMove;
-	
-	
-
 };
 
 #endif // !1

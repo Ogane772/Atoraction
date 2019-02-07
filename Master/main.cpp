@@ -123,7 +123,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hprevInstance, LPSTR lpCmdli
 		WINDOW_CAPTION, // ウィンドウテキスト
 		window_style,   // ウィンドウスタイル
 		-8,       // ウィンドウ座標x
-		window_y + 90,       // ウィンドウ座標y
+		window_y + 160,       // ウィンドウ座標y
 		window_width,   // ウィンドウの幅
 		window_height,  // ウィンドウの高さ
 		NULL,           // 親ウィンドウハンドル

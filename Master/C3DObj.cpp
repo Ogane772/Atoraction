@@ -42,7 +42,7 @@ C3DObj::MaterialFileData2 C3DObj::ANIME_MODEL_FILES[] = {
 int C3DObj::MODEL_FILES_MAX = sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0]);
 int C3DObj::ANIME_MODEL_FILES_MAX = sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0]);
 
-bool C3DObj::boRenderSphere = true;
+bool C3DObj::boRenderSphere = false;
 //モデルアニメーション関係変数
 /*
 #define MODEL_MAX (9)
@@ -115,7 +115,6 @@ C3DObj::C3DObj(int type)
 	D3DXMatrixIdentity(&m_mtxRotation);
 	D3DXMatrixIdentity(&m_mtxScaling);
 	m_Enable = false;
-	m_DamageFlag = false;
 }
 //=============================================================================
 //	破棄
@@ -536,21 +535,4 @@ void C3DObj::Animation_Change(int index, float speed)
 
 	Thing.pAnimController->SetTrackAnimationSet(0, pAnimSet[index]);
 
-}
-
-void C3DObj::DamageFlag_Change(void)
-{
-	if (m_DamageFlag)
-	{
-		m_DamageFlag = false;
-	}
-	else
-	{
-		m_DamageFlag = true;
-	}
-}
-
-void C3DObj::Position_Keep(D3DXMATRIX mtxT)
-{
-	m_PosKeep = D3DXVECTOR3(mtxT._41, mtxT._42, mtxT._43);
 }

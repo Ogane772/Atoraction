@@ -13,7 +13,7 @@
 #include "Cplayer.h"
 #include "common.h"
 #include "input.h"
-
+#include "gamepad.h"
 #include "debug_font.h"
 
 
@@ -36,6 +36,10 @@ D3DXMATRIX CCamera::m_mtxView;
 CCamera *CCamera::m_pCamera;
 float CCamera::angle = 0.0;
 bool CCamera::m_AngleCheck = false;
+
+static DIJOYSTATE2 js;
+static LPDIRECTINPUTDEVICE8 pJoyDevice;
+static HRESULT hr;
 
 bool r = false;
 bool l = false;
@@ -75,6 +79,12 @@ void CCamera::Camera_Initialize(void)
 	m_AngleCheck = false;
 	angle = -90.0;
 	m_Angle = 2.0;
+	js = { 0 };
+	pJoyDevice = *JoyDevice_Get();
+	if (pJoyDevice)
+	{
+		hr = pJoyDevice->Acquire();
+	}
 }
 
 //	終了処理
@@ -98,23 +108,11 @@ CCamera* CCamera::Camera_Create(void)
 //	更新
 void CCamera::Update(void)
 {
-	/*if (Keyboard_IsPress(DIK_UP))
+	//コントローラー情報があるときのみ取得
+	if (pJoyDevice)
 	{
-	//	上回転
-	D3DXMATRIX mtxRotation;
-	D3DXMatrixRotationAxis(&mtxRotation, &m_Right, D3DXToRadian(m_Angle));
-	D3DXVec3TransformNormal(&m_Front, &m_Front, &mtxRotation); // 第2引数を第3引数で行列変換し第1引数に入れる
-	D3DXVec3TransformNormal(&m_Up, &m_Up, &mtxRotation);
+		pJoyDevice->GetDeviceState(sizeof(DIJOYSTATE2), &js);
 	}
-	if (Keyboard_IsPress(DIK_DOWN))
-	{
-	//	下回転
-	D3DXMATRIX mtxRotation;
-	D3DXMatrixRotationAxis(&mtxRotation, &m_Right, D3DXToRadian(-m_Angle));
-	D3DXVec3TransformNormal(&m_Front, &m_Front, &mtxRotation); // 第2引数を第3引数で行列変換し第1引数に入れる
-	D3DXVec3TransformNormal(&m_Up, &m_Up, &mtxRotation);
-	}*/
-
 	D3DXMATRIX at;
 
 	C3DObj *pPlayer = CPlayer::Get_Player();
@@ -126,7 +124,7 @@ void CCamera::Update(void)
 
 	m_AngleCheck = false;
 
-	if ((Keyboard_IsPress(DIK_RIGHT)) && !r)
+	if ((Keyboard_IsPress(DIK_RIGHT)) && !r || js.lRx >= 6)
 	{
 		//	注視点回転
 		D3DXMATRIX mtxRotation;
@@ -143,7 +141,7 @@ void CCamera::Update(void)
 	{
 		m_AngleCheck = false;
 	}
-	if ((Keyboard_IsPress(DIK_LEFT)) && !l)
+	if ((Keyboard_IsPress(DIK_LEFT)) && !l || js.lRx <= -6)
 	{
 		//	注視点回転
 		D3DXMATRIX mtxRotation;

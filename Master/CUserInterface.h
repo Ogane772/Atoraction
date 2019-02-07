@@ -18,6 +18,8 @@ public:
 
 	void Update(void);
 	void Draw(void);
+	void Ui_Ber(void);
+	void Ui_Icon(void);
 	void Finalize(void);
 	static void UICreate(void);
 protected:

@@ -203,6 +203,51 @@ void C2DObj::m_Sprite_Draw(int texture_index, float dx, float dy, int tx, int ty
 
 	m_pD3DDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 4, 0, 2);
 }
+
+void C2DObj::Sprite_Draw(int texture_index, float dx, float dy, int tx, int ty, int tw, int th, float cx, float cy, float sx, float sy, float rotation)
+{
+	float w = (float)Texture_GetWidth(texture_index, 1);
+	float h = (float)Texture_GetHeight(texture_index, 1);
+
+	float u[2], v[2];
+	u[0] = (float)tx / w;
+	v[0] = (float)ty / h;
+	u[1] = (float)(tx + tw) / w;
+	v[1] = (float)(ty + th) / h;
+
+	// 座標変換
+	float px[4], py[4];
+	px[0] = -cx        * sx * cosf(rotation) - -cy        * sy * sinf(rotation);
+	py[0] = -cx        * sx * sinf(rotation) + -cy        * sy * cosf(rotation);
+	px[1] = (-cx + tw) * sx * cosf(rotation) - -cy        * sy * sinf(rotation);
+	py[1] = (-cx + tw) * sx * sinf(rotation) + -cy        * sy * cosf(rotation);
+	px[2] = -cx        * sx * cosf(rotation) - (-cy + th) * sy * sinf(rotation);
+	py[2] = -cx        * sx * sinf(rotation) + (-cy + th) * sy * cosf(rotation);
+	px[3] = (-cx + tw) * sx * cosf(rotation) - (-cy + th) * sy * sinf(rotation);
+	py[3] = (-cx + tw) * sx * sinf(rotation) + (-cy + th) * sy * cosf(rotation);
+
+	Vertex2D* pV;
+	m_p2DVertexBuffer->Lock(0, 0, (void**)&pV, 0);
+
+	pV[0].pos = D3DXVECTOR4(px[0] + dx + cx - 0.5f, py[0] + dy + cy - 0.5f, 0.0f, 1.0f);
+	pV[1].pos = D3DXVECTOR4(px[1] + dx + cx - 0.5f, py[1] + dy + cy - 0.5f, 0.0f, 1.0f);
+	pV[2].pos = D3DXVECTOR4(px[2] + dx + cx - 0.5f, py[2] + dy + cy - 0.5f, 0.0f, 1.0f);
+	pV[3].pos = D3DXVECTOR4(px[3] + dx + cx - 0.5f, py[3] + dy + cy - 0.5f, 0.0f, 1.0f);
+
+	pV[0].texcoord = D3DXVECTOR2(u[0], v[0]);
+	pV[1].texcoord = D3DXVECTOR2(u[1], v[0]);
+	pV[2].texcoord = D3DXVECTOR2(u[0], v[1]);
+	pV[3].texcoord = D3DXVECTOR2(u[1], v[1]);
+
+	m_p2DVertexBuffer->Unlock();
+
+	m_pD3DDevice->SetFVF(FVF_VERTEX2D);
+	m_pD3DDevice->SetTexture(0, Texture_GetTexture(texture_index));
+	m_pD3DDevice->SetStreamSource(0, m_p2DVertexBuffer, 0, sizeof(Vertex2D));
+	m_pD3DDevice->SetIndices(m_p2DIndexBuffer);
+	m_pD3DDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 4, 0, 2);
+}
+
 //=============================================================================
 //	スプライト破棄
 //=============================================================================

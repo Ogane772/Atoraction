@@ -7,6 +7,12 @@
 #define PLAYER_MAX (2)
 #define MP_MAX (30)
 #define HP_MAX (50)
+//アトラクション待機時間
+#define COOLTIME_COFFEE   (300)
+#define COOLTIME_FALL	  (400)
+#define COOLTIME_WHEEL	 (1800)
+#define COOLTIME_COASTER (1200)
+#define COOLTIME_POPCORN    (0)
 
 class CPlayer:public C3DObj
 {
@@ -36,7 +42,9 @@ private:
 	void Summons_Attraction(void);	//	アトラクション召喚
 	void Player_Initialize(void);	//	初期化
 	void Player_Move(void);			//	移動処理
-	void Angle_Change(int index);	//	方向変換
+	void Player_GamepadMove(void);			//	移動処理
+	void AngleChange(int index);	//	方向変換
+	void ControllerAngleChange(int index);	//	コントローラーの方向変換
 	void Player_Camera(void);		//	カメラ処理
 	void Wall_Check(void);			//	カベ判定
 	void Player_Damage(void);		//	プレイヤーダメージ

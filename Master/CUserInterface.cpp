@@ -58,6 +58,7 @@ void CUserInterFace::Update(void)
 {
 
 }
+
 void CUserInterFace::Draw(void)
 {
 	C3DObj *playerget = CPlayer::Get_Player();
@@ -78,13 +79,13 @@ void CUserInterFace::Draw(void)
 
 	//êßå¿éûä‘
 	int t = CGameObj::m_FrameCount / 60;
-	Num_Draw(WINDOW_WIDTH / 2-25, -25, GAMEEND/60-t,2,0,true);
-	int tt = (int)(CGameObj::m_FrameCount % 61*1.7);
+	Num_Draw(WINDOW_WIDTH / 2 + 280, -25, GAMEEND / 60 - t, 2, 0, true);
+	int tt = (int)(CGameObj::m_FrameCount % 61 * 1.7);
 	if (CGameObj::m_FrameCount >= GAMEEND)
 	{
 		tt = 100;
 	}
-	Mp_Draw(WINDOW_WIDTH / 2+230, 80, 100 - tt, 2,true);
+	Mp_Draw(WINDOW_WIDTH / 2 + 510, 120, 100 - tt, 2, true);
 
 	//	åÇîjêî
 	int ko = CPlayer::Get_KoCount();
@@ -107,6 +108,21 @@ void CUserInterFace::Draw(void)
 			Sprite_Draw(TEX_ENEMY_ICON, 1605.0f + enemymatrix._41, 70.0f - enemymatrix._43, 0, 0, 12, 12);
 		}
 	}
+	Ui_Ber();
+	Ui_Icon();
+}
+
+void CUserInterFace::Ui_Ber(void)
+{
+	Sprite_Draw(TEX_UI_BER, 500, 10, 0, 0, 1024, 157, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
+	Sprite_Draw(TEX_UI_MEMORI, 700, 10, 0, 0, 41, 157, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
+}
+
+void CUserInterFace::Ui_Icon(void)
+{
+	Sprite_Draw(TEX_UI_BG_COOLTIME, 30, 200, 0, 0, 80, 80, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
+	Sprite_Draw(TEX_UI_COFFEE, 24, 198, 0, 0, 600, 600, 0.0f, 0.0f, 0.15f, 0.15f, 0.0f);
+	Sprite_Draw(TEX_UI_NORMAL_FUTI, 27, 198, 0, 0, 600, 600, 0.0f, 0.0f, 0.14f, 0.14f, 0.0f);
 }
 
 void CUserInterFace::Finalize(void)

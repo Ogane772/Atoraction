@@ -241,22 +241,19 @@ void CCoffeeCup::EnemyDamage(void)
 			int hp = enemy->Get_Hp();
 			if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
 			{
-				enemy->DamageFlag_Change();
-				enemy->Position_Keep(m_mtxWorld);
+				hp--;
 				//Animation_Change(PLAYER_WALK, 0.05);
 			}
 			thing_cup2->vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
 			if (C3DObj::Collision_AnimeVSNormal(thingenemy, thing_cup2))
 			{
-				enemy->DamageFlag_Change();
-				enemy->Position_Keep(m_mtxWorld);
+				hp--;
 				//Animation_Change(PLAYER_WALK, 0.05);
 			}
 			thing_cup3->vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
 			if (C3DObj::Collision_AnimeVSNormal(thingenemy, thing_cup3))
 			{
-				enemy->DamageFlag_Change();
-				enemy->Position_Keep(m_mtxWorld);
+				hp--;
 				//Animation_Change(PLAYER_WALK, 0.05);
 			}
 		}

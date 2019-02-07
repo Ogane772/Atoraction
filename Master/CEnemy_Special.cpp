@@ -18,14 +18,11 @@
 //=============================================================================
 
 #define SPECIAL_SIZE (0.8f)
-#define SPECIAL_ATTACK (10)
+#define SPECIAL_ATTACK (1)
 #define SPECIAL_HP (1)
-#define SPECIAL_MP (5)
-#define SPECIAL_SCORE (500)
-#define FRY_HEIGHT (0.2f)
-#define FRY_SPEED (0.05f)
-#define WALK_SPEED (0.01f)
-#define ATTACK_SPEED (0.05f)
+#define SPECIAL_MP (2)
+#define SPECIAL_SCORE (1)
+
 enum ANIMATION{
 	DEATH,
 	ATTACK3,
@@ -85,7 +82,7 @@ void CEnemy_Special::Initialize(ENEMY_EMITTER *Emitter)
 	TrackDesc.Weight = 1;
 	TrackDesc.Enable = true;
 	TrackDesc.Position = 0;//アニメーションタイムリセット
-	TrackDesc.Speed = WALK_SPEED;//モーションスピード
+	TrackDesc.Speed = 0.001f;//モーションスピード
 	Thing.pAnimController->SetTrackDesc(0, &TrackDesc);//アニメ情報セット
 	Thing.pAnimController->SetTrackAnimationSet(0, pAnimSet[WALK]);//初期アニメーションセット
 	m_Enable = true;
@@ -112,42 +109,125 @@ void CEnemy_Special::Finalize(void)
 }
 
 
-void CEnemy_Special::Update(void) 
+void CEnemy_Special::Update(void)
 {
-	if (!m_DamageFlag)
+	if (m_Enable)
 	{
-
-		if (m_DrawCheck)	//	範囲内にいるか
+		if (m_Hp > 0)
 		{
-			if (!PlayerCheck())	//	近くにプレイヤーがいるか
+			if (m_DrawCheck)
 			{
-				Special_Move();
+				if (!PlayerCheck())
+				{
+					if (!m_MoveCheck)
+					{
+						m_Direction++;
+						if (m_Direction >= 9)
+						{
+							m_Direction = 0;
+						}
+						Animation_Change(WALK,0.001);
+						D3DXMatrixRotationY(&m_mtxRotation, m_EnemyMove[m_Direction].Angle);
+						m_TimeKeep = m_FrameCount;
+						m_Movetime = rand() % 3 + 1;
+						m_MoveCheck = true;
+					}
+					else
+					{
+
+						D3DXMATRIX mtxtrans;
+						D3DXMatrixTranslation(&mtxtrans, m_EnemyMove[m_Direction].Move.x * SPECIAL_SPEED, m_EnemyMove[m_Direction].Move.y * SPECIAL_SPEED, m_EnemyMove[m_Direction].Move.z * SPECIAL_SPEED);
+						m_mtxTranslation *= mtxtrans;
+
+						if (m_FrameCount - m_TimeKeep >= 60 * m_Movetime)
+						{
+							m_MoveCheck = false;
+						}
+					}
+				}
+				else
+				{
+					C3DObj *pplayer = CPlayer::Get_Player();
+					D3DXMATRIX playerworld = pplayer->Get_mtxWorld();
+					float x = playerworld._41 - m_mtxWorld._41;
+					float z = playerworld._43 - m_mtxWorld._43;
+
+					D3DXMATRIX mtxtrans;
+					D3DXMatrixTranslation(&mtxtrans, x * 0.015f, 0.0f, z * 0.015f);
+					m_mtxTranslation *= mtxtrans;
+
+					float angle = (float)(atan2(-z, x));
+					D3DXMatrixRotationY(&m_mtxRotation, angle);
+
+					if (!m_AttackCheck)
+					{
+						m_AttackTime = m_FrameCount;
+						m_AttackCheck = true;
+
+						Animation_Change(ATTACK1,0.05);
+					}
+					else
+					{
+						if (m_FrameCount - m_AttackTime >= 350)
+						{
+
+							m_AttackCheck = false;
+							m_AttackTime = 0;
+						}
+					}
+
+				}
 			}
 			else
 			{
-				Chase_Player();
+				if (m_MoveCheck)
+				{
+					D3DXMATRIX mtxtrans;
+					D3DXMatrixTranslation(&mtxtrans, m_EnemyMove[m_Direction].Move.x * SPECIAL_SPEED, m_EnemyMove[m_Direction].Move.y * SPECIAL_SPEED, m_EnemyMove[m_Direction].Move.z * SPECIAL_SPEED);
+					m_mtxTranslation *= mtxtrans;
 
-				Special_Attack();
+					if (m_FrameCount - m_TimeKeep >= 180)
+					{
+						m_MoveCheck = false;
+						m_Direction += 2;
+					}
+				}
+				else
+				{
+					float angle = (float)(atan2(-m_mtxWorld._43, -m_mtxWorld._41));
+					D3DXMatrixRotationY(&m_mtxRotation, angle);
+					D3DXVECTOR3 move = (D3DXVECTOR3((float)(cos(angle)), 0.0f, (float)(sin(angle))));
 
+					D3DXMATRIX mtxtrans;
+					D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41 + move.x, m_mtxWorld._42, m_mtxWorld._43 + move.z);
+
+				}
+			}
+		}
+
+		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
+
+
+
+
+		if (45.0*45.0 < (m_mtxWorld._41*m_mtxWorld._41) + (m_mtxWorld._43 * m_mtxWorld._43))
+		{
+			if (m_Hp <= 0)
+			{
+				m_Enable = false;
+				CPlayer::m_delete = true;
+			}
+			else
+			{
+				m_DrawCheck = false;
 			}
 		}
 		else
 		{
-			Comeback_Move(SPECIAL_SPEED);
-
+			m_DrawCheck = true;
 		}
-
 	}
-	else
-	{
-		Enemy_Damage(FRY_HEIGHT);
-		Enemy_Flying(FRY_SPEED);
 
-
-
-	}
-	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
-	Draw_Check();
 
 }
 
@@ -171,51 +251,15 @@ void CEnemy_Special::Draw(void)
 }
 
 
-void CEnemy_Special::Special_Move(void)
+void CEnemy_Special::Damage(void)
 {
-	if (!m_MoveCheck)
+
+	if (m_Hp > 0)
 	{
-		m_Direction++;
-		if (m_Direction >= 9)
+		m_Hp -= 1;
+		if (m_Hp == 0)
 		{
-			m_Direction = 0;
-		}
-		Animation_Change(WALK, WALK_SPEED);
-		D3DXMatrixRotationY(&m_mtxRotation, m_EnemyMove[m_Direction].Angle);
-		m_TimeKeep = m_FrameCount;
-		m_Movetime = rand() % 3 + 1;
-		m_MoveCheck = true;
-	}
-	else
-	{
-
-		D3DXMATRIX mtxtrans;
-		D3DXMatrixTranslation(&mtxtrans, m_EnemyMove[m_Direction].Move.x * SPECIAL_SPEED, m_EnemyMove[m_Direction].Move.y * SPECIAL_SPEED, m_EnemyMove[m_Direction].Move.z * SPECIAL_SPEED);
-		m_mtxTranslation *= mtxtrans;
-
-		if (m_FrameCount - m_TimeKeep >= 60 * m_Movetime)
-		{
-			m_MoveCheck = false;
-		}
-	}
-}
-
-void CEnemy_Special::Special_Attack(void)
-{
-	if (!m_AttackCheck)
-	{
-		m_AttackTime = m_FrameCount;
-		m_AttackCheck = true;
-
-		Animation_Change(ATTACK1, ATTACK_SPEED);
-	}
-	else
-	{
-		if (m_FrameCount - m_AttackTime >= 350)
-		{
-
-			m_AttackCheck = false;
-			m_AttackTime = 0;
+			CPlayer::Add_KoCount();
 		}
 	}
 }

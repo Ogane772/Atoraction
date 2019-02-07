@@ -33,7 +33,16 @@ CTexture::TextureFileData CTexture::TEXTURE_FILES[] = {
 	{ "asset/eff.jpg",80,80 },
 	{ "asset/gauge.png",100,20 },
 	{ "asset/whitebar.png",100,20 },
-	{ "asset/anime_model/outUV2.jpg",256, 256}
+	{ "asset/anime_model/outUV2.jpg",256, 256},
+	{ "asset/ui/ber.png",1024,157 },
+	{ "asset/ui/memori.png",41,157 },
+	{ "asset/ui/ui_bg_normal.png",600,600 },
+	{ "asset/ui/ui_coldtime.png",600,600 },
+	{ "asset/ui/ui_available.png",600,600 },
+	{ "asset/ui/ui_futi.png",600,600 },
+	{ "asset/ui/futi_aka.png",600,600 },
+	{ "asset/ui/futi_kiiro.png",600,600 },
+	{ "asset/ui/ui_coffee.png",600,600 },
 };
 
 int CTexture::TEXTURE_MAX = sizeof(CTexture::TEXTURE_FILES) / sizeof(TEXTURE_FILES[0]);
