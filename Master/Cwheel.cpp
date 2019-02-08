@@ -57,7 +57,7 @@ void Cwheel::Initialize()
 	m_Attack = WHEEL_ATK;
 
 	C3DObj *playerget = CPlayer::Get_Player();	//	ƒvƒŒƒCƒ„[Žæ“¾
-	move = playerget->Get_Front();
+
 
 	D3DXMATRIX mtx = playerget->Get_mtxWorld();
 	D3DXMatrixTranslation(&m_mtxTranslation, mtx._41, mtx._42, mtx._43);//X,Y,Z‚ð“n‚·

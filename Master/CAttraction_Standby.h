@@ -21,6 +21,7 @@ public:
 	void Standby_Create(void);
 	static C3DObj *Get_Standby(void);
 	bool Get_DrawCheck(void) { return m_DrawCheck; }
+
 private:
 	bool m_DrawCheck;
 	void Initialize(int nType);

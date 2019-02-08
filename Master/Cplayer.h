@@ -33,7 +33,7 @@ public:
 	static bool m_delete;
 	static C3DObj *Get_Player(void);
 	bool Get_DrawCheck(void) { return m_DrawCheck; }
-	
+
 protected:
 	
 	D3DXMATRIX m_mtxKeepTranslation;	//	移動保持行列
@@ -53,17 +53,12 @@ private:
 
 	int m_Direction;				//	方向
 	bool m_MoveCheck;				//	移動フラグ
-	int m_SummonsNum;				//	召喚するアトラクションの番号
+
 	
 									
-	//  0 coffee
-	//  1 fall
-	//  2 wheel
-	//  3 coaster
-	//  4 popcorn
-	int m_CoolTime[5] = {0};
 
-	enum
+
+	typedef enum
 	{
 		SUMMONS_COFFEE,
 		SUMMONS_FALL,
@@ -72,7 +67,7 @@ private:
 		SUMMONS_POPCORN,
 
 		SUMMONS_MAX,
-	};
+	}SUMMONS_TYPE;
 
 
 	enum
