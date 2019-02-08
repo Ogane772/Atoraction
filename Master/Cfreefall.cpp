@@ -68,8 +68,8 @@ void Cfreefall::Initialize(D3DXMATRIX mtxWorld)
 	D3DXMatrixTranslation(&m_mtxTranslation, mtxWorld._41, 0, mtxWorld._43);//X,Y,Z‚ð“n‚·
 	D3DXMatrixScaling(&m_mtxScaling, FREEFALL_SCALE, FREEFALL_SCALE, FREEFALL_SCALE);
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
-	Thing_Normal_model = GetNormalModel(MODELL_HASIRA);
-	fall = GetNormalModel(MODELL_ENBAN);
+//	Thing_Normal_model = GetNormalModel(MODELL_HASIRA);
+//	fall = GetNormalModel(MODELL_ENBAN);
 	Thing_Normal_model->Sphere.vCenter = D3DXVECTOR3(0, 0.0, 0);
 	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0),4.2f);//“–‚½‚è”»’è‚Ì•ÏX
 	InitSphere(m_pD3DDevice, fall, D3DXVECTOR3(0, 0.0, 0), 1.0f);//“–‚½‚è”»’è‚Ì•ÏX
@@ -186,8 +186,9 @@ void Cfreefall::EnemyDamage(void)
 			int hp = enemy->Get_Hp();
 			if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
 			{
-				hp--;
-				//Animation_Change(PLAYER_WALK, 0.05);
+				enemy->DamageFlag_Change();
+				enemy->Position_Keep(m_mtxWorld);
+				
 			}
 		}
 	}
@@ -206,7 +207,6 @@ void Cfreefall::FreeFallDamage(void)
 			if (C3DObj::Collision_AnimeVSNormal(thingenemy, fall))
 			{
 				m_Hp -= attack;
-				//Animation_Change(PLAYER_WALK, 0.05);
 				m_DrawCheck = false;
 				if (m_Hp <= 0)
 				{

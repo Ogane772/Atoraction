@@ -46,22 +46,7 @@ Popcorn::Popcorn(D3DXMATRIX mtxWorld) :CAttraction(AT_POPCORN), C3DObj(AT_POPCOR
 
 Popcorn::~Popcorn()
 {//範囲内にいたらプレイヤー回復
-	if (m_Enable)
-	{
-		C3DObj *playerget = CPlayer::Get_Player();
-		if (PlayerCheck())
-		{
-			if (m_FrameCount % 60 == 0)
-			{
-				int hp = playerget->Get_Hp();
-				hp++;
-				if (hp > HP_MAX)
-				{
-					hp = HP_MAX;
-				}
-			}
-		}
-	}
+	
 }
 
 void Popcorn::Initialize(D3DXMATRIX mtxWorld)
@@ -69,7 +54,7 @@ void Popcorn::Initialize(D3DXMATRIX mtxWorld)
 	m_AttractionIndex = Get_AttractionIndex(AT_ALL);
 
 	m_Enable = true;
-
+	m_DrawCheck = true;
 	CoolTime = 0;//クールタイム
 	B_CoolTime;//クールタイムのブール
 
@@ -86,7 +71,7 @@ void Popcorn::Initialize(D3DXMATRIX mtxWorld)
 
 
 	Thing_Normal_model = GetNormalModel(MODELL_POPCORN);
-	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0),4.0f);//当たり判定の変更
+	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), POPCORN_SIZE);//当たり判定の変更
 	Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 }
 
@@ -94,11 +79,22 @@ void Popcorn::Update(void)
 {
 	if (m_Enable)
 	{
+
+		if (PlayerCheck())
+		{
+			if (m_FrameCount % 60 == 0)
+			{
+				Add_Hp();
+			}
+		}
 		//エフェクト処理を行う
 		if (m_DrawCheck)
 		{
 			PopcornDamage();
+
 		}
+
+		
 	}
 }
 
@@ -171,4 +167,17 @@ void Popcorn::PopcornDamage(void)
 			}
 		}
 	}
+}
+
+C3DObj* Popcorn::Get_Popcorn(int index)
+{
+	C3DObj *ppopcorn = C3DObj::Get(index);
+	if (ppopcorn)
+	{
+		if (ppopcorn->Get_3DObjType() == C3DObj::TYPE_POPCORN)
+		{
+			return ppopcorn;
+		}
+	}
+	return NULL;
 }

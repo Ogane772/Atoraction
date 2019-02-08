@@ -11,7 +11,7 @@
 
 #define ENEMY_MAX (100)
 
-class CEnemy:virtual public C3DObj
+class CEnemy :virtual public C3DObj
 {
 public:
 	// 敵の種類
@@ -33,19 +33,18 @@ public:
 
 	virtual void Update(void) = 0;
 	virtual void Draw(void) = 0;
-	virtual void Damage(void) = 0;
+
 
 	void Enemy_Finalize(int Index);
 
-	
+
 	static void Create(void);
 	static int Get_EnemyNum(int EnemyType) { return m_EnemyNum[EnemyType]; }
 	static int Get_EnemyIndex(int EnemyType) { return m_EnemyNum[EnemyType] - 1; }
 	int Get_Score(void) { return m_Score; }
 	int Get_Type(void) { return m_Type; }
-	void EnemyDamage(void);
 	static int Get_EnemyMaxNum(void) { return m_ENEMY_MAX; }
-	static C3DObj *Get_Enemy(int type);
+	static C3DObj *Get_Enemy(int index);
 	bool Get_DrawCheck(void) { return m_DrawCheck; }
 
 	static C3DObj *Get_Map_Enemy(int Index);
@@ -70,16 +69,16 @@ protected:
 
 	static ENEMY_MOVE m_EnemyMove[8];
 
-	
+
 	int m_Score;				//	スコア
 	int m_Direction;			//	向き
 	float m_DirectionAngle;		//	向き変更角度
 	bool m_MoveCheck;			//	移動フラグ
 	bool m_DrawCheck;			//	描画フラグ
 
-	
-	static C3DObj *Get_AllEnemy(void);
-	typedef struct{
+
+
+	typedef struct {
 		int CreateFrame;		//	生成フレーム
 		int Type;				//	エネミータイプ
 		D3DXVECTOR3 InitPos;	//	初期位置
@@ -93,8 +92,14 @@ protected:
 
 	bool PlayerCheck(void);		//	プレイヤーが近くにいるか
 	void Chase_Player(void);	//	プレイヤーに向かう処理
+
+	bool Chase_Popcorn(void);	//	ポップコーンに向かう処理
 	bool Draw_Check(void);
 	void Comeback_Move(float speed);
+
+	void Enemy_Damage(float flyinghigh);
+	void Enemy_Flying(float speed);
+	bool m_playercheck;
 private:
 
 	int m_Type;			// 種類
@@ -102,6 +107,14 @@ private:
 
 	static ENEMY_EMITTER m_EnemyEmitter[];
 	static int m_ENEMY_MAX;
+
+	int m_FlyingCount;
+	bool m_EnemyFlying;
+	bool m_EnemyFlyingDown;
+	D3DXVECTOR3 m_FlyingMove;
+
+
+
 };
 
 #endif // !1

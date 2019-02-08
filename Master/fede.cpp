@@ -101,10 +101,10 @@ void Fade_Draw(void)
 
 	
 	FadeVertex v[] = {
-		{ D3DXVECTOR4(0.0f		  ,0.0f		   ,1.0f,1.0f),D3DCOLOR_RGBA(g_r,g_g,g_b,g_Alpha) },
-		{ D3DXVECTOR4(WINDOW_WIDTH,0.0f		   ,1.0f,1.0f),D3DCOLOR_RGBA(g_r,g_g,g_b,g_Alpha) },
-		{ D3DXVECTOR4(0.0f		  ,WINDOW_HIGHT,1.0f,1.0f),D3DCOLOR_RGBA(g_r,g_g,g_b,g_Alpha) },
-		{ D3DXVECTOR4(WINDOW_WIDTH,WINDOW_HIGHT,1.0f,1.0f),D3DCOLOR_RGBA(g_r,g_g,g_b,g_Alpha) },
+		{ D3DXVECTOR4(0.0f		  ,0.0f		   ,0.0f,1.0f),D3DCOLOR_RGBA(g_r,g_g,g_b,g_Alpha) },
+		{ D3DXVECTOR4(WINDOW_WIDTH,0.0f		   ,0.0f,1.0f),D3DCOLOR_RGBA(g_r,g_g,g_b,g_Alpha) },
+		{ D3DXVECTOR4(0.0f		  ,WINDOW_HIGHT,0.0f,1.0f),D3DCOLOR_RGBA(g_r,g_g,g_b,g_Alpha) },
+		{ D3DXVECTOR4(WINDOW_WIDTH,WINDOW_HIGHT,0.0f,1.0f),D3DCOLOR_RGBA(g_r,g_g,g_b,g_Alpha) },
 	};
 
 	//LPDIRECT3DDEVICE9  pDevicce = mochi_GetDevice();

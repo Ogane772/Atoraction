@@ -10,4 +10,6 @@
 #define FIELDSIZE (90.0f)
 #define SYLINDERSIZE (55.0f)
 #define SKYSIZE (60.0f)
+
+void Game_End(void);
 #endif //_COMMON_H_

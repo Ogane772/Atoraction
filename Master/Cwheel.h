@@ -19,6 +19,7 @@ public:
 	void Draw(void);
 	void Finalize(void);
 	bool Get_DrawCheck(void) { return m_DrawCheck; }
+	
 private:
 	void Initialize();
 	void EnemyDamage();

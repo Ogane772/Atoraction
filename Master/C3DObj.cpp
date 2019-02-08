@@ -7,12 +7,14 @@
 #include "C3DObj.h"
 #include "debug_font.h"
 #include "CTexture.h"
+#include "Cplayer.h"
 
 //=============================================================================
 //	静的変数
 //===========================================================================
 C3DObj *C3DObj::p3DObj[MAX_GAMEOBJ];
 int C3DObj::m_3DObjNum = 0;
+int C3DObj::m_TotalScore = 0;
 
 C3DObj::MaterialFileData C3DObj::NORMAL_MODEL_FILES[] = {
 	{ "asset/model/emi-ru2.x" },
@@ -42,7 +44,7 @@ C3DObj::MaterialFileData2 C3DObj::ANIME_MODEL_FILES[] = {
 int C3DObj::MODEL_FILES_MAX = sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0]);
 int C3DObj::ANIME_MODEL_FILES_MAX = sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0]);
 
-bool C3DObj::boRenderSphere = false;
+bool C3DObj::boRenderSphere = true;
 //モデルアニメーション関係変数
 /*
 #define MODEL_MAX (9)
@@ -115,6 +117,7 @@ C3DObj::C3DObj(int type)
 	D3DXMatrixIdentity(&m_mtxRotation);
 	D3DXMatrixIdentity(&m_mtxScaling);
 	m_Enable = false;
+	m_DamageFlag = false;
 }
 //=============================================================================
 //	破棄
@@ -535,4 +538,58 @@ void C3DObj::Animation_Change(int index, float speed)
 
 	Thing.pAnimController->SetTrackAnimationSet(0, pAnimSet[index]);
 
+}
+
+void C3DObj::DamageFlag_Change(void)
+{
+	if (m_DamageFlag)
+	{
+		m_DamageFlag = false;
+	}
+	else
+	{
+		m_DamageFlag = true;
+	}
+}
+
+void C3DObj::Position_Keep(D3DXMATRIX mtxT)
+{
+	m_PosKeep = D3DXVECTOR3(mtxT._41, mtxT._42, mtxT._43);
+}
+
+void C3DObj::Add_Mp(int mp)
+{
+	C3DObj *pplayer = CPlayer::Get_Player();
+	pplayer->m_Mp += mp;
+
+	while (pplayer->m_Mp >= MP_MAX)
+	{
+		pplayer->m_Mp -= MP_MAX;
+		pplayer->m_MpStock++;
+	}
+
+}
+
+void C3DObj::Attraction_Delete(void)
+{
+	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	{
+		if (p3DObj[i])
+		{
+			if ((p3DObj[i]->m_3DObjType == TYPE_ATTRACTION)|| (p3DObj[i]->m_3DObjType == TYPE_POPCORN)|| (p3DObj[i]->m_3DObjType == TYPE_STADBY)|| (p3DObj[i]->m_3DObjType == TYPE_COASTER))
+			{
+				delete p3DObj[i];
+			}
+		}
+	}
+}
+
+void C3DObj::Add_Hp(void)
+{
+	C3DObj *pplayer = CPlayer::Get_Player();
+	pplayer->m_Hp++;
+	if (pplayer->m_Hp > HP_MAX)
+	{
+		pplayer->m_Hp = HP_MAX;
+	}
 }

@@ -16,10 +16,12 @@
 #include "CEnemy_Special.h"
 #include "Cplayer.h"
 #include "common.h"
+#include "CAttraction_Popcorn.h"
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================
 
+#define CHASE_SPEED (0.015f)
 
 //=============================================================================
 //	ê√ìIïœêî
@@ -89,6 +91,10 @@ CEnemy::CEnemy(int EnemyType)
 	m_Direction = 0;
 	m_DirectionAngle = 0;
 	m_MoveCheck = 0;
+	m_EnemyFlying = false;
+	m_EnemyFlyingDown = false;
+	m_FlyingCount = 0;
+
 	
 }
 
@@ -160,38 +166,25 @@ void CEnemy::EnemyAngleChange(int direction)
 }
 
 
-void CEnemy::EnemyDamage(void)
+
+
+
+
+C3DObj *CEnemy::Get_Enemy(int index)
 {
-	m_Hp--;
-	if (m_Hp <= 0)
-	{
-		m_TimeKeep = m_FrameCount;
-	}
-
-}
-
-
-
-C3DObj *CEnemy::Get_Enemy(int type)
-{
-	C3DObj *penemy = C3DObj::Get(type);
+	C3DObj *penemy = C3DObj::Get(index);
 	if (penemy)
 	{
 		if (penemy->Get_3DObjType() == C3DObj::TYPE_ENEMY)
 		{
-
 			return penemy;
-
 		}
 	}
 	return NULL;
 }
 
 
-C3DObj *CEnemy::Get_AllEnemy(void)
-{
-	return NULL;
-}
+
 
 C3DObj *CEnemy::Get_Map_Enemy(int Index)
 {
@@ -230,7 +223,7 @@ void CEnemy::Chase_Player(void)
 	float z = playerworld._43 - m_mtxWorld._43;
 
 	D3DXMATRIX mtxtrans;
-	D3DXMatrixTranslation(&mtxtrans, x * 0.015f, 0.0f, z * 0.015f);
+	D3DXMatrixTranslation(&mtxtrans, x * CHASE_SPEED, 0.0f, z * CHASE_SPEED);
 	m_mtxTranslation *= mtxtrans;
 
 	float angle = (float)(atan2(-z, x));
@@ -280,4 +273,90 @@ void CEnemy::Comeback_Move(float speed)
 		D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41 + move.x, m_mtxWorld._42, m_mtxWorld._43 + move.z);
 
 	}
+}
+
+void CEnemy::Enemy_Damage(float flyinghigh)
+{
+	if (!m_EnemyFlying)
+	{
+		m_Hp--;
+		m_EnemyFlying = true;
+		m_FlyingMove = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43) - m_PosKeep;
+		m_FlyingMove.y = flyinghigh;
+		if (m_Hp <= 0)
+		{
+			Add_Mp(m_Mp);
+			Add_Score(m_Score);
+		}
+
+	}
+}
+
+void CEnemy::Enemy_Flying(float speed)
+{
+	if (m_EnemyFlying)
+	{
+		if (m_Hp != 0)
+		{
+			if (!m_EnemyFlyingDown)
+			{
+				D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41 + m_FlyingMove.x * speed, m_mtxWorld._42 + m_FlyingMove.y, m_mtxWorld._43 + m_FlyingMove.z * speed);
+				m_FlyingCount++;
+				if (m_FlyingCount >= 60)
+				{
+					m_EnemyFlyingDown = true;
+				}
+			}
+			else
+			{
+				
+				D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41 + m_FlyingMove.x * speed, m_mtxWorld._42 - m_FlyingMove.y, m_mtxWorld._43 + m_FlyingMove.z * speed);
+				m_FlyingCount--;
+				if (m_FlyingCount <= 0)
+				{
+					m_EnemyFlying = false;
+					m_EnemyFlyingDown = false;
+					m_DamageFlag = false;
+					
+				}
+			}
+		}
+		else
+		{
+			D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41 + m_FlyingMove.x * (speed * 2), m_mtxWorld._42 + m_FlyingMove.y, m_mtxWorld._43 + m_FlyingMove.z * (speed * 2));
+		}
+	}
+}
+
+
+
+
+bool CEnemy::Chase_Popcorn(void)
+{
+	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	{
+		C3DObj *ppop = Popcorn::Get_Popcorn(i);
+		if (ppop)
+		{
+			Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+			THING_NORMAL *thingpop = ppop->GetNormalModel(MODELL_POPCORN);
+
+			if (C3DObj::Collision_AnimeVSNormal(&Thing, thingpop))
+			{
+				D3DXMATRIX playerworld = ppop->Get_mtxWorld();
+				float x = playerworld._41 - m_mtxWorld._41;
+				float z = playerworld._43 - m_mtxWorld._43;
+
+				D3DXMATRIX mtxtrans;
+				D3DXMatrixTranslation(&mtxtrans, x * CHASE_SPEED, 0.0f, z * CHASE_SPEED);
+				m_mtxTranslation *= mtxtrans;
+
+				float angle = (float)(atan2(-z, x));
+				D3DXMatrixRotationY(&m_mtxRotation, angle);
+
+				return true;
+			}
+		}
+	}
+	return false;
 }

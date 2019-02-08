@@ -29,12 +29,14 @@
 //	グローバル宣言
 //=============================================================================
 static bool g_bend;				//	フェードインアウトフラグ
-								//=============================================================================
-								//	初期化処理
-								//=============================================================================
+static bool g_gameend;
+//=============================================================================
+//	初期化処理
+//=============================================================================
 void Game_Initialize(void)
 {
 	g_bend = false;
+	g_gameend = false;
 	/*	CPhysx::CPhysX_Initialize();			//	物理演算処理の初期化
 	gScene = CPhysx::Get_PhysX_Scene();		//	シーン初期化*/
 
@@ -77,7 +79,7 @@ void Game_Updata(void)
 
 	CEnemy::Create();		//	エネミー生成
 	COrnament::Create();    //  オブジェクト生成
-	if (GAMEEND <= CGameObj::Get_FraemCount())		//	FraemCountがGAMEENDになるまでカウントUP　なったら終了
+	if (g_gameend)		//	FraemCountがGAMEENDになるまでカウントUP　なったら終了
 	{
 		if (!g_bend)
 		{
@@ -86,13 +88,20 @@ void Game_Updata(void)
 		}
 		else
 		{
-			Fade_Start(false, 3, 0, 0, 0);
-			Scene_Change(SCENE_INDEX_RESULT);
+			if (!Fade_IsFade())
+			{
+				Fade_Start(false, 3, 0, 0, 0);
+				Scene_Change(SCENE_INDEX_RESULT);
+			}
 		}
 	}
 	else
 	{
 		CGameObj::FrameCountUp();
+		if (GAMEEND <= CGameObj::Get_FraemCount())
+		{
+			g_gameend = true;
+		}
 	}
 	Exp_Update();
 }
@@ -111,3 +120,7 @@ void Game_Draw(void)
 }
 
 
+void Game_End(void)
+{
+	g_gameend = true;
+}

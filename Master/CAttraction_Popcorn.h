@@ -20,6 +20,7 @@ public:
 	void Finalize(void);
 	void PopcornDamage(void);
 	bool Get_DrawCheck(void) { return false; }
+	static C3DObj* Get_Popcorn(int index);
 private:
 	void Initialize(D3DXMATRIX mtxWorld);
 	bool PlayerCheck(void);
@@ -27,5 +28,6 @@ private:
 	int m_DrawCount;
 	bool B_CoolTime;					//クールタイムのブール
 	bool m_DrawCheck;
+
 };
 #endif;
