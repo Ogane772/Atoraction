@@ -136,6 +136,9 @@ protected:
 	int m_Mp;				//	MP
 	int m_Attack;			//	攻撃
 	int shadow_number;      //  影の番号
+	D3DXVECTOR3 m_front;
+	D3DXVECTOR3 m_right;
+	D3DXVECTOR3 m_up;
 	bool m_DamageFlag;		//	ダメージフラグ
 	int m_SummonsNum;				//	召喚するアトラクションの番号
 	D3DXVECTOR3 m_PosKeep;	//	ポジション保持

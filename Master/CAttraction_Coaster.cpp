@@ -78,6 +78,8 @@ void Coaster::Update(void)
 {
 	//有効時間を引く
 
+	C3DObj *playerget = CPlayer::Get_Player();	//	プレイヤー取得
+	u = (int)(playerget->Get_Angle());
 	if (m_FrameCount - m_TimeKeep <= J_TIME)
 	{
 		C3DObj *playerget = CPlayer::Get_Player();
