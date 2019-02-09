@@ -33,7 +33,7 @@
 //=============================================================================
 //	ê∂ê¨
 //===========
-Cwheel::Cwheel() :CAttraction(AT_WHEEL), C3DObj(AT_WHEEL)
+Cwheel::Cwheel() :CAttraction(AT_WHEEL), C3DObj(TYPE_ATTRACTION)
 {
 	Initialize();
 }
@@ -55,20 +55,40 @@ void Cwheel::Initialize()
 	m_Mp = WHEEL_MP;
 	m_Attack = WHEEL_ATK;
 
+	m_front = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+	D3DXVec3Normalize(&m_front, &m_front);
+	m_up = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+	D3DXVec3Cross(&m_right, &m_front, &m_up);
+	D3DXVec3Normalize(&m_right, &m_right);
+	D3DXVec3Cross(&m_up, &m_right, &m_front);
+	D3DXVec3Normalize(&m_up, &m_up);
+
+
 	C3DObj *playerget = CPlayer::Get_Player();	//	ÉvÉåÉCÉÑÅ[éÊìæ
 
-
 	D3DXMATRIX mtx = playerget->Get_mtxWorld();
+	D3DXMatrixTranslation(&m_mtxTranslation, 0, 0, 15.0f);
+	angle = (float)(playerget->Get_Angle());
+	D3DXMatrixRotationAxis(&mtxR, &m_up, D3DXToRadian(angle + 90));
+	D3DXVec3TransformNormal(&m_front, &m_front, &mtxR);
+	D3DXVec3TransformNormal(&m_right, &m_right, &mtxR);
+	m_mtxWorld = m_mtxTranslation;
+	//	m_mtxWorld = mtxR * m_mtxTranslation;
+
+
 	D3DXMatrixTranslation(&m_mtxTranslation, mtx._41, mtx._42, mtx._43);//X,Y,ZÇìnÇ∑
 	D3DXMatrixScaling(&m_mtxScaling, WHEEL_SCALE, WHEEL_SCALE, WHEEL_SCALE);
 
-	angle = (float)(playerget->Get_Angle());
-	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(-angle));
 
-	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
+	//D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(-angle));
+
+
+
+	m_mtxWorld = m_mtxScaling * m_mtxWorld * mtxR * m_mtxTranslation;
+	//m_mtxWorld = m_mtxScaling  * m_mtxWorld * m_mtxTranslation ;
 	Thing_Normal_model = GetNormalModel(MODELL_WHEEL);
 	Wheel_position = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42 * 3, m_mtxWorld._43);
-	Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+
 }
 
 void Cwheel::Update(void)
@@ -89,16 +109,22 @@ void Cwheel::Update(void)
 	{//Ç±Ç±Ç≈âÒì]åvéZÇçsÇ§
 
 		rotate_ferris += 4;
-		D3DXMatrixRotationX(&mtxR, D3DXToRadian(-rotate_ferris));
-		Wheel_position += move*SPEED;
+		//D3DXMatrixRotationX(&m_mtxRotationYY, D3DXToRadian(-rotate_ferris));
+
+		D3DXMatrixRotationAxis(&m_mtxRotationYY, &m_right, D3DXToRadian(-rotate_ferris));
+		D3DXVec3TransformNormal(&m_up, &m_up, &m_mtxRotationYY);
+		//D3DXVec3TransformNormal(&m_front, &m_front, &m_mtxRotationYY);
+		D3DXMatrixRotationY(&m_mtxRotationY, D3DXToRadian(angle));
+		Wheel_position += m_front*SPEED;
 
 		D3DXMatrixScaling(&m_mtxScaling, WHEEL_SCALE, WHEEL_SCALE, WHEEL_SCALE);
 		D3DXMATRIX mtxT;
 		D3DXMatrixTranslation(&mtxT, move.x, move.y, move.z);
 		D3DXMatrixTranslation(&m_mtxTranslation, Wheel_position.x, Wheel_position.y, Wheel_position.z);
-		m_mtxWorld = m_mtxScaling * mtxR * m_mtxRotation * m_mtxTranslation;
 
-		if (45.0*45.0 < (m_mtxWorld._41*m_mtxWorld._41) + (m_mtxWorld._43 * m_mtxWorld._43))
+		m_mtxWorld = m_mtxScaling * m_mtxRotationY * m_mtxRotationYY * m_mtxTranslation;
+
+		if (90.0*90.0 < (m_mtxWorld._41*m_mtxWorld._41) + (m_mtxWorld._43 * m_mtxWorld._43))
 		{
 			m_Enable = false;
 			CPlayer::m_delete = true;
@@ -122,23 +148,4 @@ void Cwheel::Draw(void)
 void Cwheel::Finalize(void)
 {
 	Attraction_Finalize(m_AttractionIndex);
-}
-
-void Cwheel::EnemyDamage(void)
-{
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
-	{
-		C3DObj *enemy = CEnemy::Get_Enemy(i);
-		if (enemy)
-		{
-			Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-			THING *thingenemy = enemy->GetAnimeModel();
-			int hp = enemy->Get_Hp();
-			if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
-			{
-				hp--;
-				//Animation_Change(PLAYER_WALK, 0.05);
-			}
-		}
-	}
 }
