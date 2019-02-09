@@ -67,8 +67,8 @@ void CEnemy_Special::Initialize(ENEMY_EMITTER *Emitter)
 
 
 	SkinMesh.InitThing(m_pD3DDevice, &Thing, ANIME_MODEL_FILES[MODELL_ANIME_SPECIAL].filename);
-	Thing.Sphere.fRadius = 1.3;
-	Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2, 0);
+	Thing.Sphere.fRadius = 1.3f;
+	Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2f, 0);
 	SkinMesh.InitSphere(m_pD3DDevice, &Thing);
 
 	m_EnemyIndex = Get_EnemyIndex(TYPE_ALL);

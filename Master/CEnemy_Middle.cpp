@@ -69,8 +69,8 @@ CEnemy_Middle::~CEnemy_Middle()
 void CEnemy_Middle::Initialize(ENEMY_EMITTER *Emitter)
 {
 	SkinMesh.InitThing(m_pD3DDevice, &Thing, ANIME_MODEL_FILES[MODELL_ANIME_MIDDLE].filename);
-	Thing.Sphere.fRadius = 1.3;
-	Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2, 0);
+	Thing.Sphere.fRadius = 1.3f;
+	Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2f, 0);
 	SkinMesh.InitSphere(m_pD3DDevice, &Thing);
 
 	m_EnemyIndex = Get_EnemyIndex(TYPE_ALL);
@@ -140,7 +140,7 @@ void CEnemy_Middle::Update(void)
 	else
 	{
 		Enemy_Damage(0.5f);
-		Enemy_Flying(0.05);
+		Enemy_Flying(0.05f);
 
 
 

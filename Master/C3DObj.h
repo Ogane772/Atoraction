@@ -21,6 +21,17 @@ public:
 	C3DObj(int type);
 	typedef enum
 	{
+		A_BUTTON,
+		B_BUTTON,
+		X_BUTTON,
+		Y_BUTTON,
+		L_BUTTON,
+		R_BUTTON,
+		BACK_BUTTON,
+		START_BUTTON,
+	} CONTROLLER;
+	typedef enum
+	{
 		TYPE_PLAYER,	// プレイヤー
 		TYPE_ENEMY,		// エネミー
 		TYPE_ATTRACTION,// アトラクション
