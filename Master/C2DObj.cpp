@@ -204,7 +204,7 @@ void C2DObj::m_Sprite_Draw(int texture_index, float dx, float dy, int tx, int ty
 	m_pD3DDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 4, 0, 2);
 }
 
-void C2DObj::Sprite_Draw(int texture_index, float dx, float dy, int tx, int ty, int tw, int th, float cx, float cy, float sx, float sy, float rotation)
+void C2DObj::Sprite_Draw(int texture_index, float dx, float dy, float tx, float ty, float tw, float th, float cx, float cy, float sx, float sy, float rotation)
 {
 	float w = (float)Texture_GetWidth(texture_index, 1);
 	float h = (float)Texture_GetHeight(texture_index, 1);

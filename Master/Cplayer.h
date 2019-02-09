@@ -8,16 +8,27 @@
 #define MP_MAX (30)
 #define HP_MAX (50)
 //アトラクション待機時間
-#define COOLTIME_COFFEE   (300)
-#define COOLTIME_FALL	  (400)
-#define COOLTIME_WHEEL	 (1800)
-#define COOLTIME_COASTER (1200)
-#define COOLTIME_POPCORN    (0)
+#define COOLTIME_COFFEE   (300.0f)
+#define COOLTIME_FALL	  (400.0f)
+#define COOLTIME_WHEEL	 (1800.0f)
+#define COOLTIME_COASTER (1200.0f)
+#define COOLTIME_POPCORN    (1.0f)
+typedef enum
+{
+	SUMMONS_COFFEE,
+	SUMMONS_FALL,
+	SUMMONS_POPCORN,
+	SUMMONS_WHEEL,
+	SUMMONS_COASTER,
+
+	SUMMONS_MAX,
+}SUMMONS_TYPE;
 
 class CPlayer:public C3DObj
 {
 
 public:
+
 	CPlayer();
 	~CPlayer();
 
@@ -50,25 +61,10 @@ private:
 	void Player_Damage(void);		//	プレイヤーダメージ
 	void Cool_Time(void);			//	クールタイム処理
 	void Mp_Add(void);				//	MP増加処理
+	bool JoyDevice_IsTrigger(int nKey);//コントローラーのトリガー処理
 
 	int m_Direction;				//	方向
 	bool m_MoveCheck;				//	移動フラグ
-
-	
-									
-
-
-	typedef enum
-	{
-		SUMMONS_COFFEE,
-		SUMMONS_FALL,
-		SUMMONS_WHEEL,
-		SUMMONS_COASTER,
-		SUMMONS_POPCORN,
-
-		SUMMONS_MAX,
-	}SUMMONS_TYPE;
-
 
 	enum
 	{

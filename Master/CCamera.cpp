@@ -119,7 +119,7 @@ void CCamera::Update(void)
 	at = pPlayer->Get_mtxWorld();
 
 	m_at.x = at._41;
-	m_at.y = at._42 + 2.3;
+	m_at.y = at._42 + 2.3f;
 	m_at.z = at._43;
 
 	m_AngleCheck = false;

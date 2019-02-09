@@ -10,7 +10,7 @@
 
 #define NUMBER_SIZE (32)
 #define SCORE_NUMBER_SIZE (130)
-
+#define MP_NUMBER_SIZE (45)
 //=============================================================================
 //	グローバル変数宣言
 //=============================================================================
@@ -33,7 +33,7 @@ void Score_Draw(float x, float y, int score, int fig, bool bLeft, bool bZero)
 {
 
 	int count_stop_score = 1;
-	for (int i = 0;i < fig;i++)
+	for (int i = 0; i < fig; i++)
 	{
 		count_stop_score *= 10;
 	}
@@ -43,18 +43,18 @@ void Score_Draw(float x, float y, int score, int fig, bool bLeft, bool bZero)
 	}
 	if (bZero)
 	{
-		for (int i = 0;i < fig;i++)
+		for (int i = 0; i < fig; i++)
 		{
 
 			int number = score % 10;
 			score /= 10;
-			Number_Draw(x+NUMBER_SIZE*(fig-(i+1)), y, number);
+			Number_Draw(x + NUMBER_SIZE*(fig - (i + 1)), y, number);
 
 		}
 	}
 
-	
-		
+
+
 }
 
 
@@ -69,8 +69,8 @@ void Score_Draw(float x, float y, int cache, int fig)
 
 		if (scorecache > 0)		//	キャッシュに点が入ってたら
 		{
-			score+=10;			//	表示を１プラスして
-			scorecache-=10;		//	キャッシュを１マイナス
+			score += 10;			//	表示を１プラスして
+			scorecache -= 10;		//	キャッシュを１マイナス
 		}
 		totalscore = score;		//	スコアをトータルに保管
 	}
@@ -82,7 +82,7 @@ void Score_Draw(float x, float y, int cache, int fig)
 		//g_bend = true;
 
 	}
-	if(g_bend)
+	if (g_bend)
 	{
 		if (!Fade_IsFade())
 		{
@@ -92,7 +92,7 @@ void Score_Draw(float x, float y, int cache, int fig)
 	}
 
 	//	カンスト用
-	for (int i = 0;i < fig;i++)
+	for (int i = 0; i < fig; i++)
 	{
 		count_stop_score *= 10;
 	}
@@ -102,7 +102,7 @@ void Score_Draw(float x, float y, int cache, int fig)
 	}
 
 	//	スコア表示	右詰め	０埋め
-	for (int j = 0;j < fig;j++)
+	for (int j = 0; j < fig; j++)
 	{
 		int number = score % 10;
 		score /= 10;
@@ -115,7 +115,7 @@ void Mp_Draw(float x, float y, int score, int fig, bool zero)
 {
 
 	int count_stop_score = 1;
-	for (int i = 0;i < fig;i++)
+	for (int i = 0; i < fig; i++)
 	{
 		count_stop_score *= 10;
 	}
@@ -123,7 +123,7 @@ void Mp_Draw(float x, float y, int score, int fig, bool zero)
 	{
 		score = count_stop_score - 1;
 	}
-	
+
 	if (!zero)
 	{
 		int number = score % 10;
@@ -136,7 +136,7 @@ void Mp_Draw(float x, float y, int score, int fig, bool zero)
 	}
 	else
 	{
-		for (int i = 0;i < fig;i++)
+		for (int i = 0; i < fig; i++)
 		{
 			int number = score % 10;
 			score /= 10;
@@ -145,11 +145,11 @@ void Mp_Draw(float x, float y, int score, int fig, bool zero)
 	}
 }
 
-void Num_Draw(float x, float y, int score, int fig, int color, bool zero)
+void Time_Draw(float x, float y, int score, int fig, int color, bool zero)
 {
 
 	int count_stop_score = 1;
-	for (int i = 0;i < fig;i++)
+	for (int i = 0; i < fig; i++)
 	{
 		count_stop_score *= 10;
 	}
@@ -158,13 +158,54 @@ void Num_Draw(float x, float y, int score, int fig, int color, bool zero)
 		score = count_stop_score - 1;
 	}
 
-	
+
+	if (!zero)
+	{
+		int number = score % 10;
+		score /= 10;
+		Number_Draw4(x + SCORE_NUMBER_SIZE*(fig + 1), y, number, color);
+		for (int i = 0; i < fig - 1; i++)
+		{
+			if (score > 0)
+			{
+				int number = score % 10;
+				score /= 10;
+				Number_Draw4(x + SCORE_NUMBER_SIZE*(fig - i), y, number, color);
+			}
+		}
+	}
+	else
+	{
+		for (int i = 0; i < fig; i++)
+		{
+			int number = score % 10;
+			score /= 10;
+			Number_Draw4(x + SCORE_NUMBER_SIZE*(fig - (i + 1)), y, number, color);
+		}
+	}
+}
+
+
+void Num_Draw(float x, float y, int score, int fig, int color, bool zero)
+{
+
+	int count_stop_score = 1;
+	for (int i = 0; i < fig; i++)
+	{
+		count_stop_score *= 10;
+	}
+	if (score >= count_stop_score)
+	{
+		score = count_stop_score - 1;
+	}
+
+
 	if (!zero)
 	{
 		int number = score % 10;
 		score /= 10;
 		Number_Draw2(x + SCORE_NUMBER_SIZE*(fig + 1), y, number, color);
-		for (int i = 0;i < fig - 1;i++)
+		for (int i = 0; i < fig - 1; i++)
 		{
 			if (score > 0)
 			{
@@ -176,26 +217,58 @@ void Num_Draw(float x, float y, int score, int fig, int color, bool zero)
 	}
 	else
 	{
-		for (int i = 0;i < fig;i++)
+		for (int i = 0; i < fig; i++)
 		{
 			int number = score % 10;
 			score /= 10;
 			Number_Draw2(x + SCORE_NUMBER_SIZE*(fig - (i + 1)), y, number, color);
 		}
 	}
-	/*	for (int i = 0;i < fig;i++)
-	{
-
-	int number = score % 10;
-	score /= 10;
-	Number_Draw(x + NUMBER_SIZE*(fig - (i + 1)), y, number);
-
-	}
-	*/
 }
+
+void Num_Draw2(float x, float y, int score, int fig, int color, bool zero)
+{
+
+	int count_stop_score = 1;
+	for (int i = 0; i < fig; i++)
+	{
+		count_stop_score *= 10;
+	}
+	if (score >= count_stop_score)
+	{
+		score = count_stop_score - 1;
+	}
+
+
+	if (!zero)
+	{
+		int number = score % 10;
+		score /= 10;
+		Number_Draw3(x + MP_NUMBER_SIZE*(fig + 1), y, number, color);
+		for (int i = 0; i < fig - 1; i++)
+		{
+			if (score > 0)
+			{
+				int number = score % 10;
+				score /= 10;
+				Number_Draw3(x + MP_NUMBER_SIZE*(fig - i), y, number, color);
+			}
+		}
+	}
+	else
+	{
+		for (int i = 0; i < fig; i++)
+		{
+			int number = score % 10;
+			score /= 10;
+			Number_Draw3(x + SCORE_NUMBER_SIZE*(fig - (i + 1)), y, number, color);
+		}
+	}
+}
+
 void ResultScore_Draw(float x, float y, int score, int fig, int colornum)
 {
-	for (int i = 0;i < fig;i++)
+	for (int i = 0; i < fig; i++)
 	{
 
 		int number = score % 10;
@@ -203,7 +276,7 @@ void ResultScore_Draw(float x, float y, int score, int fig, int colornum)
 		Number_Draw2(x + SCORE_NUMBER_SIZE*(fig - (i + 1)), y, number, colornum);
 
 	}
-	
+
 }
 
 int Get_TotalScore(void)

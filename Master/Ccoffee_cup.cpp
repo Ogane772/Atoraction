@@ -79,17 +79,17 @@ void CCoffeeCup::Initialize(D3DXMATRIX mtxWorld)
 	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angCup));
 	m_mtxWorld =  m_mtxRotation  * m_mtxTranslation;
 
-	D3DXMatrixTranslation(&m_mtxTranslation, -1.9, -0.5, -1);
+	D3DXMatrixTranslation(&m_mtxTranslation, -1.9f, -0.5f, -1.0f);
 	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angCup));
 	m_mtxWorld2 = m_mtxScaling2 * m_mtxRotation  * m_mtxTranslation;
 
-	D3DXMatrixTranslation(&m_mtxTranslation, 0, -0.5, 1.9);
+	D3DXMatrixTranslation(&m_mtxTranslation, 0.0f, -0.5f, 1.9f);
 
 	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angCup));
 	m_mtxWorld3 = m_mtxScaling2* m_mtxRotation  * m_mtxTranslation;
 
 
-	D3DXMatrixTranslation(&m_mtxTranslation, 1.9, -0.5, -1);
+	D3DXMatrixTranslation(&m_mtxTranslation, 1.9f, -0.5f, -1.0f);
 
 	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angCup));
 	m_mtxWorld4 = m_mtxScaling2* m_mtxRotation  * m_mtxTranslation;
@@ -141,17 +141,17 @@ void CCoffeeCup::Update(void)
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angCup));
 		m_mtxWorld = m_mtxRotation  * m_mtxTranslation;
 
-		D3DXMatrixTranslation(&m_mtxTranslation, -1.9, -0.5, -1);
+		D3DXMatrixTranslation(&m_mtxTranslation, -1.9f, -0.5f, -1.0f);
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angCup));
 		m_mtxWorld2 = m_mtxScaling2 * m_mtxRotation  * m_mtxTranslation;
 
-		D3DXMatrixTranslation(&m_mtxTranslation, 0, -0.5, 1.9);
+		D3DXMatrixTranslation(&m_mtxTranslation, 0.0f, -0.5f, 1.9f);
 
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angCup));
 		m_mtxWorld3 = m_mtxScaling2* m_mtxRotation  * m_mtxTranslation;
 
 
-		D3DXMatrixTranslation(&m_mtxTranslation, 1.9, -0.5, -1);
+		D3DXMatrixTranslation(&m_mtxTranslation, 1.9f, -0.5f, -1.0f);
 
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(angCup));
 		m_mtxWorld4 = m_mtxScaling2* m_mtxRotation  * m_mtxTranslation;
