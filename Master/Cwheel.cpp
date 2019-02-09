@@ -19,7 +19,6 @@
 #define SPEED (0.5f)
 #define SIZE (0.8f)
 #define WHEEL_HP (40)
-#define WHEEL_MP (1)
 #define WHEEL_ATK (1)
 #define SCORE (1)
 #define WHEEL_SCALE (2)

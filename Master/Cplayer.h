@@ -13,6 +13,13 @@
 #define COOLTIME_WHEEL	 (1800.0f)
 #define COOLTIME_COASTER (1200.0f)
 #define COOLTIME_POPCORN    (1.0f)
+//アトラクションMP
+#define COFFEE_MP (1)
+#define FALL_MP (2)
+#define POPCORN_MP (1)
+#define WHEEL_MP (3)
+#define COASTER_MP (3)
+
 typedef enum
 {
 	SUMMONS_COFFEE,

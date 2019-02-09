@@ -154,7 +154,7 @@ void CUserInterFace::Ui_Icon(void)
 	}
 	Sprite_Draw(TEX_UI_DIAMOND, 28, ADD_Y + 5, 0, 0, 111, 121, 0.0f, 0.0f, 0.28f, 0.28f, 0.0f);
 	Sprite_Draw(TEX_UI_X, 57, ADD_Y + 13, 0, 0, 81, 94, 0.0f, 0.0f, 0.2f, 0.2f, 0.0f);
-	Num_Draw2(-20, ADD_Y + 1, 2, 1, 1, false);
+	Num_Draw2(-20, ADD_Y + 1, COFFEE_MP, 1, 1, false);
 	//フリーフォール
 	Sprite_Draw(TEX_UI_BG_COOLTIME, 30 + ADD_X, ADD_Y, 0, 0, 80, 80, 0.0f, 0.0f, 1.0f, 1.36f, 0.0f);
 	Sprite_Draw(TEX_UI_BG_UPGAGE, 30 + ADD_X, ADD_Y, 0, 0, 80, ((COOLTIME_FALL - cooltime[1]) / COOLTIME_FALL) * 80, 40.0f, 47.0f, 1.0f, 1.28f, D3DXToRadian(180));
@@ -174,7 +174,7 @@ void CUserInterFace::Ui_Icon(void)
 	}
 	Sprite_Draw(TEX_UI_DIAMOND, 28 + ADD_X, ADD_Y + 5, 0, 0, 111, 121, 0.0f, 0.0f, 0.28f, 0.28f, 0.0f);
 	Sprite_Draw(TEX_UI_X, 57 + ADD_X, ADD_Y + 13 , 0, 0, 81, 94, 0.0f, 0.0f, 0.2f, 0.2f, 0.0f);
-	Num_Draw2(-20 + ADD_X, ADD_Y + 1, 2, 1, 1, false);
+	Num_Draw2(-20 + ADD_X, ADD_Y + 1, FALL_MP, 1, 1, false);
 	//ポップコーン
 	Sprite_Draw(TEX_UI_BG_COOLTIME, 30 + ADD_X * 2, ADD_Y, 0, 0, 80, 80, 0.0f, 0.0f, 1.0f, 1.36f, 0.0f);
 	Sprite_Draw(TEX_UI_BG_UPGAGE, 30 + ADD_X * 2, ADD_Y, 0, 0, 80, ((COOLTIME_POPCORN - cooltime[2]) / COOLTIME_POPCORN) * 80, 40.0f, 47.0f, 1.0f, 1.28f, D3DXToRadian(180));
@@ -194,7 +194,7 @@ void CUserInterFace::Ui_Icon(void)
 	}
 	Sprite_Draw(TEX_UI_DIAMOND, 28 + ADD_X * 2, ADD_Y + 5, 0, 0, 111, 121, 0.0f, 0.0f, 0.28f, 0.28f, 0.0f);
 	Sprite_Draw(TEX_UI_X, 57 + ADD_X * 2, ADD_Y + 13, 0, 0, 81, 94, 0.0f, 0.0f, 0.2f, 0.2f, 0.0f);
-	Num_Draw2(-20 + ADD_X * 2, ADD_Y + 1, 2, 1, 1, false);
+	Num_Draw2(-20 + ADD_X * 2, ADD_Y + 1, POPCORN_MP, 1, 1, false);
 	//ホイール
 	Sprite_Draw(TEX_UI_BG_COOLTIME, 30 + ADD_X * 3, ADD_Y, 0, 0, 80, 80, 0.0f, 0.0f, 1.0f, 1.36f, 0.0f);
 	Sprite_Draw(TEX_UI_BG_UPGAGE, 30 + ADD_X * 3, ADD_Y, 0, 0, 80, ((COOLTIME_WHEEL - cooltime[3]) / COOLTIME_WHEEL) * 80, 40.0f, 47.0f, 1.0f, 1.28f, D3DXToRadian(180));
@@ -214,7 +214,7 @@ void CUserInterFace::Ui_Icon(void)
 	}
 	Sprite_Draw(TEX_UI_DIAMOND, 28 + ADD_X * 3, ADD_Y + 5, 0, 0, 111, 121, 0.0f, 0.0f, 0.28f, 0.28f, 0.0f);
 	Sprite_Draw(TEX_UI_X, 57 + ADD_X * 3, ADD_Y + 13, 0, 0, 81, 94, 0.0f, 0.0f, 0.2f, 0.2f, 0.0f);
-	Num_Draw2(-20 + ADD_X * 3, ADD_Y + 1, 2, 1, 1, false);
+	Num_Draw2(-20 + ADD_X * 3, ADD_Y + 1, WHEEL_MP, 1, 1, false);
 	//コースター
 	Sprite_Draw(TEX_UI_BG_COOLTIME, 30 + ADD_X * 4, ADD_Y, 0, 0, 80, 80, 0.0f, 0.0f, 1.0f, 1.36f, 0.0f);
 	Sprite_Draw(TEX_UI_BG_UPGAGE, 30 + ADD_X * 4, ADD_Y, 0, 0, 80, ((COOLTIME_COASTER - cooltime[4]) / COOLTIME_COASTER) * 80, 40.0f, 47.0f, 1.0f, 1.28f, D3DXToRadian(180));
@@ -234,7 +234,7 @@ void CUserInterFace::Ui_Icon(void)
 	}
 	Sprite_Draw(TEX_UI_DIAMOND, 28 + ADD_X * 4, ADD_Y + 5, 0, 0, 111, 121, 0.0f, 0.0f, 0.28f, 0.28f, 0.0f);
 	Sprite_Draw(TEX_UI_X, 57 + ADD_X * 4, ADD_Y + 13, 0, 0, 81, 94, 0.0f, 0.0f, 0.2f, 0.2f, 0.0f);
-	Num_Draw2(-20 + ADD_X * 4, ADD_Y + 1, 2, 1, 1, false);
+	Num_Draw2(-20 + ADD_X * 4, ADD_Y + 1, COASTER_MP, 1, 1, false);
 }
 
 void CUserInterFace::Finalize(void)
