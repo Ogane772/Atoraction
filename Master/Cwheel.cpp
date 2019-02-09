@@ -79,11 +79,6 @@ void Cwheel::Initialize()
 	D3DXMatrixTranslation(&m_mtxTranslation, mtx._41, mtx._42, mtx._43);//X,Y,Z‚ð“n‚·
 	D3DXMatrixScaling(&m_mtxScaling, WHEEL_SCALE, WHEEL_SCALE, WHEEL_SCALE);
 
-
-	//D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(-angle));
-
-
-
 	m_mtxWorld = m_mtxScaling * m_mtxWorld * mtxR * m_mtxTranslation;
 	//m_mtxWorld = m_mtxScaling  * m_mtxWorld * m_mtxTranslation ;
 	Thing_Normal_model = GetNormalModel(MODELL_WHEEL);
@@ -129,8 +124,12 @@ void Cwheel::Update(void)
 			m_Enable = false;
 			CPlayer::m_delete = true;
 		}
-
+		if (m_DrawCheck)
+		{
+			EnemyDamage();
+		}
 	}
+	
 }
 
 void Cwheel::Draw(void)
@@ -148,4 +147,23 @@ void Cwheel::Draw(void)
 void Cwheel::Finalize(void)
 {
 	Attraction_Finalize(m_AttractionIndex);
+}
+
+void Cwheel::EnemyDamage(void)
+{
+	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	{
+		C3DObj *enemy = CEnemy::Get_Enemy(i);
+		if (enemy)
+		{
+			Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+			THING *thingenemy = enemy->GetAnimeModel();
+			int hp = enemy->Get_Hp();
+			if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
+			{
+				enemy->DamageFlag_Change();
+				enemy->Position_Keep(m_mtxWorld);
+			}
+		}
+	}
 }

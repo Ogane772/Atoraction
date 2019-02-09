@@ -19,6 +19,7 @@ public:
 	void Draw(void);
 	void Finalize(void);
 	void Coaster_Create(void);
+	void EnemyDamage(void);
 	static C3DObj *Get_Coaster(void);
 	bool Get_DrawCheck(void) { return m_DrawCheck; }
 private:
