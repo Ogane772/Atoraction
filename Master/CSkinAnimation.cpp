@@ -305,82 +305,81 @@ HRESULT SKIN_MESH::InitThing(LPDIRECT3DDEVICE9 pDevice,THING *pThing,LPSTR szXFi
 //
 
 //フレーム内のそれぞれのメッシュをレンダリングする
-VOID SKIN_MESH::RenderMeshContainer(LPDIRECT3DDEVICE9 pDevice,MYMESHCONTAINER* pMeshContainer, MYFRAME* pFrame)
+VOID SKIN_MESH::RenderMeshContainer(LPDIRECT3DDEVICE9 pDevice, MYMESHCONTAINER* pMeshContainer, MYFRAME* pFrame, THING* pThing, bool type)
 {
 
-	DWORD i,k;
-	DWORD dwBlendMatrixNum;    
-    DWORD dwPrevBoneID;
-    LPD3DXBONECOMBINATION pBoneCombination;
-    UINT iMatrixIndex;
-    D3DXMATRIX mStack;
-	//スキンメッシュの場合
-	if(pMeshContainer->pSkinInfo != NULL)
-	{	
+	DWORD i, k;
+	DWORD dwBlendMatrixNum;
+	DWORD dwPrevBoneID;
+	LPD3DXBONECOMBINATION pBoneCombination;
+	UINT iMatrixIndex;
+	D3DXMATRIX mStack;
+	//スキンメッシュの場合 
+	if (type == true && pMeshContainer->pSkinInfo != NULL)
+	{
 		pBoneCombination = (LPD3DXBONECOMBINATION)pMeshContainer->pBoneBuffer->GetBufferPointer();
 
-		dwPrevBoneID=UINT_MAX;
-		for(i = 0; i < pMeshContainer->dwBoneNum; i++)
+		dwPrevBoneID = UINT_MAX;
+		for (i = 0; i < pMeshContainer->dwBoneNum; i++)
 		{
-			dwBlendMatrixNum=0;
-			for(k = 0; k< pMeshContainer->dwWeight; k++)
+			dwBlendMatrixNum = 0;
+			for (k = 0; k< pMeshContainer->dwWeight; k++)
 			{
-				if (pBoneCombination[i].BoneId[k] != UINT_MAX) 
+				if (pBoneCombination[i].BoneId[k] != UINT_MAX)
 				{
-					dwBlendMatrixNum=k;
+					dwBlendMatrixNum = k;
 				}
 			}
 			pDevice->SetRenderState(D3DRS_VERTEXBLEND, dwBlendMatrixNum);
-			for(k = 0; k < pMeshContainer->dwWeight; k++) 
+			for (k = 0; k < pMeshContainer->dwWeight; k++)
 			{
 				iMatrixIndex = pBoneCombination[i].BoneId[k];
 				if (iMatrixIndex != UINT_MAX)
 				{
-					mStack=pMeshContainer->pBoneOffsetMatrices[iMatrixIndex] * (*pMeshContainer->ppBoneMatrix[iMatrixIndex]);
-					pDevice->SetTransform( D3DTS_WORLDMATRIX(k), &mStack );
+					mStack = pMeshContainer->pBoneOffsetMatrices[iMatrixIndex] * (*pMeshContainer->ppBoneMatrix[iMatrixIndex]);
+					pDevice->SetTransform(D3DTS_WORLDMATRIX(k), &mStack);
 				}
 			}
-	
-			pDevice->SetMaterial( &pMeshContainer->pMaterials[pBoneCombination[i].AttribId].MatD3D );
-			pDevice->SetTexture( 0, pMeshContainer->ppTextures[pBoneCombination[i].AttribId] );
+			pThing->texture = pMeshContainer->ppTextures;
+			pDevice->SetMaterial(&pMeshContainer->pMaterials[pBoneCombination[i].AttribId].MatD3D);
+			pDevice->SetTexture(0, pMeshContainer->ppTextures[pBoneCombination[i].AttribId]);
 			dwPrevBoneID = pBoneCombination[i].AttribId;
-			pMeshContainer->MeshData.pMesh->DrawSubset(i);	
-		}		
+			pMeshContainer->MeshData.pMesh->DrawSubset(i);
+
+		}
 	}
 	//通常メッシュの場合
 	else
 	{
-		pDevice->SetRenderState(D3DRS_VERTEXBLEND, 0);
-		pDevice->SetTransform(D3DTS_WORLD, &pFrame->CombinedTransformationMatrix);
-		for (i = 0; i < pMeshContainer->NumMaterials; i++)
-		{
-			pDevice->SetMaterial( &pMeshContainer->pMaterials[i].MatD3D );
-			pDevice->SetTexture( 0, pMeshContainer->ppTextures[i] );
-			pMeshContainer->MeshData.pMesh->DrawSubset(i);
-		}
+		pThing->texture = pMeshContainer->ppTextures;
 	}
 }
 //
 //フレームをレンダリングする。
-VOID SKIN_MESH::DrawFrame(LPDIRECT3DDEVICE9 pDevice,LPD3DXFRAME pFrameBase)
+VOID SKIN_MESH::DrawFrame(LPDIRECT3DDEVICE9 pDevice, LPD3DXFRAME pFrameBase, THING* pThing, bool type)
 {
-	MYFRAME* pFrame=(MYFRAME*)pFrameBase;
-    MYMESHCONTAINER* pMeshContainer = (MYMESHCONTAINER*)pFrame->pMeshContainer;	
+	int i = 0;
+	MYFRAME* pFrame = (MYFRAME*)pFrameBase;
+	MYMESHCONTAINER* pMeshContainer = (MYMESHCONTAINER*)pFrame->pMeshContainer;
+	if (pMeshContainer != NULL)
+	{
 
-    while (pMeshContainer != NULL)
-    {
-        RenderMeshContainer(pDevice,pMeshContainer, pFrame);
+	}
+	while (pMeshContainer != NULL)
+	{
+		RenderMeshContainer(pDevice, pMeshContainer, pFrame, pThing, type);
 
-        pMeshContainer = (MYMESHCONTAINER*)pMeshContainer->pNextMeshContainer;
-    }
-    if (pFrame->pFrameSibling != NULL)
-    {
-        DrawFrame(pDevice,pFrame->pFrameSibling);
-    }
-    if (pFrame->pFrameFirstChild != NULL)
-    {
-        DrawFrame(pDevice,pFrame->pFrameFirstChild);
-    }
+		pMeshContainer = (MYMESHCONTAINER*)pMeshContainer->pNextMeshContainer;
+		i++;
+	}
+	if (pFrame->pFrameSibling != NULL)
+	{
+		DrawFrame(pDevice, pFrame->pFrameSibling, pThing, type);
+	}
+	if (pFrame->pFrameFirstChild != NULL)
+	{
+		DrawFrame(pDevice, pFrame->pFrameFirstChild, pThing, type);
+	}
 }
 //
 //フレーム内のメッシュ毎にワールド変換行列を更新する

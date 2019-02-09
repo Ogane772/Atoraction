@@ -68,6 +68,7 @@ void CMesh_SkyDome::Update(void)
 void CMesh_SkyDome::Draw(void)
 {
 	CMeshField::DrawSky(m_mtxWorld);
+	//CMeshField::Draw();
 }
 
 

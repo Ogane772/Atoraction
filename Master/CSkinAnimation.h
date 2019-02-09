@@ -63,7 +63,7 @@ struct THING
 	D3DXMATRIX mRotation;
 	D3DXMATRIX mWorld;
 	SPHERE2 Sphere;
-
+	LPDIRECT3DTEXTURE9* texture;
 	THING()
 	{
 		ZeroMemory(this,sizeof(THING));
@@ -80,9 +80,9 @@ public:
 	HRESULT AllocateAllBoneMatrices(THING* ,  LPD3DXFRAME  );
 	HRESULT InitSphere(LPDIRECT3DDEVICE9, THING*);
 	static HRESULT UpdateSphere(LPDIRECT3DDEVICE9 pDevice, THING* pThing);//ìñÇΩÇËîªíËÇÃçXêV
-	VOID RenderMeshContainer(LPDIRECT3DDEVICE9, MYMESHCONTAINER* ,MYFRAME* );
+	VOID SKIN_MESH::RenderMeshContainer(LPDIRECT3DDEVICE9 pDevice, MYMESHCONTAINER* pMeshContainer, MYFRAME* pFrame, THING* pThing, bool type);
 	VOID UpdateFrameMatrices(LPD3DXFRAME , LPD3DXMATRIX );
-	VOID DrawFrame(LPDIRECT3DDEVICE9,LPD3DXFRAME );
+	VOID SKIN_MESH::DrawFrame(LPDIRECT3DDEVICE9 pDevice, LPD3DXFRAME pFrameBase, THING* pThing, bool type);
 	VOID ChangeAnim(DWORD NewAnimNum);
 protected:
 	MY_HIERARCHY cHierarchy;
