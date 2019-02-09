@@ -10,6 +10,7 @@
 #include "C3DObj.h"
 
 #define ORNAMENT_MAX (100)
+#define ORNAMENT_WAIT_TIME (15)//–³“GŽžŠÔ
 
 class COrnament :virtual public C3DObj
 {

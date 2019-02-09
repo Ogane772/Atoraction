@@ -19,10 +19,9 @@ public:
 	void Draw(void);
 	void Finalize(void);
 	bool Get_DrawCheck(void) { return m_DrawCheck; }
-
+	void EnemyDamage(void);
 private:
 	void Initialize();
-	void EnemyDamage();
 	int m_AttractionIndex;
 
 
