@@ -100,6 +100,7 @@ protected:
 	void Enemy_Damage(float flyinghigh);
 	void Enemy_Flying(float speed);
 	bool m_playercheck;
+	void Color_Change(int texindex);
 private:
 
 	int m_Type;			// Ží—Þ

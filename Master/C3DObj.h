@@ -82,6 +82,7 @@ public:
 	int Get_MpStock(void) { return m_MpStock; }		//	MPストック取得
 	int Get_SummonsNum(void) { return m_SummonsNum; } // 選択中アトラクション取得 
 	int Get_CoolTime(int summonstype) { return m_CoolTime[summonstype]; }
+	bool Get_AttacFlag(void) { return m_AttakFlag; }
 	
 	static bool boRenderSphere;//当たり判定を可視化するかどうか？ true 可視化
 	//	モデル読み込み
@@ -126,6 +127,7 @@ protected:
 	int m_Attack;			//	攻撃
 	int shadow_number;      //  影の番号
 	bool m_DamageFlag;		//	ダメージフラグ
+	bool m_AttakFlag;		//	アタックフラグ
 	int m_SummonsNum;				//	召喚するアトラクションの番号
 	D3DXVECTOR3 m_PosKeep;	//	ポジション保持
 	//  0 coffee

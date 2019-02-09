@@ -37,7 +37,6 @@ public:
 		TEX_SHADOW,
 		TEX_GAUGE,
 		TEX_WHITE_BAR,
-		TEX_SMALL_ATTACK,
 		TEX_UI_BER,
 		TEX_UI_MEMORI,
 		TEX_UI_BG_NORMAL,
@@ -47,6 +46,8 @@ public:
 		TEX_UI_AKA_FUTI,
 		TEX_UI_KIIRO_FUTI,
 		TEX_UI_COFFEE,
+		TEX_SMALL,
+		TEX_SMALL_ANOTHER,
 		TYPE_MAX,
 	};
 
@@ -55,6 +56,7 @@ public:
 	static void Texture_Release(void);	//	テクスチャ破棄
 
 	static LPDIRECT3DTEXTURE9 Texture_GetTexture(int index) { return m_pTextures[index]; }	//	テクスチャ取得
+	static char* Texture_GetFailName(int index) { return TEXTURE_FILES[index].filename; }
 	static int Texture_GetWidth(int index, int cut) { return TEXTURE_FILES[index].width / cut; }	// テクスチャ幅分割	cut:分割数 分割しない場合は1
 	static int Texture_GetHeight(int index, int cut) { return TEXTURE_FILES[index].height / cut; }	//	テクスチャ高さ分割 cut:分割数 分割しない場合は1
 protected:

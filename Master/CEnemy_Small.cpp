@@ -13,6 +13,7 @@
 #include "input.h"
 #include "CSkinAnimation.h"
 #include "debug_font.h"
+#include "CTexture.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -27,7 +28,7 @@
 #define FRY_SPEED (0.05f)	//	飛ぶ速さ
 //	アニメーションスピード
 #define WALK_SPEED (0.01f)
-#define ATTACK_SPEED (0.05f)
+#define ATTACK_SPEED (0.02f)
 //エネミースモールのアニメーション番号定義
 enum ANIMATION {
 	STOP,
@@ -195,6 +196,11 @@ void CEnemy_Small::Draw(void)
 			Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 			DrawDX_Anime(m_mtxWorld, MODELL_ANIME_SMALL, &Thing);
 			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);	//　ライティング有効
+
+			if (m_AttackCheck)
+			{
+				DebugFont_Draw(300, 500, "%d",m_FrameCount - m_AttackTime);
+			}
 		}
 	}
 }
@@ -212,6 +218,7 @@ void CEnemy_Small::Small_Move(void)
 		{
 			m_Direction = 0;
 		}
+		
 		Animation_Change(WALK, WALK_SPEED);
 		D3DXMatrixRotationY(&m_mtxRotation, m_EnemyMove[m_Direction].Angle);
 		m_TimeKeep = m_FrameCount;
@@ -220,7 +227,7 @@ void CEnemy_Small::Small_Move(void)
 	}
 	else
 	{
-
+		Color_Change(CTexture::TEX_SMALL);
 		D3DXMATRIX mtxtrans;
 		D3DXMatrixTranslation(&mtxtrans, m_EnemyMove[m_Direction].Move.x * SMALL_SPEED, m_EnemyMove[m_Direction].Move.y * SMALL_SPEED, m_EnemyMove[m_Direction].Move.z * SMALL_SPEED);
 		m_mtxTranslation *= mtxtrans;
@@ -241,16 +248,32 @@ void CEnemy_Small::Small_Attack(void)
 	{
 		m_AttackTime = m_FrameCount;
 		m_AttackCheck = true;
-
-		Animation_Change(ATTACK, ATTACK_SPEED);
+		
+		
 	}
 	else
 	{
-		if (m_FrameCount - m_AttackTime >= 350)
+		if (m_FrameCount - m_AttackTime >= 60)
 		{
-
+			Color_Change(CTexture::TEX_SMALL_ANOTHER);
+		}
+		if (m_FrameCount - m_AttackTime >= 120)
+		{
+			
+			Animation_Change(ATTACK, ATTACK_SPEED);
+		}
+		if (m_FrameCount - m_AttackTime >= 140)
+		{
+			Color_Change(CTexture::TEX_SMALL);
+			m_AttakFlag = true;
+		}
+		if (m_FrameCount - m_AttackTime >= 160)
+		{
+			Animation_Change(WALK, WALK_SPEED);
 			m_AttackCheck = false;
 			m_AttackTime = 0;
+			m_AttakFlag = false;
 		}
+	
 	}
 }

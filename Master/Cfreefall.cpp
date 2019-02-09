@@ -199,21 +199,25 @@ void Cfreefall::FreeFallDamage(void)
 	for (int i = 0; i < MAX_GAMEOBJ; i++)
 	{
 		C3DObj *enemy = CEnemy::Get_Enemy(i);
+
 		if (enemy && m_DrawCheck)
 		{
-			fall->vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);			
-			THING *thingenemy = enemy->GetAnimeModel();
-			int attack = enemy->Get_Attck();
-			if (C3DObj::Collision_AnimeVSNormal(thingenemy, fall))
+			if (enemy->Get_AttacFlag())
 			{
-				m_Hp -= attack;
-				m_DrawCheck = false;
-				if (m_Hp <= 0)
+				fall->vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
+				THING *thingenemy = enemy->GetAnimeModel();
+				int attack = enemy->Get_Attck();
+				if (C3DObj::Collision_AnimeVSNormal(thingenemy, fall))
 				{
-					Exp_Create(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
-					C3DObj_delete();
+					m_Hp -= attack;
+					m_DrawCheck = false;
+					if (m_Hp <= 0)
+					{
+						Exp_Create(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
+						C3DObj_delete();
+					}
+					break;
 				}
-				break;
 			}
 		}
 	}

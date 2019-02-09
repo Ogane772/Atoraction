@@ -17,6 +17,7 @@
 #include "Cplayer.h"
 #include "common.h"
 #include "CAttraction_Popcorn.h"
+#include "CTexture.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -42,9 +43,9 @@ CEnemy::ENEMY_MOVE CEnemy::m_EnemyMove[8] = {
 CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 {
 	{ 0   , TYPE_SMALL, D3DXVECTOR3( 10.0f, 0.0f , 10.0f), DIRE_NORTH	   ,false },
-    { 0	  , TYPE_MIDDLE, D3DXVECTOR3( 20.0f, 0.0f , 20.0f), DIRE_EAST	   ,false },
-	{ 0	  , TYPE_SPECIAL, D3DXVECTOR3( 30.0f, 0.0f , 30.0f), DIRE_NORTHWEST ,false },
-	{ 0	  , TYPE_BIG, D3DXVECTOR3( 20.0f, 0.0f , 10.0f), DIRE_SOUTHEAST ,false },
+//    { 0	  , TYPE_MIDDLE, D3DXVECTOR3( 20.0f, 0.0f , 20.0f), DIRE_EAST	   ,false },
+//	{ 0	  , TYPE_SPECIAL, D3DXVECTOR3( 30.0f, 0.0f , 30.0f), DIRE_NORTHWEST ,false },
+//	{ 0	  , TYPE_BIG, D3DXVECTOR3( 20.0f, 0.0f , 10.0f), DIRE_SOUTHEAST ,false },
 /*	{ 0	  , TYPE_SMALL, D3DXVECTOR3( 0.0f , 0.0f , 0.0f ), DIRE_NORTHEAST ,false },
 
 	{ 100 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
@@ -340,23 +341,45 @@ bool CEnemy::Chase_Popcorn(void)
 		{
 			Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 			THING_NORMAL *thingpop = ppop->GetNormalModel(MODELL_POPCORN);
-
+			thingpop->Sphere.fRadius = 15.0f;
 			if (C3DObj::Collision_AnimeVSNormal(&Thing, thingpop))
 			{
-				D3DXMATRIX playerworld = ppop->Get_mtxWorld();
-				float x = playerworld._41 - m_mtxWorld._41;
-				float z = playerworld._43 - m_mtxWorld._43;
+				thingpop->Sphere.fRadius = 4.0f;
+				if (!C3DObj::Collision_AnimeVSNormal(&Thing, thingpop))
+				{
+					D3DXMATRIX playerworld = ppop->Get_mtxWorld();
+					float x = playerworld._41 - m_mtxWorld._41;
+					float z = playerworld._43 - m_mtxWorld._43;
 
-				D3DXMATRIX mtxtrans;
-				D3DXMatrixTranslation(&mtxtrans, x * CHASE_SPEED, 0.0f, z * CHASE_SPEED);
-				m_mtxTranslation *= mtxtrans;
+					D3DXMATRIX mtxtrans;
+					D3DXMatrixTranslation(&mtxtrans, x * CHASE_SPEED, 0.0f, z * CHASE_SPEED);
+					m_mtxTranslation *= mtxtrans;
 
-				float angle = (float)(atan2(-z, x));
-				D3DXMatrixRotationY(&m_mtxRotation, angle);
+					float angle = (float)(atan2(-z, x));
+					D3DXMatrixRotationY(&m_mtxRotation, angle);
 
-				return true;
+					return true;
+				}
 			}
+			thingpop->Sphere.fRadius = 4.0f;
 		}
 	}
 	return false;
+}
+
+void CEnemy::Color_Change(int texindex)
+{
+	Thing.texture[0]->Release();
+	Thing.texture[0] = NULL;
+
+	char color[TEXTURE_FILENAME_MAX] = {};
+	strcpy(color,CTexture::Texture_GetFailName(texindex));
+
+	D3DXCreateTextureFromFile
+		(
+			m_pD3DDevice,
+			//切り替えたい番号を指定[0]はテクスチャの場所
+			color,
+			Thing.texture//セットしたいモデル番号
+			);
 }

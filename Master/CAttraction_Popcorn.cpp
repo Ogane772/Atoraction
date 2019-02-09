@@ -20,7 +20,7 @@
 #define SPEED (0.05f)
 #define POPCORN_SIZE (4)//ìñÇΩÇËîªíËëÂÇ´Ç≥
 #define POPCORN_SCALE (1) //ÉÇÉfÉãÇÃëÂÇ´Ç≥
-#define POPCORN_HP (1)
+#define POPCORN_HP (90)
 #define POPCORN_MP (1)
 #define POPCORN_ATK (1)
 #define SCORE (1)
@@ -39,7 +39,7 @@
 //	ê∂ê¨
 //=============================================================================
 
-Popcorn::Popcorn(D3DXMATRIX mtxWorld) :CAttraction(AT_POPCORN), C3DObj(AT_POPCORN)
+Popcorn::Popcorn(D3DXMATRIX mtxWorld) :CAttraction(AT_POPCORN), C3DObj(TYPE_POPCORN)
 {
 	Initialize(mtxWorld);
 }
@@ -148,22 +148,26 @@ void Popcorn::PopcornDamage(void)
 	for (int i = 0; i < MAX_GAMEOBJ; i++)
 	{
 		C3DObj *enemy = CEnemy::Get_Enemy(i);
+
 		if (enemy && m_DrawCheck)
 		{
-			Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-			THING *thingenemy = enemy->GetAnimeModel();
-			int attack = enemy->Get_Attck();
-			if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
+			if (enemy->Get_AttacFlag())
 			{
-				m_Hp -= attack;
-				//Animation_Change(PLAYER_WALK, 0.05);
-				m_DrawCheck = false;
-				if (m_Hp <= 0)
+				Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+				THING *thingenemy = enemy->GetAnimeModel();
+				int attack = enemy->Get_Attck();
+				if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
 				{
-					Exp_Create(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43, 4.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
-					C3DObj_delete();
+					m_Hp -= attack;
+					//Animation_Change(PLAYER_WALK, 0.05);
+					m_DrawCheck = false;
+					if (m_Hp <= 0)
+					{
+						Exp_Create(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43, 4.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
+						C3DObj_delete();
+					}
+					break;
 				}
-				break;
 			}
 		}
 	}
