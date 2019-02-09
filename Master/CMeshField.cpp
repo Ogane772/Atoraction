@@ -219,9 +219,9 @@ void CMeshField::Mesh_Field_Initialize2(void)
 		for (int w = 0;w < m_VertexW;w++)
 		{
 			int n = w + m_VertexW * h;
-			m_Mfield[n].pos = D3DXVECTOR3(((float)m_meshWnum * 0.5f * -m_meshW) + (m_meshW * w), 0, ((float)m_meshHnum * 0.5 * m_meshW) + (-m_meshW * h));
+			m_Mfield[n].pos = D3DXVECTOR3(((float)m_meshWnum * 0.5f * -m_meshW) + (m_meshW * w), 0.0f, ((float)m_meshHnum * 0.5f * m_meshW) + (-m_meshW * h));
 			m_Mfield[n].color = D3DCOLOR(0xffffffff);
-			m_Mfield[n].uv = D3DXVECTOR2(w, h);
+			m_Mfield[n].uv = D3DXVECTOR2((float)w, (float)h);
 		}
 
 	}

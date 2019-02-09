@@ -68,8 +68,8 @@ void Cfreefall::Initialize(D3DXMATRIX mtxWorld)
 	D3DXMatrixTranslation(&m_mtxTranslation, mtxWorld._41, 0, mtxWorld._43);//X,Y,Z‚ğ“n‚·
 	D3DXMatrixScaling(&m_mtxScaling, FREEFALL_SCALE, FREEFALL_SCALE, FREEFALL_SCALE);
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
-//	Thing_Normal_model = GetNormalModel(MODELL_HASIRA);
-//	fall = GetNormalModel(MODELL_ENBAN);
+	Thing_Normal_model = GetNormalModel(MODELL_HASIRA);
+	fall = GetNormalModel(MODELL_ENBAN);
 	Thing_Normal_model->Sphere.vCenter = D3DXVECTOR3(0, 0.0, 0);
 	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0),4.2f);//“–‚½‚è”»’è‚Ì•ÏX
 	InitSphere(m_pD3DDevice, fall, D3DXVECTOR3(0, 0.0, 0), 1.0f);//“–‚½‚è”»’è‚Ì•ÏX

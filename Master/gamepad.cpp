@@ -27,6 +27,7 @@ LPDIRECT3D9 pD3d = NULL;
 LPDIRECT3DDEVICE9 pDevice = NULL;
 LPDIRECTINPUT8 pDinput = NULL;
 LPDIRECTINPUTDEVICE8 pJoyDevice = NULL;
+
 //=============================================================================
 // ゲームパッド入力処理の初期化
 //=============================================================================
@@ -134,3 +135,4 @@ LPDIRECTINPUTDEVICE8* JoyDevice_Get(void)
 {
 	return &pJoyDevice;
 }
+
