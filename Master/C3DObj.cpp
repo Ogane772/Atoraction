@@ -44,7 +44,7 @@ C3DObj::MaterialFileData2 C3DObj::ANIME_MODEL_FILES[] = {
 int C3DObj::MODEL_FILES_MAX = sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0]);
 int C3DObj::ANIME_MODEL_FILES_MAX = sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0]);
 
-bool C3DObj::boRenderSphere = true;
+bool C3DObj::boRenderSphere = false;
 //モデルアニメーション関係変数
 /*
 #define MODEL_MAX (9)
@@ -118,6 +118,7 @@ C3DObj::C3DObj(int type)
 	D3DXMatrixIdentity(&m_mtxScaling);
 	m_Enable = false;
 	m_DamageFlag = false;
+	m_AttakFlag = false;
 }
 //=============================================================================
 //	破棄
@@ -334,7 +335,7 @@ void C3DObj::DrawDX_Anime(D3DXMATRIX mtxWorld, int type, THING* pThing)
 
 	//モデルレンダリング
 	SkinMesh.UpdateFrameMatrices(pThing->pFrameRoot, &mtxWorld);
-	SkinMesh.DrawFrame(m_pD3DDevice, pThing->pFrameRoot);
+	SkinMesh.DrawFrame(m_pD3DDevice, pThing->pFrameRoot, pThing, true);
 	pThing->pAnimController->AdvanceTime(fAnimTime - fAnimTimeHold, NULL);
 	//　バウンディングスフィアのレンダリング////////	
 	D3DXMatrixTranslation(&mat, pThing->vPosition.x, pThing->vPosition.y,
@@ -535,7 +536,6 @@ void C3DObj::Animation_Change(int index, float speed)
 		TrackDesc.Speed = speed;//モーションスピード
 		Thing.pAnimController->SetTrackDesc(0, &TrackDesc);//アニメ情報セット
 	}
-
 	Thing.pAnimController->SetTrackAnimationSet(0, pAnimSet[index]);
 
 }

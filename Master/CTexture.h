@@ -55,6 +55,8 @@ public:
 		TEX_UI_DIAMOND,
 		TEX_UI_NUMBER,
 		TEX_UI_TIME,
+		TEX_SMALL,
+		TEX_SMALL_ANOTHER,
 		TYPE_MAX,
 	};
 
@@ -62,6 +64,7 @@ public:
 	static int Texture_Load(void);	//	テクスチャ読み込み
 	static void Texture_Release(void);	//	テクスチャ破棄
 	static LPDIRECT3DTEXTURE9 Texture_GetTexture(int index) { return m_pTextures[index]; }	//	テクスチャ取得
+	static char* Texture_GetFailName(int index) { return TEXTURE_FILES[index].filename; }
 	static int Texture_GetWidth(int index, int cut) { return TEXTURE_FILES[index].width / cut; }	// テクスチャ幅分割	cut:分割数 分割しない場合は1
 	static int Texture_GetHeight(int index, int cut) { return TEXTURE_FILES[index].height / cut; }	//	テクスチャ高さ分割 cut:分割数 分割しない場合は1
 protected:

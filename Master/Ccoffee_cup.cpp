@@ -238,26 +238,25 @@ void CCoffeeCup::EnemyDamage(void)
 		{//コーヒーカップのみ判定
 			Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
 			THING *thingenemy = enemy->GetAnimeModel();
-			int hp = enemy->Get_Hp();
 			if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
 			{
 				enemy->DamageFlag_Change();
 				enemy->Position_Keep(m_mtxWorld);
-				//Animation_Change(PLAYER_WALK, 0.05);
+				m_Hp--;
 			}
 			thing_cup2->vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
 			if (C3DObj::Collision_AnimeVSNormal(thingenemy, thing_cup2))
 			{
 				enemy->DamageFlag_Change();
 				enemy->Position_Keep(m_mtxWorld);
-				//Animation_Change(PLAYER_WALK, 0.05);
+				m_Hp--;
 			}
 			thing_cup3->vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
 			if (C3DObj::Collision_AnimeVSNormal(thingenemy, thing_cup3))
 			{
 				enemy->DamageFlag_Change();
 				enemy->Position_Keep(m_mtxWorld);
-				//Animation_Change(PLAYER_WALK, 0.05);
+				m_Hp--;
 			}
 		}
 	}
@@ -269,48 +268,52 @@ void CCoffeeCup::CoffeeCupDamage(void)
 	for (int i = 0; i < MAX_GAMEOBJ; i++)
 	{
 		C3DObj *enemy = CEnemy::Get_Enemy(i);
+		
 		if (enemy && m_DrawCheck)
 		{
-			Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
-			thing_cup2->vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
-			thing_cup3->vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
-			THING *thingenemy = enemy->GetAnimeModel();
-			int attack = enemy->Get_Attck();
-			if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
+			if (enemy->Get_AttacFlag())
 			{
-				m_Hp -= attack;
-				//Animation_Change(PLAYER_WALK, 0.05);
-				m_DrawCheck = false;
-				if (m_Hp <= 0)
+				Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
+				thing_cup2->vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
+				thing_cup3->vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
+				THING *thingenemy = enemy->GetAnimeModel();
+				int attack = enemy->Get_Attck();
+				if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
 				{
-					Exp_Create(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
-					C3DObj_delete();
+					m_Hp -= attack;
+					//Animation_Change(PLAYER_WALK, 0.05);
+					m_DrawCheck = false;
+					if (m_Hp <= 0)
+					{
+						Exp_Create(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
+						C3DObj_delete();
+					}
+					break;
 				}
-				break;
-			}
-			if (C3DObj::Collision_AnimeVSNormal(thingenemy, thing_cup2))
-			{
-				m_Hp -= attack;
-				//Animation_Change(PLAYER_WALK, 0.05);
-				m_DrawCheck = false;
-				if (m_Hp <= 0)
+				if (C3DObj::Collision_AnimeVSNormal(thingenemy, thing_cup2))
 				{
-					Exp_Create(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
-					C3DObj_delete();
+					m_Hp -= attack;
+					//Animation_Change(PLAYER_WALK, 0.05);
+					m_DrawCheck = false;
+					if (m_Hp <= 0)
+					{
+						Exp_Create(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
+						C3DObj_delete();
+					}
+					break;
 				}
-				break;
-			}
-			if (C3DObj::Collision_AnimeVSNormal(thingenemy, thing_cup3))
-			{
-				m_Hp -= attack;
-				//Animation_Change(PLAYER_WALK, 0.05);
-				m_DrawCheck = false;
-				if (m_Hp <= 0)
+				if (C3DObj::Collision_AnimeVSNormal(thingenemy, thing_cup3))
 				{
-					Exp_Create(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
-					C3DObj_delete();
+					m_Hp -= attack;
+					//Animation_Change(PLAYER_WALK, 0.05);
+					m_DrawCheck = false;
+					if (m_Hp <= 0)
+					{
+						Exp_Create(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
+						C3DObj_delete();
+					}
+					break;
 				}
-				break;
 			}
 		}
 	}
