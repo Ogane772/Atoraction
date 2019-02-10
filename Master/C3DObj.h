@@ -129,7 +129,7 @@ protected:
 	D3DXMATRIX m_mtxTranslation;	//	移動行列
 	D3DXMATRIX m_mtxRotation;		//	移動行列
 	D3DXMATRIX m_mtxScaling;		//	移動行列
-	
+	D3DXMATRIX m_mtxKeepTranslation;	//	移動保持行列
 	float m_Angle;			//	角度
 	
 	int m_MpStock;			//	MPストック

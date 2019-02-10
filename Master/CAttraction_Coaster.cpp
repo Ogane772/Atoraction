@@ -14,6 +14,7 @@
 #include "debug_font.h"
 #include "time.h"
 #include "move.h"
+#include "CEnemy.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -78,6 +79,8 @@ void Coaster::Update(void)
 {
 	//有効時間を引く
 
+	C3DObj *playerget = CPlayer::Get_Player();	//	プレイヤー取得
+	u = (int)(playerget->Get_Angle());
 	if (m_FrameCount - m_TimeKeep <= J_TIME)
 	{
 		C3DObj *playerget = CPlayer::Get_Player();
@@ -91,6 +94,10 @@ void Coaster::Update(void)
 	else
 	{
 		C3DObj_delete();
+	}
+	if (m_DrawCheck)
+	{
+		EnemyDamage();
 	}
 }
 
@@ -131,4 +138,23 @@ C3DObj *Coaster::Get_Coaster(void)
 		}
 	}
 	return NULL;
+}
+
+void Coaster::EnemyDamage(void)
+{
+	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	{
+		C3DObj *enemy = CEnemy::Get_Enemy(i);
+		if (enemy)
+		{
+			Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+			THING *thingenemy = enemy->GetAnimeModel();
+			int hp = enemy->Get_Hp();
+			if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
+			{
+				enemy->DamageFlag_Change();
+				enemy->Position_Keep(m_mtxWorld);
+			}
+		}
+	}
 }

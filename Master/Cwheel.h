@@ -19,12 +19,11 @@ public:
 	void Draw(void);
 	void Finalize(void);
 	bool Get_DrawCheck(void) { return m_DrawCheck; }
-	
+	void EnemyDamage(void);
 private:
 	void Initialize();
-	void EnemyDamage();
 	int m_AttractionIndex;
-	
+
 
 	bool ferris_flg;				 //移動と壁激突のチェンジ
 	int ferris_counter;				 //観覧車停止
@@ -32,6 +31,8 @@ private:
 	float angle;
 	bool m_DrawCheck;
 	D3DXMATRIX mtxR;
+	D3DXMATRIX m_mtxRotationY;		//	移動行列
+	D3DXMATRIX m_mtxRotationYY;
 	D3DXVECTOR3 move;
 	D3DXVECTOR3 Wheel_position;
 };

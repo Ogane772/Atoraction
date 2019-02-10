@@ -10,6 +10,9 @@
 
 #include "COrnament_DustBox.h"
 #include "debug_font.h"
+#include "exp.h"
+#include "CEnemy.h"
+#include "CTexture.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -52,6 +55,7 @@ void COrnament_DustBox::Dust_Create(void)
 
 void COrnament_DustBox::Initialize(ORNAMENT_EMITTER *Emitter)
 {
+	m_DrawCount = 0;
 	m_OrnamentIndex = Get_OrnamentIndex(TYPE_ALL);
 	m_Enable = true;
 	m_DrawCheck = true;
@@ -85,6 +89,10 @@ void COrnament_DustBox::Update(void)
 	if (m_Enable)
 	{
 		//エフェクト処理を行う
+		if (m_DrawCheck)
+		{
+			Damage();
+		}
 	}
 }
 
@@ -97,12 +105,53 @@ void COrnament_DustBox::Draw(void)
 		D3DXVECTOR3 position = D3DXVECTOR3(-0.75f, 1.2f, 1.5f);
 		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
-		DrawDX_NormalAdd(m_mtxWorld, MODELL_GOMIBAKO, Thing_Normal_model, position);
+		if (!m_DrawCheck)
+		{
+			if (m_FrameCount % 2 == 0)
+			{
+				DrawDX_NormalAdd(m_mtxWorld, MODELL_GOMIBAKO, Thing_Normal_model, position);
+
+				m_DrawCount++;
+				if (m_DrawCount >= ORNAMENT_WAIT_TIME)
+				{
+					m_DrawCount = 0;
+					m_DrawCheck = true;
+				}
+			}
+		}
+		else
+		{
+			DrawDX_NormalAdd(m_mtxWorld, MODELL_GOMIBAKO, Thing_Normal_model, position);
+		}
 	}
 }
 
 
 void COrnament_DustBox::Damage(void)
 {
+	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	{
+		C3DObj *enemy = CEnemy::Get_Enemy(i);
 
+		if (enemy && m_DrawCheck)
+		{
+			if (enemy->Get_AttacFlag())
+			{
+				Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+				THING *thingenemy = enemy->GetAnimeModel();
+				int attack = enemy->Get_Attck();
+				if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
+				{
+					m_Hp -= attack;
+					m_DrawCheck = false;
+					if (m_Hp <= 0)
+					{
+						Exp_Create(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
+						C3DObj_delete();
+					}
+					break;
+				}
+			}
+		}
+	}
 }
