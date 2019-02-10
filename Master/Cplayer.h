@@ -45,7 +45,7 @@ public:
 
 	static CPlayer *PlayerCreate(void);	
 	static CPlayer *Get_Player(int IndexPlayer) { return m_pPlayer[IndexPlayer]; }
-	D3DXMATRIX Get_mtxkeep(void) { return m_mtxKeepTranslation; }
+	//D3DXMATRIX Get_mtxkeep(void) { return m_mtxKeepTranslation; }
 	static int Get_KoCount(void) { return m_KO_Count; }
 	static void Add_KoCount(void) { m_KO_Count++; }
 	static bool m_delete;
@@ -54,7 +54,7 @@ public:
 
 protected:
 	
-	D3DXMATRIX m_mtxKeepTranslation;	//	移動保持行列
+	
 	bool m_DrawCheck;			//	描画フラグ
 private:
 	void Summons_Attraction(void);	//	アトラクション召喚

@@ -129,7 +129,7 @@ protected:
 	D3DXMATRIX m_mtxTranslation;	//	移動行列
 	D3DXMATRIX m_mtxRotation;		//	移動行列
 	D3DXMATRIX m_mtxScaling;		//	移動行列
-	
+	D3DXMATRIX m_mtxKeepTranslation;	//	移動保持行列
 	float m_Angle;			//	角度
 	
 	int m_MpStock;			//	MPストック
@@ -137,9 +137,6 @@ protected:
 	int m_Mp;				//	MP
 	int m_Attack;			//	攻撃
 	int shadow_number;      //  影の番号
-	D3DXVECTOR3 m_front;
-	D3DXVECTOR3 m_right;
-	D3DXVECTOR3 m_up;
 	bool m_DamageFlag;		//	ダメージフラグ
 	bool m_AttakFlag;		//	アタックフラグ
 	int m_SummonsNum;				//	召喚するアトラクションの番号

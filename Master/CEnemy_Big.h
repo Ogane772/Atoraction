@@ -32,5 +32,7 @@ private:
 
 	void Big_Move(void);
 	void Big_Attack(void);
+
+	bool m_JumpFlag = false;
 };
 #endif;

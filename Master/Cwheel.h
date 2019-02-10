@@ -35,5 +35,8 @@ private:
 	D3DXMATRIX m_mtxRotationYY;
 	D3DXVECTOR3 move;
 	D3DXVECTOR3 Wheel_position;
+	D3DXVECTOR3 m_front;
+	D3DXVECTOR3 m_up;
+	D3DXVECTOR3 m_right;
 };
 #endif;

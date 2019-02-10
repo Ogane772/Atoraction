@@ -13,6 +13,7 @@
 #include "input.h"
 #include "CSkinAnimation.h"
 #include "debug_font.h"
+#include "CTexture.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -25,7 +26,7 @@
 #define FRY_HEIGHT (0.2f)
 #define FRY_SPEED (0.05f)
 #define WALK_SPEED (0.01f)
-#define ATTACK_SPEED (0.05f)
+#define ATTACK_SPEED (0.01f)
 enum ANIMATION {
 
 	WALK,
@@ -64,7 +65,7 @@ CEnemy_Big::~CEnemy_Big()
 void CEnemy_Big::Initialize(ENEMY_EMITTER *Emitter)
 {
 	SkinMesh.InitThing(m_pD3DDevice, &Thing, ANIME_MODEL_FILES[MODELL_ANIME_BIG].filename);
-	Thing.Sphere.fRadius = 1.3f;
+	Thing.Sphere.fRadius = 6.0f;
 	Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2f, 0);
 	SkinMesh.InitSphere(m_pD3DDevice, &Thing);
 
@@ -95,7 +96,7 @@ void CEnemy_Big::Initialize(ENEMY_EMITTER *Emitter)
 	m_Direction = Emitter->InitDirection;
 
 	D3DXMatrixTranslation(&m_mtxTranslation, Emitter->InitPos.x, Emitter->InitPos.y, Emitter->InitPos.z);
-	D3DXMatrixScaling(&m_mtxScaling, 1, 1, 1);
+	D3DXMatrixScaling(&m_mtxScaling, 2.5, 2.2, 2.5);
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 
 	Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
@@ -119,11 +120,21 @@ void CEnemy_Big::Update(void)
 		{
 			if (!PlayerCheck())	//	近くにプレイヤーがいるか
 			{
-				Big_Move();
+				if ((!Chase_Popcorn())&&(!m_AttackCheck))
+				{
+					Big_Move();
+				}
+				else
+				{
+					Big_Attack();
+				}
 			}
 			else
 			{
-				Chase_Player();
+				if (!m_AttakFlag)
+				{
+					Chase_Player();
+				}
 
 				Big_Attack();
 
@@ -147,6 +158,14 @@ void CEnemy_Big::Update(void)
 	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 	Draw_Check();
 
+	if (m_Hp <= 0)
+	{
+		Color_Change(CTexture::TEX_BIG_END);
+		if (!m_DrawCheck)
+		{
+			C3DObj_delete();
+		}
+	}
 }
 
 
@@ -162,10 +181,14 @@ void CEnemy_Big::Draw(void)
 			Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 			DrawDX_Anime(m_mtxWorld, MODELL_ANIME_SMALL, &Thing);
 			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);	//　ライティング有効
+
+			if (m_AttackCheck)
+			{
+				DebugFont_Draw(300, 500, "%d", m_FrameCount - m_AttackTime);
+			}
 		}
 	}
-	C3DObj::HitCheck();
-	DebugFont_Draw(500, 400, "%d", TrackDesc.Speed);
+	
 }
 
 
@@ -186,7 +209,7 @@ void CEnemy_Big::Big_Move(void)
 	}
 	else
 	{
-
+		Color_Change(CTexture::TEX_BIG);
 		D3DXMATRIX mtxtrans;
 		D3DXMatrixTranslation(&mtxtrans, m_EnemyMove[m_Direction].Move.x * BIG_SPEED, m_EnemyMove[m_Direction].Move.y * BIG_SPEED, m_EnemyMove[m_Direction].Move.z * BIG_SPEED);
 		m_mtxTranslation *= mtxtrans;
@@ -204,16 +227,76 @@ void CEnemy_Big::Big_Attack(void)
 	{
 		m_AttackTime = m_FrameCount;
 		m_AttackCheck = true;
-
-		Animation_Change(ATTACK, ATTACK_SPEED);
+		Color_Change(CTexture::TEX_BIG_ANOTHER);
+		
 	}
 	else
 	{
-		if (m_FrameCount - m_AttackTime >= 350)
+		if (m_FrameCount - m_AttackTime >= 60)
 		{
+			if (!m_JumpFlag && !m_AttakFlag)
+			{
+				//m_AttakFlag = true;
+				Animation_Change(ATTACK, ATTACK_SPEED);
+				
 
+				m_JumpFlag = true;
+			}
+		}
+		/*if (m_FrameCount - m_AttackTime >= 110)
+		{			
+			//Aimation_Change(ATTACK, ATTACK_SPEED);
+			if (m_JumpFlag)
+			{
+				m_mtxTranslation._42 += 0.2;
+			}
+		}
+		if (m_FrameCount - m_AttackTime >= 135)
+		{
+			m_JumpFlag = false;
+			Color_Change(CTexture::TEX_BIG);
+			if (!m_JumpFlag)
+			{
+				m_mtxTranslation._42 -= 0.2;
+			}
+		}
+		if (m_FrameCount - m_AttackTime >= 160)
+		{
+			Animation_Change(WALK, WALK_SPEED);
+			m_mtxTranslation._42 = 0.0f;
 			m_AttackCheck = false;
 			m_AttackTime = 0;
+			m_AttakFlag = false;
+		}*/
+
+		if (m_FrameCount - m_AttackTime >= 110)
+		{
+			if (m_JumpFlag)
+			{
+				m_AttakFlag = true;
+				Color_Change(CTexture::TEX_BIG);
+				m_mtxTranslation._42 += 0.2;
+				if (m_mtxTranslation._42 >= 8.0)
+				{
+					
+					m_JumpFlag = false;
+					
+				}
+			}
+			else
+			{
+				m_mtxTranslation._42 -= 0.2;
+			//	Thing.Sphere.fRadius = 15.0f;
+				if (m_mtxTranslation._42 <= 0.0)
+				{
+				//	Thing.Sphere.fRadius = 5.0f;
+					Animation_Change(WALK, WALK_SPEED);
+					m_mtxTranslation._42 = 0.0f;
+					m_AttackCheck = false;
+					m_AttackTime = 0;
+					m_AttakFlag = false;
+				}
+			}
 		}
 	}
 }

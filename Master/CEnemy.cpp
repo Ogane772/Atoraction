@@ -34,17 +34,19 @@ CEnemy::ENEMY_MOVE CEnemy::m_EnemyMove[8] = {
 	{ D3DXVECTOR3(1.0f,0.0f,1.0f),D3DXToRadian(-45.0f) },
 	{ D3DXVECTOR3(1.0f,0.0f,0.0f),D3DXToRadian(0.0f) },
 	{ D3DXVECTOR3(1.0f,0.0f,-1.0f),D3DXToRadian(45.0f) },
-	{ D3DXVECTOR3(-1.0f,0.0f,-1.0f),D3DXToRadian(135.0f) },
-	{ D3DXVECTOR3(-1.0f,0.0f,1.0f),D3DXToRadian(-135.0f) },
 	{ D3DXVECTOR3(0.0f,0.0f,-1.0f),D3DXToRadian(90.0f) },
+	{ D3DXVECTOR3(-1.0f,0.0f,-1.0f),D3DXToRadian(135.0f) },
+	{ D3DXVECTOR3(-1.0f,0.0f,0.0f),D3DXToRadian(180.0f) },
+	{ D3DXVECTOR3(-1.0f,0.0f,1.0f),D3DXToRadian(-135.0f) },
+	
 };
 
 //	エネミーエミッター
 CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 {
-	{ 0   , TYPE_SMALL, D3DXVECTOR3( 10.0f, 0.0f , 10.0f), DIRE_NORTH	   ,false },
+//	{ 0   , TYPE_SMALL, D3DXVECTOR3( 10.0f, 0.0f , 10.0f), DIRE_NORTH	   ,false },
 //    { 0	  , TYPE_MIDDLE, D3DXVECTOR3( 20.0f, 0.0f , 20.0f), DIRE_EAST	   ,false },
-//	{ 0	  , TYPE_SPECIAL, D3DXVECTOR3( 30.0f, 0.0f , 30.0f), DIRE_NORTHWEST ,false },
+	{ 0	  , TYPE_SPECIAL, D3DXVECTOR3( 30.0f, 0.0f , 30.0f), DIRE_NORTHWEST ,false },
 //	{ 0	  , TYPE_BIG, D3DXVECTOR3( 20.0f, 0.0f , 10.0f), DIRE_SOUTHEAST ,false },
 /*	{ 0	  , TYPE_SMALL, D3DXVECTOR3( 0.0f , 0.0f , 0.0f ), DIRE_NORTHEAST ,false },
 
@@ -206,8 +208,22 @@ C3DObj *CEnemy::Get_Map_Enemy(int Index)
 
 bool CEnemy::PlayerCheck(void)
 {
+	float l;
 	C3DObj *pplayer = CPlayer::Get_Player();
-	float l = 10;//範囲
+	if (m_Type == TYPE_SPECIAL)
+	{
+		l = 15;//範囲
+	}
+	else if (m_Type == TYPE_BIG)
+	{
+		l = 20;//範囲
+	}
+	else
+	{
+		l = 10;//範囲
+	}
+
+
 	D3DXMATRIX playerworld = pplayer->Get_mtxWorld();
 	float cc = (playerworld._41 - m_mtxWorld._41) * (playerworld._41 - m_mtxWorld._41) + (playerworld._43 - m_mtxWorld._43) *  (playerworld._43 - m_mtxWorld._43);
 
@@ -224,7 +240,7 @@ void CEnemy::Chase_Player(void)
 	float z = playerworld._43 - m_mtxWorld._43;
 
 	D3DXMATRIX mtxtrans;
-	D3DXMatrixTranslation(&mtxtrans, x * CHASE_SPEED, 0.0f, z * CHASE_SPEED);
+	D3DXMatrixTranslation(&mtxtrans, x * CHASE_SPEED, m_mtxWorld._42, z * CHASE_SPEED);
 	m_mtxTranslation *= mtxtrans;
 
 	float angle = (float)(atan2(-z, x));
@@ -297,7 +313,7 @@ void CEnemy::Enemy_Flying(float speed)
 {
 	if (m_EnemyFlying)
 	{
-		if (m_Hp != 0)
+		if (m_Hp > 0)
 		{
 			if (!m_EnemyFlyingDown)
 			{
@@ -315,6 +331,7 @@ void CEnemy::Enemy_Flying(float speed)
 				m_FlyingCount--;
 				if (m_FlyingCount <= 0)
 				{
+					m_mtxTranslation._42 = 0.0f;
 					m_EnemyFlying = false;
 					m_EnemyFlyingDown = false;
 					m_DamageFlag = false;

@@ -33,7 +33,6 @@ CTexture::TextureFileData CTexture::TEXTURE_FILES[] = {
 	{ "asset/eff.jpg",80,80 },
 	{ "asset/gauge.png",100,20 },
 	{ "asset/whitebar.png",100,20 },
-	{ "asset/anime_model/outUV2.jpg",256, 256 },
 	{ "asset/ui/ber.png",1024,157 },
 	{ "asset/ui/memori.png",43,38 },
 	{ "asset/ui/ui_bg_normal.png",600,600 },
@@ -51,8 +50,20 @@ CTexture::TextureFileData CTexture::TEXTURE_FILES[] = {
 	{ "asset/ui/ui_diamond.png",111,121 },
 	{ "asset/ui/ui_mp_font.png",450,45 },
 	{ "asset/ui/time.png",1500,150 },
-	{ "asset/anime_model/outUV1.jpg",256,256 },
-	{ "asset/anime_model/outUV2.jpg",256,256 },
+	{ "asset/anime_model/outUV1.jpg",256, 256 },
+	{ "asset/anime_model/outUV2.jpg",256, 256 },
+	{ "asset/anime_model/zago1-end.jpg",256, 256 },
+	{ "asset/anime_model/zago2-1.jpg",256, 256 },
+	{ "asset/anime_model/zago2-1_2.jpg",256, 256 },
+	{ "asset/anime_model/zago2-end.jpg",256, 256 },
+	{ "asset/anime_model/zago3-1.jpg",256, 256 },
+	{ "asset/anime_model/zago3-1_2.jpg",256, 256 },
+	{ "asset/anime_model/zago3-end.jpg",256, 256 },
+	{ "asset/anime_model/zago4-1.jpg",256, 256 },
+	{ "asset/anime_model/zago4-1_2.jpg",256, 256 },
+	{ "asset/anime_model/zago4-end.jpg",256, 256 },
+
+
 };
 
 int CTexture::TEXTURE_MAX = sizeof(CTexture::TEXTURE_FILES) / sizeof(TEXTURE_FILES[0]);

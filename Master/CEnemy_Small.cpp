@@ -108,7 +108,7 @@ void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 	D3DXMatrixTranslation(&m_mtxTranslation, Emitter->InitPos.x, Emitter->InitPos.y, Emitter->InitPos.z);
 	D3DXMatrixScaling(&m_mtxScaling, 1, 1, 1);
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
-
+	m_mtxKeepTranslation = m_mtxTranslation;
 	Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
 }
 
@@ -166,11 +166,16 @@ void CEnemy_Small::Update(void)
 
 
 	}
+
+
+
+
 	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 	Draw_Check();
 
 	if (m_Hp <= 0)
 	{
+		Color_Change(CTexture::TEX_SMALL_END);
 		if (!m_DrawCheck)
 		{
 			C3DObj_delete();
