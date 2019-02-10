@@ -50,7 +50,6 @@ CTexture::TextureFileData CTexture::TEXTURE_FILES[] = {
 	{ "asset/ui/ui_diamond.png",111,121 },
 	{ "asset/ui/ui_mp_font.png",450,45 },
 	{ "asset/ui/time.png",1500,150 },
-<<<<<<< HEAD
 	{ "asset/anime_model/outUV1.jpg",256, 256 },
 	{ "asset/anime_model/outUV2.jpg",256, 256 },
 	{ "asset/anime_model/zago1-end.jpg",256, 256 },
@@ -63,10 +62,8 @@ CTexture::TextureFileData CTexture::TEXTURE_FILES[] = {
 	{ "asset/anime_model/zago4-1.jpg",256, 256 },
 	{ "asset/anime_model/zago4-1_2.jpg",256, 256 },
 	{ "asset/anime_model/zago4-end.jpg",256, 256 },
-=======
-	{ "asset/anime_model/outUV1.jpg",256,256 },
-	{ "asset/anime_model/outUV2.jpg",256,256 },
->>>>>>> 15e2888a806876ef329527715955c6841170280e
+
+
 };
 
 int CTexture::TEXTURE_MAX = sizeof(CTexture::TEXTURE_FILES) / sizeof(TEXTURE_FILES[0]);
