@@ -183,7 +183,6 @@ void Cfreefall::EnemyDamage(void)
 		{
 			Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);			
 			THING *thingenemy = enemy->GetAnimeModel();
-			int hp = enemy->Get_Hp();
 			if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
 			{
 				enemy->DamageFlag_Change();

@@ -13,10 +13,12 @@
 #include "input.h"
 #include "CSkinAnimation.h"
 #include "debug_font.h"
+#include "CTexture.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
 
+#define SPECIAL_SPEED (0.1f)
 #define SPECIAL_SIZE (0.8f)
 #define SPECIAL_ATTACK (10)
 #define SPECIAL_HP (1)
@@ -25,7 +27,7 @@
 #define FRY_HEIGHT (0.2f)
 #define FRY_SPEED (0.05f)
 #define WALK_SPEED (0.01f)
-#define ATTACK_SPEED (0.05f)
+#define ATTACK_SPEED (0.01f)
 enum ANIMATION{
 	DEATH,
 	ATTACK3,
@@ -122,12 +124,21 @@ void CEnemy_Special::Update(void)
 		{
 			if (!PlayerCheck())	//	近くにプレイヤーがいるか
 			{
-				Special_Move();
+				if ((!Chase_Popcorn()) && (!m_AttackCheck))
+				{
+					Special_Move();
+				}
+				else
+				{
+					Special_Attack();
+				}
 			}
 			else
 			{
-				Chase_Player();
-
+				if (!m_Stop)
+				{
+					Chase_Player();
+				}
 				Special_Attack();
 
 			}
@@ -150,6 +161,17 @@ void CEnemy_Special::Update(void)
 	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 	Draw_Check();
 
+	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
+	Draw_Check();
+
+	if (m_Hp <= 0)
+	{
+		Color_Change(CTexture::TEX_SPECIAL_END);
+		if (!m_DrawCheck)
+		{
+			C3DObj_delete();
+		}
+	}
 }
 
 
@@ -165,10 +187,14 @@ void CEnemy_Special::Draw(void)
 			Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 			DrawDX_Anime(m_mtxWorld, MODELL_ANIME_SMALL, &Thing);
 			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);	//　ライティング有効
+
+			if (m_AttackCheck)
+			{
+				DebugFont_Draw(300, 500, "%d", m_FrameCount - m_AttackTime);
+			}
 		}
 	}
-	C3DObj::HitCheck();
-	DebugFont_Draw(500, 400, "%d", TrackDesc.Speed);
+
 }
 
 
@@ -203,20 +229,52 @@ void CEnemy_Special::Special_Move(void)
 
 void CEnemy_Special::Special_Attack(void)
 {
-	if (!m_AttackCheck)
+	if (!m_Stop)
 	{
-		m_AttackTime = m_FrameCount;
-		m_AttackCheck = true;
+		if (!m_AttackCheck)
+		{
+			m_AttackTime = m_FrameCount;
+			m_AttackCheck = true;
 
-		Animation_Change(ATTACK1, ATTACK_SPEED);
+
+		}
+		else
+		{
+			if (m_FrameCount - m_AttackTime >= 60)
+			{
+				Color_Change(CTexture::TEX_SPECIAL_ANOTHER);
+			}
+			if (m_FrameCount - m_AttackTime >= 120)
+			{
+
+				Animation_Change(ATTACK1, ATTACK_SPEED);
+			}
+			if (m_FrameCount - m_AttackTime >= 130)
+			{
+				Color_Change(CTexture::TEX_SPECIAL);
+				Animation_Change(ATTACK2, ATTACK_SPEED);
+				m_AttakFlag = true;
+			}
+			if (m_FrameCount - m_AttackTime >= 280)
+			{
+
+				Animation_Change(ATTACK3, ATTACK_SPEED);
+				/*m_AttackCheck = false;
+				m_AttackTime = 0;
+				m_AttakFlag = false;*/
+				m_Stop = true;
+			}
+		}
 	}
 	else
 	{
-		if (m_FrameCount - m_AttackTime >= 350)
+		if (m_FrameCount - m_AttackTime >= 290)
 		{
-
+			Animation_Change(WALK, WALK_SPEED);
 			m_AttackCheck = false;
 			m_AttackTime = 0;
+			m_AttakFlag = false;
+			m_Stop = false;
 		}
 	}
 }

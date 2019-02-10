@@ -17,7 +17,7 @@
 //=============================================================================
 //	’è”’è‹`
 //=============================================================================
-#define SPEED (0.05f)
+#define SPEED (0.5f)
 #define COFFEE_SIZE (4)
 #define COFFEE_CUP_HP (40)
 #define COFFEE_CUP_MP (1)
@@ -115,7 +115,7 @@ void CCoffeeCup::Update(void)
 	 //‰ñ“]
 		if (B_CoolTime)
 		{
-			angCup += 1.0f;
+			angCup += 5.0f;
 
 			if (angCup>355.0f)
 			{
@@ -130,7 +130,7 @@ void CCoffeeCup::Update(void)
 			CoolTime++;
 		}
 		//5•b‚½‚Á‚½‚ç
-		if (CoolTime > 100)
+		if (CoolTime > 60)
 		{
 			B_CoolTime = true;
 			CoolTime = 0;

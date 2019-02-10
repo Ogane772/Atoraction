@@ -13,6 +13,7 @@
 #include "input.h"
 #include "CSkinAnimation.h"
 #include "debug_font.h"
+#include "CTexture.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -25,7 +26,7 @@
 #define FRY_HEIGHT (0.1f)
 #define FRY_SPEED (0.05f)
 #define WALK_SPEED (0.01f)
-#define ATTACK_SPEED (0.05f)
+#define ATTACK_SPEED (0.02f)
 //エネミースモールのアニメーション番号定義
 enum ANIMATION {
 	DEATH,
@@ -120,7 +121,14 @@ void CEnemy_Middle::Update(void)
 		{
 			if (!PlayerCheck())	//	近くにプレイヤーがいるか
 			{
-				Middle_Move();
+				if (!Chase_Popcorn())
+				{
+					Middle_Move();
+				}
+				else
+				{
+					Middle_Attack();
+				}
 			}
 			else
 			{
@@ -139,14 +147,23 @@ void CEnemy_Middle::Update(void)
 	}
 	else
 	{
-		Enemy_Damage(0.5f);
-		Enemy_Flying(0.05f);
+		Enemy_Damage(FRY_HEIGHT);
+		Enemy_Flying(FRY_SPEED);
 
 
 
 	}
 	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 	Draw_Check();
+
+	if (m_Hp <= 0)
+	{
+		Color_Change(CTexture::TEX_MIDDLE_END);
+		if (!m_DrawCheck)
+		{
+			C3DObj_delete();
+		}
+	}
 
 }
 
@@ -205,16 +222,31 @@ void CEnemy_Middle::Middle_Attack(void)
 		m_AttackTime = m_FrameCount;
 		m_AttackCheck = true;
 
-		Animation_Change(ATTACK, ATTACK_SPEED);
 	}
 	else
 	{
-		if (m_FrameCount - m_AttackTime >= 350)
+		if (m_FrameCount - m_AttackTime >= 60)
+		{
+			Color_Change(CTexture::TEX_MIDDLE_ANOTHER);
+		}
+		if (m_FrameCount - m_AttackTime >= 120)
 		{
 
+			Animation_Change(ATTACK, ATTACK_SPEED);
+		}
+		if (m_FrameCount - m_AttackTime >= 130)
+		{
+			Color_Change(CTexture::TEX_MIDDLE);
+			m_AttakFlag = true;
+		}
+		if (m_FrameCount - m_AttackTime >= 160)
+		{
+			Animation_Change(WALK, WALK_SPEED);
 			m_AttackCheck = false;
 			m_AttackTime = 0;
+			m_AttakFlag = false;
 		}
+
 	}
 }
 

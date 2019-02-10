@@ -171,6 +171,7 @@ void CEnemy_Small::Update(void)
 
 	if (m_Hp <= 0)
 	{
+		Color_Change(CTexture::TEX_SMALL_END);
 		if (!m_DrawCheck)
 		{
 			C3DObj_delete();

@@ -44,7 +44,7 @@ C3DObj::MaterialFileData2 C3DObj::ANIME_MODEL_FILES[] = {
 int C3DObj::MODEL_FILES_MAX = sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0]);
 int C3DObj::ANIME_MODEL_FILES_MAX = sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0]);
 
-bool C3DObj::boRenderSphere = false;
+bool C3DObj::boRenderSphere = true;
 //モデルアニメーション関係変数
 /*
 #define MODEL_MAX (9)
@@ -542,14 +542,7 @@ void C3DObj::Animation_Change(int index, float speed)
 
 void C3DObj::DamageFlag_Change(void)
 {
-	if (m_DamageFlag)
-	{
-		m_DamageFlag = false;
-	}
-	else
-	{
-		m_DamageFlag = true;
-	}
+	m_DamageFlag = true;
 }
 
 void C3DObj::Position_Keep(D3DXMATRIX mtxT)

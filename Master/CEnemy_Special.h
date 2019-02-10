@@ -8,7 +8,7 @@
 #define _CENEMY_SPECIAL_H_
 
 #include "CEnemy.h"
-#define SPECIAL_SPEED (0.05f)
+
 
 class CEnemy_Special : public CEnemy
 {
@@ -31,6 +31,7 @@ private:
 
 	void Special_Move(void);
 	void Special_Attack(void);
+	bool m_Stop = false;
 };
 #endif;
 
