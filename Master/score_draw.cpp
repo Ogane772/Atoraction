@@ -11,6 +11,7 @@
 #define NUMBER_SIZE (32)
 #define SCORE_NUMBER_SIZE (130)
 #define MP_NUMBER_SIZE (45)
+#define MP_NUMBER_SIZE2 (80) //MPÇÃâ°ÇÃêîéö
 //=============================================================================
 //	ÉOÉçÅ[ÉoÉãïœêîêÈåæ
 //=============================================================================
@@ -262,6 +263,46 @@ void Num_Draw2(float x, float y, int score, int fig, int color, bool zero)
 			int number = score % 10;
 			score /= 10;
 			Number_Draw3(x + SCORE_NUMBER_SIZE*(fig - (i + 1)), y, number, color);
+		}
+	}
+}
+
+void Num_Draw3(float x, float y, int score, int fig, int color, bool zero)
+{
+
+	int count_stop_score = 1;
+	for (int i = 0; i < fig; i++)
+	{
+		count_stop_score *= 10;
+	}
+	if (score >= count_stop_score)
+	{
+		score = count_stop_score - 1;
+	}
+
+
+	if (!zero)
+	{
+		int number = score % 10;
+		score /= 10;
+		Number_Draw5(x + MP_NUMBER_SIZE2*(fig + 1), y, number, color);
+		for (int i = 0; i < fig - 1; i++)
+		{
+			if (score > 0)
+			{
+				int number = score % 10;
+				score /= 10;
+				Number_Draw5(x + MP_NUMBER_SIZE2*(fig - i), y, number, color);
+			}
+		}
+	}
+	else
+	{
+		for (int i = 0; i < fig; i++)
+		{
+			int number = score % 10;
+			score /= 10;
+			Number_Draw5(x + MP_NUMBER_SIZE2*(fig - (i + 1)), y, number, color);
 		}
 	}
 }

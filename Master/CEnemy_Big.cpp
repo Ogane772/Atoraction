@@ -96,7 +96,7 @@ void CEnemy_Big::Initialize(ENEMY_EMITTER *Emitter)
 	m_Direction = Emitter->InitDirection;
 
 	D3DXMatrixTranslation(&m_mtxTranslation, Emitter->InitPos.x, Emitter->InitPos.y, Emitter->InitPos.z);
-	D3DXMatrixScaling(&m_mtxScaling, 2.5, 2.2, 2.5);
+	D3DXMatrixScaling(&m_mtxScaling, 2.5f, 2.2f, 2.5f);
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 
 	Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
@@ -275,7 +275,7 @@ void CEnemy_Big::Big_Attack(void)
 			{
 				m_AttakFlag = true;
 				Color_Change(CTexture::TEX_BIG);
-				m_mtxTranslation._42 += 0.2;
+				m_mtxTranslation._42 += 0.2f;
 				if (m_mtxTranslation._42 >= 8.0)
 				{
 					
@@ -285,7 +285,7 @@ void CEnemy_Big::Big_Attack(void)
 			}
 			else
 			{
-				m_mtxTranslation._42 -= 0.2;
+				m_mtxTranslation._42 -= 0.2f;
 			//	Thing.Sphere.fRadius = 15.0f;
 				if (m_mtxTranslation._42 <= 0.0)
 				{

@@ -62,8 +62,12 @@ CTexture::TextureFileData CTexture::TEXTURE_FILES[] = {
 	{ "asset/anime_model/zago4-1.jpg",256, 256 },
 	{ "asset/anime_model/zago4-1_2.jpg",256, 256 },
 	{ "asset/anime_model/zago4-end.jpg",256, 256 },
-
-
+	{ "asset/ui/ui_bar.png",1024,222 },
+	{ "asset/ui/ui_graybar.png",1024,222 },
+	{ "asset/ui/ui_hpbar.png",1024,222 },
+	{ "asset/ui/ui_mpbar.png",1024,222 },
+	{ "asset/ui/ui_mp_font.png",800,80 },
+	{ "asset/Bar.png",200,50 },
 };
 
 int CTexture::TEXTURE_MAX = sizeof(CTexture::TEXTURE_FILES) / sizeof(TEXTURE_FILES[0]);

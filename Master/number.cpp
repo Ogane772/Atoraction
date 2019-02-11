@@ -23,6 +23,16 @@ void Number_Draw4(float x, float y, int n, int colornum)
 	}
 }
 
+void Number_Draw5(float x, float y, int n, int colornum)
+{
+	if (n >= 0 && n <= 9)
+	{
+		CUserInterFace *pn = new CUserInterFace();
+		pn->Sprite_Draw(CTexture::TEX_UI_MP, x, y, Animation_UpdateX(n, 1, 10, CTexture::Texture_GetWidth(CTexture::TEX_UI_MP, 10), 10), CTexture::Texture_GetHeight(CTexture::TEX_UI_MP, 1) * colornum, CTexture::Texture_GetWidth(CTexture::TEX_UI_MP, 10), CTexture::Texture_GetHeight(CTexture::TEX_UI_MP, 1));
+		delete pn;
+	}
+}
+
 void Number_Draw2(float x, float y, int n, int colornum)
 {
 	if (n >= 0 && n <= 9)
