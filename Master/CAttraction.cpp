@@ -18,6 +18,7 @@
 #include "CAttraction_Standby.h"
 #include "CAttraction_Popcorn.h"
 #include "CGauge.h"
+#include "CCoaster_ON.h"
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================
@@ -57,6 +58,11 @@ CAttraction::~CAttraction()
 
 void CAttraction::Create(int nType)
 {
+	if (nType == AT_COASTER_ON)
+	{
+		CoasterON *m_pAttraction = new CoasterON;
+		createchack = true;
+	}
 	if (nType == AT_COASTER)
 	{
 		Coaster *m_pAttraction = new Coaster;

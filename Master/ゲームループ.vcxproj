@@ -169,6 +169,7 @@
     <ClCompile Include="CAttraction_Popcorn.cpp" />
     <ClCompile Include="CAttraction_Standby.cpp" />
     <ClCompile Include="CCamera.cpp" />
+    <ClCompile Include="CCoaster_ON.cpp" />
     <ClCompile Include="Ccoffee_cup.cpp" />
     <ClCompile Include="CEnemy.cpp" />
     <ClCompile Include="CEnemy_Big.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="CAttraction_Popcorn.h" />
     <ClInclude Include="CAttraction_Standby.h" />
     <ClInclude Include="CCamera.h" />
+    <ClInclude Include="CCoaster_ON.h" />
     <ClInclude Include="Ccoffee_cup.h" />
     <ClInclude Include="CEnemy.h" />
     <ClInclude Include="CEnemy_Big.h" />

@@ -30,7 +30,7 @@ COrnament::ORNAMENT_EMITTER COrnament::m_OrnamentEmitter[]
 	{ 0	  , TYPE_LAMP, D3DXVECTOR3(20.0f, 0.0f , 20.0f), 0	   ,false },
 	{ 0	  , TYPE_LAMP, D3DXVECTOR3(30.0f, 0.0f , 30.0f), 0 ,false },
 	{ 0	  , TYPE_LAMP, D3DXVECTOR3(20.0f, 0.0f , 10.0f), 0 ,false },
-	{ 0	  , TYPE_FOUNTAIN, D3DXVECTOR3(0.0f , 0.0f , 0.0f),  0 ,false },
+	{ 0	  , TYPE_FOUNTAIN, D3DXVECTOR3(1000.0f , 0.0f , 0.0f),  0 ,false },
 	{ 0	  , TYPE_FOUNTAIN, D3DXVECTOR3(50.0f, 0.0f , 10.0f),90     ,false },
 	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(35.0f, 0.0f , 10.0f),90     ,false },
 	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(30.0f, 0.0f , 30.0f),90     ,false },

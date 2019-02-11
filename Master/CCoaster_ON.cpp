@@ -8,7 +8,7 @@
 //	インクルードファイル
 //=============================================================================
 
-#include "CAttraction_Coaster .h"
+#include "CCoaster_ON.h"
 #include "input.h"
 #include "Cplayer.h"
 #include "debug_font.h"
@@ -19,9 +19,9 @@
 //	定数定義
 //=============================================================================
 //コースターモデルはここで表示 時間管理も
-#define SPEED (0.05f)
+#define SPEED (-0.3f)
 #define SIZE (0.8f)
-#define J_TIME (480)	//使用時間
+
 
 //仮の数字
 #define COSTER_HP (40)
@@ -41,17 +41,17 @@
 //	生成
 //=============================================================================
 
-Coaster::Coaster() :CAttraction(AT_COASTER), C3DObj(AT_COASTER)
+CoasterON::CoasterON() :CAttraction(AT_COASTER_ON), C3DObj(AT_COASTER_ON)
 {
 	Initialize();
 }
 
-Coaster::~Coaster()
+CoasterON::~CoasterON()
 {
 
 }
 
-void Coaster::Initialize()
+void CoasterON::Initialize()
 {
 	m_AttractionIndex = Get_AttractionIndex(AT_ALL);
 
@@ -64,47 +64,65 @@ void Coaster::Initialize()
 	m_Hp = COSTER_HP;
 	m_Mp = COSTER_MP;
 	m_Attack = COSTER_ATK;
+	m_front = D3DXVECTOR3(0.0f, 0.0f, -1.0f);
+	D3DXVec3Normalize(&m_front, &m_front);
+	m_up = D3DXVECTOR3(0.0f, -1.0f, 0.0f);
+	D3DXVec3Cross(&m_right, &m_front, &m_up);
+	D3DXVec3Normalize(&m_right, &m_right);
+	D3DXVec3Cross(&m_up, &m_right, &m_front);
+	D3DXVec3Normalize(&m_up, &m_up);
 
-	C3DObj *playerget = CPlayer::Get_Player();
+
+	C3DObj *playerget = CPlayer::Get_Player();	//	プレイヤー取得
+
 	D3DXMATRIX mtx = playerget->Get_mtxWorld();
+	D3DXMatrixTranslation(&m_mtxTranslation, 0, 0, -10.0f);
+	angle = (float)(playerget->Get_Angle());
+	D3DXMatrixRotationAxis(&mtxR, &m_up, D3DXToRadian(angle + 90));
+	D3DXVec3TransformNormal(&m_front, &m_front, &mtxR);
+	D3DXVec3TransformNormal(&m_right, &m_right, &mtxR);
+	m_mtxWorld = m_mtxTranslation;
+	//	m_mtxWorld = mtxR * m_mtxTranslation;
+
+
 	D3DXMatrixTranslation(&m_mtxTranslation, mtx._41, mtx._42, mtx._43);//X,Y,Zを渡す
 	D3DXMatrixScaling(&m_mtxScaling, COSTER_SCALE, COSTER_SCALE, COSTER_SCALE);
-	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 
+	m_mtxWorld = m_mtxScaling * m_mtxWorld * mtxR * m_mtxTranslation;
+	//m_mtxWorld = m_mtxScaling  * m_mtxWorld * m_mtxTranslation ;
 	Thing_Normal_model = GetNormalModel(MODELL_COASTER);
-	Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+	coaster_position = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42 * 3, m_mtxWorld._43);
+	
 }
 
-void Coaster::Update(void)
+void CoasterON::Update(void)
 {
 	//有効時間を引く
 
 	C3DObj *playerget = CPlayer::Get_Player();	//	プレイヤー取得
 	u = (int)(playerget->Get_Angle());
-	if (m_FrameCount - m_TimeKeep <= J_TIME)
+	if (m_FrameCount - m_TimeKeep <= COSTERON_ENDTIME)
 	{
 		C3DObj *playerget = CPlayer::Get_Player();
 		D3DXMATRIX playermatrix = playerget->Get_mtxTranslation();
-
+		coaster_position += m_front*SPEED;
 		m_mtxTranslation = playermatrix;
+		D3DXMatrixTranslation(&m_mtxTranslation, coaster_position.x, coaster_position.y, coaster_position.z);//X,Y,Zを渡す
 		D3DXMatrixScaling(&m_mtxScaling, COSTER_SCALE, COSTER_SCALE, COSTER_SCALE);
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(u + v));
 		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 	}
-	else
+	else if(m_FrameCount - m_TimeKeep > COSTERON_ENDTIME)
 	{
 		C3DObj_delete();
 	}
-	if (m_DrawCheck)
-	{
-		EnemyDamage();
-	}
+
 }
 
-void Coaster::Draw(void)
+void CoasterON::Draw(void)
 {
 	//DebugFont_Draw(600, 30, "Coaster  = %d\n,", *coaster);
-	//DebugFont_Draw(600, 60, "CoolTime = %d\n,", endfream);
+	//DebugFont_Draw(600, 400, "m_FrameCount - m_TimeKeep = %d\n,", m_FrameCount - m_TimeKeep);
 	//DebugFont_Draw(600, 0, "U = %f\n,", u);
 	if (m_Enable)
 	{
@@ -114,48 +132,28 @@ void Coaster::Draw(void)
 	}
 }
 
-void Coaster::Finalize(void)
+void CoasterON::Finalize(void)
 {
 	Attraction_Finalize(m_AttractionIndex);
 }
 
-void Coaster::Coaster_Create(void)
+void CoasterON::Coaster_Create(void)
 {
 
 }
 
-C3DObj *Coaster::Get_Coaster(void)
+C3DObj *CoasterON::Get_Coaster(void)
 {
 	for (int i = 0; i < MAX_GAMEOBJ; i++)
 	{
 		C3DObj *Coaster = C3DObj::Get(i);
 		if (Coaster)
 		{
-			if (Coaster->Get_3DObjType() == AT_COASTER)
+			if (Coaster->Get_3DObjType() == AT_COASTER_ON)
 			{
 				return Coaster;
 			}
 		}
 	}
 	return NULL;
-}
-
-void Coaster::EnemyDamage(void)
-{
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
-	{
-		C3DObj *enemy = CEnemy::Get_Enemy(i);
-		if (enemy)
-		{
-	
-			Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-			THING *thingenemy = enemy->GetAnimeModel();
-			int hp = enemy->Get_Hp();
-			if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
-			{
-				enemy->DamageFlag_Change();
-				enemy->Position_Keep(m_mtxWorld);
-			}
-		}
-	}
 }
