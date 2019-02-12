@@ -26,5 +26,6 @@ private:
 	bool m_DrawCheck;
 	void Initialize();
 	int u;	//ƒ‚ƒfƒ‹‚ÌŠp“x
+	int v;	//ƒ‚ƒfƒ‹‚ÌŠp“x
 };
 #endif;

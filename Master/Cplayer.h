@@ -93,6 +93,7 @@ private:
 	static int m_KO_Count;
 	
 	bool g_CosterMode;
+	bool g_CosterModeStandby;//コースターを呼んでるとき
 	int m_DrawCount;
 	
 	

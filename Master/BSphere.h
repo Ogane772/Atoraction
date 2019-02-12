@@ -12,6 +12,13 @@ struct SPHERE
 	D3DXVECTOR3 vCenter;
 	FLOAT fRadius;
 };
+struct CAPSULE
+{
+	D3DXVECTOR3 vCenter;
+	FLOAT fRadius;
+	FLOAT fRadius2;
+	FLOAT fLength;
+};
 
 struct THING_NORMAL
 {
@@ -25,6 +32,7 @@ struct THING_NORMAL
 	D3DXMATRIX mRotation;
 	D3DXMATRIX mWorld;
 	SPHERE Sphere;
+	CAPSULE Capsule;
 	FLOAT fYaw;
 	FLOAT fPitch;
 
@@ -38,5 +46,5 @@ struct THING_NORMAL
 
 HRESULT InitSphere(LPDIRECT3DDEVICE9, THING_NORMAL*);
 HRESULT InitSphere(LPDIRECT3DDEVICE9 pDevice, THING_NORMAL* pThing, D3DXVECTOR3 vCenter, FLOAT fRadius);
-HRESULT InitCapsule(LPDIRECT3DDEVICE9 pDevice, THING_NORMAL* pThing, D3DXVECTOR3 vCenter, FLOAT fRadius);
+HRESULT InitCapsule(LPDIRECT3DDEVICE9 pDevice, THING_NORMAL* pThing, D3DXVECTOR3 vCenter, FLOAT fRadius, FLOAT length);
 #endif

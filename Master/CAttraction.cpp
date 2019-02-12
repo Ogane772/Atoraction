@@ -18,8 +18,7 @@
 #include "CAttraction_Standby.h"
 #include "CAttraction_Popcorn.h"
 #include "CGauge.h"
-
-#include "COrnament.h"
+#include "CCoaster_ON.h"
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================
@@ -59,6 +58,11 @@ CAttraction::~CAttraction()
 
 void CAttraction::Create(int nType)
 {
+	if (nType == AT_COASTER_ON)
+	{
+		CoasterON *m_pAttraction = new CoasterON;
+		createchack = true;
+	}
 	if (nType == AT_COASTER)
 	{
 		Coaster *m_pAttraction = new Coaster;
@@ -126,41 +130,3 @@ void CAttraction::Attraction_Finalize(int index)
 }
 
 
-void CAttraction::OrnamentDamage(void)
-{
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
-	{
-		C3DObj *ornament = COrnament::Get_Ornament(i);
-		if (ornament)
-		{
-			Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-			int type = ornament->Get_OrnamentType();
-			THING_NORMAL thingornament = ornament->GetNormalModel();
-			if (C3DObj::Collision_NomalVSNormal(&thingornament, &Thing_Normal_model))
-			{
-				ornament->DamageFlag_Change();
-				ornament->Position_Keep(m_mtxWorld);
-			}
-		}
-	}
-}
-
-
-void CAttraction::OrnamentDamage(THING_NORMAL nomal)
-{
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
-	{
-		C3DObj *ornament = COrnament::Get_Ornament(i);
-		if (ornament)
-		{
-			//Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-			int type = ornament->Get_OrnamentType();
-			THING_NORMAL thingornament = ornament->GetNormalModel();
-			if (C3DObj::Collision_NomalVSNormal(&thingornament, &nomal))
-			{
-				ornament->DamageFlag_Change();
-				ornament->Position_Keep(m_mtxWorld);
-			}
-		}
-	}
-}

@@ -20,12 +20,14 @@
 //=============================================================================
 #define HP_GAGE_WIDTH (300)	//HPゲージの幅
 #define HP_GAGE_HEIGHT (40)	//ゲージの高さ
-
+//HPの位置
+#define HP_X (20.0f) 
+#define HP_Y (10.0f)
 #define MP_GAGE_WIDTH (350)	//MPゲージの幅
 #define COOLTIME_MAX (0) //クールタイムの完了値
 #define ENEMY_MAX (100)
 #define ADD_X (100)//アトラクションアイコンの表示幅
-#define ADD_Y (171)//アトラクションアイコンの表示高さ
+#define ADD_Y (210)//アトラクションアイコンの表示高さ
 //=============================================================================
 //	静的変数
 //=============================================================================
@@ -67,19 +69,27 @@ void CUserInterFace::Draw(void)
 	C3DObj *playerget = CPlayer::Get_Player();
 
 	int hp = playerget->Get_Hp();
-	Sprite_Draw(TEX_HP, 20, 10, 0, 0, HP_GAGE_WIDTH, HP_GAGE_HEIGHT);
-	Sprite_Draw(TEX_HP2, 20, 10, 0, 0, HP_GAGE_WIDTH * hp / HP_MAX, HP_GAGE_HEIGHT);
+	Sprite_Draw(TEX_UI_GRAYBAR, HP_X, HP_Y, 0, 0, 1024, 222, 0.0f, 0.0f, 0.45f, 0.4f, 0.0f);
+	Sprite_Draw(TEX_UI_HPWINDOW, HP_X, HP_Y, 0, 0, 1024, 222, 0.0f, 0.0f, 0.45f, 0.4f, 0.0f);
+	Sprite_Draw(TEX_UI_HPBAR, HP_X, HP_Y, 0, 0, 1024.0f * hp / HP_MAX, 222.0f, 0.0f, 0.0f, 0.45f, 0.4f, 0.0f);
+	//Sprite_Draw(TEX_UI_HPWINDOW, 20, 10, 0, 0, HP_GAGE_WIDTH, HP_GAGE_HEIGHT);
+	//Sprite_Draw(TEX_UI_HPBAR, 20, 10, 0, 0, HP_GAGE_WIDTH * hp / HP_MAX, HP_GAGE_HEIGHT);
 
 	//MP
 	int mp = playerget->Get_Mp();
-	Sprite_Draw(TEX_HP, 20, 70, 0, 0, MP_MAX * 5, HP_GAGE_HEIGHT);
-	Sprite_Draw(TEX_MP, 20, 70, 0, 0, mp * 5, HP_GAGE_HEIGHT);
+	Sprite_Draw(TEX_UI_GRAYBAR, HP_X, HP_Y + 95, 0, 0, 1024, 222, 0.0f, 0.0f, 0.3f, 0.4f, 0.0f);
+	Sprite_Draw(TEX_UI_HPWINDOW, HP_X, HP_Y + 95, 0, 0, 1024, 222, 0.0f, 0.0f, 0.3f, 0.4f, 0.0f);
+	Sprite_Draw(TEX_UI_MPBAR, HP_X, HP_Y + 95, 0, 0, mp * 35.0f, 222, 0.0f, 0.0f, 0.3f, 0.4f, 0.0f);
+//	Sprite_Draw(TEX_HP, 20, 100, 0, 0, MP_MAX * 5, HP_GAGE_HEIGHT);
+//	Sprite_Draw(TEX_MP, 20, 100, 0, 0, mp * 5, HP_GAGE_HEIGHT);
 
 	//MPストック
 	int stock = playerget->Get_MpStock();
-	Sprite_Draw(TEX_UI_DIAMOND, MP_MAX * 6, 60, 0, 0, 111, 121, 0.0f, 0.0f, 0.7f, 0.7f, 0.0f);
+	Sprite_Draw(TEX_UI_DIAMOND, 325.0f, HP_Y + 95, 0, 0, 111, 121, 0.0f, 0.0f, 0.7f, 0.7f, 0.0f);
+	Sprite_Draw(TEX_UI_X, 385.0f, HP_Y + 115, 0, 0, 81.0f, 94.0f, 0.0f, 0.0f, 0.5f, 0.5f, 0.0f);
+	Num_Draw3(170.0f, HP_Y + 100, stock, 2, 0, false);
 	//Sprite_Draw(TEX_STOCK, MP_MAX * 6, 60, 0, 0, CTexture::Texture_GetWidth(TEX_STOCK, 1), CTexture::Texture_GetHeight(TEX_STOCK, 1));
-	Mp_Draw(MP_MAX * 6, 80, stock, 2, 0);
+	//Mp_Draw(MP_MAX * 6, 80, stock, 2, 0);
 
 	//制限時間
 	int t = CGameObj::m_FrameCount / 60;

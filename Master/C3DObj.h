@@ -94,17 +94,13 @@ public:
 	int Get_SummonsNum(void) { return m_SummonsNum; } // 選択中アトラクション取得 
 	int Get_CoolTime(int summonstype) { return m_CoolTime[summonstype]; }
 	bool Get_AttacFlag(void) { return m_AttakFlag; }
-	int Get_OrnamentType(void) { return m_OrnamentType; }
-	bool Get_DamageFlag(void) { return m_DamageFlag; }
+	
 	static bool boRenderSphere;//当たり判定を可視化するかどうか？ true 可視化
 	//	モデル読み込み
 	static HRESULT InitModelLoad();
 	//モデル情報取得
 	THING* C3DObj::GetAnimeModel(void);
-	THING GetAnimeModel(int index);
-	THING_NORMAL GetNormalModel(int index);
-	THING_NORMAL GetNormal(int index);
-	THING_NORMAL GetNormalModel(void);
+	THING_NORMAL* C3DObj::GetNormalModel(int index);
 	//	終了処理
 	static void Model_Finalize(void);
 	static void Model_Finalize(int index);
@@ -117,6 +113,8 @@ public:
 	//衝突検出 アニメモデル対アニメモデル
 	static bool Collision_AnimeVSAnime(THING*, THING*);
 
+	bool C3DObj::Collision_AnimeVSNormalCapsule(THING*, THING_NORMAL*);
+	float C3DObj::GetSqDistancePoint2Segment(THING* pThingA, THING_NORMAL* pThingB);
 	void HitCheck(void);
 
 	virtual bool Get_DrawCheck(void) = 0;
@@ -127,15 +125,8 @@ public:
 	static void Reset_Score(void) { m_TotalScore = 0; }	//　スコアリセット
 	
 protected:
-	THING Thing;//読み込むモデルの最大数+1
 	THING *Thing_Anime_model;//アニメモデル情報
-	THING_NORMAL Thing_Normal_model;//通常モデル情報
-	THING_NORMAL ThingNormal;//通常モデル情報
-
-	static THING_NORMAL Thing_Normal[];//読み込むモデルの最大数+1
-	static THING Thing_Anime[];//読み込むモデルの最大数+1
-
-
+	THING_NORMAL *Thing_Normal_model;//通常モデル情報
 	D3DXMATRIX m_mtxWorld;			//	ワールド変換用行列
 	D3DXMATRIX m_mtxTranslation;	//	移動行列
 	D3DXMATRIX m_mtxRotation;		//	移動行列
@@ -162,12 +153,13 @@ protected:
 	void DrawDX_Anime(D3DXMATRIX mtxWorld, int type, THING* pThing);
 	void C3DObj::DrawDX_Normal(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing);
 	void C3DObj::DrawDX_NormalAdd(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing, D3DXVECTOR3 position);
-	void C3DObj::DrawDX_NormalCapsule(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing, D3DXVECTOR3 position, float rotation);
+	void C3DObj::DrawDX_NormalAddScale(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing, D3DXVECTOR3 position, D3DXVECTOR3 scale);
+	void C3DObj::DrawDX_NormalCapsule(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing, D3DXVECTOR3 position,float rotation);
+	
 	void Animation_Change(int index, float speed);
 	LPD3DXANIMATIONSET pAnimSet[10];//選択したモデルに10個までのアニメーションをセット
 	D3DXTRACK_DESC TrackDesc;
 	SKIN_MESH SkinMesh;
-	static SKIN_MESH Skin;
 
 	//	モデルデータの構造体
 	typedef struct
@@ -185,8 +177,9 @@ protected:
 	static MaterialFileData NORMAL_MODEL_FILES[];
 	static MaterialFileData2 ANIME_MODEL_FILES[];
 
-	
-	
+	static THING_NORMAL Thing_Normal[];//読み込むモデルの最大数+1
+	//static THING Thing[];//読み込むモデルの最大数+1
+	THING Thing;//読み込むモデルの最大数+1
 
 	static int MODEL_FILES_MAX;	//	テクスチャ構造体総数
 	static int ANIME_MODEL_FILES_MAX;	//	テクスチャ構造体総数
@@ -195,11 +188,9 @@ protected:
 	void Add_Hp(void);
 	void Add_Score(int score) { m_TotalScore += score; }	//	スコア加算
 	void Attraction_Delete(void);
-	static HRESULT InitThing(THING_NORMAL *pThing, LPSTR szXFileName);//ノーマルモデルの読み込み
-	int m_OrnamentType;
 private:
 	
-	
+	static HRESULT InitThing(THING_NORMAL *pThing, LPSTR szXFileName);//ノーマルモデルの読み込み
 	int m_3DObjIndex;		//	3Dオブジェクトインデックス
 	int m_3DObjType;		//	3Dオブジェクトタイプ
 	static int m_3DObjNum;	//	ゲームオブジェクト総数
@@ -215,6 +206,7 @@ private:
 	static LPD3DXBUFFER m_pD3DXMtrBuffer[];		//	マテリアル情報を受け取る変数
 	static LPDIRECT3DTEXTURE9 *m_pTexures[];	//　
 	static D3DMATERIAL9 *m_pd3dMaterials[];		//　
+
 
 	
 

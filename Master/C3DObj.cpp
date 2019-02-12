@@ -22,7 +22,7 @@ C3DObj::MaterialFileData C3DObj::NORMAL_MODEL_FILES[] = {
 	{ "asset/model/enban.x" },
 	{ "asset/model/hasira.x" },
 	{ "asset/model/ferris.x" },
-	{ "asset/model/jet.x" },
+	{ "asset/model/jet_new.blend.x" },
 	{ "asset/model/cup_blue.x" },
 	{ "asset/model/cup_kiiro.x" },
 	{ "asset/model/cup_midori.x" },
@@ -44,7 +44,7 @@ C3DObj::MaterialFileData2 C3DObj::ANIME_MODEL_FILES[] = {
 int C3DObj::MODEL_FILES_MAX = sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0]);
 int C3DObj::ANIME_MODEL_FILES_MAX = sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0]);
 
-bool C3DObj::boRenderSphere = false;
+bool C3DObj::boRenderSphere = true;
 //モデルアニメーション関係変数
 /*
 #define MODEL_MAX (9)
@@ -58,9 +58,9 @@ BOOL boPlayAnim = true;
 D3DXTRACK_DESC TrackDesc;
 */
 
-SKIN_MESH C3DObj::Skin;
+//SKIN_MESH C3DObj::SkinMesh;
 THING_NORMAL C3DObj::Thing_Normal[(sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0]))];//読み込むモデルの最大数+1
-THING C3DObj::Thing_Anime[sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0])];//読み込むモデルの最大数+1
+//THING C3DObj::Thing[sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0])];//読み込むモデルの最大数+1
 
 
 LPD3DXMESH C3DObj::m_pD3DXMesh[sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0])] = {};
@@ -221,17 +221,11 @@ HRESULT C3DObj::InitModelLoad()
 
 	//アニメーションモデル読み込み
 	//THINGにxファイルを読み込む
-	for (int i = 0; i < ANIME_MODEL_FILES_MAX; i++)
+	/*for (int i = 0; i < ANIME_MODEL_FILES_MAX; i++)
 	{
-	//	Thing_Anime[i].skins.InitThing2(m_pD3DDevice, &Thing_Anime[i], ANIME_MODEL_FILES[i].filename, Thing_Anime[i].skins.cHierarchy);
-	//	Thing_Anime[i].skins.InitSphere(m_pD3DDevice, &Thing_Anime[i]);
-	//	SKIN_MESH::InitThing(m_pD3DDevice, &Thing_Anime[i], ANIME_MODEL_FILES[i].filename);
-	//	SKIN_MESH::InitSphere(m_pD3DDevice, &Thing_Anime[i]);
-	//	Skin.InitThing(m_pD3DDevice, &Thing_Anime[i], ANIME_MODEL_FILES[i].filename);
-	//	Skin.InitSphere(m_pD3DDevice, &Thing_Anime[i]);
-	
-	}
-
+		SkinMesh.InitThing(m_pD3DDevice, &Thing[i], ANIME_MODEL_FILES[i].filename);
+		SkinMesh.InitSphere(m_pD3DDevice, &Thing[i]);
+	}*/
 	return S_OK;
 }
 
@@ -342,8 +336,6 @@ void C3DObj::DrawDX_Anime(D3DXMATRIX mtxWorld, int type, THING* pThing)
 	//モデルレンダリング
 	SkinMesh.UpdateFrameMatrices(pThing->pFrameRoot, &mtxWorld);
 	SkinMesh.DrawFrame(m_pD3DDevice, pThing->pFrameRoot, pThing, true);
-	//pThing->skins.UpdateFrameMatrices(pThing->pFrameRoot, &mtxWorld);
-	//pThing->skins.DrawFrame(m_pD3DDevice, pThing->pFrameRoot, pThing, true);
 	pThing->pAnimController->AdvanceTime(fAnimTime - fAnimTimeHold, NULL);
 	//　バウンディングスフィアのレンダリング////////	
 	D3DXMatrixTranslation(&mat, pThing->vPosition.x, pThing->vPosition.y,
@@ -434,6 +426,42 @@ void C3DObj::DrawDX_NormalAdd(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThin
 
 }
 
+void C3DObj::DrawDX_NormalAddScale(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing, D3DXVECTOR3 position, D3DXVECTOR3 scale)
+{
+
+	//m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
+	m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
+	m_pD3DDevice->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL);
+
+
+	// マトリックスのセット
+	m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+
+	//モデルのレンダリング
+	for (DWORD i = 0; i<pThing->dwNumMaterials; i++)
+	{
+		m_pD3DDevice->SetMaterial(&pThing->pMeshMaterials[i]);
+		m_pD3DDevice->SetTexture(0, pThing->pMeshTextures[i]);
+		pThing->pMesh->DrawSubset(i);
+	}
+	D3DXMATRIX mtxworld;
+	D3DXMATRIX mtxScale;
+	D3DXMATRIX mtxrotation;
+	D3DXMATRIX mtx;
+	D3DXMatrixTranslation(&mtx, mtxWorld._41 + position.x, mtxWorld._42 + position.y, mtxWorld._43 + position.z);
+	D3DXMatrixRotationX(&mtxrotation, D3DXToRadian(0));
+	D3DXMatrixScaling(&mtxScale, scale.x, scale.y, scale.z);
+	mtxworld = mtxScale * mtxrotation * mtx;
+	m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxworld);
+	//　バウンディングスフィアのレンダリング	
+	if (boRenderSphere && pThing->pSphereMeshMaterials)
+	{
+		m_pD3DDevice->SetTexture(0, NULL);
+		m_pD3DDevice->SetMaterial(pThing->pSphereMeshMaterials);
+		pThing->pSphereMesh->DrawSubset(0);
+	}
+
+}
 void C3DObj::DrawDX_NormalCapsule(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing, D3DXVECTOR3 position, float rotation)
 {
 	//m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
@@ -466,7 +494,6 @@ void C3DObj::DrawDX_NormalCapsule(D3DXMATRIX mtxWorld, int type, THING_NORMAL* p
 		pThing->pSphereMesh->DrawSubset(0);
 	}
 }
-
 
 //=============================================================================
 // 当たり判定
@@ -543,6 +570,54 @@ bool C3DObj::Collision_AnimeVSNormal(THING* pThingA, THING_NORMAL* pThingB)
 	return false;
 }
 
+bool C3DObj::Collision_AnimeVSNormalCapsule(THING* pThingA, THING_NORMAL* pThingB)
+{
+	//２つの物体の中心間の距離を求める
+	D3DXVECTOR3 vLength = pThingB->vPosition - pThingA->vPosition;
+	FLOAT fLength = D3DXVec3Length(&vLength);
+	// その距離が、2物体の半径を足したものより小さいということは、
+	//境界球同士が重なっている（衝突している）ということ
+	if (fLength <= pThingA->Sphere.fRadius + ((pThingB->Capsule.fRadius + pThingB->Capsule.fRadius2 + pThingB->Capsule.fLength) / 2))
+	{
+		return true;
+	}
+	return false;
+}
+
+float C3DObj::GetSqDistancePoint2Segment(THING* pThingA, THING_NORMAL* pThingB)
+{
+	/*
+	const float epsilon = 1.0e-5f;	// 誤差吸収用の微小な値
+	D3DXVECTOR3 SegmentSub;
+	D3DXVECTOR3 SegmentPoint;
+	D3DXVECTOR3 CP;
+
+	// 線分の始点から終点へのベクトル
+	SegmentSub = pThingB->Capsule.fRadius2 - pThingB->Capsule.fRadius;
+
+	// 線分の始点から点へのベクトル
+	SegmentPoint = _point - _segment.start;
+	if (SegmentSub.dot(SegmentPoint) < epsilon)
+	{// ２ベクトルの内積が負なら、線分の始点が最近傍
+		return SegmentPoint.dot(SegmentPoint);
+	}
+
+	// 点から線分の終点へのベクトル
+	SegmentPoint = _segment.end - _point;
+	if (SegmentSub.dot(SegmentPoint) < epsilon)
+	{// ２ベクトルの内積が負なら、線分の終点が最近傍
+		return SegmentPoint.dot(SegmentPoint);
+	}
+
+	// 上記のどちらにも該当しない場合、線分上に落とした射影が最近傍
+	// (本来ならサインで求めるが、外積の大きさ/線分のベクトルの大きさで求まる)
+	Vec3::cross(SegmentSub, SegmentPoint, &CP);
+
+	return CP.dot(CP) / SegmentSub.dot(SegmentSub);*/
+	return 0;
+}
+
+
 bool C3DObj::Collision_AnimeVSAnime(THING* pThingA, THING* pThingB)
 {
 	//２つの物体の中心間の距離を求める
@@ -562,25 +637,11 @@ THING* C3DObj::GetAnimeModel(void)
 	return &Thing;
 }
 
-THING C3DObj::GetAnimeModel(int index)
+THING_NORMAL* C3DObj::GetNormalModel(int index)
 {
-	return Thing_Anime[index];
+	return &Thing_Normal[index];
 }
 
-THING_NORMAL C3DObj::GetNormalModel(int index)
-{
-	return Thing_Normal[index];
-}
-
-THING_NORMAL C3DObj::GetNormal(int index)
-{
-	return Thing_Normal[index];
-}
-
-THING_NORMAL C3DObj::GetNormalModel(void)
-{
-	return Thing_Normal_model;
-}
 //=============================================================================
 // アニメーション変更
 //=============================================================================

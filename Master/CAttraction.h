@@ -25,7 +25,7 @@ public:
 		AT_POPCORN = 6,	//	ポップコーン
 		AT_STANDBY = 7,   //  建設中
 		AT_GAUGE,        //建設中の進行ゲージ
-
+		AT_COASTER_ON,	//	ジェットコースター準備
 
 		TYPE_MAX
 	};

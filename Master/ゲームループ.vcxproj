@@ -169,6 +169,7 @@
     <ClCompile Include="CAttraction_Popcorn.cpp" />
     <ClCompile Include="CAttraction_Standby.cpp" />
     <ClCompile Include="CCamera.cpp" />
+    <ClCompile Include="CCoaster_ON.cpp" />
     <ClCompile Include="Ccoffee_cup.cpp" />
     <ClCompile Include="CEnemy.cpp" />
     <ClCompile Include="CEnemy_Big.cpp" />
@@ -215,11 +216,15 @@
     <ClInclude Include="BSphere.h" />
     <ClInclude Include="C2DObj.h" />
     <ClInclude Include="C3DObj.h" />
+    <ClInclude Include="camera.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="CAttraction.h" />
     <ClInclude Include="CAttraction_Coaster .h" />
     <ClInclude Include="CAttraction_Popcorn.h" />
     <ClInclude Include="CAttraction_Standby.h" />
     <ClInclude Include="CCamera.h" />
+    <ClInclude Include="CCoaster_ON.h" />
     <ClInclude Include="Ccoffee_cup.h" />
     <ClInclude Include="CEnemy.h" />
     <ClInclude Include="CEnemy_Big.h" />
