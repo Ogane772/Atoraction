@@ -92,7 +92,6 @@ void CoasterON::Initialize()
 	//m_mtxWorld = m_mtxScaling  * m_mtxWorld * m_mtxTranslation ;
 	Thing_Normal_model = GetNormalModel(MODELL_COASTER);
 	coaster_position = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42 * 3, m_mtxWorld._43);
-	
 }
 
 void CoasterON::Update(void)
@@ -103,6 +102,7 @@ void CoasterON::Update(void)
 	u = (int)(playerget->Get_Angle());
 	if (m_FrameCount - m_TimeKeep <= COSTERON_ENDTIME)
 	{
+
 		C3DObj *playerget = CPlayer::Get_Player();
 		D3DXMATRIX playermatrix = playerget->Get_mtxTranslation();
 		coaster_position += m_front*SPEED;

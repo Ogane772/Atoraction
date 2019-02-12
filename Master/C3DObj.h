@@ -113,6 +113,8 @@ public:
 	//衝突検出 アニメモデル対アニメモデル
 	static bool Collision_AnimeVSAnime(THING*, THING*);
 
+	bool C3DObj::Collision_AnimeVSNormalCapsule(THING*, THING_NORMAL*);
+	float C3DObj::GetSqDistancePoint2Segment(THING* pThingA, THING_NORMAL* pThingB);
 	void HitCheck(void);
 
 	virtual bool Get_DrawCheck(void) = 0;
@@ -151,7 +153,9 @@ protected:
 	void DrawDX_Anime(D3DXMATRIX mtxWorld, int type, THING* pThing);
 	void C3DObj::DrawDX_Normal(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing);
 	void C3DObj::DrawDX_NormalAdd(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing, D3DXVECTOR3 position);
-
+	void C3DObj::DrawDX_NormalAddScale(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing, D3DXVECTOR3 position, D3DXVECTOR3 scale);
+	void C3DObj::DrawDX_NormalCapsule(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing, D3DXVECTOR3 position,float rotation);
+	
 	void Animation_Change(int index, float speed);
 	LPD3DXANIMATIONSET pAnimSet[10];//選択したモデルに10個までのアニメーションをセット
 	D3DXTRACK_DESC TrackDesc;

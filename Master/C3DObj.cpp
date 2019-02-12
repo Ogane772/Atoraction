@@ -426,6 +426,75 @@ void C3DObj::DrawDX_NormalAdd(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThin
 
 }
 
+void C3DObj::DrawDX_NormalAddScale(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing, D3DXVECTOR3 position, D3DXVECTOR3 scale)
+{
+
+	//m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
+	m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
+	m_pD3DDevice->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL);
+
+
+	// マトリックスのセット
+	m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+
+	//モデルのレンダリング
+	for (DWORD i = 0; i<pThing->dwNumMaterials; i++)
+	{
+		m_pD3DDevice->SetMaterial(&pThing->pMeshMaterials[i]);
+		m_pD3DDevice->SetTexture(0, pThing->pMeshTextures[i]);
+		pThing->pMesh->DrawSubset(i);
+	}
+	D3DXMATRIX mtxworld;
+	D3DXMATRIX mtxScale;
+	D3DXMATRIX mtxrotation;
+	D3DXMATRIX mtx;
+	D3DXMatrixTranslation(&mtx, mtxWorld._41 + position.x, mtxWorld._42 + position.y, mtxWorld._43 + position.z);
+	D3DXMatrixRotationX(&mtxrotation, D3DXToRadian(0));
+	D3DXMatrixScaling(&mtxScale, scale.x, scale.y, scale.z);
+	mtxworld = mtxScale * mtxrotation * mtx;
+	m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxworld);
+	//　バウンディングスフィアのレンダリング	
+	if (boRenderSphere && pThing->pSphereMeshMaterials)
+	{
+		m_pD3DDevice->SetTexture(0, NULL);
+		m_pD3DDevice->SetMaterial(pThing->pSphereMeshMaterials);
+		pThing->pSphereMesh->DrawSubset(0);
+	}
+
+}
+void C3DObj::DrawDX_NormalCapsule(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing, D3DXVECTOR3 position, float rotation)
+{
+	//m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
+	m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
+	m_pD3DDevice->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL);
+
+
+	// マトリックスのセット
+	m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+
+	//モデルのレンダリング
+	for (DWORD i = 0; i<pThing->dwNumMaterials; i++)
+	{
+		m_pD3DDevice->SetMaterial(&pThing->pMeshMaterials[i]);
+		m_pD3DDevice->SetTexture(0, pThing->pMeshTextures[i]);
+		pThing->pMesh->DrawSubset(i);
+	}
+	D3DXMATRIX mtxworld;
+	D3DXMATRIX mtx;
+	D3DXMATRIX mtxRotation;
+	D3DXMatrixTranslation(&mtx, mtxWorld._41 + position.x, mtxWorld._42 + position.y, mtxWorld._43 + position.z);
+	D3DXMatrixRotationX(&mtxRotation, D3DXToRadian(rotation));
+	mtxworld = mtxRotation * mtx;
+	m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxworld);
+	//　バウンディングスフィアのレンダリング	
+	if (boRenderSphere && pThing->pSphereMeshMaterials)
+	{
+		m_pD3DDevice->SetTexture(0, NULL);
+		m_pD3DDevice->SetMaterial(pThing->pSphereMeshMaterials);
+		pThing->pSphereMesh->DrawSubset(0);
+	}
+}
+
 //=============================================================================
 // 当たり判定
 //=============================================================================
@@ -500,6 +569,54 @@ bool C3DObj::Collision_AnimeVSNormal(THING* pThingA, THING_NORMAL* pThingB)
 	}
 	return false;
 }
+
+bool C3DObj::Collision_AnimeVSNormalCapsule(THING* pThingA, THING_NORMAL* pThingB)
+{
+	//２つの物体の中心間の距離を求める
+	D3DXVECTOR3 vLength = pThingB->vPosition - pThingA->vPosition;
+	FLOAT fLength = D3DXVec3Length(&vLength);
+	// その距離が、2物体の半径を足したものより小さいということは、
+	//境界球同士が重なっている（衝突している）ということ
+	if (fLength <= pThingA->Sphere.fRadius + ((pThingB->Capsule.fRadius + pThingB->Capsule.fRadius2 + pThingB->Capsule.fLength) / 2))
+	{
+		return true;
+	}
+	return false;
+}
+
+float C3DObj::GetSqDistancePoint2Segment(THING* pThingA, THING_NORMAL* pThingB)
+{
+	/*
+	const float epsilon = 1.0e-5f;	// 誤差吸収用の微小な値
+	D3DXVECTOR3 SegmentSub;
+	D3DXVECTOR3 SegmentPoint;
+	D3DXVECTOR3 CP;
+
+	// 線分の始点から終点へのベクトル
+	SegmentSub = pThingB->Capsule.fRadius2 - pThingB->Capsule.fRadius;
+
+	// 線分の始点から点へのベクトル
+	SegmentPoint = _point - _segment.start;
+	if (SegmentSub.dot(SegmentPoint) < epsilon)
+	{// ２ベクトルの内積が負なら、線分の始点が最近傍
+		return SegmentPoint.dot(SegmentPoint);
+	}
+
+	// 点から線分の終点へのベクトル
+	SegmentPoint = _segment.end - _point;
+	if (SegmentSub.dot(SegmentPoint) < epsilon)
+	{// ２ベクトルの内積が負なら、線分の終点が最近傍
+		return SegmentPoint.dot(SegmentPoint);
+	}
+
+	// 上記のどちらにも該当しない場合、線分上に落とした射影が最近傍
+	// (本来ならサインで求めるが、外積の大きさ/線分のベクトルの大きさで求まる)
+	Vec3::cross(SegmentSub, SegmentPoint, &CP);
+
+	return CP.dot(CP) / SegmentSub.dot(SegmentSub);*/
+	return 0;
+}
+
 
 bool C3DObj::Collision_AnimeVSAnime(THING* pThingA, THING* pThingB)
 {
