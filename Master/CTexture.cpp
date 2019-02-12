@@ -19,7 +19,7 @@ CTexture::TextureFileData CTexture::TEXTURE_FILES[] = {
 	{ "asset/bullet000.png",80,80 },
 	{ "asset/3031.JPG",4000,992 },
 	{ "asset/title.png",1920,1080 },
-	{ "asset/gameover.png",1024,576 },
+	{ "asset/gameover.jpg",2480,3508 },
 	{ "asset/HP_Gage.png",200,50 },
 	{ "asset/HP_Gage_2.png",200,50 },
 	{ "asset/MP_Gage.png",200,50 },
@@ -62,7 +62,7 @@ CTexture::TextureFileData CTexture::TEXTURE_FILES[] = {
 	{ "asset/anime_model/zago4-1.jpg",256, 256 },
 	{ "asset/anime_model/zago4-1_2.jpg",256, 256 },
 	{ "asset/anime_model/zago4-end.jpg",256, 256 },
-
+	{ "asset/score2.png",1350,270 },
 
 };
 

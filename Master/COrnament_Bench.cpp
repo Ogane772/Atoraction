@@ -33,7 +33,7 @@
 //	生成
 //=============================================================================
 
-COrnament_BENCH::COrnament_BENCH(ORNAMENT_EMITTER *Emitter) :COrnament(TYPE_BENCH), C3DObj(C3DObj::TYPE_ORNAMENT)
+COrnament_BENCH::COrnament_BENCH(ORNAMENT_EMITTER *Emitter) :COrnament(MODELL_BENCH), C3DObj(C3DObj::TYPE_ORNAMENT)
 {
 	Initialize(Emitter);
 }
@@ -63,6 +63,8 @@ void COrnament_BENCH::Initialize(ORNAMENT_EMITTER *Emitter)
 
 	Thing_Normal_model = GetNormalModel(MODELL_BENCH);
 
+	//InitThing(&Thing_Normal_model, NORMAL_MODEL_FILES[MODELL_BENCH].filename);
+	//InitSphere(m_pD3DDevice, &Thing_Normal_model);//当たり判定の表示
 	m_Direction = Emitter->InitDirection;
 
 	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(m_Direction));
@@ -70,9 +72,9 @@ void COrnament_BENCH::Initialize(ORNAMENT_EMITTER *Emitter)
 	D3DXMatrixScaling(&m_mtxScaling, BENCH_SIZE, BENCH_SIZE, BENCH_SIZE);
 	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 
-	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 3.1f);//当たり判定の変更
+	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 3.1f);//当たり判定の変更
 
-	Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
+	Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
 }
 
 
@@ -91,8 +93,14 @@ void COrnament_BENCH::Update(void)
 		//エフェクト処理を行う
 		if (m_DrawCheck)
 		{
-			Damage();
+			if (m_DamageFlag)
+			{
+				Damage();
+				Ornament_Damage(0.1);
+				Ornament_Flying(0.05);
+			}
 		}
+		m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 	}
 }
 
@@ -102,14 +110,14 @@ void COrnament_BENCH::Draw(void)
 {
 	if (m_Enable)
 	{
-		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
-		DrawDX_Normal(m_mtxWorld, MODELL_BENCH, Thing_Normal_model);
+		DrawDX_Normal(m_mtxWorld, MODELL_BENCH, &Thing_Normal_model);
 		if (!m_DrawCheck)
 		{
 			if (m_FrameCount % 2 == 0)
 			{
-				DrawDX_Normal(m_mtxWorld, MODELL_BENCH, Thing_Normal_model);
+				DrawDX_Normal(m_mtxWorld, MODELL_BENCH, &Thing_Normal_model);
 
 				m_DrawCount++;
 				if (m_DrawCount >= ORNAMENT_WAIT_TIME)
@@ -121,7 +129,7 @@ void COrnament_BENCH::Draw(void)
 		}
 		else
 		{
-			DrawDX_Normal(m_mtxWorld, MODELL_BENCH, Thing_Normal_model);
+			DrawDX_Normal(m_mtxWorld, MODELL_BENCH, &Thing_Normal_model);
 		}
 	}
 }
@@ -137,10 +145,10 @@ void COrnament_BENCH::Damage(void)
 		{
 			if (enemy->Get_AttacFlag())
 			{
-				Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+				Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 				THING *thingenemy = enemy->GetAnimeModel();
 				int attack = enemy->Get_Attck();
-				if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
+				if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
 				{
 					m_Hp -= attack;
 					m_DrawCheck = false;

@@ -18,6 +18,7 @@
 #include "common.h"
 #include "CAttraction_Popcorn.h"
 #include "CTexture.h"
+#include "COrnament.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -44,12 +45,12 @@ CEnemy::ENEMY_MOVE CEnemy::m_EnemyMove[8] = {
 //	エネミーエミッター
 CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 {
-//	{ 0   , TYPE_SMALL, D3DXVECTOR3( 10.0f, 0.0f , 10.0f), DIRE_NORTH	   ,false },
-//    { 0	  , TYPE_MIDDLE, D3DXVECTOR3( 20.0f, 0.0f , 20.0f), DIRE_EAST	   ,false },
+	{ 0   , TYPE_SMALL, D3DXVECTOR3( 10.0f, 0.0f , 15.0f), DIRE_NORTH	   ,false },
+/*    { 0	  , TYPE_MIDDLE, D3DXVECTOR3( 20.0f, 0.0f , 20.0f), DIRE_EAST	   ,false },
 	{ 0	  , TYPE_SPECIAL, D3DXVECTOR3( 30.0f, 0.0f , 30.0f), DIRE_NORTHWEST ,false },
-//	{ 0	  , TYPE_BIG, D3DXVECTOR3( 20.0f, 0.0f , 10.0f), DIRE_SOUTHEAST ,false },
-/*	{ 0	  , TYPE_SMALL, D3DXVECTOR3( 0.0f , 0.0f , 0.0f ), DIRE_NORTHEAST ,false },
-
+	{ 0	  , TYPE_BIG, D3DXVECTOR3( 20.0f, 0.0f , 10.0f), DIRE_SOUTHEAST ,false },
+//	{ 0	  , TYPE_SMALL, D3DXVECTOR3( 0.0f , 0.0f , 0.0f ), DIRE_NORTHEAST ,false },
+*/
 	{ 100 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
 	{ 130 , TYPE_SMALL, D3DXVECTOR3( 60.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
 	{ 160 , TYPE_SMALL, D3DXVECTOR3( 70.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
@@ -110,6 +111,8 @@ CEnemy::~CEnemy()
 {
 	m_EnemyEmitter[m_EnemyIndex].CreateCheck = false;
 	m_EnemyNum[TYPE_ALL]--;
+	SkinMesh.cHierarchy.DestroyFrame(Thing.pFrameRoot);
+	//SkinMesh.cHierarchy.DestroyMeshContainer()
 }
 
 void CEnemy::Create(void)
@@ -296,14 +299,17 @@ void CEnemy::Enemy_Damage(float flyinghigh)
 {
 	if (!m_EnemyFlying)
 	{
-		m_Hp--;
-		m_EnemyFlying = true;
-		m_FlyingMove = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43) - m_PosKeep;
-		m_FlyingMove.y = flyinghigh;
-		if (m_Hp <= 0)
+		if (m_DrawCheck)
 		{
-			Add_Mp(m_Mp);
-			Add_Score(m_Score);
+			m_Hp--;
+			m_EnemyFlying = true;
+			m_FlyingMove = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43) - m_PosKeep;
+			m_FlyingMove.y = flyinghigh;
+			if (m_Hp <= 0)
+			{
+				Add_Mp(m_Mp);
+				Add_Score(m_Score);
+			}
 		}
 
 	}
@@ -357,12 +363,12 @@ bool CEnemy::Chase_Popcorn(void)
 		if (ppop)
 		{
 			Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-			THING_NORMAL *thingpop = ppop->GetNormalModel(MODELL_POPCORN);
-			thingpop->Sphere.fRadius = 15.0f;
-			if (C3DObj::Collision_AnimeVSNormal(&Thing, thingpop))
+			THING_NORMAL thingpop = ppop->GetNormalModel(MODELL_POPCORN);
+			thingpop.Sphere.fRadius = 15.0f;
+			if (C3DObj::Collision_AnimeVSNormal(&Thing, &thingpop))
 			{
-				thingpop->Sphere.fRadius = 4.0f;
-				if (!C3DObj::Collision_AnimeVSNormal(&Thing, thingpop))
+				thingpop.Sphere.fRadius = 4.0f;
+				if (!C3DObj::Collision_AnimeVSNormal(&Thing, &thingpop))
 				{
 					D3DXMATRIX playerworld = ppop->Get_mtxWorld();
 					float x = playerworld._41 - m_mtxWorld._41;
@@ -378,7 +384,7 @@ bool CEnemy::Chase_Popcorn(void)
 					return true;
 				}
 			}
-			thingpop->Sphere.fRadius = 4.0f;
+			thingpop.Sphere.fRadius = 4.0f;
 		}
 	}
 	return false;
@@ -399,4 +405,38 @@ void CEnemy::Color_Change(int texindex)
 			color,
 			Thing.texture//セットしたいモデル番号
 			);
+}
+
+void CEnemy::Ornament_Check(void)
+{
+	for (int i = 0;i < MAX_GAMEOBJ;i++)
+	{
+		C3DObj *pornament = COrnament::Get_Ornament(i);
+		if (pornament)
+		{
+			
+				Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
+				THING_NORMAL thingorna = pornament->GetNormalModel();
+				if (C3DObj::Collision_AnimeVSNormal(&Thing, &thingorna))
+				{
+					if (!pornament->Get_DamageFlag())
+					{
+						m_mtxTranslation = m_mtxKeepTranslation;
+						m_Direction++;
+						if (m_Direction >= 9)
+						{
+							m_Direction = 0;
+						}
+						break;
+					}
+					else
+					{
+						DamageFlag_Change();
+						Position_Keep(pornament->Get_mtxWorld());
+					}
+				}
+			
+		}
+
+	}
 }

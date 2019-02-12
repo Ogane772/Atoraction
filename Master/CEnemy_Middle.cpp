@@ -121,7 +121,7 @@ void CEnemy_Middle::Update(void)
 		{
 			if (!PlayerCheck())	//	‹ß‚­‚ÉƒvƒŒƒCƒ„[‚ª‚¢‚é‚©
 			{
-				if (!Chase_Popcorn())
+				if ((!Chase_Popcorn()) && (!m_AttackCheck))
 				{
 					Middle_Move();
 				}

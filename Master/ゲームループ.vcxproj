@@ -164,7 +164,6 @@
     <ClCompile Include="BSphere.cpp" />
     <ClCompile Include="C2DObj.cpp" />
     <ClCompile Include="C3DObj.cpp" />
-    <ClCompile Include="camera.cpp" />
     <ClCompile Include="CAttraction.cpp" />
     <ClCompile Include="CAttraction_Coaster.cpp" />
     <ClCompile Include="CAttraction_Popcorn.cpp" />
@@ -216,7 +215,6 @@
     <ClInclude Include="BSphere.h" />
     <ClInclude Include="C2DObj.h" />
     <ClInclude Include="C3DObj.h" />
-    <ClInclude Include="camera.h" />
     <ClInclude Include="CAttraction.h" />
     <ClInclude Include="CAttraction_Coaster .h" />
     <ClInclude Include="CAttraction_Popcorn.h" />

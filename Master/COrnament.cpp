@@ -66,7 +66,7 @@ COrnament::COrnament()
 
 COrnament::COrnament(int OrnamentType)
 {
-	m_Type = OrnamentType;
+	m_OrnamentType = OrnamentType;
 	m_OrnamentIndex = m_OrnamentNum[TYPE_ALL];
 	m_OrnamentNum[TYPE_ALL]++;
 	m_OrnamentNum[OrnamentType]++;
@@ -133,9 +133,9 @@ void COrnament::OrnamentDamage(void)
 
 }
 
-C3DObj *COrnament::Get_Ornament(int type)
+C3DObj *COrnament::Get_Ornament(int index)
 {
-	C3DObj *pornament = C3DObj::Get(type);
+	C3DObj *pornament = C3DObj::Get(index);
 	if (pornament)
 	{
 		if (pornament->Get_3DObjType() == C3DObj::TYPE_ORNAMENT)
@@ -149,8 +149,18 @@ C3DObj *COrnament::Get_Ornament(int type)
 }
 
 
-C3DObj *COrnament::Get_AllOrnament(void)
+C3DObj *COrnament::Get_AllOrnament(int Index)
 {
+	C3DObj *pOrnament = C3DObj::Get(Index);
+	if (pOrnament)
+	{
+		if (pOrnament->Get_3DObjType() == C3DObj::TYPE_ORNAMENT)
+		{
+			
+			return pOrnament;
+			
+		}
+	}
 	return NULL;
 }
 
@@ -171,7 +181,63 @@ C3DObj *COrnament::Get_Map_Ornament(int Index)
 }
 
 
+void COrnament::Ornament_Damage(float flyinghigh)
+{
+	if (!m_OrnamentFlying)
+	{
+		if (m_DrawCheck)
+		{
+			m_Hp--;
 
+			m_FlyingMove = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43) - m_PosKeep;
+			m_FlyingMove.y = flyinghigh;
+			if (m_Hp <= 0)
+			{
+				//Add_Mp(m_Mp);
+				//Add_Score(m_Score);
+				m_OrnamentFlying = true;
+			}
+		}
+
+	}
+}
+
+void COrnament::Ornament_Flying(float speed)
+{
+	if (m_OrnamentFlying)
+	{
+		if (m_Hp <= 0)
+		{
+			if (!m_OrnamentFlyingDown)
+			{
+				D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41 + m_FlyingMove.x * speed, m_mtxWorld._42 + m_FlyingMove.y, m_mtxWorld._43 + m_FlyingMove.z * speed);
+				m_FlyingCount++;
+				if (m_FlyingCount >= 60)
+				{
+					m_OrnamentFlyingDown = true;
+				}
+			}
+			else
+			{
+
+				D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41 + m_FlyingMove.x * speed, m_mtxWorld._42 - m_FlyingMove.y, m_mtxWorld._43 + m_FlyingMove.z * speed);
+				m_FlyingCount--;
+				if (m_FlyingCount <= 0)
+				{
+					m_mtxTranslation._42 = 0.0f;
+					m_OrnamentFlying = false;
+					m_OrnamentFlyingDown = false;
+					m_DamageFlag = false;
+
+				}
+			}
+		}
+		else
+		{
+			//D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41 + m_FlyingMove.x * (speed * 2), m_mtxWorld._42 + m_FlyingMove.y, m_mtxWorld._43 + m_FlyingMove.z * (speed * 2));
+		}
+	}
+}
 
 
 

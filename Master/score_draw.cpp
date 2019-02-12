@@ -3,7 +3,7 @@
 //=============================================================================
 
 #include "score_draw.h"
-
+#include "CTexture.h"
 //=============================================================================
 //	’è”’è‹`
 //=============================================================================
@@ -266,14 +266,14 @@ void Num_Draw2(float x, float y, int score, int fig, int color, bool zero)
 	}
 }
 
-void ResultScore_Draw(float x, float y, int score, int fig, int colornum)
+void ResultScore_Draw(float x, float y, int score, int fig,int texindex, int colornum)
 {
 	for (int i = 0; i < fig; i++)
 	{
-
+		int numbersize = /*CTexture::Texture_GetWidth(texindex, 10);*/100;
 		int number = score % 10;
 		score /= 10;
-		Number_Draw2(x + SCORE_NUMBER_SIZE*(fig - (i + 1)), y, number, colornum);
+		Number_Draw_Select(x + numbersize*(fig - (i + 1)), y, number, texindex, colornum);
 
 	}
 

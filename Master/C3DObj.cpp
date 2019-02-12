@@ -44,7 +44,7 @@ C3DObj::MaterialFileData2 C3DObj::ANIME_MODEL_FILES[] = {
 int C3DObj::MODEL_FILES_MAX = sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0]);
 int C3DObj::ANIME_MODEL_FILES_MAX = sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0]);
 
-bool C3DObj::boRenderSphere = true;
+bool C3DObj::boRenderSphere = false;
 //モデルアニメーション関係変数
 /*
 #define MODEL_MAX (9)
@@ -58,9 +58,9 @@ BOOL boPlayAnim = true;
 D3DXTRACK_DESC TrackDesc;
 */
 
-//SKIN_MESH C3DObj::SkinMesh;
+SKIN_MESH C3DObj::Skin;
 THING_NORMAL C3DObj::Thing_Normal[(sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0]))];//読み込むモデルの最大数+1
-//THING C3DObj::Thing[sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0])];//読み込むモデルの最大数+1
+THING C3DObj::Thing_Anime[sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0])];//読み込むモデルの最大数+1
 
 
 LPD3DXMESH C3DObj::m_pD3DXMesh[sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0])] = {};
@@ -221,11 +221,17 @@ HRESULT C3DObj::InitModelLoad()
 
 	//アニメーションモデル読み込み
 	//THINGにxファイルを読み込む
-	/*for (int i = 0; i < ANIME_MODEL_FILES_MAX; i++)
+	for (int i = 0; i < ANIME_MODEL_FILES_MAX; i++)
 	{
-		SkinMesh.InitThing(m_pD3DDevice, &Thing[i], ANIME_MODEL_FILES[i].filename);
-		SkinMesh.InitSphere(m_pD3DDevice, &Thing[i]);
-	}*/
+	//	Thing_Anime[i].skins.InitThing2(m_pD3DDevice, &Thing_Anime[i], ANIME_MODEL_FILES[i].filename, Thing_Anime[i].skins.cHierarchy);
+	//	Thing_Anime[i].skins.InitSphere(m_pD3DDevice, &Thing_Anime[i]);
+	//	SKIN_MESH::InitThing(m_pD3DDevice, &Thing_Anime[i], ANIME_MODEL_FILES[i].filename);
+	//	SKIN_MESH::InitSphere(m_pD3DDevice, &Thing_Anime[i]);
+	//	Skin.InitThing(m_pD3DDevice, &Thing_Anime[i], ANIME_MODEL_FILES[i].filename);
+	//	Skin.InitSphere(m_pD3DDevice, &Thing_Anime[i]);
+	
+	}
+
 	return S_OK;
 }
 
@@ -336,6 +342,8 @@ void C3DObj::DrawDX_Anime(D3DXMATRIX mtxWorld, int type, THING* pThing)
 	//モデルレンダリング
 	SkinMesh.UpdateFrameMatrices(pThing->pFrameRoot, &mtxWorld);
 	SkinMesh.DrawFrame(m_pD3DDevice, pThing->pFrameRoot, pThing, true);
+	//pThing->skins.UpdateFrameMatrices(pThing->pFrameRoot, &mtxWorld);
+	//pThing->skins.DrawFrame(m_pD3DDevice, pThing->pFrameRoot, pThing, true);
 	pThing->pAnimController->AdvanceTime(fAnimTime - fAnimTimeHold, NULL);
 	//　バウンディングスフィアのレンダリング////////	
 	D3DXMatrixTranslation(&mat, pThing->vPosition.x, pThing->vPosition.y,
@@ -425,6 +433,40 @@ void C3DObj::DrawDX_NormalAdd(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThin
 	}
 
 }
+
+void C3DObj::DrawDX_NormalCapsule(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing, D3DXVECTOR3 position, float rotation)
+{
+	//m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
+	m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
+	m_pD3DDevice->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL);
+
+
+	// マトリックスのセット
+	m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
+
+	//モデルのレンダリング
+	for (DWORD i = 0; i<pThing->dwNumMaterials; i++)
+	{
+		m_pD3DDevice->SetMaterial(&pThing->pMeshMaterials[i]);
+		m_pD3DDevice->SetTexture(0, pThing->pMeshTextures[i]);
+		pThing->pMesh->DrawSubset(i);
+	}
+	D3DXMATRIX mtxworld;
+	D3DXMATRIX mtx;
+	D3DXMATRIX mtxRotation;
+	D3DXMatrixTranslation(&mtx, mtxWorld._41 + position.x, mtxWorld._42 + position.y, mtxWorld._43 + position.z);
+	D3DXMatrixRotationX(&mtxRotation, D3DXToRadian(rotation));
+	mtxworld = mtxRotation * mtx;
+	m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxworld);
+	//　バウンディングスフィアのレンダリング	
+	if (boRenderSphere && pThing->pSphereMeshMaterials)
+	{
+		m_pD3DDevice->SetTexture(0, NULL);
+		m_pD3DDevice->SetMaterial(pThing->pSphereMeshMaterials);
+		pThing->pSphereMesh->DrawSubset(0);
+	}
+}
+
 
 //=============================================================================
 // 当たり判定
@@ -520,11 +562,25 @@ THING* C3DObj::GetAnimeModel(void)
 	return &Thing;
 }
 
-THING_NORMAL* C3DObj::GetNormalModel(int index)
+THING C3DObj::GetAnimeModel(int index)
 {
-	return &Thing_Normal[index];
+	return Thing_Anime[index];
 }
 
+THING_NORMAL C3DObj::GetNormalModel(int index)
+{
+	return Thing_Normal[index];
+}
+
+THING_NORMAL C3DObj::GetNormal(int index)
+{
+	return Thing_Normal[index];
+}
+
+THING_NORMAL C3DObj::GetNormalModel(void)
+{
+	return Thing_Normal_model;
+}
 //=============================================================================
 // アニメーション変更
 //=============================================================================

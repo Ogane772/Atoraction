@@ -42,3 +42,14 @@ void Number_Draw3(float x, float y, int n, int colornum)
 		delete pn;
 	}
 }
+
+
+void Number_Draw_Select(float x, float y, int n,int texindex, int colornum)
+{
+	if (n >= 0 && n <= 9)
+	{
+		CUserInterFace *pn = new CUserInterFace();
+		pn->Sprite_Draw(texindex, x, y, Animation_UpdateX(n, 1, 10, CTexture::Texture_GetWidth(texindex, 10), 10), CTexture::Texture_GetHeight(texindex, 2) * colornum, CTexture::Texture_GetWidth(texindex, 10), CTexture::Texture_GetHeight(texindex, 2));
+		delete pn;
+	}
+}

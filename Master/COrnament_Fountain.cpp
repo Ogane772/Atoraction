@@ -34,7 +34,7 @@
 //	¶¬
 //=============================================================================
 
-COrnament_Fountain::COrnament_Fountain(ORNAMENT_EMITTER *Emitter) :COrnament(TYPE_FOUNTAIN), C3DObj(C3DObj::TYPE_ORNAMENT)
+COrnament_Fountain::COrnament_Fountain(ORNAMENT_EMITTER *Emitter) :COrnament(MODELL_HUNSUI), C3DObj(C3DObj::TYPE_ORNAMENT)
 {
 	Initialize(Emitter);
 }
@@ -71,8 +71,8 @@ void COrnament_Fountain::Initialize(ORNAMENT_EMITTER *Emitter)
 	D3DXMatrixScaling(&m_mtxScaling, FOUNTAIN_SIZE, FOUNTAIN_SIZE, FOUNTAIN_SIZE);
 	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 
-	Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
-	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 4.6f);//“–‚½‚è”»’è‚Ì•ÏX
+	Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
+	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 4.6f);//“–‚½‚è”»’è‚Ì•ÏX
 }
 
 
@@ -102,13 +102,13 @@ void COrnament_Fountain::Draw(void)
 {
 	if (m_Enable)
 	{
-		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 		if (!m_DrawCheck)
 		{
 			if (m_FrameCount % 2 == 0)
 			{
-				DrawDX_Normal(m_mtxWorld, MODELL_HUNSUI, Thing_Normal_model);
+				DrawDX_Normal(m_mtxWorld, MODELL_HUNSUI, &Thing_Normal_model);
 
 				m_DrawCount++;
 				if (m_DrawCount >= ORNAMENT_WAIT_TIME)
@@ -120,7 +120,7 @@ void COrnament_Fountain::Draw(void)
 		}
 		else
 		{
-			DrawDX_Normal(m_mtxWorld, MODELL_HUNSUI, Thing_Normal_model);
+			DrawDX_Normal(m_mtxWorld, MODELL_HUNSUI, &Thing_Normal_model);
 		}
 	}
 }
@@ -136,10 +136,10 @@ void COrnament_Fountain::Damage(void)
 		{
 			if (enemy->Get_AttacFlag())
 			{
-				Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+				Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 				THING *thingenemy = enemy->GetAnimeModel();
 				int attack = enemy->Get_Attck();
-				if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
+				if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
 				{
 					m_Hp -= attack;
 					m_DrawCheck = false;

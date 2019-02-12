@@ -32,7 +32,7 @@
 
 #define FREEFALL_UP		(25.0f)
 #define FREEFALL_DOWN	(0.0f)
-THING_NORMAL *fall;
+THING_NORMAL fall;
 //=============================================================================
 //	グローバル変数
 //=============================================================================
@@ -70,11 +70,11 @@ void Cfreefall::Initialize(D3DXMATRIX mtxWorld)
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 	Thing_Normal_model = GetNormalModel(MODELL_HASIRA);
 	fall = GetNormalModel(MODELL_ENBAN);
-	Thing_Normal_model->Sphere.vCenter = D3DXVECTOR3(0, 0.0, 0);
-	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0),4.2f);//当たり判定の変更
-	InitSphere(m_pD3DDevice, fall, D3DXVECTOR3(0, 0.0, 0), 1.0f);//当たり判定の変更
-	Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-	fall->vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
+	Thing_Normal_model.Sphere.vCenter = D3DXVECTOR3(0, 0.0, 0);
+	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0),4.2f);//当たり判定の変更
+	InitSphere(m_pD3DDevice, &fall, D3DXVECTOR3(0, 0.0, 0), 1.0f);//当たり判定の変更
+	Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+	fall.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
 }
 
 void Cfreefall::Update(void)
@@ -141,16 +141,16 @@ void Cfreefall::Draw(void)
 	if (m_Enable)
 	{
 		D3DXVECTOR3 position = D3DXVECTOR3(0.0f, 2.0f, 0.0f);
-		Thing_Normal_model->Sphere.vCenter = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-		fall->vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
+		Thing_Normal_model.Sphere.vCenter = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+		fall.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
 		if (!m_DrawCheck)
 		{
 			if (m_FrameCount % 2 == 0)
 			{
 				m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-				DrawDX_Normal(m_mtxWorld, MODELL_ENBAN, fall);
-				DrawDX_NormalAdd(m_mtxWorld2, MODELL_HASIRA, Thing_Normal_model, position);
+				DrawDX_Normal(m_mtxWorld, MODELL_ENBAN, &fall);
+				DrawDX_NormalAdd(m_mtxWorld2, MODELL_HASIRA, &Thing_Normal_model, position);
 
 				m_DrawCount++;
 				if (m_DrawCount >= ATTRACITION_WAIT_TIME)
@@ -163,8 +163,8 @@ void Cfreefall::Draw(void)
 		else
 		{
 			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-			DrawDX_Normal(m_mtxWorld, MODELL_ENBAN, fall);
-			DrawDX_NormalAdd(m_mtxWorld2, MODELL_HASIRA, Thing_Normal_model, position);
+			DrawDX_Normal(m_mtxWorld, MODELL_ENBAN, &fall);
+			DrawDX_NormalAdd(m_mtxWorld2, MODELL_HASIRA, &Thing_Normal_model, position);
 		}
 	}
 }
@@ -181,9 +181,9 @@ void Cfreefall::EnemyDamage(void)
 		C3DObj *enemy = CEnemy::Get_Enemy(i);
 		if (attackon && enemy)
 		{
-			Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);			
+			Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);			
 			THING *thingenemy = enemy->GetAnimeModel();
-			if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
+			if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
 			{
 				enemy->DamageFlag_Change();
 				enemy->Position_Keep(m_mtxWorld);
@@ -203,10 +203,10 @@ void Cfreefall::FreeFallDamage(void)
 		{
 			if (enemy->Get_AttacFlag())
 			{
-				fall->vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
+				fall.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
 				THING *thingenemy = enemy->GetAnimeModel();
 				int attack = enemy->Get_Attck();
-				if (C3DObj::Collision_AnimeVSNormal(thingenemy, fall))
+				if (C3DObj::Collision_AnimeVSNormal(thingenemy, &fall))
 				{
 					m_Hp -= attack;
 					m_DrawCheck = false;

@@ -12,4 +12,6 @@ void Number_Draw2(float x, float y, int n, int colornum);
 void Number_Draw3(float x, float y, int n, int colornum);
 
 void Number_Draw4(float x, float y, int n, int colornum);
+
+void Number_Draw_Select(float x, float y, int n, int texindex, int colornum);
 #endif

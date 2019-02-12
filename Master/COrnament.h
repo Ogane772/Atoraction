@@ -45,7 +45,7 @@ public:
 	int Get_Type(void) { return m_Type; }
 	void OrnamentDamage(void);
 	static int Get_OrnamentMaxNum(void) { return m_ORNAMENT_MAX; }
-	static C3DObj *Get_Ornament(int type);
+	static C3DObj *Get_Ornament(int index);
 	bool Get_DrawCheck(void) { return m_DrawCheck; }
 
 	static C3DObj *Get_Map_Ornament(int Index);
@@ -62,14 +62,22 @@ protected:
 	int m_Direction;			//	向き
 	float m_DirectionAngle;		//	向き変更角度
 	static COrnament *m_pOrnament[ORNAMENT_MAX];
-	static C3DObj *Get_AllOrnament(void);
+	static C3DObj *Get_AllOrnament(int index);
 	bool m_DrawCheck;			//	描画フラグ
+
+	void Ornament_Damage(float flyinghigh);
+	void Ornament_Flying(float speed);
 private:
 	int m_Type;			// 種類
 	static int m_OrnamentNum[TYPE_MAX];
 
 	static ORNAMENT_EMITTER m_OrnamentEmitter[];
 	static int m_ORNAMENT_MAX;
+
+	bool m_OrnamentFlying = false;
+	bool m_OrnamentFlyingDown = false;
+	int m_FlyingCount = 0;
+	D3DXVECTOR3 m_FlyingMove;
 };
 
 #endif // !1

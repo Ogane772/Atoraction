@@ -101,6 +101,7 @@ protected:
 	void Enemy_Flying(float speed);
 	bool m_playercheck;
 	void Color_Change(int texindex);
+	void Ornament_Check(void);
 private:
 
 	int m_Type;			// Ží—Þ

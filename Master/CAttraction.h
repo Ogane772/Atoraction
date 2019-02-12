@@ -50,7 +50,8 @@ protected:
 	static int m_AttractionNum[TYPE_MAX];
 	int m_AttractionIndex;
 	
-	
+	void OrnamentDamage(void);
+	void CAttraction::OrnamentDamage(THING_NORMAL nomal);
 	bool create;
 private:
 

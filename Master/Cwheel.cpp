@@ -138,9 +138,9 @@ void Cwheel::Draw(void)
 	//DebugFont_Draw(900, 60, "Bugoki = %d\n,", Bugoki);
 	if (m_Enable)
 	{
-		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-		DrawDX_Normal(m_mtxWorld, MODELL_WHEEL, Thing_Normal_model);
+		DrawDX_Normal(m_mtxWorld, MODELL_WHEEL, &Thing_Normal_model);
 	}
 }
 
@@ -156,10 +156,9 @@ void Cwheel::EnemyDamage(void)
 		C3DObj *enemy = CEnemy::Get_Enemy(i);
 		if (enemy)
 		{
-			Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+			Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 			THING *thingenemy = enemy->GetAnimeModel();
-			int hp = enemy->Get_Hp();
-			if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
+			if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
 			{
 				enemy->DamageFlag_Change();
 				enemy->Position_Keep(m_mtxWorld);

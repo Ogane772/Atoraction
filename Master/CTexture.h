@@ -66,6 +66,7 @@ public:
 		TEX_BIG,
 		TEX_BIG_ANOTHER,
 		TEX_BIG_END,
+		TEX_RANKING_NUM,
 
 		TYPE_MAX,
 	};
