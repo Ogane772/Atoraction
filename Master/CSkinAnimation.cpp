@@ -1,6 +1,7 @@
 #pragma warning(disable:4996)
 #include "CSkinAnimation.h"
 
+//MY_HIERARCHY SKIN_MESH::cHierarchy;
 //
 //フレームを作成する
 HRESULT MY_HIERARCHY::CreateFrame(LPCTSTR Name, LPD3DXFRAME *ppNewFrame)
@@ -160,6 +161,7 @@ HRESULT MY_HIERARCHY::DestroyFrame(LPD3DXFRAME pFrameToFree)
 
     return S_OK; 
 }
+
 //
 //メッシュコンテナーを破棄する
 HRESULT MY_HIERARCHY::DestroyMeshContainer(LPD3DXMESHCONTAINER pMeshContainerBase)
@@ -196,6 +198,39 @@ HRESULT MY_HIERARCHY::DestroyMeshContainer(LPD3DXMESHCONTAINER pMeshContainerBas
     return S_OK;
 }
 
+HRESULT MY_HIERARCHY::DestroyMeshContainer(LPD3DXANIMATIONCONTROLLER pMeshContainerBase)
+{
+	int iMaterial;
+	MYMESHCONTAINER *pMeshContainer = (MYMESHCONTAINER*)pMeshContainerBase;
+
+	SAFE_DELETE_ARRAY(pMeshContainer->Name);
+	SAFE_RELEASE(pMeshContainer->pSkinInfo);
+	SAFE_DELETE_ARRAY(pMeshContainer->pAdjacency);
+	SAFE_DELETE_ARRAY(pMeshContainer->pMaterials);
+
+	SAFE_DELETE_ARRAY(pMeshContainer->ppBoneMatrix);
+
+	if (pMeshContainer->ppTextures != NULL)
+	{
+		for (iMaterial = 0; iMaterial < (signed)pMeshContainer->NumMaterials; iMaterial++)
+		{
+			SAFE_RELEASE(pMeshContainer->ppTextures[iMaterial]);
+		}
+	}
+	SAFE_DELETE_ARRAY(pMeshContainer->ppTextures);
+
+	SAFE_RELEASE(pMeshContainer->MeshData.pMesh);
+
+	if (pMeshContainer->pBoneBuffer != NULL)
+	{
+		SAFE_RELEASE(pMeshContainer->pBoneBuffer);
+		SAFE_DELETE_ARRAY(pMeshContainer->pBoneOffsetMatrices);
+	}
+
+	SAFE_DELETE(pMeshContainer);
+
+	return S_OK;
+}
 //
 //
 HRESULT SKIN_MESH::AllocateBoneMatrix( THING* pThing,LPD3DXMESHCONTAINER pMeshContainerBase )
@@ -296,9 +331,28 @@ HRESULT SKIN_MESH::InitThing(LPDIRECT3DDEVICE9 pDevice,THING *pThing,LPSTR szXFi
     {
             MessageBox(NULL, "Xファイルの読み込みに失敗しました",szXFileName, MB_OK);
             return E_FAIL;   
+			
     }
 	//
 	AllocateAllBoneMatrices(pThing,pThing->pFrameRoot);
+
+	return S_OK;
+}
+
+HRESULT SKIN_MESH::InitThing2(LPDIRECT3DDEVICE9 pDevice, THING *pThing, LPSTR szXFileName, MY_HIERARCHY Hierarchy)
+{
+
+	// Xファイルからアニメーションメッシュを読み込み作成する
+	if (FAILED(
+		D3DXLoadMeshHierarchyFromX(szXFileName, D3DXMESH_MANAGED, pDevice, &Hierarchy,
+			NULL, &pThing->pFrameRoot, &pThing->pAnimController)))
+	{
+		MessageBox(NULL, "Xファイルの読み込みに失敗しました", szXFileName, MB_OK);
+		return E_FAIL;
+
+	}
+	//
+	AllocateAllBoneMatrices(pThing, pThing->pFrameRoot);
 
 	return S_OK;
 }

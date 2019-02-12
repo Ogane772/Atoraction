@@ -80,6 +80,10 @@ void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 	Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2f, 0);
 	SkinMesh.InitSphere(m_pD3DDevice, &Thing);
 
+	//Thing = GetAnimeModel(MODELL_ANIME_SMALL);
+	//Thing.Sphere.fRadius = 1.3f;
+	//Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2f, 0);
+
 	m_EnemyIndex = Get_EnemyIndex(TYPE_ALL);
 	//モデル情報取得
 	//アニメーショントラックを得る
@@ -134,9 +138,9 @@ void CEnemy_Small::Update(void)
 		{
 			if (!PlayerCheck())	//	近くにプレイヤーがいるか
 			{
-				if (!Chase_Popcorn())
+				if ((!Chase_Popcorn()) && (!m_AttackCheck))
 				{
-					Small_Move();
+					//Small_Move();
 				}
 				else
 				{
@@ -167,10 +171,11 @@ void CEnemy_Small::Update(void)
 
 	}
 
-
-
+	Ornament_Check();
 
 	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
+	m_mtxKeepTranslation = m_mtxTranslation;
+	
 	Draw_Check();
 
 	if (m_Hp <= 0)
@@ -198,6 +203,7 @@ void CEnemy_Small::Draw(void)
 		if (m_DrawCheck)
 		{//当たり判定位置更新
 			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);	//　ライティング有効
+			
 			Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 			DrawDX_Anime(m_mtxWorld, MODELL_ANIME_SMALL, &Thing);
 			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);	//　ライティング有効

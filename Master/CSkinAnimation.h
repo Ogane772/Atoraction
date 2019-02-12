@@ -42,6 +42,7 @@ public:
 		CONST D3DXEFFECTINSTANCE* , DWORD , CONST DWORD *, LPD3DXSKININFO , LPD3DXMESHCONTAINER *);
     STDMETHOD(DestroyFrame)(THIS_ LPD3DXFRAME );
     STDMETHOD(DestroyMeshContainer)(THIS_ LPD3DXMESHCONTAINER );	
+	HRESULT MY_HIERARCHY::DestroyMeshContainer(LPD3DXANIMATIONCONTROLLER pMeshContainerBase);
 };
 // ï®ëÃç\ë¢ëÃ
 struct SPHERE2
@@ -49,26 +50,8 @@ struct SPHERE2
 	D3DXVECTOR3 vCenter;
 	FLOAT fRadius;
 };
-struct THING
-{	
-	LPD3DXMESH pMesh;
-	LPD3DXFRAME pFrameRoot;
-	LPD3DXMESH pSphereMesh;
-    LPD3DXANIMATIONCONTROLLER pAnimController;
-	D3DMATERIAL9* pMeshMaterials;
-	D3DMATERIAL9* pSphereMeshMaterials;
-	LPDIRECT3DTEXTURE9* pMeshTextures; 
-	DWORD dwNumMaterials;
-	D3DXVECTOR3 vPosition;
-	D3DXMATRIX mRotation;
-	D3DXMATRIX mWorld;
-	SPHERE2 Sphere;
-	LPDIRECT3DTEXTURE9* texture;
-	THING()
-	{
-		ZeroMemory(this,sizeof(THING));
-	}
-};
+
+struct THING;
 //
 //
 //
@@ -76,6 +59,7 @@ class SKIN_MESH
 {
 public:
 	HRESULT InitThing(LPDIRECT3DDEVICE9,THING *,LPSTR);
+	HRESULT InitThing2(LPDIRECT3DDEVICE9, THING *, LPSTR, MY_HIERARCHY);
 	HRESULT AllocateBoneMatrix( THING* , LPD3DXMESHCONTAINER  );
 	HRESULT AllocateAllBoneMatrices(THING* ,  LPD3DXFRAME  );
 	HRESULT InitSphere(LPDIRECT3DDEVICE9, THING*);
@@ -84,9 +68,31 @@ public:
 	VOID UpdateFrameMatrices(LPD3DXFRAME , LPD3DXMATRIX );
 	VOID SKIN_MESH::DrawFrame(LPDIRECT3DDEVICE9 pDevice, LPD3DXFRAME pFrameBase, THING* pThing, bool type);
 	VOID ChangeAnim(DWORD NewAnimNum);
-protected:
+	
 	MY_HIERARCHY cHierarchy;
+protected:
+	
 
 };
 
+struct THING
+{
+	LPD3DXMESH pMesh;
+	LPD3DXFRAME pFrameRoot;
+	LPD3DXMESH pSphereMesh;
+	LPD3DXANIMATIONCONTROLLER pAnimController;
+	D3DMATERIAL9* pMeshMaterials;
+	D3DMATERIAL9* pSphereMeshMaterials;
+	LPDIRECT3DTEXTURE9* pMeshTextures;
+	DWORD dwNumMaterials;
+	D3DXVECTOR3 vPosition;
+	D3DXMATRIX mRotation;
+	D3DXMATRIX mWorld;
+	SPHERE2 Sphere;
+	LPDIRECT3DTEXTURE9* texture;
 
+	THING()
+	{
+		ZeroMemory(this, sizeof(THING));
+	}
+};

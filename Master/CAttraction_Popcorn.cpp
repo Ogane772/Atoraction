@@ -71,8 +71,8 @@ void Popcorn::Initialize(D3DXMATRIX mtxWorld)
 
 
 	Thing_Normal_model = GetNormalModel(MODELL_POPCORN);
-	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), POPCORN_SIZE);//“–‚½‚è”»’è‚Ì•ÏX
-	Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), POPCORN_SIZE);//“–‚½‚è”»’è‚Ì•ÏX
+	Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 }
 
 void Popcorn::Update(void)
@@ -103,14 +103,14 @@ void Popcorn::Draw(void)
 	if (m_Enable)
 	{
 		D3DXVECTOR3 position = D3DXVECTOR3(0.0f, 2.0f, 0.0f);
-		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 
 		if (!m_DrawCheck)
 		{
 			if (m_FrameCount % 2 == 0)
 			{
 				m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-				DrawDX_NormalAdd(m_mtxWorld, MODELL_POPCORN, Thing_Normal_model, position);
+				DrawDX_NormalAdd(m_mtxWorld, MODELL_POPCORN, &Thing_Normal_model, position);
 				m_DrawCount++;
 				if (m_DrawCount >= ATTRACITION_WAIT_TIME)
 				{
@@ -122,7 +122,7 @@ void Popcorn::Draw(void)
 		else
 		{
 			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-			DrawDX_NormalAdd(m_mtxWorld, MODELL_POPCORN, Thing_Normal_model, position);
+			DrawDX_NormalAdd(m_mtxWorld, MODELL_POPCORN, &Thing_Normal_model, position);
 		}
 	}
 }
@@ -153,10 +153,10 @@ void Popcorn::PopcornDamage(void)
 		{
 			if (enemy->Get_AttacFlag())
 			{
-				Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+				Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 				THING *thingenemy = enemy->GetAnimeModel();
 				int attack = enemy->Get_Attck();
-				if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
+				if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
 				{
 					m_Hp -= attack;
 					//Animation_Change(PLAYER_WALK, 0.05);

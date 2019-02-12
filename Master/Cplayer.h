@@ -69,7 +69,7 @@ private:
 	void Cool_Time(void);			//	クールタイム処理
 	void Mp_Add(void);				//	MP増加処理
 	bool JoyDevice_IsTrigger(int nKey);//コントローラーのトリガー処理
-
+	void Ornament_Check(void);
 	int m_Direction;				//	方向
 	bool m_MoveCheck;				//	移動フラグ
 

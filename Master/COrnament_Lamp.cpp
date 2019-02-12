@@ -74,7 +74,7 @@ void COrnament_Lamp::Initialize(ORNAMENT_EMITTER *Emitter)
 	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 
 	Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
-	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 2.1f);//当たり判定の変更
+	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 2.1f);//当たり判定の変更
 }
 
 
@@ -93,10 +93,15 @@ void COrnament_Lamp::Update(void)
 		//エフェクト処理を行う
 		if (m_DrawCheck)
 		{
-			Damage();
-			PlayerDebug();
+			if (m_DamageFlag)
+			{
+				Damage();
+				Ornament_Damage(0.1);
+				Ornament_Flying(0.05);
+			}
 		}
 	}
+	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 }
 
 
@@ -106,13 +111,13 @@ void COrnament_Lamp::Draw(void)
 	if (m_Enable)
 	{
 		D3DXVECTOR3 position = D3DXVECTOR3(0.0f, 2.0f, 0.0f);
-		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 		if (!m_DrawCheck)
 		{
 			if (m_FrameCount % 2 == 0)
 			{
-				DrawDX_NormalAddScale(m_mtxWorld, MODELL_LAMP, Thing_Normal_model, position, D3DXVECTOR3(1, 2, 1));
+				DrawDX_NormalAddScale(m_mtxWorld, MODELL_LAMP, &Thing_Normal_model, position, D3DXVECTOR3(1, 2, 1));
 
 				m_DrawCount++;
 				if (m_DrawCount >= ORNAMENT_WAIT_TIME)
@@ -127,7 +132,7 @@ void COrnament_Lamp::Draw(void)
 			//DrawDX_NormalAdd(m_mtxWorld, MODELL_LAMP, Thing_Normal_model, position);
 		//	DrawDX_NormalAdd(m_mtxWorld, MODELL_LAMP, Thing_Normal_model, position);
 			//丸の判定を縦に２倍する
-			DrawDX_NormalAddScale(m_mtxWorld, MODELL_LAMP, Thing_Normal_model, position, D3DXVECTOR3(1, 2, 1));
+			DrawDX_NormalAddScale(m_mtxWorld, MODELL_LAMP, &Thing_Normal_model, position, D3DXVECTOR3(1, 2, 1));
 		}	
 		if (m_DrawCheck)
 		{
@@ -147,10 +152,10 @@ void COrnament_Lamp::Damage(void)
 		{
 			if (enemy->Get_AttacFlag())
 			{
-				Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+				Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 				THING *thingenemy = enemy->GetAnimeModel();
 				int attack = enemy->Get_Attck();
-				if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
+				if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
 				{
 					m_Hp -= attack;
 					m_DrawCheck = false;
@@ -175,9 +180,9 @@ void COrnament_Lamp::PlayerDebug(void)
 
 		if (player && m_DrawCheck)
 		{
-			Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+			Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 			THING *thingenemy = player->GetAnimeModel();
-			if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
+			if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
 			{
 				DebugFont_Draw(510, 500, "当たってる！！！");
 				//m_DrawCheck = false;

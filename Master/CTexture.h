@@ -72,7 +72,10 @@ public:
 		TEX_UI_MPBAR,
 		TEX_UI_MP,
 		TEX_YELLOW_BAR,
+		TEX_RANKING_NUM,
+
 		TYPE_MAX,
+		
 	};
 
 

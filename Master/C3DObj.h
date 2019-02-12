@@ -94,13 +94,17 @@ public:
 	int Get_SummonsNum(void) { return m_SummonsNum; } // 選択中アトラクション取得 
 	int Get_CoolTime(int summonstype) { return m_CoolTime[summonstype]; }
 	bool Get_AttacFlag(void) { return m_AttakFlag; }
-	
+	int Get_OrnamentType(void) { return m_OrnamentType; }
+	bool Get_DamageFlag(void) { return m_DamageFlag; }
 	static bool boRenderSphere;//当たり判定を可視化するかどうか？ true 可視化
 	//	モデル読み込み
 	static HRESULT InitModelLoad();
 	//モデル情報取得
 	THING* C3DObj::GetAnimeModel(void);
-	THING_NORMAL* C3DObj::GetNormalModel(int index);
+	THING GetAnimeModel(int index);
+	THING_NORMAL GetNormalModel(int index);
+	THING_NORMAL GetNormal(int index);
+	THING_NORMAL GetNormalModel(void);
 	//	終了処理
 	static void Model_Finalize(void);
 	static void Model_Finalize(int index);
@@ -126,7 +130,9 @@ public:
 	
 protected:
 	THING *Thing_Anime_model;//アニメモデル情報
-	THING_NORMAL *Thing_Normal_model;//通常モデル情報
+	static THING Thing_Anime[];//読み込むモデルの最大数+1
+
+	THING_NORMAL Thing_Normal_model;//通常モデル情報
 	D3DXMATRIX m_mtxWorld;			//	ワールド変換用行列
 	D3DXMATRIX m_mtxTranslation;	//	移動行列
 	D3DXMATRIX m_mtxRotation;		//	移動行列
@@ -188,6 +194,7 @@ protected:
 	void Add_Hp(void);
 	void Add_Score(int score) { m_TotalScore += score; }	//	スコア加算
 	void Attraction_Delete(void);
+	int m_OrnamentType;
 private:
 	
 	static HRESULT InitThing(THING_NORMAL *pThing, LPSTR szXFileName);//ノーマルモデルの読み込み

@@ -34,7 +34,7 @@
 //	生成
 //=============================================================================
 
-COrnament_DustBox::COrnament_DustBox(ORNAMENT_EMITTER *Emitter) :COrnament(TYPE_DUSTBOX), C3DObj(C3DObj::TYPE_ORNAMENT)
+COrnament_DustBox::COrnament_DustBox(ORNAMENT_EMITTER *Emitter) :COrnament(MODELL_GOMIBAKO), C3DObj(C3DObj::TYPE_ORNAMENT)
 {
 	Initialize(Emitter);
 }
@@ -71,8 +71,8 @@ void COrnament_DustBox::Initialize(ORNAMENT_EMITTER *Emitter)
 	D3DXMatrixScaling(&m_mtxScaling, DUSTBOX_SIZE, DUSTBOX_SIZE, DUSTBOX_SIZE);
 	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 
-	Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
-	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 2.1f);//当たり判定の変更
+	Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
+	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 2.1f);//当たり判定の変更
 }
 
 
@@ -91,9 +91,15 @@ void COrnament_DustBox::Update(void)
 		//エフェクト処理を行う
 		if (m_DrawCheck)
 		{
-			Damage();
+			if (m_DamageFlag)
+			{
+				Damage();
+				Ornament_Damage(0.1);
+				Ornament_Flying(0.05);
+			}
 		}
 	}
+	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 }
 
 
@@ -103,13 +109,13 @@ void COrnament_DustBox::Draw(void)
 	if (m_Enable)
 	{
 		D3DXVECTOR3 position = D3DXVECTOR3(-0.75f, 1.2f, 1.5f);
-		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 		if (!m_DrawCheck)
 		{
 			if (m_FrameCount % 2 == 0)
 			{
-				DrawDX_NormalAdd(m_mtxWorld, MODELL_GOMIBAKO, Thing_Normal_model, position);
+				DrawDX_NormalAdd(m_mtxWorld, MODELL_GOMIBAKO, &Thing_Normal_model, position);
 
 				m_DrawCount++;
 				if (m_DrawCount >= ORNAMENT_WAIT_TIME)
@@ -121,7 +127,7 @@ void COrnament_DustBox::Draw(void)
 		}
 		else
 		{
-			DrawDX_NormalAdd(m_mtxWorld, MODELL_GOMIBAKO, Thing_Normal_model, position);
+			DrawDX_NormalAdd(m_mtxWorld, MODELL_GOMIBAKO, &Thing_Normal_model, position);
 		}
 	}
 }
@@ -137,10 +143,10 @@ void COrnament_DustBox::Damage(void)
 		{
 			if (enemy->Get_AttacFlag())
 			{
-				Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+				Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 				THING *thingenemy = enemy->GetAnimeModel();
 				int attack = enemy->Get_Attck();
-				if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
+				if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
 				{
 					m_Hp -= attack;
 					m_DrawCheck = false;

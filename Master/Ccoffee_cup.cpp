@@ -33,7 +33,7 @@
 //=============================================================================
 //	グローバル変数
 //=============================================================================
-THING_NORMAL *thing_cup2, *thing_cup3, *thing_cup4;
+THING_NORMAL thing_cup2, thing_cup3, thing_cup4;
 //=============================================================================
 //	生成
 //=============================================================================
@@ -101,10 +101,10 @@ void CCoffeeCup::Initialize(D3DXMATRIX mtxWorld)
 	D3DXMatrixMultiply(&m_mtxWorld4, &m_mtxWorld4, &m_mtxWorld);	
 
 	m_mtxWorld = m_mtxScaling * m_mtxWorld;
-	Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
-	thing_cup2->vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
-	thing_cup3->vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
-	thing_cup4->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+	Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
+	thing_cup2.vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
+	thing_cup3.vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
+	thing_cup4.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 }
 
 void CCoffeeCup::Update(void)
@@ -165,6 +165,12 @@ void CCoffeeCup::Update(void)
 		m_mtxWorld = m_mtxScaling * m_mtxWorld;
 		if (m_DrawCheck)
 		{
+			thing_cup2.vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
+			thing_cup3.vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
+			thing_cup4.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+			OrnamentDamage(thing_cup2);
+			OrnamentDamage(thing_cup3);
+			OrnamentDamage(thing_cup4);
 			EnemyDamage();
 			CoffeeCupDamage();
 		}
@@ -178,23 +184,23 @@ void CCoffeeCup::Draw(void)
 	if (m_Enable)
 	{
 		D3DXVECTOR3 position = D3DXVECTOR3(0.0f, 2.0f, 0.0f);
-		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
-		thing_cup2->vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
-		thing_cup3->vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
-		thing_cup4->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
+		thing_cup2.vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
+		thing_cup3.vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
+		thing_cup4.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 
 		if (!m_DrawCheck)
 		{
 			if (m_FrameCount % 2 == 0)
 			{
 				m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-				DrawDX_Normal(m_mtxWorld, MODELL_CUP_TABLE, thing_cup4);
+				DrawDX_Normal(m_mtxWorld, MODELL_CUP_TABLE, &thing_cup4);
 
-				DrawDX_NormalAdd(m_mtxWorld2, MODELL_CUP_BLUE, Thing_Normal_model, position);
+				DrawDX_NormalAdd(m_mtxWorld2, MODELL_CUP_BLUE, &Thing_Normal_model, position);
 
-				DrawDX_NormalAdd(m_mtxWorld3, MODELL_CUP_YELLOW, thing_cup2, position);
+				DrawDX_NormalAdd(m_mtxWorld3, MODELL_CUP_YELLOW, &thing_cup2, position);
 
-				DrawDX_NormalAdd(m_mtxWorld4, MODELL_CUP_GREEN, thing_cup3, position);
+				DrawDX_NormalAdd(m_mtxWorld4, MODELL_CUP_GREEN, &thing_cup3, position);
 
 				m_DrawCount++;
 				if (m_DrawCount >= ATTRACITION_WAIT_TIME)
@@ -206,13 +212,13 @@ void CCoffeeCup::Draw(void)
 		}
 		else
 		{
-			DrawDX_Normal(m_mtxWorld, MODELL_CUP_TABLE, thing_cup4);
+			DrawDX_Normal(m_mtxWorld, MODELL_CUP_TABLE, &thing_cup4);
 
-			DrawDX_NormalAdd(m_mtxWorld2, MODELL_CUP_BLUE, Thing_Normal_model, position);
+			DrawDX_NormalAdd(m_mtxWorld2, MODELL_CUP_BLUE, &Thing_Normal_model, position);
 
-			DrawDX_NormalAdd(m_mtxWorld3, MODELL_CUP_YELLOW, thing_cup2, position);
+			DrawDX_NormalAdd(m_mtxWorld3, MODELL_CUP_YELLOW, &thing_cup2, position);
 
-			DrawDX_NormalAdd(m_mtxWorld4, MODELL_CUP_GREEN, thing_cup3, position);
+			DrawDX_NormalAdd(m_mtxWorld4, MODELL_CUP_GREEN, &thing_cup3, position);
 		}
 
 		
@@ -236,23 +242,23 @@ void CCoffeeCup::EnemyDamage(void)
 		C3DObj *enemy = CEnemy::Get_Enemy(i);
 		if (attackon && enemy)
 		{//コーヒーカップのみ判定
-			Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
+			Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
 			THING *thingenemy = enemy->GetAnimeModel();
-			if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
+			if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
 			{
 				enemy->DamageFlag_Change();
 				enemy->Position_Keep(m_mtxWorld);
 				m_Hp--;
 			}
-			thing_cup2->vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
-			if (C3DObj::Collision_AnimeVSNormal(thingenemy, thing_cup2))
+			thing_cup2.vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
+			if (C3DObj::Collision_AnimeVSNormal(thingenemy, &thing_cup2))
 			{
 				enemy->DamageFlag_Change();
 				enemy->Position_Keep(m_mtxWorld);
 				m_Hp--;
 			}
-			thing_cup3->vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
-			if (C3DObj::Collision_AnimeVSNormal(thingenemy, thing_cup3))
+			thing_cup3.vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
+			if (C3DObj::Collision_AnimeVSNormal(thingenemy, &thing_cup3))
 			{
 				enemy->DamageFlag_Change();
 				enemy->Position_Keep(m_mtxWorld);
@@ -273,12 +279,12 @@ void CCoffeeCup::CoffeeCupDamage(void)
 		{
 			if (enemy->Get_AttacFlag())
 			{
-				Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
-				thing_cup2->vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
-				thing_cup3->vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
+				Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
+				thing_cup2.vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
+				thing_cup3.vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
 				THING *thingenemy = enemy->GetAnimeModel();
 				int attack = enemy->Get_Attck();
-				if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
+				if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
 				{
 					m_Hp -= attack;
 					//Animation_Change(PLAYER_WALK, 0.05);
@@ -290,7 +296,7 @@ void CCoffeeCup::CoffeeCupDamage(void)
 					}
 					break;
 				}
-				if (C3DObj::Collision_AnimeVSNormal(thingenemy, thing_cup2))
+				if (C3DObj::Collision_AnimeVSNormal(thingenemy, &thing_cup2))
 				{
 					m_Hp -= attack;
 					//Animation_Change(PLAYER_WALK, 0.05);
@@ -302,7 +308,7 @@ void CCoffeeCup::CoffeeCupDamage(void)
 					}
 					break;
 				}
-				if (C3DObj::Collision_AnimeVSNormal(thingenemy, thing_cup3))
+				if (C3DObj::Collision_AnimeVSNormal(thingenemy, &thing_cup3))
 				{
 					m_Hp -= attack;
 					//Animation_Change(PLAYER_WALK, 0.05);
