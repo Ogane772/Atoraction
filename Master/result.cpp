@@ -64,6 +64,7 @@ void Result_Initialize(void)
 
 void Result_Finalize(void)
 {
+	C3DObj::Reset_Score();
 	delete presult2;
 	delete presult;
 	StopSound();

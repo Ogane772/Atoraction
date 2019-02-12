@@ -15,7 +15,7 @@
 C3DObj *C3DObj::p3DObj[MAX_GAMEOBJ];
 int C3DObj::m_3DObjNum = 0;
 int C3DObj::m_TotalScore = 0;
-
+THING C3DObj::Thing_Anime[5];//ì«Ç›çûÇﬁÉÇÉfÉãÇÃç≈ëÂêî+1
 C3DObj::MaterialFileData C3DObj::NORMAL_MODEL_FILES[] = {
 	{ "asset/model/emi-ru2.x" },
 	{ "asset/model/dish.blend.x" },
@@ -637,9 +637,24 @@ THING* C3DObj::GetAnimeModel(void)
 	return &Thing;
 }
 
-THING_NORMAL* C3DObj::GetNormalModel(int index)
+THING C3DObj::GetAnimeModel(int index)
 {
-	return &Thing_Normal[index];
+	return Thing_Anime[index];
+}
+
+THING_NORMAL C3DObj::GetNormalModel(int index)
+{
+	return Thing_Normal[index];
+}
+
+THING_NORMAL C3DObj::GetNormal(int index)
+{
+	return Thing_Normal[index];
+}
+
+THING_NORMAL C3DObj::GetNormalModel(void)
+{
+	return Thing_Normal_model;
 }
 
 //=============================================================================

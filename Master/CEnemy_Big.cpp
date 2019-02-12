@@ -155,7 +155,11 @@ void CEnemy_Big::Update(void)
 
 
 	}
+	Ornament_Check();
+
 	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
+	m_mtxKeepTranslation = m_mtxTranslation;
+
 	Draw_Check();
 
 	if (m_Hp <= 0)

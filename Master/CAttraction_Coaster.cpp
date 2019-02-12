@@ -72,8 +72,8 @@ void Coaster::Initialize()
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 
 	Thing_Normal_model = GetNormalModel(MODELL_COASTER);
-	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0),2.2f);//“–‚½‚è”»’è‚Ì•ÏX
-	Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0),2.2f);//“–‚½‚è”»’è‚Ì•ÏX
+	Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 }
 
 void Coaster::Update(void)
@@ -91,15 +91,18 @@ void Coaster::Update(void)
 		D3DXMatrixScaling(&m_mtxScaling, COSTER_SCALE, COSTER_SCALE, COSTER_SCALE);
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(u + v));
 		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
+
+		if (m_DrawCheck)
+		{
+			EnemyDamage();
+			OrnamentDamage();
+		}
 	}
 	else
 	{
 		C3DObj_delete();
 	}
-	if (m_DrawCheck)
-	{
-		EnemyDamage();
-	}
+	
 }
 
 void Coaster::Draw(void)
@@ -109,9 +112,9 @@ void Coaster::Draw(void)
 	//DebugFont_Draw(600, 0, "U = %f\n,", u);
 	if (m_Enable)
 	{
-		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 
-		DrawDX_Normal(m_mtxWorld, MODELL_COASTER, Thing_Normal_model);
+		DrawDX_Normal(m_mtxWorld, MODELL_COASTER, &Thing_Normal_model);
 	}
 }
 
@@ -149,10 +152,10 @@ void Coaster::EnemyDamage(void)
 		if (enemy)
 		{
 	
-			Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+			Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 			THING *thingenemy = enemy->GetAnimeModel();
 			int hp = enemy->Get_Hp();
-			if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
+			if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
 			{
 				enemy->DamageFlag_Change();
 				enemy->Position_Keep(m_mtxWorld);

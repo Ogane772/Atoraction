@@ -126,6 +126,7 @@ void Cwheel::Update(void)
 		}
 		if (m_DrawCheck)
 		{
+			OrnamentDamage();
 			EnemyDamage();
 		}
 	}

@@ -91,9 +91,15 @@ void COrnament_DustBox::Update(void)
 		//エフェクト処理を行う
 		if (m_DrawCheck)
 		{
-			Damage();
+			if (m_DamageFlag)
+			{
+				Damage();
+				Ornament_Damage(0.1);
+				Ornament_Flying(0.05);
+			}
 		}
 	}
+	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 }
 
 

@@ -126,9 +126,9 @@ void CoasterON::Draw(void)
 	//DebugFont_Draw(600, 0, "U = %f\n,", u);
 	if (m_Enable)
 	{
-		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 
-		DrawDX_Normal(m_mtxWorld, MODELL_COASTER, Thing_Normal_model);
+		DrawDX_Normal(m_mtxWorld, MODELL_COASTER, &Thing_Normal_model);
 	}
 }
 

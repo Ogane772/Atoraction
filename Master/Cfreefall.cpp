@@ -130,6 +130,8 @@ void Cfreefall::Update(void)
 
 		if (m_DrawCheck)
 		{
+			fall.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
+			OrnamentDamage(fall);
 			EnemyDamage();
 			FreeFallDamage();
 		}
