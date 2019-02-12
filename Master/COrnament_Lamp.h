@@ -19,6 +19,7 @@ public:
 	void Draw(void);
 	void Finalize(void);
 	void Damage(void);
+	void PlayerDebug(void);
 	bool Get_DrawCheck(void) { return false; }
 private:
 	void Lamp_Create(void);

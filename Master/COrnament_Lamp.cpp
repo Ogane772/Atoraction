@@ -13,6 +13,7 @@
 #include "exp.h"
 #include "CEnemy.h"
 #include "CTexture.h"
+#include "Cplayer.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -73,8 +74,7 @@ void COrnament_Lamp::Initialize(ORNAMENT_EMITTER *Emitter)
 	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 
 	Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
-	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 1.1f);//当たり判定の変更
-
+	InitSphere(m_pD3DDevice, Thing_Normal_model, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 2.1f);//当たり判定の変更
 }
 
 
@@ -94,6 +94,7 @@ void COrnament_Lamp::Update(void)
 		if (m_DrawCheck)
 		{
 			Damage();
+			PlayerDebug();
 		}
 	}
 }
@@ -104,14 +105,14 @@ void COrnament_Lamp::Draw(void)
 {
 	if (m_Enable)
 	{
-		D3DXVECTOR3 position = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+		D3DXVECTOR3 position = D3DXVECTOR3(0.0f, 2.0f, 0.0f);
 		Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 		if (!m_DrawCheck)
 		{
 			if (m_FrameCount % 2 == 0)
 			{
-				DrawDX_NormalAdd(m_mtxWorld, MODELL_LAMP, Thing_Normal_model, position);
+				DrawDX_NormalAddScale(m_mtxWorld, MODELL_LAMP, Thing_Normal_model, position, D3DXVECTOR3(1, 2, 1));
 
 				m_DrawCount++;
 				if (m_DrawCount >= ORNAMENT_WAIT_TIME)
@@ -123,8 +124,15 @@ void COrnament_Lamp::Draw(void)
 		}
 		else
 		{
-			DrawDX_NormalAdd(m_mtxWorld, MODELL_LAMP, Thing_Normal_model, position);
-		}		
+			//DrawDX_NormalAdd(m_mtxWorld, MODELL_LAMP, Thing_Normal_model, position);
+		//	DrawDX_NormalAdd(m_mtxWorld, MODELL_LAMP, Thing_Normal_model, position);
+			//丸の判定を縦に２倍する
+			DrawDX_NormalAddScale(m_mtxWorld, MODELL_LAMP, Thing_Normal_model, position, D3DXVECTOR3(1, 2, 1));
+		}	
+		if (m_DrawCheck)
+		{
+			PlayerDebug();
+		}
 	}
 }
 
@@ -153,6 +161,36 @@ void COrnament_Lamp::Damage(void)
 					}
 					break;
 				}
+			}
+		}
+	}
+}
+
+//プレイヤーと当たっているかデバック
+void COrnament_Lamp::PlayerDebug(void)
+{
+	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	{
+		C3DObj *player = CPlayer::Get_Player();
+
+		if (player && m_DrawCheck)
+		{
+			Thing_Normal_model->vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+			THING *thingenemy = player->GetAnimeModel();
+			if (C3DObj::Collision_AnimeVSNormal(thingenemy, Thing_Normal_model))
+			{
+				DebugFont_Draw(510, 500, "当たってる！！！");
+				//m_DrawCheck = false;
+				if (m_Hp <= 0)
+				{
+			//		Exp_Create(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
+			//		C3DObj_delete();
+				}
+				break;
+			}
+			else
+			{
+				DebugFont_Draw(510, 500, "当たってない");
 			}
 		}
 	}
