@@ -69,7 +69,7 @@ void COrnament_BENCH::Initialize(ORNAMENT_EMITTER *Emitter)
 
 	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(m_Direction));
 	D3DXMatrixTranslation(&m_mtxTranslation, Emitter->InitPos.x, Emitter->InitPos.y, Emitter->InitPos.z);
-	D3DXMatrixScaling(&m_mtxScaling, BENCH_SIZE, BENCH_SIZE, BENCH_SIZE);
+	D3DXMatrixScaling(&m_mtxScaling, Emitter->scale.x, Emitter->scale.y, Emitter->scale.z);
 	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 
 	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 3.1f);//“–‚½‚è”»’è‚Ì•ÏX

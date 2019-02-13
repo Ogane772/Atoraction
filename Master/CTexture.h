@@ -73,6 +73,7 @@ public:
 		TEX_UI_MP,
 		TEX_YELLOW_BAR,
 		TEX_RANKING_NUM,
+		TEX_KUSA_RENGA,
 
 		TYPE_MAX,
 		
