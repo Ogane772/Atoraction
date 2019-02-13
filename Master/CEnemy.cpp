@@ -26,7 +26,7 @@
 //=============================================================================
 
 #define CHASE_SPEED (0.015f)
-
+#define ENEMY_HITSTOP (120)
 //=============================================================================
 //	ê√ìIïœêî
 //=============================================================================
@@ -306,6 +306,7 @@ void CEnemy::Enemy_Damage(float flyinghigh)
 			PlaySound(NORMALHIT_SE);
 			Exp_Set(HIT, m_mtxWorld._41, m_mtxWorld._42 + 1, m_mtxWorld._43 + 1, 4.0, 0);
 			m_Hp--;
+			Sleep(ENEMY_HITSTOP);
 			m_EnemyFlying = true;
 			m_FlyingMove = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43) - m_PosKeep;
 			m_FlyingMove.y = flyinghigh;

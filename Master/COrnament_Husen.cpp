@@ -66,7 +66,7 @@ void COrnament_HUSEN::Initialize(ORNAMENT_EMITTER *Emitter)
 	D3DXMatrixScaling(&m_mtxScaling, Emitter->scale.x, Emitter->scale.y, Emitter->scale.z);
 	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 
-	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 3.1f);//当たり判定の変更
+	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 1.1f);//当たり判定の変更
 
 	Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
 }
@@ -87,6 +87,7 @@ void COrnament_HUSEN::Update(void)
 		//エフェクト処理を行う
 		if (m_DrawCheck)
 		{
+			m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 			if (m_DamageFlag)
 			{
 				Ornament_Damage(0.1f);
@@ -95,7 +96,7 @@ void COrnament_HUSEN::Update(void)
 				Death();
 			}
 		}
-		m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
+		
 	}
 
 }
@@ -106,9 +107,10 @@ void COrnament_HUSEN::Draw(void)
 {
 	if (m_Enable)
 	{
+		D3DXVECTOR3 position = D3DXVECTOR3(0.0f, 2.0f, 0.0f);
 		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
-		DrawDX_Normal(m_mtxWorld, MODELL_HUSEN, &Thing_Normal_model);
+		DrawDX_NormalAdd(m_mtxWorld, MODELL_HUSEN, &Thing_Normal_model, position);
 	}
 }
 
