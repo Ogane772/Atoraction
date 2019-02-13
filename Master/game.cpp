@@ -46,7 +46,7 @@ void Game_Initialize(void)
 	CLight::Light_Create();					//	ライト生成
 	CCamera::Camera_Create();				//	カメラ生成
 
-	CMeshField::MeshField_Create(CTexture::TEX_FLORR, 120.0f, 1, 1);							//	地面生成
+	CMeshField::MeshField_Create(CTexture::TEX_KUSA_RENGA, 120.0f, 2, 2);							//	地面生成
 	//CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_FLORR, 10.0f, SYLINDERSIZE, 20, 1,true);	//	内カベ生成
 	CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_FLORR, 10.0f, FIELDSIZE, 20, 1, false);	//	外カベ生成
 	CMesh_SkyDome::Mesh_SkyDome_Create(CTexture::TEX_SKY, 2.0f, SKYSIZE, 40, 20);					//	空生成

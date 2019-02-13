@@ -186,7 +186,10 @@
     <ClCompile Include="COrnament_Bench.cpp" />
     <ClCompile Include="COrnament_DustBox.cpp" />
     <ClCompile Include="COrnament_Fountain.cpp" />
+    <ClCompile Include="COrnament_Husen.cpp" />
+    <ClCompile Include="COrnament_Kanransya.cpp" />
     <ClCompile Include="COrnament_Lamp.cpp" />
+    <ClCompile Include="COrnament_Meri.cpp" />
     <ClCompile Include="Cplayer.cpp" />
     <ClCompile Include="CSkinAnimation.cpp" />
     <ClCompile Include="CTexture.cpp" />
@@ -241,7 +244,10 @@
     <ClInclude Include="COrnament_Bench.h" />
     <ClInclude Include="COrnament_DustBox.h" />
     <ClInclude Include="COrnament_Fountain.h" />
+    <ClInclude Include="COrnament_Husen.h" />
+    <ClInclude Include="COrnament_Kanransya.h" />
     <ClInclude Include="COrnament_Lamp.h" />
+    <ClInclude Include="COrnament_Meri.h" />
     <ClInclude Include="Cplayer.h" />
     <ClInclude Include="CSkinAnimation.h" />
     <ClInclude Include="CTexture.h" />

@@ -32,6 +32,9 @@ C3DObj::MaterialFileData C3DObj::NORMAL_MODEL_FILES[] = {
 	{ "asset/model/ornament/gomibako.x" },
 	{ "asset/model/ornament/bench.x" },
 	{ "asset/model/ornament/hunsui.x" },
+	{ "asset/model/ornament/kanransya_Obj.blend.x" },
+	{ "asset/model/ornament/husen.blend.x" },
+	{ "asset/model/ornament/meri.blend.x" },
 };
 //	使いたいアニメモデルの数だけ書く
 C3DObj::MaterialFileData2 C3DObj::ANIME_MODEL_FILES[] = {
@@ -44,7 +47,7 @@ C3DObj::MaterialFileData2 C3DObj::ANIME_MODEL_FILES[] = {
 int C3DObj::MODEL_FILES_MAX = sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0]);
 int C3DObj::ANIME_MODEL_FILES_MAX = sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0]);
 
-bool C3DObj::boRenderSphere = true;
+bool C3DObj::boRenderSphere = false;
 //モデルアニメーション関係変数
 /*
 #define MODEL_MAX (9)
