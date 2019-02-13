@@ -72,7 +72,7 @@ void Coaster::Initialize()
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 
 	Thing_Normal_model = GetNormalModel(MODELL_COASTER);
-	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0),2.2f);//“–‚½‚è”»’è‚Ì•ÏX
+	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 2.2f);//“–‚½‚è”»’è‚Ì•ÏX
 	Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 }
 
@@ -95,14 +95,13 @@ void Coaster::Update(void)
 		if (m_DrawCheck)
 		{
 			EnemyDamage();
-			OrnamentDamage();
 		}
 	}
 	else
 	{
 		C3DObj_delete();
 	}
-	
+
 }
 
 void Coaster::Draw(void)
@@ -151,7 +150,6 @@ void Coaster::EnemyDamage(void)
 		C3DObj *enemy = CEnemy::Get_Enemy(i);
 		if (enemy)
 		{
-	
 			Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 			THING *thingenemy = enemy->GetAnimeModel();
 			int hp = enemy->Get_Hp();

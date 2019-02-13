@@ -39,7 +39,7 @@ public:
 	void Attraction_Finalize(int index);
 
 	static void Create(int nType);
-	static CAttraction * Get_Attraction(int index);
+	static C3DObj* Get_Attraction(int index);
 	static CAttraction * Get_Attraction(int index,int type);
 	static int Get_AttractionNum(int AttractionType) { return m_AttractionNum[AttractionType]; }
 	static int Get_AttractionIndex(int AttractionType) { return m_AttractionNum[AttractionType] - 1; }

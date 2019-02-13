@@ -307,6 +307,18 @@ void Num_Draw3(float x, float y, int score, int fig, int color, bool zero)
 	}
 }
 
+void ResultScore_Draw(float x, float y, int score, int fig, int colornum)
+{
+	for (int i = 0; i < fig; i++)
+	{
+
+		int number = score % 10;
+		score /= 10;
+		Number_Draw2(x + SCORE_NUMBER_SIZE*(fig - (i + 1)), y, number, colornum);
+
+	}
+
+}
 
 void ResultScore_Draw(float x, float y, int score, int fig, int texindex, int colornum)
 {

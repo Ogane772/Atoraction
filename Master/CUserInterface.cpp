@@ -8,13 +8,14 @@
 //=============================================================================
 //	インクルードファイル
 //=============================================================================
-
+#include "CAttraction.h"
 #include "CUserInterface.h"
 #include "Cplayer.h"
 #include "CCamera.h"
 #include "common.h"
 #include "CEnemy.h"
 #include "score_draw.h"
+#include "game.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -110,8 +111,21 @@ void CUserInterFace::Draw(void)
 	D3DXMATRIX playermatrix = playerget->Get_mtxTranslation();
 	Sprite_Draw(TEX_MAP, 1550.0f, 0.0f, 0, 0, 300, 300);
 
-	Sprite_Draw(TEX_Player_Icon, 1580.0f + playermatrix._41, 60.0f - playermatrix._43, 0, 0, 120, 60);
+	User_angle = (int)(playerget->Get_Angle());
+	//キャラクター
+	Sprite_Draw(TEX_Player_Icon, 1685.0f + (playermatrix._41 * 1.5f), 140.0f - (playermatrix._43 * 1.5f), 0, 0, 20, 20, 10, 10, 1, 1, D3DXToRadian(User_angle) + D3DXToRadian(90));
+	//アトラクション
+	for (int i = 0; i < ATTRACTION_MAX; i++)
+	{
+		C3DObj *attraction_get = CAttraction::Get_Attraction(i);
+		if (attraction_get)
+		{
 
+			D3DXMATRIX Attraction_matrix = attraction_get->Get_mtxWorld();
+			Sprite_Draw(TEX_ATTRACTION, 1688.5f + (Attraction_matrix._41 * 1.56f), 140.0f - (Attraction_matrix._43 * 1.56f), 0, 0, 14, 14, 7, 7, 1, 1, 0);
+
+		}
+	}
 	//エネミー
 	for (int i = 0; i < ENEMY_MAX; i++)
 	{
@@ -120,7 +134,7 @@ void CUserInterFace::Draw(void)
 		{
 			D3DXMATRIX enemymatrix = enemyget->Get_mtxTranslation();
 
-			Sprite_Draw(TEX_ENEMY_ICON, 1605.0f + enemymatrix._41, 70.0f - enemymatrix._43, 0, 0, 12, 12);
+			Sprite_Draw(TEX_ENEMY_ICON, 1690.0f + (enemymatrix._41 * 1.5f), 150.0f - (enemymatrix._43 * 1.56f), 0, 0, 12, 12, 6, 6, 1, 1, 0);
 		}
 	}
 	Ui_Ber();
@@ -129,10 +143,11 @@ void CUserInterFace::Draw(void)
 
 void CUserInterFace::Ui_Ber(void)
 {
-	Sprite_Draw(TEX_HP2, 600, 38, 0, 0, 200, 50, 0.0f, 0.0f, 4.0f, 0.8f, 0.0f);
+	Sprite_Draw(TEX_MP3, 600, 38, 0, 0, 791, 40, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
+	Sprite_Draw(TEX_HP3, 600, 38, 0, 0, 791 * Get_EnemyPer(), 40, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
 	Sprite_Draw(TEX_UI_BER, 500, 10, 0, 0, 1024, 157, 0.0f, 0.0f, 1.0f, 0.6f, 0.0f);
-	Sprite_Draw(TEX_UI_MEMORI, 1200, 10, 0, 0, 43, 38, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
-	Sprite_Draw(TEX_UI_MEMORI, 1200, 70, 0, 0, 43, 38, 43 / 2, 38 / 2, 1.0f, 1.0f, D3DXToRadian(180));
+	Sprite_Draw(TEX_UI_MEMORI, 614 + 755 * Get_EnemyPer(), 10, 0, 0, 43, 38, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
+	Sprite_Draw(TEX_UI_MEMORI, 614 + 755 * Get_EnemyPer(), 70, 0, 0, 43, 38, 43 / 2, 38 / 2, 1.0f, 1.0f, D3DXToRadian(180));
 }
 
 void CUserInterFace::Ui_Icon(void)

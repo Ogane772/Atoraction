@@ -4,7 +4,6 @@
 ////
 //////////////////////////////////////////////////
 
-
 //=============================================================================
 //	インクルードファイル
 //=============================================================================
@@ -24,6 +23,7 @@
 
 #define ASPECT ((float)WINDOW_WIDTH / WINDOW_HIGHT)
 #define ATLENGTH (14.0f)
+#define COSLENGTH (0.008f)
 #define CAMERA_SPEED (0.00f)
 
 
@@ -68,6 +68,7 @@ void CCamera::Camera_Initialize(void)
 {
 	m_CameraPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_AtLength = ATLENGTH;
+	Cos_AtLength = COSLENGTH;
 
 	m_Front = D3DXVECTOR3(0.0f, -0.4f, 1.0f);
 	D3DXVec3Normalize(&m_Front, &m_Front); //　長さを1にする　正規化
@@ -158,8 +159,15 @@ void CCamera::Update(void)
 	{
 		m_AngleCheck = false;
 	}
-	m_CameraPos = m_at - m_Front * m_AtLength;
 
+	if (C3DObj::GetW_coaster() == false)
+	{
+		m_CameraPos = m_at - m_Front * m_AtLength;
+	}
+	if (C3DObj::GetW_coaster() == true)
+	{
+		m_CameraPos = m_at - m_Front * Cos_AtLength;
+	}
 	//WallCheck();
 
 	D3DXVECTOR3 up(0.0f, 1.0f, 0.0f);		//  上方向

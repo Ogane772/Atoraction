@@ -51,7 +51,7 @@ public:
 	static bool m_delete;
 	static C3DObj *Get_Player(void);
 	bool Get_DrawCheck(void) { return m_DrawCheck; }
-
+	static bool GetCoaster_Enable(void) { return g_CosterMode; };
 protected:
 	
 	
@@ -92,7 +92,7 @@ private:
 	int m_PlayerIndex;
 	static int m_KO_Count;
 	
-	bool g_CosterMode;
+	static bool g_CosterMode;
 	bool g_CosterModeStandby;//コースターを呼んでるとき
 	int m_DrawCount;
 	

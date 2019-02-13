@@ -95,13 +95,14 @@ void COrnament_BENCH::Update(void)
 		{
 			if (m_DamageFlag)
 			{
+				Ornament_Damage(0.1f);
+				Ornament_Flying(0.05f);
 				Damage();
-				Ornament_Damage(0.1);
-				Ornament_Flying(0.05);
 			}
 		}
 		m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 	}
+
 }
 
 

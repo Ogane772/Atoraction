@@ -78,7 +78,7 @@ void CoasterON::Initialize()
 	D3DXMATRIX mtx = playerget->Get_mtxWorld();
 	D3DXMatrixTranslation(&m_mtxTranslation, 0, 0, -10.0f);
 	angle = (float)(playerget->Get_Angle());
-	D3DXMatrixRotationAxis(&mtxR, &m_up, D3DXToRadian(angle + 90));
+	D3DXMatrixRotationAxis(&mtxR, &m_up, D3DXToRadian(-angle + 270));
 	D3DXVec3TransformNormal(&m_front, &m_front, &mtxR);
 	D3DXVec3TransformNormal(&m_right, &m_right, &mtxR);
 	m_mtxWorld = m_mtxTranslation;
@@ -112,7 +112,7 @@ void CoasterON::Update(void)
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(u + v));
 		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 	}
-	else if(m_FrameCount - m_TimeKeep > COSTERON_ENDTIME)
+	else if (m_FrameCount - m_TimeKeep > COSTERON_ENDTIME)
 	{
 		C3DObj_delete();
 	}
