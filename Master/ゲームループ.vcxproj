@@ -208,6 +208,7 @@
     <ClCompile Include="result.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="score_draw.cpp" />
+    <ClCompile Include="Score_total.cpp" />
     <ClCompile Include="shadow.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="system_timer.cpp" />
@@ -266,6 +267,7 @@
     <ClInclude Include="result.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="score_draw.h" />
+    <ClInclude Include="Score_total.h" />
     <ClInclude Include="shadow.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="system_timer.h" />

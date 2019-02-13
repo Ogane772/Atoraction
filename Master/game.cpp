@@ -30,6 +30,7 @@
 //=============================================================================
 static bool g_bend;				//	フェードインアウトフラグ
 static bool g_gameend;
+static float EnemyPer;
 //=============================================================================
 //	初期化処理
 //=============================================================================
@@ -79,6 +80,8 @@ void Game_Updata(void)
 
 	CEnemy::Create();		//	エネミー生成
 	COrnament::Create();    //  オブジェクト生成
+	EnemyPer = 1.0f - (float)CEnemy::Get_EnemyNum(0) / ENEMY_MAX; //敵の数を取得
+
 	if (g_gameend)		//	FraemCountがGAMEENDになるまでカウントUP　なったら終了
 	{
 		if (!g_bend)
@@ -125,4 +128,9 @@ void Game_Draw(void)
 void Game_End(void)
 {
 	g_gameend = true;
+}
+
+float Get_EnemyPer(void)
+{
+	return EnemyPer;
 }

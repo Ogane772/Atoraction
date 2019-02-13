@@ -16,6 +16,8 @@ C3DObj *C3DObj::p3DObj[MAX_GAMEOBJ];
 int C3DObj::m_3DObjNum = 0;
 int C3DObj::m_TotalScore = 0;
 THING C3DObj::Thing_Anime[5];//読み込むモデルの最大数+1
+bool C3DObj::GetWCos = false;
+
 C3DObj::MaterialFileData C3DObj::NORMAL_MODEL_FILES[] = {
 	{ "asset/model/emi-ru2.x" },
 	{ "asset/model/dish.blend.x" },
@@ -145,6 +147,7 @@ void C3DObj::UpdateAll()
 {
 	for (int i = 0; i < MAX_GAMEOBJ; i++)
 	{
+		GetWCos = CPlayer::GetCoaster_Enable();
 		// ポリモーフィズムによって派生クラスのUpdate()が呼ばれる
 		if (p3DObj[i])
 		{

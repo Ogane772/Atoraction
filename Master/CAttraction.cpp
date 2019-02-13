@@ -104,10 +104,17 @@ void CAttraction::Create(int nType)
 	}
 }
 
-CAttraction* CAttraction::Get_Attraction(int index)
+C3DObj* CAttraction::Get_Attraction(int index)
 {
-	createchack = false;
-	return m_pAttraction[index];
+	C3DObj *Attraction = C3DObj::Get(index);
+	if (Attraction)
+	{
+		if ((Attraction->Get_3DObjType() == C3DObj::TYPE_POPCORN) || (Attraction->Get_3DObjType() == C3DObj::TYPE_ATTRACTION))
+		{
+			return Attraction;
+		}
+	}
+	return NULL;
 }
 CAttraction* CAttraction::Get_Attraction(int index, int type)
 {

@@ -40,7 +40,7 @@ private:
 	D3DXVECTOR3 m_CameraPos;	//	カメラ座標
 	D3DXVECTOR3 m_at;		//	見てる場所	注視点
 	float m_AtLength = 0.0; // atまでの長さ
-
+	float Cos_AtLength = 0.0;
 	D3DXVECTOR3 m_Front;		//	フロントベクトル
 	static D3DXVECTOR3 m_Right;	//	ライトベクトル
 	D3DXVECTOR3 m_Up;			//	アップベクトル

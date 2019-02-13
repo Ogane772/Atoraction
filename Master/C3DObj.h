@@ -132,7 +132,7 @@ public:
 	
 	static int Get_Score(void) { return m_TotalScore; }	//	スコア取得
 	static void Reset_Score(void) { m_TotalScore = 0; }	//　スコアリセット
-	
+	static bool GetW_coaster(void) { return GetWCos; }
 protected:
 	THING *Thing_Anime_model;//アニメモデル情報
 	static THING Thing_Anime[];//読み込むモデルの最大数+1
@@ -220,7 +220,7 @@ private:
 	static D3DMATERIAL9 *m_pd3dMaterials[];		//　
 
 
-	
+	static bool GetWCos;
 
 	#define MODEL_MAX (9)
 

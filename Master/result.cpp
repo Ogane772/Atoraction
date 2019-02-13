@@ -122,7 +122,7 @@ void Result_Draw(void)
 
 
 	}
-	ResultScore_Draw(WINDOW_WIDTH / 1.4, WINDOW_HIGHT / 2 - 190 + 220, g_ranking[6].score, 5, CTexture::TEX_RANKING_NUM, 1);
+	ResultScore_Draw(WINDOW_WIDTH / 1.4f, WINDOW_HIGHT / 2 - 190 + 220, g_ranking[6].score, 5, CTexture::TEX_RANKING_NUM, 1);
 	if ((count % 60) > 25)
 	{
 		//presult2->Sprite_Draw(CTexture::TEX_SPACE, 450, WINDOW_HIGHT - 90, 0, CTexture::Texture_GetHeight(CTexture::TEX_SPACE, 3) * 0, CTexture::Texture_GetWidth(CTexture::TEX_SPACE, 1), CTexture::Texture_GetHeight(CTexture::TEX_SPACE, 3));

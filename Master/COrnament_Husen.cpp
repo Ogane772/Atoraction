@@ -85,7 +85,18 @@ void COrnament_HUSEN::Update(void)
 	if (m_Enable)
 	{
 		//エフェクト処理を行う
+		if (m_DrawCheck)
+		{
+			if (m_DamageFlag)
+			{
+				Ornament_Damage(0.1f);
+				Ornament_Flying(0.05f);
+				Damage();
+			}
+		}
+		m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 	}
+
 }
 
 
