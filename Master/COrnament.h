@@ -24,7 +24,9 @@ public:
 		TYPE_DUSTBOX,	//	ゴミ箱
 		TYPE_BENCH,		//	ベンチ
 		TYPE_FOUNTAIN,	//	噴水
-		
+		TYPE_KANRANSYA_DODAI,	//観覧車の土台	
+		TYPE_HUSEN,				//風船
+		TYPE_MERI,				//メリーゴーランド
 		TYPE_MAX
 	};
 	
@@ -56,6 +58,7 @@ protected:
 		D3DXVECTOR3 InitPos;	//	初期位置
 		int InitDirection;		//	初期向き
 		bool CreateCheck;		//	生成フラグ
+		D3DXVECTOR3 scale;      //  大きさ
 	}ORNAMENT_EMITTER;
 	int m_OrnamentIndex;
 	int m_Score;				//	スコア

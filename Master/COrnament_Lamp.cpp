@@ -70,7 +70,7 @@ void COrnament_Lamp::Initialize(ORNAMENT_EMITTER *Emitter)
 
 	D3DXMatrixTranslation(&m_mtxTranslation, Emitter->InitPos.x, Emitter->InitPos.y, Emitter->InitPos.z);
 	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(m_Direction));
-	D3DXMatrixScaling(&m_mtxScaling, LAMP_SIZE, LAMP_SIZE, LAMP_SIZE);
+	D3DXMatrixScaling(&m_mtxScaling, Emitter->scale.x, Emitter->scale.y, Emitter->scale.z);
 	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 
 	Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);

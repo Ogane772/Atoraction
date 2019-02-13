@@ -69,6 +69,7 @@ CTexture::TextureFileData CTexture::TEXTURE_FILES[] = {
 	{ "asset/ui/ui_mp_font.png",800,80 },
 	{ "asset/Bar.png",200,50 },
 	{ "asset/score2.png",1350,270 },
+	{ "asset/kusa_renga2.png",760,760 },
 };
 
 int CTexture::TEXTURE_MAX = sizeof(CTexture::TEXTURE_FILES) / sizeof(TEXTURE_FILES[0]);

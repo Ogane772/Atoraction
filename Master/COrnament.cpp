@@ -13,6 +13,9 @@
 #include "COrnament_DustBox.h"
 #include "COrnament_Bench.h"
 #include "COrnament_Fountain.h"
+#include"COrnament_Kanransya.h"
+#include"COrnament_Husen.h"
+#include"COrnament_Meri.h"
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================
@@ -26,28 +29,30 @@ COrnament *COrnament::m_pOrnament[ORNAMENT_MAX] = {};
 
 COrnament::ORNAMENT_EMITTER COrnament::m_OrnamentEmitter[]
 {
-	{ 0   , TYPE_LAMP, D3DXVECTOR3(10.0f, 0.0f , 10.0f), 0	   ,false },
-	{ 0	  , TYPE_FOUNTAIN, D3DXVECTOR3(40.0f , 0.0f , 0.0f),  0 ,false },
-	{ 0	  , TYPE_FOUNTAIN, D3DXVECTOR3(50.0f, 0.0f , 10.0f),90     ,false },
-	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(35.0f, 0.0f , 10.0f),90     ,false },
-	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(30.0f, 0.0f , 30.0f),90     ,false },
-	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(45.0f, 0.0f , 15.0f),90     ,false },
-	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(60.0f, 0.0f , 40.0f),90     ,false },
-	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(-50.0f, 0.0f , 50.0f),90     ,false },
-	{ 0	  , TYPE_BENCH, D3DXVECTOR3(15.0f, 0.0f , 10.0f),90     ,false },
-	{ 0	  , TYPE_BENCH, D3DXVECTOR3(-10.0f, 0.0f , 20.0f),90     ,false },
-	/*{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 20.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 40.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 60.0f), DIRE_SOUTH     ,false },
-	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-10.0f), DIRE_SOUTH     ,false },
-	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-20.0f), DIRE_SOUTH     ,false },
-	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-30.0f), DIRE_SOUTH     ,false },
-	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-40.0f), DIRE_SOUTH     ,false },
-	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-50.0f), DIRE_SOUTH     ,false },
-	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-60.0f), DIRE_SOUTH     ,false },*/
+	{ 0	  , TYPE_HUSEN, D3DXVECTOR3(0.0f, 0.0f , -15.5f),270     ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+
+	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(-31.0f, 0.0f , -4.5f),270     ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(-34.0f, 0.0f , -4.5f),270     ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+
+	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(31.0f, 0.0f , -4.5f),270     ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(34.0f, 0.0f , -4.5f),270     ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(-6.0f, 1.0f , -60.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(6.0f, 1.0f , -60.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(-6.0f, 1.0f , 60.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(6.0f, 1.0f , 60.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+
+
+	{ 0	  , TYPE_FOUNTAIN, D3DXVECTOR3(0.0f , 0.0f , 0.0f),  0 ,false, D3DXVECTOR3(2.0f, 2.0f , 2.0f), },
+
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(-18.0f, 0.0f , 18.0f), 405	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(-18.0f, 0.0f , -18.0f), 315	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(18.0f, 0.0f , -18.0f), 225	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(18.0f, 0.0f , 18.0f), 135	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+
+	{ 0	  , TYPE_KANRANSYA_DODAI, D3DXVECTOR3(-65.0f, 0.0f , 35.0f), 135	   ,false, D3DXVECTOR3(2.0f, 2.0f , 2.0f), },
+	{ 0	  , TYPE_MERI, D3DXVECTOR3(40.0f, 0.0f , -36.0f),270     ,false, D3DXVECTOR3(1.5f, 1.5f , 1.5f), },
 };
 //=============================================================================
 //	ê∂ê¨
@@ -99,6 +104,21 @@ void COrnament::Create(void)
 				if (m_OrnamentEmitter[i].Type == TYPE_FOUNTAIN)
 				{
 					COrnament_Fountain *pdustlamp = new COrnament_Fountain(&m_OrnamentEmitter[i]);
+					m_OrnamentEmitter[i].CreateCheck = true;
+				}
+				if (m_OrnamentEmitter[i].Type == TYPE_KANRANSYA_DODAI)
+				{
+					COrnament_KANRANSYA *pdustlamp = new COrnament_KANRANSYA(&m_OrnamentEmitter[i]);
+					m_OrnamentEmitter[i].CreateCheck = true;
+				}
+				if (m_OrnamentEmitter[i].Type == TYPE_HUSEN)
+				{
+					COrnament_HUSEN *pdustlamp = new COrnament_HUSEN(&m_OrnamentEmitter[i]);
+					m_OrnamentEmitter[i].CreateCheck = true;
+				}
+				if (m_OrnamentEmitter[i].Type == TYPE_MERI)
+				{
+					COrnament_MERI *pdustlamp = new COrnament_MERI(&m_OrnamentEmitter[i]);
 					m_OrnamentEmitter[i].CreateCheck = true;
 				}
 			}
