@@ -34,6 +34,7 @@
 
 #define FREEFALL_UP		(25.0f)
 #define FREEFALL_DOWN	(0.0f)
+#define WAIT_TIME (80)//フリーフォールが落ちる時間
 THING_NORMAL fall;
 //=============================================================================
 //	グローバル変数
@@ -96,7 +97,7 @@ void Cfreefall::Update(void)
 			if (ugoki >= 25.0f)
 			{
 				CoolTime++;
-				if (CoolTime >= 120)
+				if (CoolTime >= WAIT_TIME)
 				{
 					Bugoki = true;
 					attackon = true;
@@ -119,7 +120,7 @@ void Cfreefall::Update(void)
 					attackon = false;
 					Exp_Set(IMPACT_13, m_mtxWorld._41, m_mtxWorld._42 + 1, m_mtxWorld._43, 6.0, 0);
 				}
-				if (CoolTime >= 120)
+				if (CoolTime >= WAIT_TIME)
 				{
 					Bugoki = false;
 					CoolTime = 0;
