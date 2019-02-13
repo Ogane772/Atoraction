@@ -77,7 +77,7 @@ void COrnament_Lamp::Initialize(ORNAMENT_EMITTER *Emitter)
 	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 
 	Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
-	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 2.1f);//ìñÇΩÇËîªíËÇÃïœçX
+	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0.0f, 0.0f, 0.0f),0.7f);//ìñÇΩÇËîªíËÇÃïœçX
 }
 
 
@@ -122,7 +122,7 @@ void COrnament_Lamp::Draw(void)
 		{
 			if (m_FrameCount % 2 == 0)
 			{
-				DrawDX_NormalAddScale(m_mtxWorld, MODELL_LAMP, &Thing_Normal_model, position, D3DXVECTOR3(1, 2, 1));
+				DrawDX_NormalAddScale(m_mtxWorld, MODELL_LAMP, &Thing_Normal_model, position, D3DXVECTOR3(1, 10, 1));
 
 				m_DrawCount++;
 				if (m_DrawCount >= ORNAMENT_WAIT_TIME)
@@ -137,7 +137,7 @@ void COrnament_Lamp::Draw(void)
 			//DrawDX_NormalAdd(m_mtxWorld, MODELL_LAMP, Thing_Normal_model, position);
 		//	DrawDX_NormalAdd(m_mtxWorld, MODELL_LAMP, Thing_Normal_model, position);
 			//ä€ÇÃîªíËÇècÇ…ÇQî{Ç∑ÇÈ
-			DrawDX_NormalAddScale(m_mtxWorld, MODELL_LAMP, &Thing_Normal_model, position, D3DXVECTOR3(1, 2, 1));
+			DrawDX_NormalAddScale(m_mtxWorld, MODELL_LAMP, &Thing_Normal_model, position, D3DXVECTOR3(1, 10, 1));
 		}	
 		if (m_DrawCheck)
 		{

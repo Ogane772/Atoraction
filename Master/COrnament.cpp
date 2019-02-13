@@ -21,7 +21,7 @@
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================
-
+#define ORNAMENT_HITSTOP (100)
 
 //=============================================================================
 //	ê√ìIïœêî
@@ -208,11 +208,12 @@ void COrnament::Ornament_Damage(float flyinghigh)
 		{
 			PlaySound(NORMALHIT_SE);
 			m_Hp--;
-
+			Sleep(ORNAMENT_HITSTOP);
 			m_FlyingMove = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43) - m_PosKeep;
 			m_FlyingMove.y = flyinghigh;
 			if (m_Hp <= 0)
 			{
+				
 				Exp_Set(SMALLSTAR, m_mtxWorld._41, m_mtxWorld._42 + 1, m_mtxWorld._43, 5.0, 0);
 				//Add_Mp(m_Mp);
 				//Add_Score(m_Score);
@@ -266,6 +267,7 @@ void COrnament::Death(void)
 	{
 		if (!m_OrnamentFlying)
 		{
+			Exp_Set(SMALLSTAR, m_mtxWorld._41, m_mtxWorld._42 + 1, m_mtxWorld._43, 5.0, 0);
 			delete this;
 		}
 	}
