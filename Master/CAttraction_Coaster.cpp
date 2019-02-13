@@ -16,6 +16,7 @@
 #include "move.h"
 #include "CEnemy.h"
 #include "sound.h"
+#include "exp.h"
 //=============================================================================
 //	’è”’è‹`
 //=============================================================================
@@ -157,6 +158,7 @@ void Coaster::EnemyDamage(void)
 			int hp = enemy->Get_Hp();
 			if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
 			{
+				Exp_Set(HIT, thingenemy->vPosition.x, thingenemy->vPosition.y, thingenemy->vPosition.z, 4.0, 0);
 				enemy->DamageFlag_Change();
 				enemy->Position_Keep(m_mtxWorld);
 			}

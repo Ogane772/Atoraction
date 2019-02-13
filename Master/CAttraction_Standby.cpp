@@ -92,6 +92,7 @@ void Standby::Update(void)
 		{
 			Popcorn *m_pAttraction = new Popcorn(m_mtxWorld);
 		}
+		StopSound(KENSETU_SE);
 		C3DObj_delete();
 	}
 }
