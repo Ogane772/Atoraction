@@ -14,6 +14,7 @@
 #include "debug_font.h"
 #include "exp.h"
 #include "CTexture.h"
+#include "sound.h"
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================
@@ -26,6 +27,7 @@
 #define SCORE (1)
 #define POPCORN_HEAL (1)
 #define POPCORN_EREA (10)
+
 //=============================================================================
 //	ê√ìIïœêî
 //=============================================================================
@@ -82,8 +84,10 @@ void Popcorn::Update(void)
 
 		if (PlayerCheck())
 		{
+			
 			if (m_FrameCount % 60 == 0)
 			{
+				PlaySound(POPCORN_SE);
 				Add_Hp();
 			}
 		}
@@ -163,7 +167,7 @@ void Popcorn::PopcornDamage(void)
 					m_DrawCheck = false;
 					if (m_Hp <= 0)
 					{
-						Exp_Create(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43, 4.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
+						Exp_Set(SMALLSTAR, m_mtxWorld._41, m_mtxWorld._42 + 1, m_mtxWorld._43, 5.0, 0);
 						C3DObj_delete();
 					}
 					break;

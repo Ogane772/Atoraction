@@ -5,7 +5,7 @@
 #include "exp.h"
 #define MAX_EFFECT (99)
 
-typedef struct{
+typedef struct {
 	D3DXVECTOR3 exp_position;
 	float puttern;
 	float size;//ビルボードの大きさ
@@ -46,8 +46,8 @@ void Exp_Update(void)
 			if (g_effect[i].effect_counter >= g_effect[i].anime_time * g_effect[i].anime_pattan)
 			{
 				g_effect[i].eflg = false;
- 				g_effect[i].effect_counter = 0;
-			}	
+				g_effect[i].effect_counter = 0;
+			}
 		}
 	}
 }
@@ -68,8 +68,26 @@ void Exp_Set(int exp_number, float x, float y, float z, float size, float rotati
 {
 	switch (exp_number)
 	{
-	case EXP_HIT:
-		Exp_Create(x, y, z, size, rotation, CTexture::TEX_EFFECT_HIT1, 14, 2, 3360 / 7, 960 / 2, 7);
+	case ENEMY_HIKKAI:
+		Exp_Create(x, y, z, size, rotation, CTexture::TEX_EFFECT_HIT2, 10, 2, 1200 / 5, 480 / 2, 5);
+		break;
+	case STAR:
+		Exp_Create(x, y, z, size, rotation, CTexture::TEX_EFFECT_STAR, 15, 2, 1200 / 5, 720 / 3, 5);
+		break;
+	case SHINE:
+		Exp_Create(x, y, z, size, rotation, CTexture::TEX_EFFECT_SHINE, 10, 4, 2400 / 10, 240, 10);
+		break;
+	case SMALLSTAR:
+		Exp_Create(x, y, z, size, rotation, CTexture::TEX_EFFECT_HEAL_17, 10, 4, 960 / 5, 384 / 2, 5);
+		break;
+	case HIT:
+		Exp_Create(x, y, z, size, rotation, CTexture::TEX_EFFECT_HIT, 8, 4, 4000 / 4, 2000 / 2, 4);
+		break;
+	case IMPACT_13:
+		Exp_Create(x, y, z, size, rotation, CTexture::TEX_EFFECT_IMPACT_13, 10, 4, 960 / 5, 384 / 2, 5);
+		break;
+	case SURASYU:
+		Exp_Create(x, y, z, size, rotation, CTexture::TEX_EFFECT_EFFECT_P020, 8, 4, 1600 / 8, 200 / 1, 8);
 		break;
 	}
 }

@@ -14,6 +14,7 @@
 #include "debug_font.h"
 #include "exp.h"
 #include "CTexture.h"
+#include "sound.h"
 //=============================================================================
 //	’è”’è‹`
 //=============================================================================
@@ -115,6 +116,7 @@ void CCoffeeCup::Update(void)
 	 //‰ñ“]
 		if (B_CoolTime)
 		{
+			PlaySound(CUP_SE);
 			angCup += 5.0f;
 
 			if (angCup>355.0f)
@@ -291,7 +293,7 @@ void CCoffeeCup::CoffeeCupDamage(void)
 					m_DrawCheck = false;
 					if (m_Hp <= 0)
 					{
-						Exp_Create(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
+						Exp_Set(SMALLSTAR, m_mtxWorld._41, m_mtxWorld._42 + 1, m_mtxWorld._43, 5.0, 0);
 						C3DObj_delete();
 					}
 					break;
@@ -303,7 +305,7 @@ void CCoffeeCup::CoffeeCupDamage(void)
 					m_DrawCheck = false;
 					if (m_Hp <= 0)
 					{
-						Exp_Create(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
+
 						C3DObj_delete();
 					}
 					break;
@@ -315,7 +317,6 @@ void CCoffeeCup::CoffeeCupDamage(void)
 					m_DrawCheck = false;
 					if (m_Hp <= 0)
 					{
-						Exp_Create(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
 						C3DObj_delete();
 					}
 					break;

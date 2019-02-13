@@ -28,7 +28,7 @@
 #define COOLTIME_MAX (0) //クールタイムの完了値
 #define ENEMY_MAX (100)
 #define ADD_X (100)//アトラクションアイコンの表示幅
-#define ADD_Y (210)//アトラクションアイコンの表示高さ
+#define ADD_Y (240)//アトラクションアイコンの表示高さ
 //=============================================================================
 //	静的変数
 //=============================================================================
@@ -176,6 +176,7 @@ void CUserInterFace::Ui_Icon(void)
 	if (at_number == SUMMONS_COFFEE)
 	{
 		Sprite_Draw(TEX_UI_AKA_FUTI, 24, ADD_Y - 3, 0, 0, 600, 600, 0.0f, 0.0f, 0.15f, 0.19f, 0.0f);
+		Sprite_Draw(TEX_A_BUTTON, 70, ADD_Y + 80, 0, 0, 200, 200, 0.0f, 0.0f, 0.25f, 0.25f, 0.0f);
 	}
 	Sprite_Draw(TEX_UI_DIAMOND, 28, ADD_Y + 5, 0, 0, 111, 121, 0.0f, 0.0f, 0.28f, 0.28f, 0.0f);
 	Sprite_Draw(TEX_UI_X, 57, ADD_Y + 13, 0, 0, 81, 94, 0.0f, 0.0f, 0.2f, 0.2f, 0.0f);
@@ -196,6 +197,7 @@ void CUserInterFace::Ui_Icon(void)
 	if (at_number == SUMMONS_FALL)
 	{
 		Sprite_Draw(TEX_UI_AKA_FUTI, 24 + ADD_X, ADD_Y - 3, 0, 0, 600, 600, 0.0f, 0.0f, 0.15f, 0.19f, 0.0f);
+		Sprite_Draw(TEX_A_BUTTON, 70 + ADD_X, ADD_Y + 80, 0, 0, 200, 200, 0.0f, 0.0f, 0.25f, 0.25f, 0.0f);
 	}
 	Sprite_Draw(TEX_UI_DIAMOND, 28 + ADD_X, ADD_Y + 5, 0, 0, 111, 121, 0.0f, 0.0f, 0.28f, 0.28f, 0.0f);
 	Sprite_Draw(TEX_UI_X, 57 + ADD_X, ADD_Y + 13 , 0, 0, 81, 94, 0.0f, 0.0f, 0.2f, 0.2f, 0.0f);
@@ -216,6 +218,7 @@ void CUserInterFace::Ui_Icon(void)
 	if (at_number == SUMMONS_POPCORN)
 	{
 		Sprite_Draw(TEX_UI_AKA_FUTI, 24 + ADD_X * 2, ADD_Y - 3, 0, 0, 600, 600, 0.0f, 0.0f, 0.15f, 0.19f, 0.0f);
+		Sprite_Draw(TEX_A_BUTTON, 70 + ADD_X * 2, ADD_Y + 80, 0, 0, 200, 200, 0.0f, 0.0f, 0.25f, 0.25f, 0.0f);
 	}
 	Sprite_Draw(TEX_UI_DIAMOND, 28 + ADD_X * 2, ADD_Y + 5, 0, 0, 111, 121, 0.0f, 0.0f, 0.28f, 0.28f, 0.0f);
 	Sprite_Draw(TEX_UI_X, 57 + ADD_X * 2, ADD_Y + 13, 0, 0, 81, 94, 0.0f, 0.0f, 0.2f, 0.2f, 0.0f);
@@ -236,6 +239,7 @@ void CUserInterFace::Ui_Icon(void)
 	if (at_number == SUMMONS_WHEEL)
 	{
 		Sprite_Draw(TEX_UI_AKA_FUTI, 24 + ADD_X * 3, ADD_Y - 3, 0, 0, 600, 600, 0.0f, 0.0f, 0.15f, 0.19f, 0.0f);
+		Sprite_Draw(TEX_A_BUTTON, 70 + ADD_X * 3, ADD_Y + 80, 0, 0, 200, 200, 0.0f, 0.0f, 0.25f, 0.25f, 0.0f);
 	}
 	Sprite_Draw(TEX_UI_DIAMOND, 28 + ADD_X * 3, ADD_Y + 5, 0, 0, 111, 121, 0.0f, 0.0f, 0.28f, 0.28f, 0.0f);
 	Sprite_Draw(TEX_UI_X, 57 + ADD_X * 3, ADD_Y + 13, 0, 0, 81, 94, 0.0f, 0.0f, 0.2f, 0.2f, 0.0f);
@@ -256,10 +260,14 @@ void CUserInterFace::Ui_Icon(void)
 	if (at_number == SUMMONS_COASTER)
 	{
 		Sprite_Draw(TEX_UI_AKA_FUTI, 24 + ADD_X * 4, ADD_Y - 3, 0, 0, 600, 600, 0.0f, 0.0f, 0.15f, 0.19f, 0.0f);
+		Sprite_Draw(TEX_A_BUTTON, 70 + ADD_X * 4, ADD_Y + 80, 0, 0, 200, 200, 0.0f, 0.0f, 0.25f, 0.25f, 0.0f);
 	}
 	Sprite_Draw(TEX_UI_DIAMOND, 28 + ADD_X * 4, ADD_Y + 5, 0, 0, 111, 121, 0.0f, 0.0f, 0.28f, 0.28f, 0.0f);
 	Sprite_Draw(TEX_UI_X, 57 + ADD_X * 4, ADD_Y + 13, 0, 0, 81, 94, 0.0f, 0.0f, 0.2f, 0.2f, 0.0f);
 	Num_Draw2(-20 + ADD_X * 4, ADD_Y + 1, COASTER_MP, 1, 1, false);
+
+	Sprite_Draw(TEX_L_BUTTON, 0, ADD_Y - 45, 0, 0, 200, 200, 0.0f, 0.0f, 0.4f, 0.2f, 0.0f);
+	Sprite_Draw(TEX_R_BUTTON, 450, ADD_Y - 45, 0, 0, 200, 200, 0.0f, 0.0f, 0.4f, 0.2f, 0.0f);
 }
 
 void CUserInterFace::Finalize(void)

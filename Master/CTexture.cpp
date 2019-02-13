@@ -27,7 +27,7 @@ CTexture::TextureFileData CTexture::TEXTURE_FILES[] = {
 	{ "asset/number2.png",320,32 },
 	{ "asset/score.png",2250,450 },
 	{ "asset/map.png",300,300 },			//11
-	{ "asset/player_icon.png",120,60 },		//12
+	{ "asset/Arrow.png",20,20 },		//12
 	{ "asset/Enemy_mark.png",12,12 },
 	{ "asset/hit1.png",3360,960 },
 	{ "asset/eff.jpg",80,80 },
@@ -70,7 +70,6 @@ CTexture::TextureFileData CTexture::TEXTURE_FILES[] = {
 	{ "asset/Bar.png",200,50 },
 	{ "asset/score2.png",1350,270 },
 	{ "asset/kusa_renga2.png",760,760 },
-
 	{ "asset/score_result01.png",340, 170 },
 	{ "asset/score_result02.png",340, 170 },
 	{ "asset/Score_result03.png",1824, 4 },
@@ -85,6 +84,20 @@ CTexture::TextureFileData CTexture::TEXTURE_FILES[] = {
 	{ "asset/Blue.jpg",14,14 },
 	{ "asset/HP_Gage_2.png",791, 40 },
 	{ "asset/MP_Gage.png",791,40 },
+	{ "asset/mountain.png",8268,1772 },
+	{ "asset/ui/ui_a.png",200,200 },
+	{ "asset/ui/ui_b.png",200,200 },
+	{ "asset/ui/ui_l1.png",200,200 },
+	{ "asset/ui/ui_r1.png",200,200 },
+	{ "asset/number_yellow.png",1350,270  },
+	{ "asset/effect/hikkaki.png",1200,480 },
+	{ "asset/effect/star.png",1200,720 },				
+	{ "asset/effect/shine.png",2400,240 },				
+	{ "asset/effect/heal_17.png",960,384 },				
+	{ "asset/effect/hit.png",4000,2000 },				
+	{ "asset/effect/impact_13.png",960,384 },			
+	{ "asset/effect/Effect_p020.png",1600,200 },
+
 };
 
 int CTexture::TEXTURE_MAX = sizeof(CTexture::TEXTURE_FILES) / sizeof(TEXTURE_FILES[0]);

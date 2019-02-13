@@ -20,6 +20,7 @@
 #include "exp.h"
 #include "shadow.h"
 #include "COrnament.h"
+#include "sound.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -49,12 +50,13 @@ void Game_Initialize(void)
 
 	CMeshField::MeshField_Create(CTexture::TEX_KUSA_RENGA, 120.0f, 2, 2);							//	地面生成
 	//CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_FLORR, 10.0f, SYLINDERSIZE, 20, 1,true);	//	内カベ生成
-	CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_FLORR, 10.0f, FIELDSIZE, 20, 1, false);	//	外カベ生成
+	CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_MOUNTAIN, 10.0f, FIELDSIZE, 20, 1, false);	//	外カベ生成
 	CMesh_SkyDome::Mesh_SkyDome_Create(CTexture::TEX_SKY, 2.0f, SKYSIZE, 40, 20);					//	空生成
 	CUserInterFace::UICreate();				//	UI生成
 	CEnemy::Create();						//	敵生成
 	COrnament::Create();						//	オブジェクト生成
 	Shadow_Initialize();
+	PlaySound(MAIN_BGM);
 }
 
 //=============================================================================
@@ -94,7 +96,9 @@ void Game_Updata(void)
 			if (!Fade_IsFade())
 			{
 				Fade_Start(false, 3, 0, 0, 0);
-				Scene_Change(SCENE_INDEX_RESULT);
+				StopSound(MAIN_BGM);
+				Scene_Change(SCTNE_INDEX_SCORE);
+				PlaySound(GAME_END_SE);
 			}
 		}
 	}

@@ -220,7 +220,10 @@ bool Begin(HINSTANCE hInstance, HWND hWnd)
 	{
 		return false;
 	}
-
+	if (!InitSound(hWnd))
+	{
+		return false;
+	}
 	// キーボードの初期化
 	if (!Keyboard_Initialize(hInstance,hWnd))
 	{
@@ -361,7 +364,7 @@ void End(void)
 	DebugFont_Finalize();
 #endif // _DEBUG || DEBUG
 	
-
+	UninitSound();
 	// シーン終了処理
 	Scene_Finalize();
 

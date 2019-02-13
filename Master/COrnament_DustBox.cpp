@@ -13,6 +13,7 @@
 #include "exp.h"
 #include "CEnemy.h"
 #include "CTexture.h"
+#include "sound.h"
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================
@@ -22,6 +23,9 @@
 #define DUSTBOX_HP (1)
 #define DUSTBOX_SCORE (1)
 #define DUSTBOX_ATK (1)
+
+#define FRY_HEIGHT (0.1f)
+#define FRY_SPEED (0.07f)
 //=============================================================================
 //	ê√ìIïœêî
 //=============================================================================
@@ -93,12 +97,13 @@ void COrnament_DustBox::Update(void)
 		{
 			if (m_DamageFlag)
 			{
-				Ornament_Damage(0.1f);
-				Ornament_Flying(0.05f);
+				Ornament_Damage(FRY_HEIGHT);
+				Ornament_Flying(FRY_SPEED);
 				Damage();
 			}
 		}
 		m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
+		Death();
 	}
 }
 
@@ -153,7 +158,7 @@ void COrnament_DustBox::Damage(void)
 					if (m_Hp <= 0)
 					{
 						Exp_Create(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
-						C3DObj_delete();
+						//C3DObj_delete();
 					}
 					break;
 				}

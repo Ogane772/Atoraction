@@ -15,6 +15,7 @@
 #include "time.h"
 #include "move.h"
 #include "CEnemy.h"
+#include "sound.h"
 //=============================================================================
 //	’è”’è‹`
 //=============================================================================
@@ -84,6 +85,7 @@ void Coaster::Update(void)
 	u = (int)(playerget->Get_Angle());
 	if (m_FrameCount - m_TimeKeep <= J_TIME)
 	{
+		PlaySound(COASTER_SE);
 		C3DObj *playerget = CPlayer::Get_Player();
 		D3DXMATRIX playermatrix = playerget->Get_mtxTranslation();
 

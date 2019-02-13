@@ -8,7 +8,7 @@
 #include "debug_font.h"
 #include "CTexture.h"
 #include "Cplayer.h"
-
+#include "exp.h"
 //=============================================================================
 //	Ã“I•Ï”
 //===========================================================================
@@ -28,7 +28,7 @@ C3DObj::MaterialFileData C3DObj::NORMAL_MODEL_FILES[] = {
 	{ "asset/model/cup_blue.x" },
 	{ "asset/model/cup_kiiro.x" },
 	{ "asset/model/cup_midori.x" },
-	{ "asset/model/popcorn.x" },
+	{ "asset/model/pop.blend.x" },
 	{ "asset/model/kensetutyuu.x" },
 	{ "asset/model/ornament/lamp.x" },
 	{ "asset/model/ornament/gomibako.x" },
@@ -721,6 +721,7 @@ void C3DObj::Add_Hp(void)
 {
 	C3DObj *pplayer = CPlayer::Get_Player();
 	pplayer->m_Hp++;
+	Exp_Set(SHINE, pplayer->m_mtxTranslation._41, pplayer->m_mtxTranslation._42+1 , pplayer->m_mtxTranslation._43, 3.0, 0);
 	if (pplayer->m_Hp > HP_MAX)
 	{
 		pplayer->m_Hp = HP_MAX;

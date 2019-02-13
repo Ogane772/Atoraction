@@ -23,6 +23,9 @@
 #define LAMP_HP (1)
 #define LAMP_SCORE (1)
 #define LAMP_ATK (1)
+
+#define FRY_HEIGHT (0.1f)
+#define FRY_SPEED (0.07f)
 //=============================================================================
 //	ê√ìIïœêî
 //=============================================================================
@@ -95,12 +98,14 @@ void COrnament_Lamp::Update(void)
 		{
 			if (m_DamageFlag)
 			{
-				Ornament_Damage(0.1f);
-				Ornament_Flying(0.05f);	
+				Ornament_Damage(FRY_HEIGHT);
+				Ornament_Flying(FRY_SPEED);
 				Damage();
+				
 			}
 		}
 		m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
+		Death();
 	}	
 }
 

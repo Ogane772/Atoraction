@@ -92,6 +92,7 @@ void COrnament_HUSEN::Update(void)
 				Ornament_Damage(0.1f);
 				Ornament_Flying(0.05f);
 				Damage();
+				Death();
 			}
 		}
 		m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;

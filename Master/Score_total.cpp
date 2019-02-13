@@ -120,7 +120,7 @@ void Score_total_Draw(void)
 		//’l
 		if (score_counter >= 100)
 		{
-			ResultScore_Draw(500, 100, CPlayer::Get_KoCount(), 5, 0);
+			ResultScore_Draw(500, 100, CPlayer::Get_KoCount(), 5,CTexture::TEX_TOTAL, 0);
 		}
 
 

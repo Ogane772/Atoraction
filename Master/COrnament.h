@@ -70,6 +70,7 @@ protected:
 
 	void Ornament_Damage(float flyinghigh);
 	void Ornament_Flying(float speed);
+	void COrnament::Death(void);
 private:
 	int m_Type;			// Ží—Þ
 	static int m_OrnamentNum[TYPE_MAX];

@@ -7,6 +7,7 @@
 #include "C2DObj.h"
 #include "scene.h"
 #include "gamepad.h"
+#include "sound.h"
 //=============================================================================
 //	ƒOƒ[ƒoƒ‹•Ï”éŒ¾
 //=============================================================================
@@ -32,6 +33,7 @@ void Title_Initialize(void)
 	{
 		hr = pJoyDevice->Acquire();
 	}
+	PlaySound(TITLE_BGM);
 }
 
 //=============================================================================
@@ -59,6 +61,7 @@ void Title_Update(void)
 	{
 		if (Keyboard_IsTrigger(DIK_SPACE) || js.rgbButtons[0] & 0x80)
 		{
+			PlaySound(START_SE);
 			Fade_Start(true, 3, 0, 0, 0);
 			g_bend = true;
 		}
@@ -67,6 +70,7 @@ void Title_Update(void)
 	{
 		if (!Fade_IsFade())
 		{
+			StopSound(TITLE_BGM);
 			Fade_Start(false, 3, 0, 0, 0);
 			Scene_Change(SCENE_INDEX_GAME);
 		}
