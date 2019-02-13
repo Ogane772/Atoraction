@@ -34,7 +34,9 @@ C3DObj::MaterialFileData C3DObj::NORMAL_MODEL_FILES[] = {
 	{ "asset/model/ornament/hunsui.x" },
 	{ "asset/model/ornament/kanransya_Obj.blend.x" },
 	{ "asset/model/ornament/husen.blend.x" },
-	{ "asset/model/ornament/meri.blend.x" },
+	{ "asset/model/ornament/meri_dodai.blend.x" },
+	{ "asset/model/ornament/Uma.blend.x" },
+	{ "asset/model/ornament/kanransya_ornament.x" },
 };
 //	使いたいアニメモデルの数だけ書く
 C3DObj::MaterialFileData2 C3DObj::ANIME_MODEL_FILES[] = {

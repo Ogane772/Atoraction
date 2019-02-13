@@ -24,6 +24,12 @@ private:
 	void Kanransya_Create(void);
 	void Initialize(ORNAMENT_EMITTER *Emitter);
 	bool m_playercheck;
-
+	float angle;
+	THING_NORMAL kanransya;
+	D3DXMATRIX m_mtxWorld2;
+	D3DXMATRIX trans2;
+	D3DXMATRIX rotation2;
+	D3DXMATRIX rotation3;
+	D3DXMATRIX scale2;
 };
 #endif;#pragma once
