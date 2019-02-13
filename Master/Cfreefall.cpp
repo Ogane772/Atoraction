@@ -15,6 +15,7 @@
 #include "CEnemy.h"
 #include "CTexture.h"
 #include "exp.h"
+#include "sound.h"
 //=============================================================================
 //	’è”’è‹`
 //=============================================================================
@@ -26,6 +27,7 @@
 #define SCORE (1)
 #define FREEFALL_SCALE (1)
 #define ATTACK_TIME (5)//‰~”Õ‚ª—Ž‚¿‚Ä‚©‚ç‚ÌUŒ‚ŽžŠÔ
+
 //=============================================================================
 //	Ã“I•Ï”
 //=============================================================================
@@ -113,7 +115,9 @@ void Cfreefall::Update(void)
 				CoolTime++;
 				if (CoolTime == ATTACK_TIME)
 				{
+					PlaySound(FREEFALL_SE);
 					attackon = false;
+					Exp_Set(IMPACT_13, m_mtxWorld._41, m_mtxWorld._42 + 1, m_mtxWorld._43, 6.0, 0);
 				}
 				if (CoolTime >= 120)
 				{
@@ -214,7 +218,7 @@ void Cfreefall::FreeFallDamage(void)
 					m_DrawCheck = false;
 					if (m_Hp <= 0)
 					{
-						Exp_Create(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
+						Exp_Set(SMALLSTAR, m_mtxWorld._41, m_mtxWorld._42 + 1, m_mtxWorld._43, 5.0, 0);
 						C3DObj_delete();
 					}
 					break;

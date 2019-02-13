@@ -16,8 +16,19 @@
 //*****************************************************************************
 typedef enum
 {
-	SOUND_LABEL_BGM,			// ÉQÅ[ÉÄBGM
-
+	TITLE_BGM,			// ÉQÅ[ÉÄBGM
+	CHUTO_BGM,
+	MAIN_BGM,
+	START_SE,
+	NORMALHIT_SE,
+	BIGHIT_SE,
+	POPCORN_SE,
+	COASTER_SE,
+	CUP_SE,
+	FREEFALL_SE,
+	KENSETU_SE,
+	GAME_END_SE,
+	GAMEOVER_SE,
 
 	SOUND_LABEL_MAX,
 } SOUND_LABEL;

@@ -32,9 +32,20 @@ DWORD g_aSizeAudio[SOUND_LABEL_MAX] = {};					// オーディオデータサイズ
 // 各音素材のパラメータ
 SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 {
-	/*{"BGM.wav",-1},
-	{"SE.wav",0},
-	*/
+	{ "asset/BGM/title_bgm.wav",-1},
+	{ "asset/BGM/chuto_bgm.wav",-1 },
+	{ "asset/BGM/main_bgm.wav",-1 },
+	{ "asset/SE/start_se.wav",0 },
+	{ "asset/SE/NormalHit_se.wav",0 },
+	{ "asset/SE/BigHit_se.wav",0 },
+	{ "asset/SE/popcorn_se.wav",0 },
+	{ "asset/SE/coaster_se.wav",0 },
+	{ "asset/SE/cup_se.wav",0 },
+	{ "asset/SE/freefall_se.wav",0 },
+	{ "asset/SE/kensetu_se.wav",0 },
+	{ "asset/SE/gameend_se.wav",0 },
+	{ "asset/SE/gameover_se.wav",0 },
+	//{"SE.wav",0},
 };
 
 //=============================================================================

@@ -18,7 +18,9 @@
 #include "common.h"
 #include "CAttraction_Popcorn.h"
 #include "CTexture.h"
+#include "sound.h"
 #include "COrnament.h"
+#include "exp.h"
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================
@@ -301,12 +303,15 @@ void CEnemy::Enemy_Damage(float flyinghigh)
 	{
 		if (m_DrawCheck)
 		{
+			PlaySound(NORMALHIT_SE);
+			Exp_Set(HIT, m_mtxWorld._41, m_mtxWorld._42 + 1, m_mtxWorld._43 + 1, 4.0, 0);
 			m_Hp--;
 			m_EnemyFlying = true;
 			m_FlyingMove = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43) - m_PosKeep;
 			m_FlyingMove.y = flyinghigh;
 			if (m_Hp <= 0)
 			{
+				Exp_Set(STAR, m_mtxWorld._41, m_mtxWorld._42 + 1, m_mtxWorld._43 + 1, 5.0, 0);
 				Add_Mp(m_Mp);
 				Add_Score(m_Score);
 			}

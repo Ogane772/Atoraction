@@ -201,7 +201,7 @@ void BillBoard_Exp_Draw(float x, float y, float z, int texture_index, int anime_
 		{ D3DXVECTOR3(size, -size, -size),  D3DXVECTOR3(0.0f, 0.0f, -1.0f),  D3DCOLOR_RGBA(255, 255, 255, 255),  D3DXVECTOR2(u1,v1) },
 	};
 
-	CGameObj::m_pD3DDevice->SetRenderState(D3DRS_ZENABLE, TRUE);//Zテストを有効か無効か　あると絶対前に書く
+	CGameObj::m_pD3DDevice->SetRenderState(D3DRS_ZENABLE, FALSE);//Zテストを有効か無効か　あると絶対前に書く
 
 
 	CGameObj::m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_COLOR1);
@@ -237,5 +237,5 @@ void BillBoard_Exp_Draw(float x, float y, float z, int texture_index, int anime_
 	mtxWorld = mtxRotate * mtxWorld;
 	CGameObj::m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 	CGameObj::m_pD3DDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, &b_pori, sizeof(BillBoardVertex3D));
-
+	CGameObj::m_pD3DDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 }

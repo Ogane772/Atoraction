@@ -16,6 +16,8 @@
 #include"COrnament_Kanransya.h"
 #include"COrnament_Husen.h"
 #include"COrnament_Meri.h"
+#include "exp.h"
+#include "sound.h"
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================
@@ -204,12 +206,14 @@ void COrnament::Ornament_Damage(float flyinghigh)
 	{
 		if (m_DrawCheck)
 		{
+			PlaySound(NORMALHIT_SE);
 			m_Hp--;
 
 			m_FlyingMove = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43) - m_PosKeep;
 			m_FlyingMove.y = flyinghigh;
 			if (m_Hp <= 0)
 			{
+				Exp_Set(SMALLSTAR, m_mtxWorld._41, m_mtxWorld._42 + 1, m_mtxWorld._43, 5.0, 0);
 				//Add_Mp(m_Mp);
 				//Add_Score(m_Score);
 				m_OrnamentFlying = true;
@@ -256,7 +260,16 @@ void COrnament::Ornament_Flying(float speed)
 	}
 }
 
-
+void COrnament::Death(void)
+{
+	if (m_Hp <= 0)
+	{
+		if (!m_OrnamentFlying)
+		{
+			delete this;
+		}
+	}
+}
 
 
 

@@ -14,6 +14,7 @@
 #include "CSkinAnimation.h"
 #include "debug_font.h"
 #include "CTexture.h"
+#include "exp.h"
 //=============================================================================
 //	’è”’è‹`
 //=============================================================================
@@ -270,7 +271,10 @@ void CEnemy_Small::Small_Attack(void)
 		}
 		if (m_FrameCount - m_AttackTime >= 120)
 		{
-			
+			if (m_FrameCount - m_AttackTime == 130)
+			{
+				//Exp_Set(ENEMY_HIKKAI, m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43, 1.0, 0);
+			}
 			Animation_Change(ATTACK, ATTACK_SPEED);
 		}
 		if (m_FrameCount - m_AttackTime >= 140)

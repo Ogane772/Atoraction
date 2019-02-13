@@ -75,7 +75,11 @@ void CMeshField_Cylinder::Draw(void)
 	}
 	else
 	{
+		m_pD3DDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+		m_pD3DDevice->SetRenderState(D3DRS_ALPHAREF, 250);
+		m_pD3DDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 		CMeshField::Draw();
+		m_pD3DDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	}
 }
 
@@ -128,7 +132,7 @@ void CMeshField_Cylinder::MeshField_Cylinder_Initialize(void)
 			int n = w + m_VertexW * h;
 			float angle = (float)(360 / m_meshWnum * w);
 			m_Mfield[n].pos = D3DXVECTOR3(m_radius * sinf(D3DXToRadian(angle)), m_meshHnum * m_meshH - (h * m_meshH), m_radius * cosf(D3DXToRadian(angle)));
-			m_Mfield[n].color = D3DCOLOR(0xffff0000);
+			m_Mfield[n].color = D3DCOLOR(0xffffffff);
 			m_Mfield[n].uv = D3DXVECTOR2(w * (1.0f / m_meshWnum), h * (1.0f / m_meshHnum));
 		}
 	}

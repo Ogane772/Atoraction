@@ -18,6 +18,7 @@
 #include "time.h"
 #include "move.h"
 #include "CGauge.h"
+#include "sound.h"
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================
@@ -72,7 +73,7 @@ void Standby::Initialize(int nType)
 
 	Thing_Normal_model = GetNormalModel(MODELL_STANDBY);
 	CGAUGE::CGAUGE_Create(m_mtxWorld);
-	
+	PlaySound(KENSETU_SE);
 }
 
 void Standby::Update(void)
