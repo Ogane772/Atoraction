@@ -299,6 +299,7 @@ void CEnemy::Comeback_Move(float speed)
 
 void CEnemy::Enemy_Damage(float flyinghigh)
 {
+
 	if (!m_EnemyFlying)
 	{
 		if (m_DrawCheck)

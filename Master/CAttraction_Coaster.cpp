@@ -97,7 +97,9 @@ void Coaster::Update(void)
 
 		if (m_DrawCheck)
 		{
+			Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 			EnemyDamage();
+			OrnamentDamage(Thing_Normal_model);
 		}
 	}
 	else

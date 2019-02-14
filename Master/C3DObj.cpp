@@ -721,7 +721,7 @@ void C3DObj::Add_Hp(void)
 {
 	C3DObj *pplayer = CPlayer::Get_Player();
 	pplayer->m_Hp++;
-	Exp_Set(SHINE, pplayer->m_mtxTranslation._41, pplayer->m_mtxTranslation._42+1 , pplayer->m_mtxTranslation._43, 3.0, 0);
+	Exp_Set(SHINE, pplayer->m_mtxTranslation._41, pplayer->m_mtxTranslation._42 , pplayer->m_mtxTranslation._43, 3.0, 0);
 	if (pplayer->m_Hp > HP_MAX)
 	{
 		pplayer->m_Hp = HP_MAX;

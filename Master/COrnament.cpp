@@ -202,6 +202,7 @@ C3DObj *COrnament::Get_Map_Ornament(int Index)
 
 void COrnament::Ornament_Damage(float flyinghigh)
 {
+
 	if (!m_OrnamentFlying)
 	{
 		if (m_DrawCheck)

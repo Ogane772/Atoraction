@@ -119,17 +119,16 @@ void Cwheel::Update(void)
 		D3DXMatrixTranslation(&m_mtxTranslation, Wheel_position.x, Wheel_position.y, Wheel_position.z);
 
 		m_mtxWorld = m_mtxScaling * m_mtxRotationY * m_mtxRotationYY * m_mtxTranslation;
-
-		if (90.0*90.0 < (m_mtxWorld._41*m_mtxWorld._41) + (m_mtxWorld._43 * m_mtxWorld._43))
-		{
-			StopSound(WHEEL_SE);
-			m_Enable = false;
-			CPlayer::m_delete = true;
-		}
 		if (m_DrawCheck)
 		{
 			OrnamentDamage();
 			EnemyDamage();
+		}
+		if (90.0*90.0 < (m_mtxWorld._41*m_mtxWorld._41) + (m_mtxWorld._43 * m_mtxWorld._43))
+		{
+			StopSound(WHEEL_SE);
+			m_Enable = false;
+			C3DObj_delete();
 		}
 	}
 	
