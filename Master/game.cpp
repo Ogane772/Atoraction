@@ -88,14 +88,14 @@ void Game_Updata(void)
 	{
 		if (!g_bend)
 		{
-			Fade_Start(true, 3, 0, 0, 0);
+			Fade_Start(true, 1, 0, 0, 0);
 			g_bend = true;
 		}
 		else
 		{
 			if (!Fade_IsFade())
 			{
-				Fade_Start(false, 3, 0, 0, 0);
+				Fade_Start(false, 1, 0, 0, 0);
 				StopSound(MAIN_BGM);
 				Scene_Change(SCTNE_INDEX_SCORE);
 				PlaySound(GAME_END_SE);

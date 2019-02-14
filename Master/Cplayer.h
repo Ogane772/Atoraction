@@ -48,7 +48,6 @@ public:
 	//D3DXMATRIX Get_mtxkeep(void) { return m_mtxKeepTranslation; }
 	static int Get_KoCount(void) { return m_KO_Count; }
 	static void Add_KoCount(void) { m_KO_Count++; }
-	static bool m_delete;
 	static C3DObj *Get_Player(void);
 	bool Get_DrawCheck(void) { return m_DrawCheck; }
 	static bool GetCoaster_Enable(void) { return g_CosterMode; };

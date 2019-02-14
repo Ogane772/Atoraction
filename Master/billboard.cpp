@@ -195,12 +195,12 @@ void BillBoard_Exp_Draw(float x, float y, float z, int texture_index, int anime_
 	float v1 = (float)ty / h + ty2 / h;
 	BillBoardVertex3D b_pori[] = {
 		//正面
-		{ D3DXVECTOR3(-size,  size, -size),  D3DXVECTOR3(0.0f, 0.0f, -1.0f),  D3DCOLOR_RGBA(255, 255, 255, 255), D3DXVECTOR2(u0,v0) },
-		{ D3DXVECTOR3(size,  size, -size),  D3DXVECTOR3(0.0f, 0.0f, -1.0f),  D3DCOLOR_RGBA(255, 255, 255, 255),  D3DXVECTOR2(u1,v0) },
-		{ D3DXVECTOR3(-size, -size, -size),  D3DXVECTOR3(0.0f, 0.0f, -1.0f),  D3DCOLOR_RGBA(255, 255, 255, 255), D3DXVECTOR2(u0,v1) },
-		{ D3DXVECTOR3(size, -size, -size),  D3DXVECTOR3(0.0f, 0.0f, -1.0f),  D3DCOLOR_RGBA(255, 255, 255, 255),  D3DXVECTOR2(u1,v1) },
+		{ D3DXVECTOR3(-size,  size, -size),  D3DXVECTOR3(0.0f, 0.0f, -0.0f),  D3DCOLOR_RGBA(255, 255, 255, 255), D3DXVECTOR2(u0,v0) },
+		{ D3DXVECTOR3(size,  size, -size),  D3DXVECTOR3(0.0f, 0.0f, -0.0f),  D3DCOLOR_RGBA(255, 255, 255, 255),  D3DXVECTOR2(u1,v0) },
+		{ D3DXVECTOR3(-size, -size, -size),  D3DXVECTOR3(0.0f, 0.0f, -0.0f),  D3DCOLOR_RGBA(255, 255, 255, 255), D3DXVECTOR2(u0,v1) },
+		{ D3DXVECTOR3(size, -size, -size),  D3DXVECTOR3(0.0f, 0.0f, -0.0f),  D3DCOLOR_RGBA(255, 255, 255, 255),  D3DXVECTOR2(u1,v1) },
 	};
-
+	CGameObj::m_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	CGameObj::m_pD3DDevice->SetRenderState(D3DRS_ZENABLE, FALSE);//Zテストを有効か無効か　あると絶対前に書く
 
 
