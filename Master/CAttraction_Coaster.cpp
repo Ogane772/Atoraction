@@ -153,14 +153,17 @@ void Coaster::EnemyDamage(void)
 		C3DObj *enemy = CEnemy::Get_Enemy(i);
 		if (enemy)
 		{
-			Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-			THING *thingenemy = enemy->GetAnimeModel();
-			int hp = enemy->Get_Hp();
-			if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
+			if (enemy->Get_DrawCheck())
 			{
-				Exp_Set(HIT, thingenemy->vPosition.x, thingenemy->vPosition.y, thingenemy->vPosition.z, 4.0, 0);
-				enemy->DamageFlag_Change();
-				enemy->Position_Keep(m_mtxWorld);
+				Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+				THING *thingenemy = enemy->GetAnimeModel();
+				int hp = enemy->Get_Hp();
+				if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
+				{
+					Exp_Set(HIT, thingenemy->vPosition.x, thingenemy->vPosition.y, thingenemy->vPosition.z, 4.0, 0);
+					enemy->DamageFlag_Change();
+					enemy->Position_Keep(m_mtxWorld);
+				}
 			}
 		}
 	}

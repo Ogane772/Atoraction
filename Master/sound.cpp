@@ -35,6 +35,7 @@ SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 	{ "asset/BGM/title_bgm.wav",-1},
 	{ "asset/BGM/chuto_bgm.wav",-1 },
 	{ "asset/BGM/main_bgm.wav",-1 },
+	{ "asset/BGM/ranking_bgm.wav",-1 },
 	{ "asset/SE/start_se.wav",0 },
 	{ "asset/SE/NormalHit_se.wav",0 },
 	{ "asset/SE/BigHit_se.wav",0 },
@@ -45,7 +46,11 @@ SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 	{ "asset/SE/kensetu_se.wav",0 },
 	{ "asset/SE/gameend_se.wav",0 },
 	{ "asset/SE/gameover_se.wav",0 },
-	//{"SE.wav",0},
+	{ "asset/SE/coaster_on_se.wav",0 },
+	{ "asset/SE/enter_se.wav",0 },
+	{ "asset/SE/freewall_up_se.wav",0 },
+	{ "asset/SE/husen_se.wav",0 },
+	{ "asset/SE/wheel_se.wav",0 },
 };
 
 //=============================================================================

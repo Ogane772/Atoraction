@@ -88,10 +88,14 @@ void Cfreefall::Update(void)
 		D3DXMatrixScaling(&m_mtxScaling, FREEFALL_SCALE, FREEFALL_SCALE, FREEFALL_SCALE);
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(0));
 		m_mtxWorld = m_mtxScaling *m_mtxRotation * m_mtxTranslation;
-		if (!Bugoki)
+		if (!Bugoki)//è„Ç™Ç¡ÇƒÇÈÇ∆Ç´	
 		{
 			if (ugoki <= 25.0f)
 			{
+				if (ugoki == 0)
+				{
+					PlaySound(FREE_WALL_UP_SE);
+				}
 				ugoki += 0.1f;
 			}
 			if (ugoki >= 25.0f)
@@ -99,6 +103,7 @@ void Cfreefall::Update(void)
 				CoolTime++;
 				if (CoolTime >= WAIT_TIME)
 				{
+					StopSound(FREE_WALL_UP_SE);
 					Bugoki = true;
 					attackon = true;
 					CoolTime = 0;
@@ -133,10 +138,11 @@ void Cfreefall::Update(void)
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(0));
 		m_mtxWorld2 = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 
-		if (m_DrawCheck)
+		if (m_DrawCheck && attackon)
 		{
 			fall.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
-			OrnamentDamage(fall);
+			OrnamentDamage(Thing_Normal_model);
+
 			EnemyDamage();
 			FreeFallDamage();
 		}

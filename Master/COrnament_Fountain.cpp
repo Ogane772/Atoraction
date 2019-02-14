@@ -158,7 +158,7 @@ void COrnament_Fountain::Damage(void)
 					if (m_Hp <= 0)
 					{
 						//Exp_Create(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43, 1.0f, 0.0f, CTexture::TEX_EFFECT_HIT1, 14, 1, 3360 / 7, 960 / 2, 7);
-						//C3DObj_delete();
+						C3DObj_delete();
 					}
 					break;
 				}

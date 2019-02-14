@@ -13,6 +13,7 @@
 #include "debug_font.h"
 #include "CEnemy.h"
 #include "CEnemy_Small.h"
+#include "sound.h"
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================
@@ -46,7 +47,7 @@ Cwheel::~Cwheel()
 void Cwheel::Initialize()
 {
 	m_AttractionIndex = Get_AttractionIndex(AT_ALL);
-
+	PlaySound(WHEEL_SE);
 	m_Enable = true;
 	ferris_flg = true;
 	ferris_counter = 0;
@@ -121,6 +122,7 @@ void Cwheel::Update(void)
 
 		if (90.0*90.0 < (m_mtxWorld._41*m_mtxWorld._41) + (m_mtxWorld._43 * m_mtxWorld._43))
 		{
+			StopSound(WHEEL_SE);
 			m_Enable = false;
 			CPlayer::m_delete = true;
 		}
@@ -157,12 +159,15 @@ void Cwheel::EnemyDamage(void)
 		C3DObj *enemy = CEnemy::Get_Enemy(i);
 		if (enemy)
 		{
-			Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-			THING *thingenemy = enemy->GetAnimeModel();
-			if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
+			if (enemy->Get_DrawCheck())
 			{
-				enemy->DamageFlag_Change();
-				enemy->Position_Keep(m_mtxWorld);
+				Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+				THING *thingenemy = enemy->GetAnimeModel();
+				if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
+				{
+					enemy->DamageFlag_Change();
+					enemy->Position_Keep(m_mtxWorld);
+				}
 			}
 		}
 	}

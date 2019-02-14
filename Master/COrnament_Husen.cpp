@@ -9,6 +9,7 @@
 //=============================================================================
 #include "COrnament_Husen.h"
 #include "debug_font.h"
+#include "sound.h"
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================
@@ -90,8 +91,9 @@ void COrnament_HUSEN::Update(void)
 			m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 			if (m_DamageFlag)
 			{
+				PlaySound(HUSEN_SE);
 				Ornament_Damage(0.1f);
-				Ornament_Flying(0.05f);
+				//Ornament_Flying(0.05f);
 				Damage();
 				Death();
 			}
