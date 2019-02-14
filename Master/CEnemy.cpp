@@ -48,18 +48,18 @@ CEnemy::ENEMY_MOVE CEnemy::m_EnemyMove[8] = {
 CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 {
 	{ 0   , TYPE_SMALL, D3DXVECTOR3( 10.0f, 0.0f , 15.0f), DIRE_NORTH	   ,false },
-/*    { 0	  , TYPE_MIDDLE, D3DXVECTOR3( 20.0f, 0.0f , 20.0f), DIRE_EAST	   ,false },
+   { 0	  , TYPE_MIDDLE, D3DXVECTOR3( 20.0f, 0.0f , 20.0f), DIRE_EAST	   ,false },
 	{ 0	  , TYPE_SPECIAL, D3DXVECTOR3( 30.0f, 0.0f , 30.0f), DIRE_NORTHWEST ,false },
 	{ 0	  , TYPE_BIG, D3DXVECTOR3( 20.0f, 0.0f , 10.0f), DIRE_SOUTHEAST ,false },
-//	{ 0	  , TYPE_SMALL, D3DXVECTOR3( 0.0f , 0.0f , 0.0f ), DIRE_NORTHEAST ,false },
-*/
+	{ 0	  , TYPE_SMALL, D3DXVECTOR3( 0.0f , 0.0f , 0.0f ), DIRE_NORTHEAST ,false },
+
 	{ 100 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
 	{ 130 , TYPE_SMALL, D3DXVECTOR3( 60.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
 	{ 160 , TYPE_SMALL, D3DXVECTOR3( 70.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
 	{ 190 , TYPE_SMALL, D3DXVECTOR3( 80.0f, 0.0f , 80.0f), DIRE_SOUTH     ,false },
 	{ 210 , TYPE_SMALL, D3DXVECTOR3( 90.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
 	{ 240 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 60.0f), DIRE_SOUTH     ,false },
-	/*{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
 	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 20.0f), DIRE_SOUTH     ,false },
 	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
 	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 40.0f), DIRE_SOUTH     ,false },
@@ -70,7 +70,7 @@ CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-30.0f), DIRE_SOUTH     ,false },
 	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-40.0f), DIRE_SOUTH     ,false },
 	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-50.0f), DIRE_SOUTH     ,false },
-	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-60.0f), DIRE_SOUTH     ,false },*/
+	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-60.0f), DIRE_SOUTH     ,false },
 };
 
 int CEnemy::m_ENEMY_MAX = sizeof(CEnemy_Small::m_EnemyEmitter) / sizeof(m_EnemyEmitter[0]);
@@ -368,29 +368,32 @@ bool CEnemy::Chase_Popcorn(void)
 		C3DObj *ppop = Popcorn::Get_Popcorn(i);
 		if (ppop)
 		{
-			Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-			THING_NORMAL thingpop = ppop->GetNormalModel(MODELL_POPCORN);
-			thingpop.Sphere.fRadius = 15.0f;
-			if (C3DObj::Collision_AnimeVSNormal(&Thing, &thingpop))
+			if (ppop->Get_DrawCheck())
 			{
-				thingpop.Sphere.fRadius = 4.0f;
-				if (!C3DObj::Collision_AnimeVSNormal(&Thing, &thingpop))
+				Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+				THING_NORMAL thingpop = ppop->GetNormalModel(MODELL_POPCORN);
+				thingpop.Sphere.fRadius = 15.0f;
+				if (C3DObj::Collision_AnimeVSNormal(&Thing, &thingpop))
 				{
-					D3DXMATRIX playerworld = ppop->Get_mtxWorld();
-					float x = playerworld._41 - m_mtxWorld._41;
-					float z = playerworld._43 - m_mtxWorld._43;
+					thingpop.Sphere.fRadius = 4.0f;
+					if (!C3DObj::Collision_AnimeVSNormal(&Thing, &thingpop))
+					{
+						D3DXMATRIX playerworld = ppop->Get_mtxWorld();
+						float x = playerworld._41 - m_mtxWorld._41;
+						float z = playerworld._43 - m_mtxWorld._43;
 
-					D3DXMATRIX mtxtrans;
-					D3DXMatrixTranslation(&mtxtrans, x * CHASE_SPEED, 0.0f, z * CHASE_SPEED);
-					m_mtxTranslation *= mtxtrans;
+						D3DXMATRIX mtxtrans;
+						D3DXMatrixTranslation(&mtxtrans, x * CHASE_SPEED, 0.0f, z * CHASE_SPEED);
+						m_mtxTranslation *= mtxtrans;
 
-					float angle = (float)(atan2(-z, x));
-					D3DXMatrixRotationY(&m_mtxRotation, angle);
+						float angle = (float)(atan2(-z, x));
+						D3DXMatrixRotationY(&m_mtxRotation, angle);
 
-					return true;
+						return true;
+					}
 				}
+				thingpop.Sphere.fRadius = 4.0f;
 			}
-			thingpop.Sphere.fRadius = 4.0f;
 		}
 	}
 	return false;
@@ -420,7 +423,8 @@ void CEnemy::Ornament_Check(void)
 		C3DObj *pornament = COrnament::Get_Ornament(i);
 		if (pornament)
 		{
-			
+			if (pornament->Get_DrawCheck())
+			{
 				Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
 				THING_NORMAL thingorna = pornament->GetNormalModel();
 				if (C3DObj::Collision_AnimeVSNormal(&Thing, &thingorna))
@@ -441,7 +445,7 @@ void CEnemy::Ornament_Check(void)
 						Position_Keep(pornament->Get_mtxWorld());
 					}
 				}
-			
+			}
 		}
 
 	}

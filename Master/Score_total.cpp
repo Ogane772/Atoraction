@@ -11,6 +11,7 @@
 #include "CUserInterface.h"
 #include "Cplayer.h"
 #include "CTexture.h"
+#include "sound.h"
 #include "CEnemy.h"
 //=============================================================================
 //	ÉOÉçÅ[ÉoÉãïœêîêÈåæ
@@ -34,6 +35,7 @@ C2DObj *pScore_total;
 
 void Score_total_Initialize(void)
 {
+	PlaySound(RESULT_BGM);
 	pScore_total = new C2DObj;
 	g_bend = false;
 	Clear_flg = false;
@@ -99,6 +101,7 @@ void Score_total_Update(void)
 	{
 		if (!Fade_IsFade())
 		{
+			PlaySound(ENTER_SE);
 			Fade_Start(false, 3, 0, 0, 0);
 			Scene_Change(SCENE_INDEX_RESULT);
 		}

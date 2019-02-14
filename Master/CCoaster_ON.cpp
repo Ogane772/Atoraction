@@ -15,6 +15,7 @@
 #include "time.h"
 #include "move.h"
 #include "CEnemy.h"
+#include "sound.h"
 //=============================================================================
 //	’è”’è‹`
 //=============================================================================
@@ -58,7 +59,7 @@ void CoasterON::Initialize()
 	m_Enable = true;
 
 	m_TimeKeep = m_FrameCount;
-
+	PlaySound(COASTER_ON_SE);
 	u = 0;
 	v = -90;
 	m_Hp = COSTER_HP;
@@ -114,6 +115,7 @@ void CoasterON::Update(void)
 	}
 	else if (m_FrameCount - m_TimeKeep > COSTERON_ENDTIME)
 	{
+		StopSound(COASTER_ON_SE);
 		C3DObj_delete();
 	}
 

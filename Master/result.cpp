@@ -81,6 +81,7 @@ void Result_Update(void)
 	{
 		if (Keyboard_IsTrigger(DIK_SPACE))
 		{
+			PlaySound(ENTER_SE);
 			//PlaySound(SOUND_LABEL_SELECT);
 			Fade_Start(true, 3, 0, 0, 0);
 			g_bend = true;
@@ -90,6 +91,7 @@ void Result_Update(void)
 	{
 		if (!Fade_IsFade())
 		{
+			StopSound(RESULT_BGM);
 			Fade_Start(false, 3, 0, 0, 0);
 			Scene_Change(SCENE_INDEX_TITLE);
 		}
