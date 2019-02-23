@@ -53,24 +53,24 @@ CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 	{ 0	  , TYPE_BIG, D3DXVECTOR3( 20.0f, 0.0f , 10.0f), DIRE_SOUTHEAST ,false },
 	{ 0	  , TYPE_SMALL, D3DXVECTOR3( 0.0f , 0.0f , 0.0f ), DIRE_NORTHEAST ,false },
 
-	{ 100 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
-	{ 130 , TYPE_SMALL, D3DXVECTOR3( 60.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
-	{ 160 , TYPE_SMALL, D3DXVECTOR3( 70.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
-	{ 190 , TYPE_SMALL, D3DXVECTOR3( 80.0f, 0.0f , 80.0f), DIRE_SOUTH     ,false },
-	{ 210 , TYPE_SMALL, D3DXVECTOR3( 90.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
-	{ 240 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 60.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 20.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 40.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 60.0f), DIRE_SOUTH     ,false },
-	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-10.0f), DIRE_SOUTH     ,false },
-	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-20.0f), DIRE_SOUTH     ,false },
-	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-30.0f), DIRE_SOUTH     ,false },
-	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-40.0f), DIRE_SOUTH     ,false },
-	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-50.0f), DIRE_SOUTH     ,false },
-	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-60.0f), DIRE_SOUTH     ,false },
+	{ 600 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
+	{ 600 , TYPE_SMALL, D3DXVECTOR3( 60.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
+	{ 600 , TYPE_SMALL, D3DXVECTOR3( 70.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
+	{ 600 , TYPE_SMALL, D3DXVECTOR3( 80.0f, 0.0f , 80.0f), DIRE_SOUTH     ,false },
+	{ 600 , TYPE_SMALL, D3DXVECTOR3( 90.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
+	{ 600 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 60.0f), DIRE_SOUTH     ,false },
+	{ 600 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
+	{ 600 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 20.0f), DIRE_SOUTH     ,false },
+	{ 600 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
+	{ 600 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 40.0f), DIRE_SOUTH     ,false },
+	{ 600 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
+	{ 0 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 60.0f), DIRE_SOUTH     ,false },
+	{ 0 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-10.0f), DIRE_SOUTH     ,false },
+	{ 0 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-20.0f), DIRE_SOUTH     ,false },
+	{ 0 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-30.0f), DIRE_SOUTH     ,false },
+	{ 0 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-40.0f), DIRE_SOUTH     ,false },
+	{ 0 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-50.0f), DIRE_SOUTH     ,false },
+	{ 0 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-60.0f), DIRE_SOUTH     ,false },
 };
 
 int CEnemy::m_ENEMY_MAX = sizeof(CEnemy_Small::m_EnemyEmitter) / sizeof(m_EnemyEmitter[0]);
@@ -119,7 +119,8 @@ CEnemy::~CEnemy()
 
 void CEnemy::Create(void)
 {
-	for (int i = 0;i < m_ENEMY_MAX;i++)
+	int i;
+	for (i = 0;i < m_ENEMY_MAX;i++)
 	{
 		if (!m_EnemyEmitter[i].CreateCheck)
 		{
@@ -364,30 +365,38 @@ void CEnemy::Enemy_Flying(float speed)
 
 bool CEnemy::Chase_Popcorn(void)
 {
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	int i;
+	C3DObj *ppop;
+	THING_NORMAL thingpop;
+	D3DXMATRIX playerworld;
+	D3DXMATRIX mtxtrans;
+	float x;
+	float z;
+	float angle;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
-		C3DObj *ppop = Popcorn::Get_Popcorn(i);
+		ppop = Popcorn::Get_Popcorn(i);
 		if (ppop)
 		{
 			if (ppop->Get_DrawCheck())
 			{
 				Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-				THING_NORMAL thingpop = ppop->GetNormalModel(MODELL_POPCORN);
+				thingpop = ppop->GetNormalModel(MODELL_POPCORN);
 				thingpop.Sphere.fRadius = 15.0f;
 				if (C3DObj::Collision_AnimeVSNormal(&Thing, &thingpop))
 				{
 					thingpop.Sphere.fRadius = 4.0f;
 					if (!C3DObj::Collision_AnimeVSNormal(&Thing, &thingpop))
 					{
-						D3DXMATRIX playerworld = ppop->Get_mtxWorld();
-						float x = playerworld._41 - m_mtxWorld._41;
-						float z = playerworld._43 - m_mtxWorld._43;
+						playerworld = ppop->Get_mtxWorld();
+						x = playerworld._41 - m_mtxWorld._41;
+						z = playerworld._43 - m_mtxWorld._43;
 
-						D3DXMATRIX mtxtrans;
+						mtxtrans;
 						D3DXMatrixTranslation(&mtxtrans, x * CHASE_SPEED, 0.0f, z * CHASE_SPEED);
 						m_mtxTranslation *= mtxtrans;
 
-						float angle = (float)(atan2(-z, x));
+						angle = (float)(atan2(-z, x));
 						D3DXMatrixRotationY(&m_mtxRotation, angle);
 
 						return true;
@@ -402,32 +411,43 @@ bool CEnemy::Chase_Popcorn(void)
 
 void CEnemy::Color_Change(int texindex)
 {
-	Thing.texture[0]->Release();
-	Thing.texture[0] = NULL;
+	if (m_ColorType != texindex)
+	{
+		if (Thing.texture)
+		{
+			Thing.texture[0]->Release();
+			Thing.texture[0] = NULL;
+		}
 
-	char color[TEXTURE_FILENAME_MAX] = {};
-	strcpy(color,CTexture::Texture_GetFailName(texindex));
+		char color[TEXTURE_FILENAME_MAX] = {};
+		strcpy(color, CTexture::Texture_GetFailName(texindex));
 
-	D3DXCreateTextureFromFile
+		D3DXCreateTextureFromFile
 		(
 			m_pD3DDevice,
 			//切り替えたい番号を指定[0]はテクスチャの場所
 			color,
 			Thing.texture//セットしたいモデル番号
-			);
+		);
+
+		m_ColorType = texindex;
+	}
 }
 
 void CEnemy::Ornament_Check(void)
 {
-	for (int i = 0;i < MAX_GAMEOBJ;i++)
+	int i;
+	C3DObj *pornament;
+	THING_NORMAL thingorna;
+	for (i = 0;i < MAX_GAMEOBJ;i++)
 	{
-		C3DObj *pornament = COrnament::Get_Ornament(i);
+		pornament = COrnament::Get_Ornament(i);
 		if (pornament)
 		{
 			if (pornament->Get_DrawCheck())
 			{
 				Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
-				THING_NORMAL thingorna = pornament->GetNormalModel();
+				thingorna = pornament->GetNormalModel();
 				if (C3DObj::Collision_AnimeVSNormal(&Thing, &thingorna))
 				{
 					if (!pornament->Get_DamageFlag())

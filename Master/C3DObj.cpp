@@ -51,7 +51,7 @@ C3DObj::MaterialFileData2 C3DObj::ANIME_MODEL_FILES[] = {
 int C3DObj::MODEL_FILES_MAX = sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0]);
 int C3DObj::ANIME_MODEL_FILES_MAX = sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0]);
 
-bool C3DObj::boRenderSphere = true;
+bool C3DObj::boRenderSphere = false;
 //ƒ‚ƒfƒ‹ƒAƒjƒ[ƒVƒ‡ƒ“ŠÖŒW•Ï”
 /*
 #define MODEL_MAX (9)
@@ -132,8 +132,13 @@ C3DObj::C3DObj(int type)
 //=============================================================================
 C3DObj::~C3DObj()
 {
+	THING();
+	THING_NORMAL();
+	//delete &SkinMesh;
+
 	m_3DObjNum--;
 	p3DObj[m_3DObjIndex] = NULL;
+
 }
 
 
@@ -161,7 +166,8 @@ void C3DObj::UpdateAll()
 //=============================================================================
 void C3DObj::DrawAll()
 {
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	int i;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
 		// ƒ|ƒŠƒ‚[ƒtƒBƒYƒ€‚É‚æ‚Á‚Ä”h¶ƒNƒ‰ƒX‚ÌDraw()‚ªŒÄ‚Î‚ê‚é
 		if (p3DObj[i])
@@ -178,7 +184,8 @@ void C3DObj::DrawAll()
 //=============================================================================
 void C3DObj::DeleteAll()
 {
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	int i;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
 		if (p3DObj[i])
 		{
@@ -220,8 +227,9 @@ void C3DObj::C3DObj_delete(void)
 // Geometry‚Ì‰Šú‰»iƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İj
 HRESULT C3DObj::InitModelLoad()
 {
+	int i;
 	//’Êíƒ‚ƒfƒ‹“Ç‚İ‚İ	
-	for (int i = 0; i < MODEL_FILES_MAX; i++)
+	for (i = 0; i < MODEL_FILES_MAX; i++)
 	{
 		InitThing(&Thing_Normal[i], NORMAL_MODEL_FILES[i].filename);
 		InitSphere(m_pD3DDevice, &Thing_Normal[i]);//“–‚½‚è”»’è‚Ì•\¦
@@ -293,6 +301,14 @@ void C3DObj::Model_Finalize(void)	//	ƒ‚ƒfƒ‹ƒf[ƒ^‚ÌŠJ•ú@•¡”‰»‚µ‚½‚ç‘S•”Á‚·‚©‚
 		if (m_pD3DXMesh[i] != NULL)
 		{
 			m_pD3DXMesh[i]->Release();
+		}
+		if (Thing_Normal[i].pMeshMaterials)
+		{
+			delete[]Thing_Normal[i].pMeshMaterials;
+		}
+		if (Thing_Normal[i].pMeshTextures)
+		{
+			//delete[]Thing_Normal[i].pMeshTextures;
 		}
 	}
 }
@@ -376,6 +392,7 @@ void C3DObj::DrawDX_Anime(D3DXMATRIX mtxWorld, int type, THING* pThing)
 //=============================================================================
 void C3DObj::DrawDX_Normal(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing)
 {
+	DWORD i;
 	
 	//m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 	m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
@@ -386,7 +403,7 @@ void C3DObj::DrawDX_Normal(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing)
 	m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 
 	//ƒ‚ƒfƒ‹‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒO
-	for (DWORD i = 0; i<pThing->dwNumMaterials; i++)
+	for (i = 0; i<pThing->dwNumMaterials; i++)
 	{
 		m_pD3DDevice->SetMaterial(&pThing->pMeshMaterials[i]);
 		m_pD3DDevice->SetTexture(0, pThing->pMeshTextures[i]);
@@ -405,7 +422,7 @@ void C3DObj::DrawDX_Normal(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing)
 // ƒ‚ƒfƒ‹•`‰æ  ƒAƒjƒ[ƒVƒ‡ƒ“–³ ƒRƒŠƒWƒ‡ƒ“ˆÊ’u•ÏX
 void C3DObj::DrawDX_NormalAdd(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing, D3DXVECTOR3 position)
 {
-
+	DWORD i;
 	//m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 	m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
 	m_pD3DDevice->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL);
@@ -415,7 +432,7 @@ void C3DObj::DrawDX_NormalAdd(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThin
 	m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 
 	//ƒ‚ƒfƒ‹‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒO
-	for (DWORD i = 0; i<pThing->dwNumMaterials; i++)
+	for (i = 0; i<pThing->dwNumMaterials; i++)
 	{
 		m_pD3DDevice->SetMaterial(&pThing->pMeshMaterials[i]);
 		m_pD3DDevice->SetTexture(0, pThing->pMeshTextures[i]);
@@ -436,7 +453,7 @@ void C3DObj::DrawDX_NormalAdd(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThin
 
 void C3DObj::DrawDX_NormalAddScale(D3DXMATRIX mtxWorld, int type, THING_NORMAL* pThing, D3DXVECTOR3 position, D3DXVECTOR3 scale)
 {
-
+	DWORD i;
 	//m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 	m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
 	m_pD3DDevice->SetRenderState(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL);
@@ -446,7 +463,7 @@ void C3DObj::DrawDX_NormalAddScale(D3DXMATRIX mtxWorld, int type, THING_NORMAL* 
 	m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 
 	//ƒ‚ƒfƒ‹‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒO
-	for (DWORD i = 0; i<pThing->dwNumMaterials; i++)
+	for (i = 0; i<pThing->dwNumMaterials; i++)
 	{
 		m_pD3DDevice->SetMaterial(&pThing->pMeshMaterials[i]);
 		m_pD3DDevice->SetTexture(0, pThing->pMeshTextures[i]);
@@ -530,6 +547,7 @@ void C3DObj::HitCheck(void)
 	{
 		DebugFont_Draw(500, 500, "“–‚½‚Á‚Ä‚È‚¢‚¼IIIIIIIIIII");
 	}*/
+	/*
 	if (Collision_AnimeVSNormal(&Thing, &Thing_Normal[0]))
 	{
 	DebugFont_Draw(500, 300, "“–‚½‚Á‚½‚¼II");
@@ -537,7 +555,7 @@ void C3DObj::HitCheck(void)
 	else
 	{
 	DebugFont_Draw(500, 500, "“–‚½‚Á‚Ä‚È‚¢‚¼IIIIIIIIIII");
-	}
+	}*/
 	/*
 	//ƒAƒjƒ‘ÎƒAƒjƒ
 	if (Collision_AnimeVSAnime(&Thing[0], &Thing[0]))
@@ -676,7 +694,11 @@ void C3DObj::Animation_Change(int index, float speed)
 		TrackDesc.Speed = speed;//ƒ‚[ƒVƒ‡ƒ“ƒXƒs[ƒh
 		Thing.pAnimController->SetTrackDesc(0, &TrackDesc);//ƒAƒjƒî•ñƒZƒbƒg
 	}
-	Thing.pAnimController->SetTrackAnimationSet(0, pAnimSet[index]);
+	if (m_AnimationType != index)
+	{
+		Thing.pAnimController->SetTrackAnimationSet(0, pAnimSet[index]);
+		m_AnimationType = index;
+	}
 
 }
 
@@ -705,7 +727,8 @@ void C3DObj::Add_Mp(int mp)
 
 void C3DObj::Attraction_Delete(void)
 {
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	int i;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
 		if (p3DObj[i])
 		{

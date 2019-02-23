@@ -23,7 +23,7 @@
 
 #define ASPECT ((float)WINDOW_WIDTH / WINDOW_HIGHT)
 #define ATLENGTH (14.0f)
-#define COSLENGTH (0.008f)
+#define COSLENGTH (0.5f)
 #define CAMERA_SPEED (0.00f)
 
 
@@ -69,6 +69,7 @@ void CCamera::Camera_Initialize(void)
 	m_CameraPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_AtLength = ATLENGTH;
 	Cos_AtLength = COSLENGTH;
+	Cos_angle = D3DXVECTOR3(0.0f, 0.0f, 3.0f);
 
 	m_Front = D3DXVECTOR3(0.0f, -0.4f, 1.0f);
 	D3DXVec3Normalize(&m_Front, &m_Front); //　長さを1にする　正規化
@@ -109,6 +110,9 @@ CCamera* CCamera::Camera_Create(void)
 //	更新
 void CCamera::Update(void)
 {
+	C3DObj *playerget = CPlayer::Get_Player();	//	プレイヤー取得
+	float u;
+	u = (int)(playerget->Get_Angle());
 	//コントローラー情報があるときのみ取得
 	if (pJoyDevice)
 	{
@@ -159,13 +163,14 @@ void CCamera::Update(void)
 	{
 		m_AngleCheck = false;
 	}
-
+	//m_CameraPos = m_at - m_Front * m_AtLength;
 	if (C3DObj::GetW_coaster() == false)
 	{
 		m_CameraPos = m_at - m_Front * m_AtLength;
 	}
 	if (C3DObj::GetW_coaster() == true)
 	{
+
 		m_CameraPos = m_at - m_Front * Cos_AtLength;
 	}
 	//WallCheck();

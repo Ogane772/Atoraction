@@ -46,6 +46,7 @@ private:
 	D3DXVECTOR3 m_Up;			//	アップベクトル
 
 	float m_Angle;	//	回転角度
+	D3DXVECTOR3 Cos_angle;
 	static float angle;
 	static D3DXMATRIX m_mtxView;	//	ビュー変換用行列
 

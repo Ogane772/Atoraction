@@ -189,13 +189,16 @@ void Cfreefall::Finalize(void)
 
 void Cfreefall::EnemyDamage(void)
 {
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	int i;
+	THING *thingenemy;
+	C3DObj *enemy;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
-		C3DObj *enemy = CEnemy::Get_Enemy(i);
+		enemy = CEnemy::Get_Enemy(i);
 		if (attackon && enemy)
 		{
 			Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);			
-			THING *thingenemy = enemy->GetAnimeModel();
+			thingenemy = enemy->GetAnimeModel();
 			if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
 			{
 				enemy->DamageFlag_Change();
@@ -208,17 +211,21 @@ void Cfreefall::EnemyDamage(void)
 
 void Cfreefall::FreeFallDamage(void)
 {
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	int i;
+	C3DObj *enemy;
+	THING *thingenemy;
+	int attack;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
-		C3DObj *enemy = CEnemy::Get_Enemy(i);
+		enemy = CEnemy::Get_Enemy(i);
 
 		if (enemy && m_DrawCheck)
 		{
 			if (enemy->Get_AttacFlag())
 			{
 				fall.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
-				THING *thingenemy = enemy->GetAnimeModel();
-				int attack = enemy->Get_Attck();
+				thingenemy = enemy->GetAnimeModel();
+				attack = enemy->Get_Attck();
 				if (C3DObj::Collision_AnimeVSNormal(thingenemy, &fall))
 				{
 					m_Hp -= attack;

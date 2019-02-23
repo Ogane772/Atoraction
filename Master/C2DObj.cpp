@@ -204,6 +204,38 @@ void C2DObj::m_Sprite_Draw(int texture_index, float dx, float dy, int tx, int ty
 	m_pD3DDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 4, 0, 2);
 }
 
+void C2DObj::SpriteDraw(int texture_index, float dx, float dy)
+{
+	int w = Texture_GetWidth(texture_index, 1);
+	int h = Texture_GetHeight(texture_index, 1);
+	Vertex2D v[] = {
+		{ D3DXVECTOR4(dx , dy, 1.0f, 1) , D3DCOLOR_ARGB(255,255,255,255) | D3DFVF_DIFFUSE , D3DXVECTOR2(0, 0) },
+		{ D3DXVECTOR4(dx + w ,dy, 1.0f, 1) , D3DCOLOR_ARGB(255,255,255,255) | D3DFVF_DIFFUSE , D3DXVECTOR2(1 ,0) },
+		{ D3DXVECTOR4(dx , dy + h, 1.0f, 1) , D3DCOLOR_ARGB(255,255,255,255) | D3DFVF_DIFFUSE , D3DXVECTOR2(0 ,1) },
+		{ D3DXVECTOR4(dx + w, dy + h, 1.0f, 1) , D3DCOLOR_ARGB(255,255,255,255) | D3DFVF_DIFFUSE , D3DXVECTOR2(1 ,1) }
+	};
+
+	m_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);				//Invisible anable
+	m_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
+	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	m_pD3DDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+	m_pD3DDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
+	m_pD3DDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_BLENDTEXTUREALPHA);
+	m_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);	//Line dot type and filter
+	m_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
+	m_pD3DDevice->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+	m_pD3DDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+	m_pD3DDevice->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+	m_pD3DDevice->SetTexture(0, Texture_GetTexture(texture_index));
+	m_pD3DDevice->SetFVF(FVF_VERTEX2D);
+	m_pD3DDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, v, sizeof(Vertex2D));		//drawing are betwwen beginscene and end scene
+}
+
+
+
 void C2DObj::Sprite_Draw(int texture_index, float dx, float dy, float tx, float ty, float tw, float th, float cx, float cy, float sx, float sy, float rotation)
 {
 	float w = (float)Texture_GetWidth(texture_index, 1);

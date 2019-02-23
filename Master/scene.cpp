@@ -6,6 +6,7 @@
 #include "game.h"
 #include "result.h"
 #include "Score_total.h"
+#include "manual.h"
 //=============================================================================
 //	ÉOÉçÅ[ÉoÉãïœêîêÈåæ
 //=============================================================================
@@ -17,6 +18,7 @@ typedef void(*SceneFunc)(void);	//éÙï∂
 
 static const SceneFunc Initialize[] = {
 	Title_Initialize,
+	Manual_Init,
 	Game_Initialize,
 	Score_total_Initialize,
 	Result_Initialize
@@ -25,6 +27,7 @@ static const SceneFunc Initialize[] = {
 
 static const SceneFunc Finalize[] = {
 	Title_Finalize,
+	Manual_Fainalize,
 	Game_Finalize,
 	Score_total_Finalize,
 	Result_Finalize
@@ -32,6 +35,7 @@ static const SceneFunc Finalize[] = {
 
 static const SceneFunc Update[] = {
 	Title_Update,
+	Manual_Update,
 	Game_Updata,
 	Score_total_Update,
 	Result_Update
@@ -39,6 +43,7 @@ static const SceneFunc Update[] = {
 
 static const SceneFunc Draw[] = {
 	Title_Draw,
+	Manual_Draw,
 	Game_Draw,
 	Score_total_Draw,
 	Result_Draw

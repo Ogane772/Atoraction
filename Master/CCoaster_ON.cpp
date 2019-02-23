@@ -146,7 +146,8 @@ void CoasterON::Coaster_Create(void)
 
 C3DObj *CoasterON::Get_Coaster(void)
 {
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	int i;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
 		C3DObj *Coaster = C3DObj::Get(i);
 		if (Coaster)

@@ -24,7 +24,8 @@ EFFECT g_effect[MAX_EFFECT];
 
 void Exp_Init(void)
 {
-	for (int i = 0; i < MAX_EFFECT; i++)
+	int i;
+	for (i = 0; i < MAX_EFFECT; i++)
 	{
 		g_effect[i].exp_position = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		g_effect[i].puttern = 0;
@@ -38,7 +39,8 @@ void Exp_Init(void)
 
 void Exp_Update(void)
 {
-	for (int i = 0; i < MAX_EFFECT; i++)
+	int i;
+	for (i = 0; i < MAX_EFFECT; i++)
 	{
 		if (g_effect[i].eflg == true)
 		{
@@ -54,7 +56,8 @@ void Exp_Update(void)
 
 void Exp_Draw(void)
 {
-	for (int i = 0; i < MAX_EFFECT; i++)
+	int i;
+	for (i = 0; i < MAX_EFFECT; i++)
 	{
 		if (g_effect[i].eflg == true)
 		{
@@ -94,7 +97,8 @@ void Exp_Set(int exp_number, float x, float y, float z, float size, float rotati
 
 void Exp_Create(float x, float y, float z, float size, float rotation, int texture_index, int anime_pattan, int anime_time, int one_width, int one_height, int width_patan)
 {
-	for (int i = 0; i < MAX_EFFECT; i++)
+	int i;
+	for (i = 0; i < MAX_EFFECT; i++)
 	{
 		if (g_effect[i].eflg == false)
 		{

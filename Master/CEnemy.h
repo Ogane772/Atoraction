@@ -102,6 +102,7 @@ protected:
 	bool m_playercheck;
 	void Color_Change(int texindex);
 	void Ornament_Check(void);
+	int m_ColorType;
 private:
 
 	int m_Type;			// Ží—Þ

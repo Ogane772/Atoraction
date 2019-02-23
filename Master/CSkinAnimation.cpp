@@ -47,7 +47,7 @@ HRESULT MY_HIERARCHY::CreateMeshContainer(LPCSTR Name, CONST D3DXMESHDATA* pMesh
     LPD3DXMESH pMesh = NULL;
     *ppMeshContainer = NULL;
 	DWORD dwBoneNum=0;
-
+	DWORD i;
     pMesh = pMeshData->pMesh;
     pMeshContainer = new MYMESHCONTAINER;
     if (pMeshContainer == NULL)
@@ -118,7 +118,7 @@ HRESULT MY_HIERARCHY::CreateMeshContainer(LPCSTR Name, CONST D3DXMESHDATA* pMesh
 		dwBoneNum = pSkinInfo->GetNumBones();
 		pMeshContainer->pBoneOffsetMatrices = new D3DXMATRIX[dwBoneNum];
 
-		for (DWORD i= 0; i < dwBoneNum; i++)
+		for (i= 0; i < dwBoneNum; i++)
 		{	
 			memcpy(&pMeshContainer->pBoneOffsetMatrices[i],
 				pMeshContainer->pSkinInfo->GetBoneOffsetMatrix(i),sizeof(D3DMATRIX));	
@@ -237,7 +237,7 @@ HRESULT SKIN_MESH::AllocateBoneMatrix( THING* pThing,LPD3DXMESHCONTAINER pMeshCo
 {
     MYFRAME *pFrame=NULL;
 	DWORD dwBoneNum=0;
-
+	DWORD i;
     MYMESHCONTAINER *pMeshContainer = (MYMESHCONTAINER*)pMeshContainerBase;
     if (pMeshContainer->pSkinInfo == NULL)
 	{
@@ -246,7 +246,7 @@ HRESULT SKIN_MESH::AllocateBoneMatrix( THING* pThing,LPD3DXMESHCONTAINER pMeshCo
 	dwBoneNum = pMeshContainer->pSkinInfo->GetNumBones();
     pMeshContainer->ppBoneMatrix = new D3DXMATRIX*[dwBoneNum];
 
-    for (DWORD i=0; i<dwBoneNum; i++)
+    for (i=0; i<dwBoneNum; i++)
     {
 		pFrame = (MYFRAME*)D3DXFrameFind( pThing->pFrameRoot, pMeshContainer->pSkinInfo->GetBoneName(i) );
         if (pFrame == NULL)

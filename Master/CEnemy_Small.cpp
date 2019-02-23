@@ -101,6 +101,7 @@ void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 	TrackDesc.Speed = WALK_SPEED;//モーションスピード
 	Thing.pAnimController->SetTrackDesc(0, &TrackDesc);//アニメ情報セット
 	Thing.pAnimController->SetTrackAnimationSet(0, pAnimSet[WALK]);//初期アニメーションセット
+	m_AnimationType = WALK;
 	m_Enable = true;
 	m_MoveCheck = false;
 	m_DrawCheck = true;
@@ -141,7 +142,7 @@ void CEnemy_Small::Update(void)
 			{
 				if ((!Chase_Popcorn()) && (!m_AttackCheck))
 				{
-					//Small_Move();
+					Small_Move();
 				}
 				else
 				{
@@ -184,6 +185,7 @@ void CEnemy_Small::Update(void)
 		Color_Change(CTexture::TEX_SMALL_END);
 		if (!m_DrawCheck)
 		{
+			CPlayer::Add_KoCount();
 			C3DObj_delete();
 		}
 	}

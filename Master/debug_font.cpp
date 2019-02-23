@@ -74,7 +74,7 @@ void DebugFont_Draw(int x, int y, const char* pFormat, ...)
 	g_pD3DXFont->DrawText(NULL,
 		buf,
 		-1, &rect, DT_LEFT,
-		D3DCOLOR_RGBA(0, 255, 0, 255));
+		D3DCOLOR_RGBA(255, 0, 0, 255));
 #else
 	UNREFERENCED_PARAMETER(pFormat);
 	UNREFERENCED_PARAMETER(x);

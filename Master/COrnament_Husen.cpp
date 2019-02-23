@@ -93,7 +93,7 @@ void COrnament_HUSEN::Update(void)
 			{
 				PlaySound(HUSEN_SE);
 				Ornament_Damage(0.1f);
-				//Ornament_Flying(0.05f);
+				Ornament_Flying(0.05f);
 				Damage();
 				Death();
 			}
