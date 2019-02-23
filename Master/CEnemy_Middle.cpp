@@ -92,6 +92,7 @@ void CEnemy_Middle::Initialize(ENEMY_EMITTER *Emitter)
 	TrackDesc.Speed = WALK_SPEED;//モーションスピード
 	Thing.pAnimController->SetTrackDesc(0, &TrackDesc);//アニメ情報セット
 	Thing.pAnimController->SetTrackAnimationSet(0, pAnimSet[WALK]);//初期アニメーションセット
+	m_AnimationType = WALK;
 	m_Enable = true;
 	m_MoveCheck = false;
 	m_DrawCheck = true;
@@ -166,6 +167,7 @@ void CEnemy_Middle::Update(void)
 		Color_Change(CTexture::TEX_MIDDLE_END);
 		if (!m_DrawCheck)
 		{
+			CPlayer::Add_KoCount();
 			C3DObj_delete();
 		}
 	}

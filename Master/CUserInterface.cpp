@@ -68,7 +68,7 @@ void CUserInterFace::Update(void)
 void CUserInterFace::Draw(void)
 {
 	C3DObj *playerget = CPlayer::Get_Player();
-
+	int i;
 	int hp = playerget->Get_Hp();
 	Sprite_Draw(TEX_UI_GRAYBAR, HP_X, HP_Y, 0, 0, 1024, 222, 0.0f, 0.0f, 0.45f, 0.4f, 0.0f);
 	Sprite_Draw(TEX_UI_HPWINDOW, HP_X, HP_Y, 0, 0, 1024, 222, 0.0f, 0.0f, 0.45f, 0.4f, 0.0f);
@@ -115,7 +115,7 @@ void CUserInterFace::Draw(void)
 	//キャラクター
 	Sprite_Draw(TEX_Player_Icon, 1685.0f + (playermatrix._41 * 1.5f), 140.0f - (playermatrix._43 * 1.5f), 0, 0, 20, 20, 10, 10, 1, 1, D3DXToRadian(User_angle) + D3DXToRadian(90));
 	//アトラクション
-	for (int i = 0; i < ATTRACTION_MAX; i++)
+	for (i = 0; i < ATTRACTION_MAX; i++)
 	{
 		C3DObj *attraction_get = CAttraction::Get_Attraction(i);
 		if (attraction_get)
@@ -127,7 +127,7 @@ void CUserInterFace::Draw(void)
 		}
 	}
 	//エネミー
-	for (int i = 0; i < ENEMY_MAX; i++)
+	for (i = 0; i < ENEMY_MAX; i++)
 	{
 		C3DObj *enemyget = CEnemy::Get_Map_Enemy(i);
 		if (enemyget)

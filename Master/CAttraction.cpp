@@ -140,7 +140,8 @@ void CAttraction::Attraction_Finalize(int index)
 
 void CAttraction::OrnamentDamage(void)
 {
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	int i;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
 		C3DObj *ornament = COrnament::Get_Ornament(i);
 		if (ornament)
@@ -160,7 +161,8 @@ void CAttraction::OrnamentDamage(void)
 
 void CAttraction::OrnamentDamage(THING_NORMAL nomal)
 {
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	int i;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
 		C3DObj *ornament = COrnament::Get_Ornament(i);
 		if (ornament)

@@ -89,6 +89,7 @@ void Cwheel::Initialize()
 
 void Cwheel::Update(void)
 {
+	/*
 	//“®‚¢‚Ä‚éó‘Ô
 	if (ferris_flg == true)
 	{
@@ -100,7 +101,7 @@ void Cwheel::Update(void)
 	{
 
 	}
-
+	*/
 	if (m_Enable)
 	{//‚±‚±‚Å‰ñ“]ŒvZ‚ğs‚¤
 
@@ -153,15 +154,18 @@ void Cwheel::Finalize(void)
 
 void Cwheel::EnemyDamage(void)
 {
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	int i;
+	C3DObj *enemy;
+	THING *thingenemy;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
-		C3DObj *enemy = CEnemy::Get_Enemy(i);
+		enemy = CEnemy::Get_Enemy(i);
 		if (enemy)
 		{
 			if (enemy->Get_DrawCheck())
 			{
 				Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-				THING *thingenemy = enemy->GetAnimeModel();
+				thingenemy = enemy->GetAnimeModel();
 				if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
 				{
 					enemy->DamageFlag_Change();

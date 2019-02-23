@@ -170,7 +170,8 @@ void CGameObj::DebugDraw(void)
 //=============================================================================
 void CGameObj::UpdateAll()
 {
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	int i;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
 		// ポリモーフィズムによって派生クラスのUpdate()が呼ばれる
 		if (pGameObj[i])
@@ -185,7 +186,8 @@ void CGameObj::UpdateAll()
 //=============================================================================
 void CGameObj::DrawAll()
 {
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	int i;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
 		// ポリモーフィズムによって派生クラスのDraw()が呼ばれる
 		if (pGameObj[i])
@@ -202,7 +204,8 @@ void CGameObj::DrawAll()
 //=============================================================================
 void CGameObj::DeleteAll2D()
 {
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	int i;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
 		if (pGameObj[i])
 		{

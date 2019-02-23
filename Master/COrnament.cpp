@@ -82,7 +82,8 @@ COrnament::COrnament(int OrnamentType)
 
 void COrnament::Create(void)
 {
-	for (int i = 0; i < m_ORNAMENT_MAX; i++)
+	int i;
+	for (i = 0; i < m_ORNAMENT_MAX; i++)
 	{
 		if (!m_OrnamentEmitter[i].CreateCheck)
 		{

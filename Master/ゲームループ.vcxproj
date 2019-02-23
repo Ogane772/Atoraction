@@ -203,6 +203,7 @@
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CMesh_SkyDome.cpp" />
+    <ClCompile Include="manual.cpp" />
     <ClCompile Include="move.cpp" />
     <ClCompile Include="number.cpp" />
     <ClCompile Include="result.cpp" />
@@ -262,6 +263,7 @@
     <ClInclude Include="CGauge.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="CMesh_SkyDome.h" />
+    <ClInclude Include="manual.h" />
     <ClInclude Include="move.h" />
     <ClInclude Include="number.h" />
     <ClInclude Include="result.h" />

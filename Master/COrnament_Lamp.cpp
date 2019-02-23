@@ -149,17 +149,21 @@ void COrnament_Lamp::Draw(void)
 
 void COrnament_Lamp::Damage(void)
 {
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	int i;
+	C3DObj *enemy;
+	THING *thingenemy;
+	int attack;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
-		C3DObj *enemy = CEnemy::Get_Enemy(i);
+		enemy = CEnemy::Get_Enemy(i);
 
 		if (enemy && m_DrawCheck)
 		{
 			if (enemy->Get_AttacFlag())
 			{
 				Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-				THING *thingenemy = enemy->GetAnimeModel();
-				int attack = enemy->Get_Attck();
+				thingenemy = enemy->GetAnimeModel();
+				attack = enemy->Get_Attck();
 				if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
 				{
 					m_Hp -= attack;
@@ -179,6 +183,7 @@ void COrnament_Lamp::Damage(void)
 //プレイヤーと当たっているかデバック
 void COrnament_Lamp::PlayerDebug(void)
 {
+	/*
 	for (int i = 0; i < MAX_GAMEOBJ; i++)
 	{
 		C3DObj *player = CPlayer::Get_Player();
@@ -203,7 +208,7 @@ void COrnament_Lamp::PlayerDebug(void)
 				DebugFont_Draw(510, 500, "当たってない");
 			}
 		}
-	}
+	}*/
 }
 
 

@@ -200,6 +200,8 @@ protected:
 	void Add_Score(int score) { m_TotalScore += score; }	//	スコア加算
 	void Attraction_Delete(void);
 	int m_OrnamentType;
+	
+	int m_AnimationType;
 private:
 	
 	static HRESULT InitThing(THING_NORMAL *pThing, LPSTR szXFileName);//ノーマルモデルの読み込み

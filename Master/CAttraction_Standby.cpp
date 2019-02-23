@@ -124,9 +124,11 @@ void Standby::Standby_Create(void)
 
 C3DObj *Standby::Get_Standby(void)
 {
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	int i;
+	C3DObj *Standby;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
-		C3DObj *Standby = C3DObj::Get(i);
+		Standby = C3DObj::Get(i);
 		if (Standby)
 		{
 			if (Standby->Get_3DObjType() == AT_STANDBY)

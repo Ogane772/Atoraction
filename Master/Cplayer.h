@@ -48,9 +48,11 @@ public:
 	//D3DXMATRIX Get_mtxkeep(void) { return m_mtxKeepTranslation; }
 	static int Get_KoCount(void) { return m_KO_Count; }
 	static void Add_KoCount(void) { m_KO_Count++; }
+	static void Reset_KoCount(void) { m_KO_Count = 0; }
 	static C3DObj *Get_Player(void);
 	bool Get_DrawCheck(void) { return m_DrawCheck; }
 	static bool GetCoaster_Enable(void) { return g_CosterMode; };
+	static void TitleFlag_Change(bool change) { m_TitleFlag = change; }
 protected:
 	
 	
@@ -95,7 +97,7 @@ private:
 	bool g_CosterModeStandby;//コースターを呼んでるとき
 	int m_DrawCount;
 	
-	
+	static bool m_TitleFlag;
 };
 
 

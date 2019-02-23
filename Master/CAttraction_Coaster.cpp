@@ -134,7 +134,8 @@ void Coaster::Coaster_Create(void)
 
 C3DObj *Coaster::Get_Coaster(void)
 {
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	int i;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
 		C3DObj *Coaster = C3DObj::Get(i);
 		if (Coaster)
@@ -150,16 +151,20 @@ C3DObj *Coaster::Get_Coaster(void)
 
 void Coaster::EnemyDamage(void)
 {
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	int i;
+	C3DObj *enemy;
+	THING *thingenemy;
+	int hp;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
-		C3DObj *enemy = CEnemy::Get_Enemy(i);
+		enemy = CEnemy::Get_Enemy(i);
 		if (enemy)
 		{
 			if (enemy->Get_DrawCheck())
 			{
 				Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-				THING *thingenemy = enemy->GetAnimeModel();
-				int hp = enemy->Get_Hp();
+				thingenemy = enemy->GetAnimeModel();
+				hp = enemy->Get_Hp();
 				if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
 				{
 					Exp_Set(HIT, thingenemy->vPosition.x, thingenemy->vPosition.y, thingenemy->vPosition.z, 4.0, 0);

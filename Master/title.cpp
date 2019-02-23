@@ -8,12 +8,42 @@
 #include "scene.h"
 #include "gamepad.h"
 #include "sound.h"
+#include "C3DObj.h"
+#include "common.h"
+#include "COrnament.h"
+#include "CMeshField.h"
+#include "CMeshField_Cylinder.h"
+#include "CMesh_SkyDome.h"
+#include "Cplayer.h"
+#include "debug_font.h"
+#include "CLight.h"
 //=============================================================================
 //	グローバル変数宣言
 //=============================================================================
 
 static bool g_bend = false;	//	フェードインアウトフラグ
 							//コントローラーに使う変数
+static float f;
+static float f2;
+
+static int a;
+static int b;
+
+static D3DXVECTOR3 g_Camera_Eye;
+static D3DXVECTOR3 g_Camera_At;
+static D3DXVECTOR3 g_Camera_Up;
+
+static D3DXVECTOR3 front;		//カメラの前向きベクトル、必ず長さ1、単位ベクトル
+static D3DXVECTOR3 right;
+static D3DXVECTOR3 up;
+
+static D3DXMATRIX mtxR;
+
+static D3DXMATRIX mtxView;
+
+static float at_lenght;	//atまでの距離
+static float speed;
+
 static DIJOYSTATE2 js;
 static LPDIRECTINPUTDEVICE8 pJoyDevice;
 static HRESULT hr;
@@ -34,6 +64,37 @@ void Title_Initialize(void)
 		hr = pJoyDevice->Acquire();
 	}
 	PlaySound(TITLE_BGM);
+	g_Camera_Eye = D3DXVECTOR3(0.0f, 30.0f, -50.0f); //eye カメラ座標
+	g_Camera_At = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	 //at  注視点・・・自分が注目している視点
+	g_Camera_Up = D3DXVECTOR3(0.0f, -1.0f, 0.0f);	 //up  カメラの上方向ベクトル
+
+	front = D3DXVECTOR3(0.0f, -1.0f, 1.0f);
+	D3DXVec3Normalize(&front, &front);
+
+	//frontできたあと
+	up = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+
+	D3DXVec3Cross(&right, &up, &front);	//外積は順番が肝心
+	D3DXVec3Normalize(&right, &right);	//正規化,丸め誤差防止
+
+	D3DXVec3Cross(&up, &front, &right);
+	D3DXVec3Normalize(&up, &up);
+
+	at_lenght = 40.0f;
+	speed = 0.001f;
+
+	a = 0;
+	b = 0;
+	C3DObj::InitModelLoad();
+	CPlayer::PlayerCreate();				//	プレイヤー生成		
+	CLight::Light_Create();					//	ライト生成
+	CMeshField::MeshField_Create(CTexture::TEX_KUSA_RENGA, 120.0f, 2, 2);							//	地面生成																									//CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_FLORR, 10.0f, SYLINDERSIZE, 20, 1,true);	//	内カベ生成
+	CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_MOUNTAIN, 10.0f, FIELDSIZE, 20, 1, false);	//	外カベ生成
+	CMesh_SkyDome::Mesh_SkyDome_Create(CTexture::TEX_SKY, 2.0f, SKYSIZE, 40, 20);
+	COrnament::Create();
+
+	CPlayer::TitleFlag_Change(true);
+
 }
 
 //=============================================================================
@@ -43,6 +104,10 @@ void Title_Initialize(void)
 void Title_Finalize(void)
 {
 	delete ptitle;
+	C3DObj::DeleteAll();			//	3Dオブジェクト全消去
+	C3DObj::Model_Finalize();
+	CPlayer::TitleFlag_Change(false);
+	CPlayer::Reset_KoCount();
 }
 
 //=============================================================================
@@ -72,9 +137,38 @@ void Title_Update(void)
 		{
 			StopSound(TITLE_BGM);
 			Fade_Start(false, 3, 0, 0, 0);
-			Scene_Change(SCENE_INDEX_GAME);
+			Scene_Change(SCENE_INDEX_CHUTO);
 		}
 	}
+	g_Camera_At = (front * at_lenght) + g_Camera_Eye;
+
+	D3DXMatrixLookAtLH(&mtxView, &g_Camera_Eye, &g_Camera_At, &up);
+
+	D3DXMATRIX mtxProjection;
+
+	D3DXMatrixPerspectiveFovLH(&mtxProjection, D3DXToRadian(60), (float)WINDOW_WIDTH / WINDOW_HIGHT, 0.1f, 200.0f);	//Fov = 画角(視野角),Aspect = アスペクト比, near, far
+
+	C3DObj::m_pD3DDevice->SetTransform(D3DTS_VIEW, &mtxView);
+	C3DObj::m_pD3DDevice->SetTransform(D3DTS_PROJECTION, &mtxProjection);
+
+	b++;
+
+	f = (float)(speed * cos(D3DXToRadian(a)));
+	f2 = (float)(speed * sin(D3DXToRadian(a)));
+	if (b > 5)
+	{
+		a += 1;
+		g_Camera_Eye.x += f;
+		g_Camera_Eye.z += f2;
+		g_Camera_Eye -= g_Camera_At;
+
+		D3DXMatrixRotationY(&mtxR, D3DXToRadian(-0.1f));//カメラ旋回速度
+		D3DXVec3TransformNormal(&right, &right, &mtxR);		//今のところ必要ない
+		D3DXVec3TransformNormal(&front, &front, &mtxR);
+		D3DXVec3TransformNormal(&up, &up, &mtxR);
+	}
+	C3DObj::UpdateAll();	//	3Dオブジェクト更新
+	CGameObj::UpdateAll();	//	2Dオブジェクト更新
 }
 
 //=============================================================================
@@ -84,9 +178,12 @@ void Title_Update(void)
 void Title_Draw(void)
 {
 
-
-	ptitle->m_Sprite_Draw(3, 0, 0, 0, 0, ptitle->Texture_GetWidth(3, 1), ptitle->Texture_GetHeight(3, 1));
-
+	C3DObj::DrawAll();		//	3Dオブジェクト描画
+	CGameObj::DrawAll();	//	2Dオブジェクト描画
+	ptitle->Sprite_Draw(CTexture::TEX_PUSHBUTTON, 400, 700, 0, 0, ptitle->Texture_GetWidth(CTexture::TEX_PUSHBUTTON, 1), ptitle->Texture_GetHeight(CTexture::TEX_PUSHBUTTON, 1));
+	ptitle->Sprite_Draw(CTexture::TEX_TITLELOGO, 400, 30, 0, 0, ptitle->Texture_GetWidth(CTexture::TEX_TITLELOGO, 1), ptitle->Texture_GetHeight(CTexture::TEX_TITLELOGO, 1));
+	//テクスチャが出ない＆カメラ回転がおかしい？
+//	DebugFont_Draw(300, 50, "X = %ld , Y= %ld", js.lX, js.lY);
 }
 
 

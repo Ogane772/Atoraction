@@ -191,9 +191,11 @@ void CGAUGE::CGAUGE_Create(D3DXMATRIX m_mtxWorld)
 
 C3DObj *CGAUGE::Get_CGAUGE(void)
 {
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	int i;
+	C3DObj *CGAUGE;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
-		C3DObj *CGAUGE = C3DObj::Get(i);
+		CGAUGE = C3DObj::Get(i);
 		if (CGAUGE)
 		{
 			if (CGAUGE->Get_3DObjType() == AT_GAUGE)

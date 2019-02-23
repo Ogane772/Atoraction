@@ -164,7 +164,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hprevInstance, LPSTR lpCmdli
 
 			if (time - g_StaticFrameTime < 1.0 / 60.0) {
 				// 1 / 60 秒経っていなかったら空回り
-				Sleep(0);
+					Sleep(0);
 			}
 			else {
 				// フレーム固定用の計測時間を更新する
