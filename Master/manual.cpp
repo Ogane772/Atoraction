@@ -50,6 +50,7 @@ void Manual_Init(void)
 	{
 		hr = pJoyDevice->Acquire();
 	}
+	PlaySound(CHUTO_BGM);
 }
 
 void Manual_Update(void)
@@ -101,6 +102,7 @@ void Manual_Update(void)
 		{
 			if (Keyboard_IsTrigger(DIK_D) && FPS_mCounter >= 30 || Keyboard_IsTrigger(DIK_SPACE) && FPS_mCounter >= 30 || js.lY >= -2 && js.lY <= 2 && js.lX == 6 && FPS_mCounter >= 30)
 			{
+				StopSound(CHUTO_BGM);
 				PlaySound(START_SE);
 				Fade_Start(true, 1, 0, 0, 0);
 				g_bend = true;

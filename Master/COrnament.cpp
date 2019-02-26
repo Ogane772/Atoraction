@@ -31,19 +31,49 @@ COrnament *COrnament::m_pOrnament[ORNAMENT_MAX] = {};
 
 COrnament::ORNAMENT_EMITTER COrnament::m_OrnamentEmitter[]
 {
-	{ 0	  , TYPE_HUSEN, D3DXVECTOR3(0.0f, 0.0f , -15.5f),270     ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
 
-	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(-31.0f, 0.0f , -4.5f),270     ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
-	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(-34.0f, 0.0f , -4.5f),270     ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
 
-	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(31.0f, 0.0f , -4.5f),270     ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
-	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(34.0f, 0.0f , -4.5f),270     ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+
+
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(-6.0f, 1.0f , -96.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(6.0f, 1.0f , -96.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(-6.0f, 1.0f , -84.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(6.0f, 1.0f , -84.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(-6.0f, 1.0f , -72.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(6.0f, 1.0f , -72.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
 
 	{ 0	  , TYPE_LAMP, D3DXVECTOR3(-6.0f, 1.0f , -60.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
 	{ 0	  , TYPE_LAMP, D3DXVECTOR3(6.0f, 1.0f , -60.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
 
-	{ 0	  , TYPE_LAMP, D3DXVECTOR3(-6.0f, 1.0f , 60.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
-	{ 0	  , TYPE_LAMP, D3DXVECTOR3(6.0f, 1.0f , 60.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(-6.0f, 1.0f , -48.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(6.0f, 1.0f , -48.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(-6.0f, 1.0f , -36.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(6.0f, 1.0f , -36.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+
+
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(-6.0f, 1.0f , 90.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(6.0f, 1.0f , 90.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(-6.0f, 1.0f , 78.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(6.0f, 1.0f , 78.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(-6.0f, 1.0f , 66.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(6.0f, 1.0f , 66.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(-6.0f, 1.0f , 54.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(6.0f, 1.0f , 54.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(-6.0f, 1.0f , 42.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(6.0f, 1.0f , 42.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(-6.0f, 1.0f , 30.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(6.0f, 1.0f , 30.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+
+
+
 
 
 	{ 0	  , TYPE_FOUNTAIN, D3DXVECTOR3(0.0f , 0.0f , 0.0f),  0 ,false, D3DXVECTOR3(2.0f, 2.0f , 2.0f), },
@@ -53,8 +83,85 @@ COrnament::ORNAMENT_EMITTER COrnament::m_OrnamentEmitter[]
 	{ 0	  , TYPE_BENCH, D3DXVECTOR3(18.0f, 0.0f , -18.0f), 225	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
 	{ 0	  , TYPE_BENCH, D3DXVECTOR3(18.0f, 0.0f , 18.0f), 135	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
 
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(0.0f, 0.0f , 12.0f), -90	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(0.0f, 0.0f , -12.0f), 90	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(12.0f, 0.0f , 0.0f), 0	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(-12.0f, 0.0f , 0.0f), 180	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+
+
+	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(-38.0f, 0.0f , 25.0f), 180	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_HUSEN, D3DXVECTOR3(-37.5f, 2.0f , 25.0f), 180	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(-50.0f, 0.0f , 40.0f), 180	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(-14.0f, 0.0f , 52.0f), 10	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(-34.0f, 1.0f , 30.0f), 43	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+
+	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(-31.0f, 0.0f , 58.0f), 180	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_HUSEN, D3DXVECTOR3(-30.5f, 2.0f , 58.0f), 180	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(-12.0f, 0.0f , 20.0f), 180	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(-70.0f, 0.0f , 10.0f), 10	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(-44.0f, 1.0f , 15.0f), 43	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+
+
+	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(20.0f, 0.0f , 46.4f), 10	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_HUSEN, D3DXVECTOR3(19.5f, 2.0f , 46.4f), 10	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(70.0f, 0.0f , 64.0f), 252	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(44.0f, 0.0f , 33.0f), -20	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(50.0f, 1.0f , 50.0f), -43	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+
+	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(65.0f, 0.0f , 6.4f), 10	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_HUSEN, D3DXVECTOR3(64.5f, 2.0f , 6.4f), 10	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(10.0f, 0.0f , 4.0f), 252	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(21.0f, 0.0f , 22.0f), -20	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(30.0f, 1.0f , 60.0f), -43	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+
+
+	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(50.0f, 0.0f , -36.4f), 91	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_HUSEN, D3DXVECTOR3(49.5f, 2.0f , -36.4f), 91	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(70.0f, 0.0f , -24.0f), 111	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(44.0f, 0.0f , -63.0f), -71	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(30.0f, 1.0f , -30.0f), -52	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+
+	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(39.0f, 0.0f , -19.4f), 191	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_HUSEN, D3DXVECTOR3(38.5f, 2.0f , -19.4f), 191	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(16.0f, 0.0f , -60.0f), 111	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(51.0f, 0.0f , -44.0f), -71	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(15.0f, 1.0f , -20.0f), -52	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+
+
+	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(-39.0f, 0.0f , -36.4f), 191	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_HUSEN, D3DXVECTOR3(-38.5f, 2.0f , -36.4f), 191	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(-37.0f, 0.0f , -66.0f), 38	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(-20.0f, 0.0f , -30.0f), -72	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(-44.0f, 1.0f , -30.0f), -10	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+
+	{ 0	  , TYPE_DUSTBOX, D3DXVECTOR3(-62.0f, 0.0f , -6.4f), 191	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_HUSEN, D3DXVECTOR3(-61.5f, 2.0f , -6.4f), 191	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(-31.0f, 0.0f , -26.0f), 38	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_BENCH, D3DXVECTOR3(-51.0f, 0.0f , -50.0f), -72	   ,false, D3DXVECTOR3(1.0f, 1.0f , 1.0f), },
+	{ 0	  , TYPE_LAMP, D3DXVECTOR3(-40.0f, 1.0f , -9.0f), -10	   ,false, D3DXVECTOR3(1.0f, 1.5f , 1.0f), },
+
+
+
 	{ 0	  , TYPE_KANRANSYA_DODAI, D3DXVECTOR3(-65.0f, 0.0f , 35.0f), 135	   ,false, D3DXVECTOR3(2.0f, 2.0f , 2.0f), },
-	{ 0	  , TYPE_MERI, D3DXVECTOR3(40.0f, 0.0f , -36.0f),270     ,false, D3DXVECTOR3(1.5f, 1.5f , 1.5f), },
+	//{ 0	  , TYPE_MERI, D3DXVECTOR3(40.0f, 0.0f , -36.0f),270     ,false, D3DXVECTOR3(1.5f, 1.5f , 1.5f), },
+	/*{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 20.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 40.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 60.0f), DIRE_SOUTH     ,false },
+	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-10.0f), DIRE_SOUTH     ,false },
+	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-20.0f), DIRE_SOUTH     ,false },
+	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-30.0f), DIRE_SOUTH     ,false },
+	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-40.0f), DIRE_SOUTH     ,false },
+	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-50.0f), DIRE_SOUTH     ,false },
+	{ 500 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-60.0f), DIRE_SOUTH     ,false },*/
 };
 //=============================================================================
 //	ê∂ê¨

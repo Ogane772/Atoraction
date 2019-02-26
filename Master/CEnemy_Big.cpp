@@ -87,7 +87,7 @@ void CEnemy_Big::Initialize(ENEMY_EMITTER *Emitter)
 	Thing.pAnimController->SetTrackDesc(0, &TrackDesc);//アニメ情報セット
 	Thing.pAnimController->SetTrackAnimationSet(0, pAnimSet[WALK]);//初期アニメーションセット
 	m_AnimationType = WALK;
-	m_Enable = true;
+	//m_Enable = true;
 	m_MoveCheck = false;
 	m_DrawCheck = true;
 	m_Hp = BIG_HP;
@@ -101,6 +101,7 @@ void CEnemy_Big::Initialize(ENEMY_EMITTER *Emitter)
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
 
 	Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
+	m_CreateCount = Emitter->CreateFrame;
 }
 
 
@@ -114,63 +115,70 @@ void CEnemy_Big::Finalize(void)
 
 void CEnemy_Big::Update(void)
 {
-	if (!m_DamageFlag)
+	if (m_Enable)
 	{
-
-		if (m_DrawCheck)	//	範囲内にいるか
+		if (!m_DamageFlag)
 		{
-			if (!PlayerCheck())	//	近くにプレイヤーがいるか
+
+			if (m_DrawCheck)	//	範囲内にいるか
 			{
-				if ((!Chase_Popcorn())&&(!m_AttackCheck))
+				if (!PlayerCheck())	//	近くにプレイヤーがいるか
 				{
-					Big_Move();
+					if ((!Chase_Popcorn()) && (!m_AttackCheck))
+					{
+						Big_Move();
+					}
+					else
+					{
+						Big_Attack();
+					}
 				}
 				else
 				{
+					if (!m_AttakFlag)
+					{
+						Chase_Player();
+					}
+
 					Big_Attack();
+
 				}
 			}
 			else
 			{
-				if (!m_AttakFlag)
-				{
-					Chase_Player();
-				}
-
-				Big_Attack();
+				Comeback_Move(BIG_SPEED);
 
 			}
+
 		}
 		else
 		{
-			Comeback_Move(BIG_SPEED);
+			Enemy_Damage(FRY_HEIGHT);
+			Enemy_Flying(FRY_SPEED);
+
+
 
 		}
+		Ornament_Check();
 
+		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
+		m_mtxKeepTranslation = m_mtxTranslation;
+
+		Draw_Check();
+
+		if (m_Hp <= 0)
+		{
+			Color_Change(CTexture::TEX_BIG_END);
+			if (!m_DrawCheck)
+			{
+				CPlayer::Add_KoCount();
+				C3DObj_delete();
+			}
+		}
 	}
 	else
 	{
-		Enemy_Damage(FRY_HEIGHT);
-		Enemy_Flying(FRY_SPEED);
-
-
-
-	}
-	Ornament_Check();
-
-	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
-	m_mtxKeepTranslation = m_mtxTranslation;
-
-	Draw_Check();
-
-	if (m_Hp <= 0)
-	{
-		Color_Change(CTexture::TEX_BIG_END);
-		if (!m_DrawCheck)
-		{
-			CPlayer::Add_KoCount();
-			C3DObj_delete();
-		}
+		Enable_Check();
 	}
 }
 

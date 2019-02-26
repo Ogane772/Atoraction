@@ -102,7 +102,7 @@ void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 	Thing.pAnimController->SetTrackDesc(0, &TrackDesc);//アニメ情報セット
 	Thing.pAnimController->SetTrackAnimationSet(0, pAnimSet[WALK]);//初期アニメーションセット
 	m_AnimationType = WALK;
-	m_Enable = true;
+	//m_Enable = true;
 	m_MoveCheck = false;
 	m_DrawCheck = true;
 	m_Hp = SMALL_HP;
@@ -110,7 +110,8 @@ void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 	m_Score = SMALL_SCORE;
 	m_Mp = SMALL_MP;
 	m_Direction = Emitter->InitDirection;
-	
+	m_CreateCount = Emitter->CreateFrame;
+
 	D3DXMatrixTranslation(&m_mtxTranslation, Emitter->InitPos.x, Emitter->InitPos.y, Emitter->InitPos.z);
 	D3DXMatrixScaling(&m_mtxScaling, 1, 1, 1);
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
@@ -133,61 +134,69 @@ void CEnemy_Small::Finalize(void)
 //=============================================================================
 void CEnemy_Small::Update(void)
 {
-	if (!m_DamageFlag)
-	{
 
-		if (m_DrawCheck)	//	範囲内にいるか
+	if (m_Enable)
+	{
+		if (!m_DamageFlag)
 		{
-			if (!PlayerCheck())	//	近くにプレイヤーがいるか
+
+			if (m_DrawCheck)	//	範囲内にいるか
 			{
-				if ((!Chase_Popcorn()) && (!m_AttackCheck))
+				if (!PlayerCheck())	//	近くにプレイヤーがいるか
 				{
-					Small_Move();
+					if ((!Chase_Popcorn()) && (!m_AttackCheck))
+					{
+						Small_Move();
+					}
+					else
+					{
+						Small_Attack();
+					}
 				}
 				else
 				{
+					Chase_Player();
+
 					Small_Attack();
+
 				}
 			}
 			else
 			{
-				Chase_Player();
-
-				Small_Attack();
+				Comeback_Move(SMALL_SPEED);
 
 			}
+
 		}
 		else
 		{
-			Comeback_Move(SMALL_SPEED);
-			
+			Enemy_Damage(FRY_HEIGHT);
+			Enemy_Flying(FRY_SPEED);
+
+
+
 		}
 
+		Ornament_Check();
+
+		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
+		m_mtxKeepTranslation = m_mtxTranslation;
+
+		Draw_Check();
+
+		if (m_Hp <= 0)
+		{
+			Color_Change(CTexture::TEX_SMALL_END);
+			if (!m_DrawCheck)
+			{
+				CPlayer::Add_KoCount();
+				C3DObj_delete();
+			}
+		}
 	}
 	else
 	{
-		Enemy_Damage(FRY_HEIGHT);
-		Enemy_Flying(FRY_SPEED);
-
-
-
-	}
-
-	Ornament_Check();
-
-	m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
-	m_mtxKeepTranslation = m_mtxTranslation;
-	
-	Draw_Check();
-
-	if (m_Hp <= 0)
-	{
-		Color_Change(CTexture::TEX_SMALL_END);
-		if (!m_DrawCheck)
-		{
-			CPlayer::Add_KoCount();
-			C3DObj_delete();
-		}
+		Enable_Check();
 	}
 }
 
