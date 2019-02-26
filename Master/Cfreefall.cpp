@@ -19,14 +19,15 @@
 //=============================================================================
 //	定数定義
 //=============================================================================
-#define SPEED (0.05f)
+#define SPEED (0.2f)
 #define SIZE (0.8f)
-#define FREEFALL_HP (3)
+#define FREEFALL_HP (10)
 #define FREEFALL_MP (1)
 #define FREEFALL_ATK (1)
 #define SCORE (1)
 #define FREEFALL_SCALE (1)
 #define ATTACK_TIME (5)//円盤が落ちてからの攻撃時間
+
 
 //=============================================================================
 //	静的変数
@@ -34,7 +35,7 @@
 
 #define FREEFALL_UP		(25.0f)
 #define FREEFALL_DOWN	(0.0f)
-#define WAIT_TIME (80)//フリーフォールが落ちる時間
+#define WAIT_TIME (50)//フリーフォールが落ちる時間
 THING_NORMAL fall;
 //=============================================================================
 //	グローバル変数
@@ -74,7 +75,7 @@ void Cfreefall::Initialize(D3DXMATRIX mtxWorld)
 	Thing_Normal_model = GetNormalModel(MODELL_HASIRA);
 	fall = GetNormalModel(MODELL_ENBAN);
 	Thing_Normal_model.Sphere.vCenter = D3DXVECTOR3(0, 0.0, 0);
-	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0),4.2f);//当たり判定の変更
+	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 4.2f);//当たり判定の変更
 	InitSphere(m_pD3DDevice, &fall, D3DXVECTOR3(0, 0.0, 0), 1.0f);//当たり判定の変更
 	Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 	fall.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
@@ -90,15 +91,15 @@ void Cfreefall::Update(void)
 		m_mtxWorld = m_mtxScaling *m_mtxRotation * m_mtxTranslation;
 		if (!Bugoki)//上がってるとき	
 		{
-			if (ugoki <= 25.0f)
+			if (ugoki <= FREEFALL_UP)
 			{
 				if (ugoki == 0)
 				{
 					PlaySound(FREE_WALL_UP_SE);
 				}
-				ugoki += 0.1f;
+				ugoki += SPEED;
 			}
-			if (ugoki >= 25.0f)
+			if (ugoki >= FREEFALL_UP)
 			{
 				CoolTime++;
 				if (CoolTime >= WAIT_TIME)
@@ -144,6 +145,9 @@ void Cfreefall::Update(void)
 			OrnamentDamage(Thing_Normal_model);
 
 			EnemyDamage();
+		}
+		if (m_DrawCheck)
+		{
 			FreeFallDamage();
 		}
 	}
@@ -197,13 +201,13 @@ void Cfreefall::EnemyDamage(void)
 		enemy = CEnemy::Get_Enemy(i);
 		if (attackon && enemy)
 		{
-			Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);			
+			Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 			thingenemy = enemy->GetAnimeModel();
 			if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
 			{
 				enemy->DamageFlag_Change();
 				enemy->Position_Keep(m_mtxWorld);
-				
+
 			}
 		}
 	}

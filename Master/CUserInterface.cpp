@@ -81,8 +81,8 @@ void CUserInterFace::Draw(void)
 	Sprite_Draw(TEX_UI_GRAYBAR, HP_X, HP_Y + 95, 0, 0, 1024, 222, 0.0f, 0.0f, 0.3f, 0.4f, 0.0f);
 	Sprite_Draw(TEX_UI_HPWINDOW, HP_X, HP_Y + 95, 0, 0, 1024, 222, 0.0f, 0.0f, 0.3f, 0.4f, 0.0f);
 	Sprite_Draw(TEX_UI_MPBAR, HP_X, HP_Y + 95, 0, 0, mp * 35.0f, 222, 0.0f, 0.0f, 0.3f, 0.4f, 0.0f);
-//	Sprite_Draw(TEX_HP, 20, 100, 0, 0, MP_MAX * 5, HP_GAGE_HEIGHT);
-//	Sprite_Draw(TEX_MP, 20, 100, 0, 0, mp * 5, HP_GAGE_HEIGHT);
+	//	Sprite_Draw(TEX_HP, 20, 100, 0, 0, MP_MAX * 5, HP_GAGE_HEIGHT);
+	//	Sprite_Draw(TEX_MP, 20, 100, 0, 0, mp * 5, HP_GAGE_HEIGHT);
 
 	//MPストック
 	int stock = playerget->Get_MpStock();
@@ -147,11 +147,11 @@ void CUserInterFace::Draw(void)
 
 void CUserInterFace::Ui_Ber(void)
 {
-	Sprite_Draw(TEX_MP3, 600, 38, 0, 0, 791, 40, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
-	Sprite_Draw(TEX_HP3, 600, 38, 0, 0, 791 * Get_EnemyPer(), 40, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
+	Sprite_Draw(TEX_MP3, 631, 38, 0, 0, 762, 40, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
+	Sprite_Draw(TEX_HP3, 631, 38, 0, 0, 762 * Get_EnemyPer(), 40, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
 	Sprite_Draw(TEX_UI_BER, 500, 10, 0, 0, 1024, 157, 0.0f, 0.0f, 1.0f, 0.6f, 0.0f);
-	Sprite_Draw(TEX_UI_MEMORI, 614 + 755 * Get_EnemyPer(), 10, 0, 0, 43, 38, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
-	Sprite_Draw(TEX_UI_MEMORI, 614 + 755 * Get_EnemyPer(), 70, 0, 0, 43, 38, 43 / 2, 38 / 2, 1.0f, 1.0f, D3DXToRadian(180));
+	Sprite_Draw(TEX_UI_MEMORI, 614 + 532, 10, 0, 0, 43, 38, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
+	Sprite_Draw(TEX_UI_MEMORI, 614 + 532, 70, 0, 0, 43, 38, 43 / 2, 38 / 2, 1.0f, 1.0f, D3DXToRadian(180));
 }
 
 void CUserInterFace::Ui_Icon(void)
@@ -204,7 +204,7 @@ void CUserInterFace::Ui_Icon(void)
 		Sprite_Draw(TEX_A_BUTTON, 70 + ADD_X, ADD_Y + 80, 0, 0, 200, 200, 0.0f, 0.0f, 0.25f, 0.25f, 0.0f);
 	}
 	Sprite_Draw(TEX_UI_DIAMOND, 28 + ADD_X, ADD_Y + 5, 0, 0, 111, 121, 0.0f, 0.0f, 0.28f, 0.28f, 0.0f);
-	Sprite_Draw(TEX_UI_X, 57 + ADD_X, ADD_Y + 13 , 0, 0, 81, 94, 0.0f, 0.0f, 0.2f, 0.2f, 0.0f);
+	Sprite_Draw(TEX_UI_X, 57 + ADD_X, ADD_Y + 13, 0, 0, 81, 94, 0.0f, 0.0f, 0.2f, 0.2f, 0.0f);
 	Num_Draw2(-20 + ADD_X, ADD_Y + 1, FALL_MP, 1, 1, false);
 	//ポップコーン
 	Sprite_Draw(TEX_UI_BG_COOLTIME, 30 + ADD_X * 2, ADD_Y, 0, 0, 80, 80, 0.0f, 0.0f, 1.0f, 1.36f, 0.0f);

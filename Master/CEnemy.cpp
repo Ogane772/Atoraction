@@ -26,7 +26,7 @@
 //=============================================================================
 
 #define CHASE_SPEED (0.015f)
-#define ENEMY_HITSTOP (120)
+#define ENEMY_HITSTOP (160)//ヒットストップの長さ
 //=============================================================================
 //	静的変数
 //=============================================================================
@@ -41,7 +41,7 @@ CEnemy::ENEMY_MOVE CEnemy::m_EnemyMove[8] = {
 	{ D3DXVECTOR3(-1.0f,0.0f,-1.0f),D3DXToRadian(135.0f) },
 	{ D3DXVECTOR3(-1.0f,0.0f,0.0f),D3DXToRadian(180.0f) },
 	{ D3DXVECTOR3(-1.0f,0.0f,1.0f),D3DXToRadian(-135.0f) },
-	
+
 };
 
 //	エネミーエミッター
@@ -53,11 +53,11 @@ CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 	{ 0	,0, TYPE_BIG,		   D3DXVECTOR3(20.0f, 0.0f , 10.0f), D3DXVECTOR3(20.0f, 0.0f , 10.0f), DIRE_SOUTHEAST ,false },
 	{ 0	,0, TYPE_SMALL,	   D3DXVECTOR3(0.0f , 0.0f , 0.0f)  ,D3DXVECTOR3(0.0f , 0.0f , 0.0f), DIRE_NORTHEAST ,false },
 	*/
-	{ 300 , TYPE_SMALL,D3DXVECTOR3( 50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3( 60.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3( 70.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3( 80.0f, 0.0f , 80.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3( 90.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(60.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(70.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(80.0f, 0.0f , 80.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(90.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
 	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 60.0f), DIRE_SOUTH     ,false },
 	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
 	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 20.0f), DIRE_SOUTH     ,false },
@@ -65,12 +65,33 @@ CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 40.0f), DIRE_SOUTH     ,false },
 	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
 	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 60.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3( 50.0f, 0.0f ,-10.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3( 50.0f, 0.0f ,-20.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3( 50.0f, 0.0f ,-30.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3( 50.0f, 0.0f ,-40.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3( 50.0f, 0.0f ,-50.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3( 50.0f, 0.0f ,-60.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-10.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-20.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-30.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-40.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-50.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-60.0f), DIRE_SOUTH     ,false },
+
+
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(60.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(70.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(80.0f, 0.0f , 80.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(90.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 60.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 20.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 40.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 60.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-10.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-20.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-30.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-40.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-50.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-60.0f), DIRE_SOUTH     ,false },
+
 };
 
 int CEnemy::m_ENEMY_MAX = sizeof(CEnemy_Small::m_EnemyEmitter) / sizeof(m_EnemyEmitter[0]);
@@ -90,7 +111,7 @@ CEnemy::CEnemy(int EnemyType)
 {
 	m_Type = EnemyType;
 	m_EnemyIndex = m_EnemyNum[TYPE_ALL];
-	m_EnemyNum[TYPE_ALL]++;
+	//mEnemyNum[TYPE_ALL]++_;
 	m_EnemyNum[EnemyType]++;
 	m_Attack = 0;
 	m_Score = 0;
@@ -101,7 +122,7 @@ CEnemy::CEnemy(int EnemyType)
 	m_EnemyFlyingDown = false;
 	m_FlyingCount = 0;
 
-	
+
 }
 
 
@@ -120,7 +141,7 @@ CEnemy::~CEnemy()
 void CEnemy::Create(void)
 {
 	int i;
-	for (i = 0;i < m_ENEMY_MAX;i++)
+	for (i = 0; i < m_ENEMY_MAX; i++)
 	{
 		if (!m_EnemyEmitter[i].CreateCheck)
 		{
@@ -163,7 +184,7 @@ void CEnemy::EnemyMove(int direction, float speed)
 	{
 		D3DXMatrixTranslation(&m_mtxTranslation, m_EnemyMove[direction].Move.x * speed, m_EnemyMove[direction].Move.y * speed, m_EnemyMove[direction].Move.z * speed);
 	}
-	
+
 }
 
 void CEnemy::EnemyAngleChange(int direction)
@@ -340,7 +361,7 @@ void CEnemy::Enemy_Flying(float speed)
 			}
 			else
 			{
-				
+
 				D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41 + m_FlyingMove.x * speed, m_mtxWorld._42 - m_FlyingMove.y, m_mtxWorld._43 + m_FlyingMove.z * speed);
 				m_FlyingCount--;
 				if (m_FlyingCount <= 0)
@@ -349,7 +370,7 @@ void CEnemy::Enemy_Flying(float speed)
 					m_EnemyFlying = false;
 					m_EnemyFlyingDown = false;
 					m_DamageFlag = false;
-					
+
 				}
 			}
 		}
@@ -439,7 +460,7 @@ void CEnemy::Ornament_Check(void)
 	int i;
 	C3DObj *pornament;
 	THING_NORMAL thingorna;
-	for (i = 0;i < MAX_GAMEOBJ;i++)
+	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
 		pornament = COrnament::Get_Ornament(i);
 		if (pornament)
@@ -477,5 +498,7 @@ void CEnemy::Enable_Check(void)
 	if (m_CreateCount == m_FrameCount)
 	{
 		m_Enable = true;
+		m_EnemyNum[TYPE_ALL]++;
 	}
+
 }

@@ -65,7 +65,7 @@ void CGAUGE::Initialize(D3DXMATRIX mtxWorld)
 	bar_width = 0.0f;
 
 	C3DObj *standbyget = Standby::Get_Standby();
-	D3DXMATRIX mtx = standbyget->Get_mtxWorld();
+	//D3DXMATRIX mtx = standbyget->Get_mtxWorld();
 	//D3DXMatrixTranslation(&m_mtxTranslation, mtx._41, mtx._42+5.0f, mtx._43);//X,Y,Z‚ð“n‚·
 	
 	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(0));
