@@ -132,9 +132,13 @@ void CUserInterFace::Draw(void)
 		C3DObj *enemyget = CEnemy::Get_Map_Enemy(i);
 		if (enemyget)
 		{
-			D3DXMATRIX enemymatrix = enemyget->Get_mtxTranslation();
+			if (enemyget->Get_Enable())
+			{
+				D3DXMATRIX enemymatrix = enemyget->Get_mtxTranslation();
 
-			Sprite_Draw(TEX_ENEMY_ICON, 1690.0f + (enemymatrix._41 * 1.5f), 150.0f - (enemymatrix._43 * 1.56f), 0, 0, 12, 12, 6, 6, 1, 1, 0);
+				Sprite_Draw(TEX_ENEMY_ICON, 1690.0f + (enemymatrix._41 * 1.5f), 150.0f - (enemymatrix._43 * 1.56f), 0, 0, 12, 12, 6, 6, 1, 1, 0);
+
+			}
 		}
 	}
 	Ui_Ber();

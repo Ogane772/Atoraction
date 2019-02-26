@@ -36,6 +36,8 @@ C2DObj *pScore_total;
 void Score_total_Initialize(void)
 {
 	PlaySound(RESULT_BGM);
+	CTexture::Texture_Release();	//	テクスチャ破棄
+	CTexture::Texture_Load();	//	テクスチャ読み込み
 	pScore_total = new C2DObj;
 	g_bend = false;
 	Clear_flg = false;

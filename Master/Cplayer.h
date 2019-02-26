@@ -12,7 +12,7 @@
 #define COOLTIME_FALL	  (400.0f)
 #define COOLTIME_WHEEL	 (1800.0f)
 #define COOLTIME_COASTER (1200.0f)
-#define COOLTIME_POPCORN    (1.0f)
+#define COOLTIME_POPCORN    (100.0f)
 //アトラクションMP
 #define COFFEE_MP (1)
 #define FALL_MP (2)
@@ -94,7 +94,7 @@ private:
 	static int m_KO_Count;
 	
 	static bool g_CosterMode;
-	bool g_CosterModeStandby;//コースターを呼んでるとき
+	
 	int m_DrawCount;
 	
 	static bool m_TitleFlag;

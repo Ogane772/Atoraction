@@ -139,10 +139,11 @@ void COrnament_Lamp::Draw(void)
 			//ä€ÇÃîªíËÇècÇ…ÇQî{Ç∑ÇÈ
 			DrawDX_NormalAddScale(m_mtxWorld, MODELL_LAMP, &Thing_Normal_model, position, D3DXVECTOR3(1, 10, 1));
 		}	
+		/*
 		if (m_DrawCheck)
 		{
 			PlayerDebug();
-		}
+		}*/
 	}
 }
 

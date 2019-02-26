@@ -103,6 +103,9 @@ protected:
 	void Color_Change(int texindex);
 	void Ornament_Check(void);
 	int m_ColorType;
+	int m_CreateCount;
+
+	void Enable_Check(void);
 private:
 
 	int m_Type;			// Ží—Þ

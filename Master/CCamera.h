@@ -25,6 +25,7 @@ public:
 	static const D3DXMATRIX Get_ViewMtx(void) { return m_mtxView; }		//	ビューマトリクス取得
 	static CCamera* Camera_Create(void);	//	カメラクラス作成
 
+	void VibrationCtrl(void);
 											//	デバッグ用
 	void DebugDraw(void);
 	static CCamera* Get_CCamera(void) { return m_pCamera; }
@@ -53,7 +54,7 @@ private:
 	static CCamera *m_pCamera;
 
 	static bool m_AngleCheck;
-
+	static bool m_Vibration;//画面振動するか否か
 };
 
 #endif // !1

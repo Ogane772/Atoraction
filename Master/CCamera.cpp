@@ -14,7 +14,7 @@
 #include "input.h"
 #include "gamepad.h"
 #include "debug_font.h"
-
+#include "CCoaster_ON.h"
 
 //=============================================================================
 //	定数定義
@@ -34,6 +34,7 @@
 D3DXVECTOR3 CCamera::m_Right;
 D3DXMATRIX CCamera::m_mtxView;
 CCamera *CCamera::m_pCamera;
+bool CCamera::m_Vibration;
 float CCamera::angle = 0.0;
 bool CCamera::m_AngleCheck = false;
 
@@ -87,6 +88,7 @@ void CCamera::Camera_Initialize(void)
 	{
 		hr = pJoyDevice->Acquire();
 	}
+	m_Vibration = false;
 }
 
 //	終了処理
@@ -121,58 +123,72 @@ void CCamera::Update(void)
 	D3DXMATRIX at;
 
 	C3DObj *pPlayer = CPlayer::Get_Player();
+	bool *standby = C3DObj::GetCosterModeStandby();
 	at = pPlayer->Get_mtxWorld();
-
+	
 	m_at.x = at._41;
 	m_at.y = at._42 + 2.3f;
 	m_at.z = at._43;
 
 	m_AngleCheck = false;
+	if (!*standby)
+	{
+		if ((Keyboard_IsPress(DIK_RIGHT)) && !r || js.lRx >= 6)
+		{
+			//	注視点回転
+			D3DXMATRIX mtxRotation;
+			D3DXMatrixRotationY(&mtxRotation, D3DXToRadian(m_Angle));
+			//D3DXMatrixRotationAxis(&mtxRotation, &m_Up, D3DXToRadian(2));
+			D3DXVec3TransformNormal(&m_Front, &m_Front, &mtxRotation); // 第2引数を第3引数で行列変換し第1引数に入れる
+			D3DXVec3TransformNormal(&m_Right, &m_Right, &mtxRotation);
+			D3DXVec3TransformNormal(&m_Up, &m_Up, &mtxRotation);
+			m_AngleCheck = true;
+			angle += m_Angle;
 
-	if ((Keyboard_IsPress(DIK_RIGHT)) && !r || js.lRx >= 6)
-	{
-		//	注視点回転
-		D3DXMATRIX mtxRotation;
-		D3DXMatrixRotationY(&mtxRotation, D3DXToRadian(m_Angle));
-		//D3DXMatrixRotationAxis(&mtxRotation, &m_Up, D3DXToRadian(2));
-		D3DXVec3TransformNormal(&m_Front, &m_Front, &mtxRotation); // 第2引数を第3引数で行列変換し第1引数に入れる
-		D3DXVec3TransformNormal(&m_Right, &m_Right, &mtxRotation);
-		D3DXVec3TransformNormal(&m_Up, &m_Up, &mtxRotation);
-		m_AngleCheck = true;
-		angle += m_Angle;
+		}
+		if (Keyboard_IsRelease(DIK_RIGHT))
+		{
+			m_AngleCheck = false;
+		}
 
-	}
-	if (Keyboard_IsRelease(DIK_RIGHT))
-	{
-		m_AngleCheck = false;
-	}
-	if ((Keyboard_IsPress(DIK_LEFT)) && !l || js.lRx <= -6)
-	{
-		//	注視点回転
-		D3DXMATRIX mtxRotation;
-		D3DXMatrixRotationY(&mtxRotation, D3DXToRadian(-m_Angle));
-		//D3DXMatrixRotationAxis(&mtxRotation, &m_Up, D3DXToRadian(2));
-		D3DXVec3TransformNormal(&m_Front, &m_Front, &mtxRotation); // 第2引数を第3引数で行列変換し第1引数に入れる
-		D3DXVec3TransformNormal(&m_Right, &m_Right, &mtxRotation);
-		D3DXVec3TransformNormal(&m_Up, &m_Up, &mtxRotation);
-		m_AngleCheck = true;
-		angle -= m_Angle;
+		if ((Keyboard_IsPress(DIK_LEFT)) && !l || js.lRx <= -6)
+		{
+			//	注視点回転
+			D3DXMATRIX mtxRotation;
+			D3DXMatrixRotationY(&mtxRotation, D3DXToRadian(-m_Angle));
+			//D3DXMatrixRotationAxis(&mtxRotation, &m_Up, D3DXToRadian(2));
+			D3DXVec3TransformNormal(&m_Front, &m_Front, &mtxRotation); // 第2引数を第3引数で行列変換し第1引数に入れる
+			D3DXVec3TransformNormal(&m_Right, &m_Right, &mtxRotation);
+			D3DXVec3TransformNormal(&m_Up, &m_Up, &mtxRotation);
+			m_AngleCheck = true;
+			angle -= m_Angle;
 
+		}
+		if (Keyboard_IsRelease(DIK_RIGHT))
+		{
+			m_AngleCheck = false;
+		}
 	}
-	if (Keyboard_IsRelease(DIK_RIGHT))
+	if ((Keyboard_IsPress(DIK_J)))
 	{
-		m_AngleCheck = false;
+		m_Vibration = true;
+	}
+	if ((Keyboard_IsRelease(DIK_J)))
+	{
+		m_Vibration = false;
 	}
 	//m_CameraPos = m_at - m_Front * m_AtLength;
 	if (C3DObj::GetW_coaster() == false)
 	{
-		m_CameraPos = m_at - m_Front * m_AtLength;
+		VibrationCtrl();
+		//m_CameraPos = m_at - m_Front * m_AtLength;
 	}
 	if (C3DObj::GetW_coaster() == true)
 	{
 
 		m_CameraPos = m_at - m_Front * Cos_AtLength;
 	}
+
 	//WallCheck();
 
 	D3DXVECTOR3 up(0.0f, 1.0f, 0.0f);		//  上方向
@@ -215,7 +231,26 @@ void  CCamera::DebugDraw(void)
 	DebugFont_Draw(400, 10, "%f\n,%f\n,%f\n,", m_CameraPos.x, m_CameraPos.y, m_CameraPos.z);
 }
 
-
+void CCamera::VibrationCtrl(void)
+{
+	static int coss = 600;
+	if (!m_Vibration)
+	{
+		m_CameraPos = m_at - m_Front * m_AtLength;
+	}
+	else
+	{
+		//m_at.x = (float)((3 ^ (-coss / 100))*cos(coss / 50)*cos(coss / 1));
+		m_at.y = (float)((3 ^ (-coss / 100))*cos(coss / 50)*cos(coss / 1));
+		m_at.z = (float)((3 ^ (-coss / 100))*cos(coss / 50)*cos(coss / 1));
+		//battle_windowY += (float)((3 ^ (-coss / 100))*cos(coss / 50)*cos(coss / 1));
+		coss -= 1;
+	}
+	if (coss < 500)
+	{
+		coss = 600;
+	}
+}
 
 
 

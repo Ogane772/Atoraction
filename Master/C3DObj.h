@@ -133,6 +133,7 @@ public:
 	static int Get_Score(void) { return m_TotalScore; }	//	スコア取得
 	static void Reset_Score(void) { m_TotalScore = 0; }	//　スコアリセット
 	static bool GetW_coaster(void) { return GetWCos; }
+	static bool *GetCosterModeStandby(void) { return &g_CosterModeStandby; }//コースターを呼んでるとき; }//コースターを呼んでるとき
 protected:
 	THING *Thing_Anime_model;//アニメモデル情報
 	static THING Thing_Anime[];//読み込むモデルの最大数+1
@@ -223,7 +224,7 @@ private:
 
 
 	static bool GetWCos;
-
+	static bool g_CosterModeStandby;
 	#define MODEL_MAX (9)
 
 	

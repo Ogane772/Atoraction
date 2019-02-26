@@ -47,30 +47,30 @@ CEnemy::ENEMY_MOVE CEnemy::m_EnemyMove[8] = {
 //	エネミーエミッター
 CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 {
-	{ 0   , TYPE_SMALL, D3DXVECTOR3( 10.0f, 0.0f , 15.0f), DIRE_NORTH	   ,false },
-   { 0	  , TYPE_MIDDLE, D3DXVECTOR3( 20.0f, 0.0f , 20.0f), DIRE_EAST	   ,false },
-	{ 0	  , TYPE_SPECIAL, D3DXVECTOR3( 30.0f, 0.0f , 30.0f), DIRE_NORTHWEST ,false },
-	{ 0	  , TYPE_BIG, D3DXVECTOR3( 20.0f, 0.0f , 10.0f), DIRE_SOUTHEAST ,false },
-	{ 0	  , TYPE_SMALL, D3DXVECTOR3( 0.0f , 0.0f , 0.0f ), DIRE_NORTHEAST ,false },
-
-	{ 600 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
-	{ 600 , TYPE_SMALL, D3DXVECTOR3( 60.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
-	{ 600 , TYPE_SMALL, D3DXVECTOR3( 70.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
-	{ 600 , TYPE_SMALL, D3DXVECTOR3( 80.0f, 0.0f , 80.0f), DIRE_SOUTH     ,false },
-	{ 600 , TYPE_SMALL, D3DXVECTOR3( 90.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
-	{ 600 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 60.0f), DIRE_SOUTH     ,false },
-	{ 600 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
-	{ 600 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 20.0f), DIRE_SOUTH     ,false },
-	{ 600 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
-	{ 600 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 40.0f), DIRE_SOUTH     ,false },
-	{ 600 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
-	{ 0 , TYPE_SMALL, D3DXVECTOR3(-50.0f, 0.0f , 60.0f), DIRE_SOUTH     ,false },
-	{ 0 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-10.0f), DIRE_SOUTH     ,false },
-	{ 0 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-20.0f), DIRE_SOUTH     ,false },
-	{ 0 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-30.0f), DIRE_SOUTH     ,false },
-	{ 0 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-40.0f), DIRE_SOUTH     ,false },
-	{ 0 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-50.0f), DIRE_SOUTH     ,false },
-	{ 0 , TYPE_SMALL, D3DXVECTOR3( 50.0f, 0.0f ,-60.0f), DIRE_SOUTH     ,false },
+	/*{ 0 ,0, TYPE_SMALL,	   D3DXVECTOR3( 10.0f, 0.0f , 15.0f),D3DXVECTOR3(10.0f, 0.0f , 15.0f), DIRE_NORTH	   ,false },
+	{ 0	,0, TYPE_MIDDLE,	   D3DXVECTOR3(20.0f, 0.0f , 20.0f), D3DXVECTOR3(20.0f, 0.0f , 20.0f), DIRE_EAST	   ,false },
+	{ 0	,0, TYPE_SPECIAL,	   D3DXVECTOR3(30.0f, 0.0f , 30.0f), D3DXVECTOR3(30.0f, 0.0f , 30.0f), DIRE_NORTHWEST ,false },
+	{ 0	,0, TYPE_BIG,		   D3DXVECTOR3(20.0f, 0.0f , 10.0f), D3DXVECTOR3(20.0f, 0.0f , 10.0f), DIRE_SOUTHEAST ,false },
+	{ 0	,0, TYPE_SMALL,	   D3DXVECTOR3(0.0f , 0.0f , 0.0f)  ,D3DXVECTOR3(0.0f , 0.0f , 0.0f), DIRE_NORTHEAST ,false },
+	*/
+	{ 300 , TYPE_SMALL,D3DXVECTOR3( 50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3( 60.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3( 70.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3( 80.0f, 0.0f , 80.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3( 90.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 60.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 20.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 40.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 60.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3( 50.0f, 0.0f ,-10.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3( 50.0f, 0.0f ,-20.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3( 50.0f, 0.0f ,-30.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3( 50.0f, 0.0f ,-40.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3( 50.0f, 0.0f ,-50.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3( 50.0f, 0.0f ,-60.0f), DIRE_SOUTH     ,false },
 };
 
 int CEnemy::m_ENEMY_MAX = sizeof(CEnemy_Small::m_EnemyEmitter) / sizeof(m_EnemyEmitter[0]);
@@ -124,7 +124,7 @@ void CEnemy::Create(void)
 	{
 		if (!m_EnemyEmitter[i].CreateCheck)
 		{
-			if (m_FrameCount == m_EnemyEmitter[i].CreateFrame)
+			//if (m_FrameCount == m_EnemyEmitter[i].CreateFrame)
 			{
 				if (m_EnemyEmitter[i].Type == TYPE_SMALL)
 				{
@@ -469,5 +469,13 @@ void CEnemy::Ornament_Check(void)
 			}
 		}
 
+	}
+}
+
+void CEnemy::Enable_Check(void)
+{
+	if (m_CreateCount == m_FrameCount)
+	{
+		m_Enable = true;
 	}
 }
