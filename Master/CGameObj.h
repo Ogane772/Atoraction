@@ -9,7 +9,7 @@
 
 #include <d3dx9.h>
 
-#define MAX_GAMEOBJ (100)
+#define MAX_GAMEOBJ (300)
 #define TEXTURE_FILENAME_MAX (64)
 
 class CGameObj

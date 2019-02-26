@@ -20,7 +20,7 @@
 //=============================================================================
 #define SPEED (0.5f)
 #define COFFEE_SIZE (4)
-#define COFFEE_CUP_HP (40)
+#define COFFEE_CUP_HP (5)
 #define COFFEE_CUP_MP (1)
 #define COFFEE_CUP_ATK (1)
 #define SCORE (1)
@@ -254,6 +254,7 @@ void CCoffeeCup::EnemyDamage(void)
 				enemy->DamageFlag_Change();
 				enemy->Position_Keep(m_mtxWorld);
 				m_Hp--;
+				break;
 			}
 			thing_cup2.vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
 			if (C3DObj::Collision_AnimeVSNormal(thingenemy, &thing_cup2))
@@ -261,6 +262,7 @@ void CCoffeeCup::EnemyDamage(void)
 				enemy->DamageFlag_Change();
 				enemy->Position_Keep(m_mtxWorld);
 				m_Hp--;
+				break;
 			}
 			thing_cup3.vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
 			if (C3DObj::Collision_AnimeVSNormal(thingenemy, &thing_cup3))
@@ -268,6 +270,7 @@ void CCoffeeCup::EnemyDamage(void)
 				enemy->DamageFlag_Change();
 				enemy->Position_Keep(m_mtxWorld);
 				m_Hp--;
+				break;
 			}
 		}
 	}
@@ -308,11 +311,9 @@ void CCoffeeCup::CoffeeCupDamage(void)
 				if (C3DObj::Collision_AnimeVSNormal(thingenemy, &thing_cup2))
 				{
 					m_Hp -= attack;
-					//Animation_Change(PLAYER_WALK, 0.05);
 					m_DrawCheck = false;
 					if (m_Hp <= 0)
 					{
-
 						C3DObj_delete();
 					}
 					break;
@@ -320,7 +321,6 @@ void CCoffeeCup::CoffeeCupDamage(void)
 				if (C3DObj::Collision_AnimeVSNormal(thingenemy, &thing_cup3))
 				{
 					m_Hp -= attack;
-					//Animation_Change(PLAYER_WALK, 0.05);
 					m_DrawCheck = false;
 					if (m_Hp <= 0)
 					{

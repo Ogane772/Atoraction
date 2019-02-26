@@ -19,7 +19,7 @@
 //=============================================================================
 
 #define BIG_SIZE (0.8f)
-#define BIG_ATTACK (15)
+#define BIG_ATTACK (10)
 #define BIG_HP (10)
 #define BIG_MP (60)
 #define BIG_SCORE (10000)

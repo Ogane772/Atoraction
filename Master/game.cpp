@@ -80,8 +80,7 @@ void Game_Updata(void)
 	C3DObj::UpdateAll();	//	3Dオブジェクト更新
 	CGameObj::UpdateAll();	//	2Dオブジェクト更新
 	//COrnament::Create();    //  オブジェクト生成
-	EnemyPer = 1.0f - (float)CEnemy::Get_EnemyNum(0) / ENEMY_MAX; //敵の数を取得
-
+	EnemyPer = 1.0f - (float)CEnemy::Get_EnemyNum(0) / CEnemy::Get_EnemyMaxNum(); //敵の数を取得
 	if (g_gameend)		//	FraemCountがGAMEENDになるまでカウントUP　なったら終了
 	{
 		if (!g_bend)

@@ -20,7 +20,7 @@
 
 #define SPECIAL_SPEED (0.1f)
 #define SPECIAL_SIZE (0.8f)
-#define SPECIAL_ATTACK (10)
+#define SPECIAL_ATTACK (6)
 #define SPECIAL_HP (1)
 #define SPECIAL_MP (5)
 #define SPECIAL_SCORE (500)
