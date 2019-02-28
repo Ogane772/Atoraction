@@ -109,6 +109,7 @@ void Title_Finalize(void)
 {
 	delete ptitle;
 	C3DObj::DeleteAll();			//	3Dオブジェクト全消去
+	CGameObj::DeleteAll2D();
 	C3DObj::Model_Finalize();
 	CPlayer::TitleFlag_Change(false);
 	CPlayer::Reset_KoCount();

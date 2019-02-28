@@ -37,6 +37,7 @@ D3DXVECTOR3 CCamera::m_Right;
 D3DXMATRIX CCamera::m_mtxView;
 CCamera *CCamera::m_pCamera;
 bool CCamera::m_Vibration;
+int CCamera::m_VibCount;
 float CCamera::angle = 0.0;
 bool CCamera::m_AngleCheck = false;
 
@@ -91,6 +92,7 @@ void CCamera::Camera_Initialize(void)
 		hr = pJoyDevice->Acquire();
 	}
 	m_Vibration = false;
+	m_VibCount = 0;
 }
 
 //	èIóπèàóù
@@ -171,14 +173,15 @@ void CCamera::Update(void)
 			m_AngleCheck = false;
 		}
 	}
-	if ((Keyboard_IsPress(DIK_J)))
+	if ((Keyboard_IsTrigger(DIK_J)))
 	{
 		m_Vibration = true;
 	}
-	if ((Keyboard_IsRelease(DIK_J)))
+	/*if ((Keyboard_IsRelease(DIK_J)))
 	{
 		m_Vibration = false;
-	}
+		m_VibCount = 0;
+	}*/
 	//m_CameraPos = m_at - m_Front * m_AtLength;
 	if (C3DObj::GetW_coaster() == false)
 	{
@@ -235,22 +238,31 @@ void  CCamera::DebugDraw(void)
 
 void CCamera::VibrationCtrl(void)
 {
-	static int coss = 600;
-	if (!m_Vibration)
+	m_VibCount++;
+	if (m_VibCount < 40)
 	{
-		m_CameraPos = m_at - m_Front * m_AtLength;
+		static int coss = 300;
+		if (!m_Vibration)
+		{
+			m_CameraPos = m_at - m_Front * m_AtLength;
+		}
+		else
+		{
+			//m_at.x = (float)((3 ^ (-coss / 100))*cos(coss / 50)*cos(coss / 1));
+			m_at.y = (float)((3 ^ (-coss / 100))*cos(coss / 50)*cos(coss / 1));
+			m_at.z = (float)((3 ^ (-coss / 100))*cos(coss / 50)*cos(coss / 1));
+			//battle_windowY += (float)((3 ^ (-coss / 100))*cos(coss / 50)*cos(coss / 1));
+			coss -= 1;
+		}
+		if (coss < 100)
+		{
+			coss = 300;
+		}
 	}
-	else
+	if (m_VibCount >= 40)
 	{
-		//m_at.x = (float)((3 ^ (-coss / 100))*cos(coss / 50)*cos(coss / 1));
-		m_at.y = (float)((3 ^ (-coss / 100))*cos(coss / 50)*cos(coss / 1));
-		m_at.z = (float)((3 ^ (-coss / 100))*cos(coss / 50)*cos(coss / 1));
-		//battle_windowY += (float)((3 ^ (-coss / 100))*cos(coss / 50)*cos(coss / 1));
-		coss -= 1;
-	}
-	if (coss < 500)
-	{
-		coss = 600;
+		m_Vibration = false;
+		m_VibCount = 0;
 	}
 }
 

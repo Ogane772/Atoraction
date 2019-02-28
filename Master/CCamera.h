@@ -55,6 +55,7 @@ private:
 
 	static bool m_AngleCheck;
 	static bool m_Vibration;//‰æ–ÊU“®‚·‚é‚©”Û‚©
+	static int m_VibCount;
 };
 
 #endif // !1

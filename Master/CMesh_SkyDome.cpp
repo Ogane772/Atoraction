@@ -137,8 +137,8 @@ void CMesh_SkyDome::Mesh_SkyDome_Initialize(void)
 				float angle = (float)(360 / m_meshWnum * w);
 
 				m_Mfield[n].pos = D3DXVECTOR3(m_radius / m_VertexH * h * sinf(D3DXToRadian(angle)), (m_meshHnum * m_meshH) - Subtotal, m_radius / m_VertexH * h * cosf(D3DXToRadian(angle)));
-				//m_Mfield[n].color = D3DCOLOR_ARGB(255, 255, 255, 255);
-				m_Mfield[n].color = D3DCOLOR(0xffffffff);
+				//m_Mfield[n].color = D3DCOLOR_ARGB(250, 0, 0, 0);
+				m_Mfield[n].color = D3DCOLOR(0xffff0000);
 				//m_Mfield[n].color = D3DCOLOR_ARGB(255, (255 / (m_VertexH -1)) * h, (255 / (m_VertexH -1)) * h, (255 / (m_VertexH -1)) * h);
 				m_Mfield[n].uv = D3DXVECTOR2(w * (1.0f / m_meshWnum), h * (1.0f / m_meshHnum));
 			}
