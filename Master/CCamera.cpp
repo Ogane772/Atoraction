@@ -15,7 +15,9 @@
 #include "gamepad.h"
 #include "debug_font.h"
 #include "CCoaster_ON.h"
+#define _CRTDBG_MAP_ALLOC
 
+#define new  ::new(_NORMAL_BLOCK, __FILE__, __LINE__)
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================

@@ -17,6 +17,9 @@
 #include "CTexture.h"
 #include "CCamera.h"
 #include "CAttraction_Standby.h"
+#define _CRTDBG_MAP_ALLOC
+
+#define new  ::new(_NORMAL_BLOCK, __FILE__, __LINE__)
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================

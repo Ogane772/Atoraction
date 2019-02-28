@@ -1,6 +1,9 @@
 #pragma warning(disable:4996)
 #include "CSkinAnimation.h"
+#include <crtdbg.h>
+#define _CRTDBG_MAP_ALLOC
 
+#define new  ::new(_NORMAL_BLOCK, __FILE__, __LINE__)
 //MY_HIERARCHY SKIN_MESH::cHierarchy;
 //
 //ƒtƒŒ[ƒ€‚ðì¬‚·‚é
@@ -29,7 +32,7 @@ HRESULT MY_HIERARCHY::CreateFrame(LPCTSTR Name, LPD3DXFRAME *ppNewFrame)
     pFrame->pFrameSibling = NULL;
     pFrame->pFrameFirstChild = NULL;
     *ppNewFrame = pFrame;
-
+	
     return S_OK;
 }
 //

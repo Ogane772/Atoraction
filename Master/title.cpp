@@ -17,6 +17,10 @@
 #include "Cplayer.h"
 #include "debug_font.h"
 #include "CLight.h"
+#include <crtdbg.h>
+#define _CRTDBG_MAP_ALLOC
+
+#define new  ::new(_NORMAL_BLOCK, __FILE__, __LINE__)
 //=============================================================================
 //	ÉOÉçÅ[ÉoÉãïœêîêÈåæ
 //=============================================================================
@@ -108,6 +112,8 @@ void Title_Finalize(void)
 	C3DObj::Model_Finalize();
 	CPlayer::TitleFlag_Change(false);
 	CPlayer::Reset_KoCount();
+	_CrtDumpMemoryLeaks();
+	
 }
 
 //=============================================================================

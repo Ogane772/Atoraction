@@ -11,7 +11,10 @@
 //=============================================================================
 
 #include "CMeshField.h"
+#include <crtdbg.h>
+#define _CRTDBG_MAP_ALLOC
 
+#define new  ::new(_NORMAL_BLOCK, __FILE__, __LINE__)
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -50,7 +53,7 @@ CMeshField::CMeshField(int TexIndex, float meshW, int meshXnum, int meshZnum) : 
 
 CMeshField::~CMeshField()
 {
-	//Mesh_Field_Finalize();
+	Finalize();
 }
 
 //	更新
@@ -116,7 +119,11 @@ CMeshField *CMeshField::MeshField_Create(int TexIndex, float meshW, int meshXnum
 
 void CMeshField::Finalize(void)
 {
-
+	if (m_pMeshFielde != NULL)
+	{
+		delete m_pMeshFielde;
+		m_pMeshFielde = NULL;
+	}
 	// インデックスバッファの解放
 	if (m_pIndexBuffer != NULL)
 	{

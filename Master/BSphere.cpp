@@ -1,5 +1,8 @@
 #include "BSphere.h"
-//
+#include <crtdbg.h>
+//#define _CRTDBG_MAP_ALLOC
+
+#define new  ::new(_NORMAL_BLOCK, __FILE__, __LINE__)
 //スフィアの計算およびスフィアを視認可能にするためにスフィアメッシュを作成する
 HRESULT InitSphere(LPDIRECT3DDEVICE9 pDevice,THING_NORMAL* pThing)
 {
@@ -55,7 +58,7 @@ HRESULT InitSphere(LPDIRECT3DDEVICE9 pDevice,THING_NORMAL* pThing)
 	pThing->pSphereMeshMaterials->Emissive.g=0.1f;
 	pThing->pSphereMeshMaterials->Emissive.b=0.1f;
 	pThing->pSphereMeshMaterials->Power=120.0f;	
-
+	delete pThing->pSphereMeshMaterials;
 	return S_OK;
 }
 
@@ -110,7 +113,7 @@ HRESULT InitSphere(LPDIRECT3DDEVICE9 pDevice, THING_NORMAL* pThing, D3DXVECTOR3 
 	pThing->pSphereMeshMaterials->Emissive.g = 0.1f;
 	pThing->pSphereMeshMaterials->Emissive.b = 0.1f;
 	pThing->pSphereMeshMaterials->Power = 120.0f;
-
+	delete pThing->pSphereMeshMaterials;
 	return S_OK;
 }
 
@@ -166,7 +169,7 @@ HRESULT InitCapsule(LPDIRECT3DDEVICE9 pDevice, THING_NORMAL* pThing, D3DXVECTOR3
 	pThing->pSphereMeshMaterials->Emissive.g = 0.1f;
 	pThing->pSphereMeshMaterials->Emissive.b = 0.1f;
 	pThing->pSphereMeshMaterials->Power = 120.0f;
-
+	delete pThing->pSphereMeshMaterials;
 	return S_OK;
 }
 
@@ -221,7 +224,7 @@ HRESULT InitCapsule(LPDIRECT3DDEVICE9 pDevice, THING_NORMAL* pThing, D3DXVECTOR3
 	pThing->pSphereMeshMaterials->Emissive.g = 0.1f;
 	pThing->pSphereMeshMaterials->Emissive.b = 0.1f;
 	pThing->pSphereMeshMaterials->Power = 120.0f;
-
+	delete pThing->pSphereMeshMaterials;
 	return S_OK;
 }
 

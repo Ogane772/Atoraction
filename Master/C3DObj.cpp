@@ -9,6 +9,9 @@
 #include "CTexture.h"
 #include "Cplayer.h"
 #include "exp.h"
+#define _CRTDBG_MAP_ALLOC
+
+#define new  ::new(_NORMAL_BLOCK, __FILE__, __LINE__)
 //=============================================================================
 //	Ã“I•Ï”
 //===========================================================================
@@ -51,7 +54,7 @@ C3DObj::MaterialFileData2 C3DObj::ANIME_MODEL_FILES[] = {
 int C3DObj::MODEL_FILES_MAX = sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0]);
 int C3DObj::ANIME_MODEL_FILES_MAX = sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0]);
 
-bool C3DObj::boRenderSphere = false;
+bool C3DObj::boRenderSphere = true;
 //ƒ‚ƒfƒ‹ƒAƒjƒ[ƒVƒ‡ƒ“ŠÖŒW•Ï”
 /*
 #define MODEL_MAX (9)
@@ -308,7 +311,7 @@ void C3DObj::Model_Finalize(void)	//	ƒ‚ƒfƒ‹ƒf[ƒ^‚ÌŠJ•ú@•¡”‰»‚µ‚½‚ç‘S•”Á‚·‚©‚
 		}
 		if (Thing_Normal[i].pMeshTextures)
 		{
-			//delete[]Thing_Normal[i].pMeshTextures;
+			delete[]Thing_Normal[i].pMeshTextures;
 		}
 	}
 }
