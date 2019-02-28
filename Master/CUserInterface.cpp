@@ -68,6 +68,10 @@ void CUserInterFace::Update(void)
 void CUserInterFace::Draw(void)
 {
 	C3DObj *playerget = CPlayer::Get_Player();
+	C3DObj *enemyget;
+	C3DObj *attraction_get;
+	D3DXMATRIX enemymatrix;
+	D3DXMATRIX Attraction_matrix;
 	int i;
 	int hp = playerget->Get_Hp();
 	Sprite_Draw(TEX_UI_GRAYBAR, HP_X, HP_Y, 0, 0, 1024, 222, 0.0f, 0.0f, 0.45f, 0.4f, 0.0f);
@@ -117,11 +121,11 @@ void CUserInterFace::Draw(void)
 	//アトラクション
 	for (i = 0; i < ATTRACTION_MAX; i++)
 	{
-		C3DObj *attraction_get = CAttraction::Get_Attraction(i);
+		attraction_get = CAttraction::Get_Attraction(i);
 		if (attraction_get)
 		{
 
-			D3DXMATRIX Attraction_matrix = attraction_get->Get_mtxWorld();
+			Attraction_matrix = attraction_get->Get_mtxWorld();
 			Sprite_Draw(TEX_ATTRACTION, 1688.5f + (Attraction_matrix._41 * 1.56f), 140.0f - (Attraction_matrix._43 * 1.56f), 0, 0, 14, 14, 7, 7, 1, 1, 0);
 
 		}
@@ -129,12 +133,12 @@ void CUserInterFace::Draw(void)
 	//エネミー
 	for (i = 0; i < ENEMY_MAX; i++)
 	{
-		C3DObj *enemyget = CEnemy::Get_Map_Enemy(i);
+		enemyget = CEnemy::Get_Map_Enemy(i);
 		if (enemyget)
 		{
 			if (enemyget->Get_Enable())
 			{
-				D3DXMATRIX enemymatrix = enemyget->Get_mtxTranslation();
+				enemymatrix = enemyget->Get_mtxTranslation();
 
 				Sprite_Draw(TEX_ENEMY_ICON, 1690.0f + (enemymatrix._41 * 1.5f), 150.0f - (enemymatrix._43 * 1.56f), 0, 0, 12, 12, 6, 6, 1, 1, 0);
 

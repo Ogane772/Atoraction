@@ -91,6 +91,7 @@ protected:
 	void EnemyAngleChange(int direction);			//	向き変更処理
 
 	bool PlayerCheck(void);		//	プレイヤーが近くにいるか
+	bool PopCheck(void);		//	ポップコーンが近くにいるか
 	void Chase_Player(void);	//	プレイヤーに向かう処理
 
 	bool Chase_Popcorn(void);	//	ポップコーンに向かう処理
@@ -117,6 +118,7 @@ private:
 	int m_FlyingCount;
 	bool m_EnemyFlying;
 	bool m_EnemyFlyingDown;
+
 	D3DXVECTOR3 m_FlyingMove;
 
 

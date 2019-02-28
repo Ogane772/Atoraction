@@ -21,7 +21,7 @@
 #define SPEED (0.05f)
 #define POPCORN_SIZE (4)//“–‚½‚è”»’è‘å‚«‚³
 #define POPCORN_SCALE (1) //ƒ‚ƒfƒ‹‚Ì‘å‚«‚³
-#define POPCORN_HP (90)
+#define POPCORN_HP (12)
 #define POPCORN_MP (1)
 #define POPCORN_ATK (1)
 #define SCORE (1)

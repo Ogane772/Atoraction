@@ -26,7 +26,7 @@
 //=============================================================================
 
 #define CHASE_SPEED (0.015f)
-#define ENEMY_HITSTOP (160)//ヒットストップの長さ
+#define ENEMY_HITSTOP (30)//ヒットストップの長さ
 //=============================================================================
 //	静的変数
 //=============================================================================
@@ -53,45 +53,47 @@ CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 	{ 0	,0, TYPE_BIG,		   D3DXVECTOR3(20.0f, 0.0f , 10.0f), D3DXVECTOR3(20.0f, 0.0f , 10.0f), DIRE_SOUTHEAST ,false },
 	{ 0	,0, TYPE_SMALL,	   D3DXVECTOR3(0.0f , 0.0f , 0.0f)  ,D3DXVECTOR3(0.0f , 0.0f , 0.0f), DIRE_NORTHEAST ,false },
 	*/
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(60.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(70.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(80.0f, 0.0f , 80.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(90.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 60.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 20.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 40.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 60.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-10.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-20.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-30.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-40.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-50.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-60.0f), DIRE_SOUTH     ,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 15.0f), DIRE_SOUTH,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 15.0f), DIRE_SOUTH,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 15.0f), DIRE_SOUTH,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 15.0f), DIRE_SOUTH,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 15.0f), DIRE_SOUTH,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , -75.0f), DIRE_SOUTH,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , -75.0f), DIRE_SOUTH,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , -75.0f), DIRE_SOUTH,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , -75.0f), DIRE_SOUTH,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , -75.0f), DIRE_SOUTH,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
 
-
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(60.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(70.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(80.0f, 0.0f , 80.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(90.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 60.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 10.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 20.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 30.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 40.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 50.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(-50.0f, 0.0f , 60.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-10.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-20.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-30.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-40.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-50.0f), DIRE_SOUTH     ,false },
-	{ 300 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f ,-60.0f), DIRE_SOUTH     ,false },
-
+	{ 600 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 600 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 600 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 600 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 600 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 600 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 15.0f), DIRE_SOUTH,false },
+	{ 600 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 15.0f), DIRE_SOUTH,false },
+	{ 600 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 15.0f), DIRE_SOUTH,false },
+	{ 600 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 15.0f), DIRE_SOUTH,false },
+	{ 600 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 15.0f), DIRE_SOUTH,false },
+	{ 600 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , -75.0f), DIRE_SOUTH,false },
+	{ 600 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , -75.0f), DIRE_SOUTH,false },
+	{ 600 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , -75.0f), DIRE_SOUTH,false },
+	{ 600 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , -75.0f), DIRE_SOUTH,false },
+	{ 600 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , -75.0f), DIRE_SOUTH,false },
+	{ 600 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+	{ 600 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+	{ 600 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+	{ 600 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+	{ 600 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
 };
 
 int CEnemy::m_ENEMY_MAX = sizeof(CEnemy_Small::m_EnemyEmitter) / sizeof(m_EnemyEmitter[0]);
@@ -259,6 +261,39 @@ bool CEnemy::PlayerCheck(void)
 
 }
 
+bool CEnemy::PopCheck(void)
+{
+	float l;
+	int i;
+	C3DObj *ppop;
+	D3DXMATRIX popworld;
+	float cc;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
+	{
+		ppop = Popcorn::Get_Popcorn(i);
+		if (ppop)
+		{
+			popworld = ppop->Get_mtxWorld();
+			if (m_Type == TYPE_SPECIAL)
+			{
+				l = 15;//範囲
+			}
+			else if (m_Type == TYPE_BIG)
+			{
+				l = 20;//範囲
+			}
+			else
+			{
+				l = 10;//範囲
+			}
+			cc = (popworld._41 - m_mtxWorld._41) * (popworld._41 - m_mtxWorld._41) + (popworld._43 - m_mtxWorld._43) *  (popworld._43 - m_mtxWorld._43);
+			return cc < (l * l);
+		}
+	}
+	
+	return false;
+}
+
 void CEnemy::Chase_Player(void)
 {
 	C3DObj *pplayer = CPlayer::Get_Player();
@@ -329,7 +364,6 @@ void CEnemy::Enemy_Damage(float flyinghigh)
 			PlaySound(NORMALHIT_SE);
 			Exp_Set(HIT, m_mtxWorld._41, m_mtxWorld._42 + 1, m_mtxWorld._43 + 1, 4.0, 0);
 			m_Hp--;
-			Sleep(ENEMY_HITSTOP);
 			m_EnemyFlying = true;
 			m_FlyingMove = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43) - m_PosKeep;
 			m_FlyingMove.y = flyinghigh;
@@ -434,24 +468,25 @@ void CEnemy::Color_Change(int texindex)
 {
 	if (m_ColorType != texindex)
 	{
-		if (Thing.texture)
+		if (Thing.texture[0])
 		{
 			Thing.texture[0]->Release();
 			Thing.texture[0] = NULL;
+
+
+			char color[TEXTURE_FILENAME_MAX] = {};
+			strcpy(color, CTexture::Texture_GetFailName(texindex));
+
+			D3DXCreateTextureFromFile
+			(
+				m_pD3DDevice,
+				//切り替えたい番号を指定[0]はテクスチャの場所
+				color,
+				&Thing.texture[0]//セットしたいモデル番号
+			);
+
+			m_ColorType = texindex;
 		}
-
-		char color[TEXTURE_FILENAME_MAX] = {};
-		strcpy(color, CTexture::Texture_GetFailName(texindex));
-
-		D3DXCreateTextureFromFile
-		(
-			m_pD3DDevice,
-			//切り替えたい番号を指定[0]はテクスチャの場所
-			color,
-			Thing.texture//セットしたいモデル番号
-		);
-
-		m_ColorType = texindex;
 	}
 }
 

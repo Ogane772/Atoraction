@@ -19,7 +19,7 @@ CTexture::TextureFileData CTexture::TEXTURE_FILES[] = {
 	{ "asset/bullet000.png",80,80 },
 	{ "asset/3031.JPG",4000,992 },
 	{ "asset/title.png",1920,1080 },
-	{ "asset/gameover.jpg",2480,3508 },
+	{ "asset/gameover.png",2480,3508 },
 	{ "asset/HP_Gage.png",200,50 },
 	{ "asset/HP_Gage_2.png",200,50 },
 	{ "asset/MP_Gage.png",200,50 },
@@ -136,14 +136,18 @@ int CTexture::Texture_Load(void)
 {
 
 	HRESULT hr;
+	int i;
 	int failed_count = 0;
-	for (int i = 0; i < TEXTURE_MAX; i++)
+	for (i = 0; i < TEXTURE_MAX; i++)
 	{
-		hr = D3DXCreateTextureFromFile(m_pD3DDevice, TEXTURE_FILES[i].filename, &m_pTextures[i]);
-		if (FAILED(hr))
+		if (m_pTextures[i] == NULL)
 		{
-			failed_count++;
-			MessageBox(NULL, "テクスチャデータを読み込めませんでした", "確認", MB_OK);
+			hr = D3DXCreateTextureFromFile(m_pD3DDevice, TEXTURE_FILES[i].filename, &m_pTextures[i]);
+			if (FAILED(hr))
+			{
+				failed_count++;
+				MessageBox(NULL, "テクスチャデータを読み込めませんでした", "確認", MB_OK);
+			}
 		}
 	}
 
@@ -154,7 +158,8 @@ int CTexture::Texture_Load(void)
 // テクスチャの開放
 void CTexture::Texture_Release(void)
 {
-	for (int i = 0; i < TEXTURE_MAX; i++)
+	int i;
+	for (i = 0; i < TEXTURE_MAX; i++)
 	{
 		if (m_pTextures[i] != NULL)
 		{
@@ -164,10 +169,27 @@ void CTexture::Texture_Release(void)
 	}
 }
 
+void CTexture::Texture_Load(int index)
+{
+	HRESULT hr;
+	if (m_pTextures[index] == NULL)
+	{
+		hr = D3DXCreateTextureFromFile(m_pD3DDevice, TEXTURE_FILES[index].filename, &m_pTextures[index]);
+		if (FAILED(hr))
+		{
+			MessageBox(NULL, "テクスチャデータを読み込めませんでした", "確認", MB_OK);
+		}
+	}
+}
 
-
-
-
+void CTexture::Texture_Release(int index)
+{
+	if (m_pTextures[index] != NULL)
+	{
+		m_pTextures[index]->Release();
+		m_pTextures[index] = NULL;
+	}
+}
 
 
 
