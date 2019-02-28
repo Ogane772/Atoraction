@@ -225,7 +225,7 @@ C3DObj *CEnemy::Get_Map_Enemy(int Index)
 	{
 		if (pEnemy->Get_3DObjType() == C3DObj::TYPE_ENEMY)
 		{
-			if (pEnemy->Get_DrawCheck())
+			//if (pEnemy->Get_DrawCheck())
 			{
 				return pEnemy;
 			}

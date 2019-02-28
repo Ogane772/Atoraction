@@ -73,8 +73,7 @@ void Score_total_Update(void)
 
 
 	//ゲージの長さに対する制圧率
-	Enemy_Percent = 791 * Get_EnemyPer();
-	Mark_Percent = 35 * Get_EnemyPer();
+	Enemy_Percent = 762 * Get_EnemyPer();
 	Percent = 100 * Get_EnemyPer();
 	//score_total = CUserInterFace::Get_UIScore();
 	
@@ -146,12 +145,12 @@ void Score_total_Draw(void)
 		
 
 			//ゲージ
-			pScore_total->Sprite_Draw(CTexture::TEX_MP3, 600, 470, 0, 0, 791, 54, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
-			pScore_total->Sprite_Draw(CTexture::TEX_HP3, 600, 470, 0, 0, score_per , 54, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
+			pScore_total->Sprite_Draw(CTexture::TEX_MP3, 631, 470, 0, 0, 791, 54, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
+			pScore_total->Sprite_Draw(CTexture::TEX_HP3, 631, 470, 0, 0, score_per, 54, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
 			pScore_total->Sprite_Draw(CTexture::TEX_UI_BER, 500, 437, 0, 0, 1024, 172, 0.0f, 0.0f, 1.0f, 0.8f, 0.0f);
 			//指標					
-			pScore_total->Sprite_Draw(CTexture::TEX_UI_MEMORI, 614 + score_per - Mark_per, 450, 0, 0, 43, 38, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
-			pScore_total->Sprite_Draw(CTexture::TEX_UI_MEMORI, 614 + score_per - Mark_per, 510, 0, 0, 43, 38, 43 / 2, 38 / 2, 1.0f, 1.0f, D3DXToRadian(180));
+			pScore_total->Sprite_Draw(CTexture::TEX_UI_MEMORI, 614 + 532, 450, 0, 0, 43, 38, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
+			pScore_total->Sprite_Draw(CTexture::TEX_UI_MEMORI, 614 + 532, 510, 0, 0, 43, 38, 43 / 2, 38 / 2, 1.0f, 1.0f, D3DXToRadian(180));
 
 			//値
 			ResultScore_Draw(1500, 380, (int)Percent, 2, 1);
@@ -162,10 +161,7 @@ void Score_total_Draw(void)
 				score_per+= 3;
 			}
 
-			if (Mark_per <= Mark_Percent)
-			{
-				Mark_per += 3;
-			}
+			
 		}
 		
 		
