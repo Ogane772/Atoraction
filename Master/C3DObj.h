@@ -6,6 +6,7 @@
 
 #ifndef _3DOBJ_H_
 #define _3DOBJ_H_
+#include <crtdbg.h>
 
 #include "CGameObj.h"
 #include <d3dx9.h>
