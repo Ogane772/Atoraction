@@ -21,6 +21,7 @@
 #include "shadow.h"
 #include "COrnament.h"
 #include "sound.h"
+#include <crtdbg.h>
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -69,6 +70,7 @@ void Game_Finalize(void)
 	CGameObj::DeleteAll2D();			//	2Dオブジェクト全消去
 	C3DObj::Model_Finalize();
 	CGameObj::FrameCountReset();	//	フレームカウントリセット
+	_CrtDumpMemoryLeaks();
 }
 
 //=============================================================================
@@ -122,6 +124,7 @@ void Game_Draw(void)
 	CGameObj::DrawAll();	//	2Dオブジェクト描画
 	Exp_Draw();
 	Shadow_Draw();
+
 	//C3DObj::HitCheck();
 }
 

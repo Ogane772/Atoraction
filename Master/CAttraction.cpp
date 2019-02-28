@@ -20,6 +20,9 @@
 #include "CGauge.h"
 #include "CCoaster_ON.h"
 #include "COrnament.h"
+#define _CRTDBG_MAP_ALLOC
+
+#define new  ::new(_NORMAL_BLOCK, __FILE__, __LINE__)
 //=============================================================================
 //	íËêîíËã`
 //=============================================================================

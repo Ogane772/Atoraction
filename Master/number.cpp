@@ -2,7 +2,10 @@
 #include "CTexture.h"
 #include "CUserInterface.h"
 #include "tex_animation.h"
+#include <crtdbg.h>
+#define _CRTDBG_MAP_ALLOC
 
+#define new  ::new(_NORMAL_BLOCK, __FILE__, __LINE__)
 void Number_Draw(float x, float y, int n)
 {
 	if (n >= 0 && n <= 9)
