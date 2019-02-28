@@ -113,6 +113,8 @@ public:
 
 	static int Texture_Load(void);	//	テクスチャ読み込み
 	static void Texture_Release(void);	//	テクスチャ破棄
+	static void Texture_Load(int index);	//	指定したテクスチャ読み込み
+	static void Texture_Release(int index);	//	指定したテクスチャ破棄
 	static LPDIRECT3DTEXTURE9 Texture_GetTexture(int index) { return m_pTextures[index]; }	//	テクスチャ取得
 	static char* Texture_GetFailName(int index) { return TEXTURE_FILES[index].filename; }
 	static int Texture_GetWidth(int index, int cut) { return TEXTURE_FILES[index].width / cut; }	// テクスチャ幅分割	cut:分割数 分割しない場合は1
