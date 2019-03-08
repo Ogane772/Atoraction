@@ -18,6 +18,7 @@
 #include "debug_font.h"
 #include "CLight.h"
 #include <crtdbg.h>
+#include "CUserInterface.h"
 #define _CRTDBG_MAP_ALLOC
 
 #define new  ::new(_NORMAL_BLOCK, __FILE__, __LINE__)
@@ -58,6 +59,8 @@ C2DObj *ptitle;
 
 void Title_Initialize(void)
 {
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
 	ptitle = new C2DObj;
 	g_bend = false;
 	//コントローラー情報取得
@@ -89,16 +92,18 @@ void Title_Initialize(void)
 
 	a = 0;
 	b = 0;
-	C3DObj::InitModelLoad();
+	/*C3DObj::InitModelLoad();
 	CPlayer::PlayerCreate();				//	プレイヤー生成		
 	CLight::Light_Create();					//	ライト生成
 	CMeshField::MeshField_Create(CTexture::TEX_KUSA_RENGA, 120.0f, 2, 2);							//	地面生成																									//CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_FLORR, 10.0f, SYLINDERSIZE, 20, 1,true);	//	内カベ生成
 	CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_MOUNTAIN, 10.0f, FIELDSIZE, 20, 1, false);	//	外カベ生成
 	CMesh_SkyDome::Mesh_SkyDome_Create(CTexture::TEX_SKY, 2.0f, SKYSIZE, 40, 20);
-	COrnament::Create();
+	COrnament::Create();*/
 
 	CPlayer::TitleFlag_Change(true);
+	CUserInterFace::TitleFlag_Change(true);
 
+	
 }
 
 //=============================================================================
@@ -108,10 +113,11 @@ void Title_Initialize(void)
 void Title_Finalize(void)
 {
 	delete ptitle;
-	C3DObj::DeleteAll();			//	3Dオブジェクト全消去
+	/*C3DObj::DeleteAll();			//	3Dオブジェクト全消去
 	CGameObj::DeleteAll2D();
-	C3DObj::Model_Finalize();
+	C3DObj::Model_Finalize();*/
 	CPlayer::TitleFlag_Change(false);
+	CUserInterFace::TitleFlag_Change(false);
 	CPlayer::Reset_KoCount();
 	_CrtDumpMemoryLeaks();
 	
@@ -146,17 +152,6 @@ void Title_Update(void)
 			Fade_Start(false, 3, 0, 0, 0);
 			Scene_Change(SCENE_INDEX_CHUTO);
 		}
-	}
-	if (Keyboard_IsPress(DIK_T))//スクリーンショット
-	{													   // バックバファの取得
-		LPDIRECT3DSURFACE9 pBackBuf;
-		C3DObj::m_pD3DDevice->GetRenderTarget(0, &pBackBuf);
-
-		// 繧ｹ繧ｯ繧ｷ繝ｧ蜃ｺ蜉・
-		D3DXSaveSurfaceToFile("asset/screenshot.bmp", D3DXIFF_BMP, pBackBuf, NULL, NULL);
-
-		// Get系で取得したサーフェイスはAddRefが呼ばれているので忘れずに解放する
-		pBackBuf->Release();
 	}
 	g_Camera_At = (front * at_lenght) + g_Camera_Eye;
 
@@ -198,7 +193,7 @@ void Title_Draw(void)
 
 	C3DObj::DrawAll();		//	3Dオブジェクト描画
 	CGameObj::DrawAll();	//	2Dオブジェクト描画
-	//ptitle->Sprite_Draw(CTexture::TEX_PUSHBUTTON, 400, 700, 0, 0, ptitle->Texture_GetWidth(CTexture::TEX_PUSHBUTTON, 1), ptitle->Texture_GetHeight(CTexture::TEX_PUSHBUTTON, 1));
+	ptitle->Sprite_Draw(CTexture::TEX_PUSHBUTTON, 400, 700, 0, 0, ptitle->Texture_GetWidth(CTexture::TEX_PUSHBUTTON, 1), ptitle->Texture_GetHeight(CTexture::TEX_PUSHBUTTON, 1));
 	ptitle->Sprite_Draw(CTexture::TEX_TITLELOGO, 400, 30, 0, 0, ptitle->Texture_GetWidth(CTexture::TEX_TITLELOGO, 1), ptitle->Texture_GetHeight(CTexture::TEX_TITLELOGO, 1));
 	//テクスチャが出ない＆カメラ回転がおかしい？
 //	DebugFont_Draw(300, 50, "X = %ld , Y= %ld", js.lX, js.lY);

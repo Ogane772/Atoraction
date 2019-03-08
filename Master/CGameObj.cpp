@@ -216,5 +216,18 @@ void CGameObj::DeleteAll2D()
 }
 
 
-
+CGameObj *CGameObj::Get(int type)
+{
+	int i;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
+	{
+		if (pGameObj[i])
+		{
+			if (pGameObj[i]->m_GameObjType == type)
+			{
+				return pGameObj[i];
+			}
+		}
+	}
+}
 

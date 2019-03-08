@@ -106,6 +106,8 @@ void CCoffeeCup::Initialize(D3DXMATRIX mtxWorld)
 	thing_cup2.vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
 	thing_cup3.vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
 	thing_cup4.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+
+	m_TimeKeep = m_FrameCount;
 }
 
 void CCoffeeCup::Update(void)
@@ -167,6 +169,7 @@ void CCoffeeCup::Update(void)
 		m_mtxWorld = m_mtxScaling * m_mtxWorld;
 		if (m_DrawCheck)
 		{
+			Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
 			thing_cup2.vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
 			thing_cup3.vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
 			thing_cup4.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
@@ -186,10 +189,7 @@ void CCoffeeCup::Draw(void)
 	if (m_Enable)
 	{
 		D3DXVECTOR3 position = D3DXVECTOR3(0.0f, 2.0f, 0.0f);
-		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
-		thing_cup2.vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
-		thing_cup3.vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
-		thing_cup4.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+		
 
 		if (!m_DrawCheck)
 		{
@@ -229,7 +229,8 @@ void CCoffeeCup::Draw(void)
 
 void CCoffeeCup::Finalize(void)
 {
-	Attraction_Finalize(m_AttractionIndex);
+	//Attraction_Finalize(m_AttractionIndex);
+	delete this;
 }
 
 void CCoffeeCup::CoffeeCup_Create(void)
@@ -239,38 +240,41 @@ void CCoffeeCup::CoffeeCup_Create(void)
 
 void CCoffeeCup::EnemyDamage(void)
 {
-	int i;
-	C3DObj *enemy;
-	THING *thingenemy;
-	for (i = 0; i < MAX_GAMEOBJ; i++)
+	if (m_FrameCount - m_TimeKeep >= 120)
 	{
-		enemy = CEnemy::Get_Enemy(i);
-		if (attackon && enemy)
-		{//コーヒーカップのみ判定
-			Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
-			thingenemy = enemy->GetAnimeModel();
-			if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
-			{
-				enemy->DamageFlag_Change();
-				enemy->Position_Keep(m_mtxWorld);
-				m_Hp--;
-				break;
-			}
-			thing_cup2.vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
-			if (C3DObj::Collision_AnimeVSNormal(thingenemy, &thing_cup2))
-			{
-				enemy->DamageFlag_Change();
-				enemy->Position_Keep(m_mtxWorld);
-				m_Hp--;
-				break;
-			}
-			thing_cup3.vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
-			if (C3DObj::Collision_AnimeVSNormal(thingenemy, &thing_cup3))
-			{
-				enemy->DamageFlag_Change();
-				enemy->Position_Keep(m_mtxWorld);
-				m_Hp--;
-				break;
+		int i;
+		C3DObj *enemy;
+		THING *thingenemy;
+		for (i = 0; i < MAX_GAMEOBJ; i++)
+		{
+			enemy = CEnemy::Get_Enemy(i);
+			if (attackon && enemy)
+			{//コーヒーカップのみ判定
+				Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
+				thingenemy = enemy->GetAnimeModel();
+				if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
+				{
+					enemy->DamageFlag_Change();
+					enemy->Position_Keep(m_mtxWorld);
+					m_Hp--;
+					break;
+				}
+				thing_cup2.vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
+				if (C3DObj::Collision_AnimeVSNormal(thingenemy, &thing_cup2))
+				{
+					enemy->DamageFlag_Change();
+					enemy->Position_Keep(m_mtxWorld);
+					m_Hp--;
+					break;
+				}
+				thing_cup3.vPosition = D3DXVECTOR3(m_mtxWorld4._41, m_mtxWorld4._42, m_mtxWorld4._43);
+				if (C3DObj::Collision_AnimeVSNormal(thingenemy, &thing_cup3))
+				{
+					enemy->DamageFlag_Change();
+					enemy->Position_Keep(m_mtxWorld);
+					m_Hp--;
+					break;
+				}
 			}
 		}
 	}

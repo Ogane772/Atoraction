@@ -78,7 +78,7 @@ void Cwheel::Initialize()
 
 
 	D3DXMatrixTranslation(&m_mtxTranslation, mtx._41, mtx._42, mtx._43);//X,Y,Z‚ð“n‚·
-	D3DXMatrixScaling(&m_mtxScaling, WHEEL_SCALE, WHEEL_SCALE, WHEEL_SCALE);
+	D3DXMatrixScaling(&m_mtxScaling, WHEEL_SCALE, WHEEL_SCALE, WHEEL_SCALE * 2);
 
 	m_mtxWorld = m_mtxScaling * m_mtxWorld * mtxR * m_mtxTranslation;
 	//m_mtxWorld = m_mtxScaling  * m_mtxWorld * m_mtxTranslation ;
@@ -114,12 +114,15 @@ void Cwheel::Update(void)
 		D3DXMatrixRotationY(&m_mtxRotationY, D3DXToRadian(angle));
 		Wheel_position += m_front*SPEED;
 
-		D3DXMatrixScaling(&m_mtxScaling, WHEEL_SCALE, WHEEL_SCALE, WHEEL_SCALE);
+		D3DXMatrixScaling(&m_mtxScaling, WHEEL_SCALE, WHEEL_SCALE, WHEEL_SCALE * 2);
 		D3DXMATRIX mtxT;
 		D3DXMatrixTranslation(&mtxT, move.x, move.y, move.z);
 		D3DXMatrixTranslation(&m_mtxTranslation, Wheel_position.x, Wheel_position.y, Wheel_position.z);
 
 		m_mtxWorld = m_mtxScaling * m_mtxRotationY * m_mtxRotationYY * m_mtxTranslation;
+
+		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+
 		if (m_DrawCheck)
 		{
 			OrnamentDamage();
@@ -141,7 +144,6 @@ void Cwheel::Draw(void)
 	//DebugFont_Draw(900, 60, "Bugoki = %d\n,", Bugoki);
 	if (m_Enable)
 	{
-		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 		DrawDX_Normal(m_mtxWorld, MODELL_WHEEL, &Thing_Normal_model);
 	}
@@ -149,7 +151,8 @@ void Cwheel::Draw(void)
 
 void Cwheel::Finalize(void)
 {
-	Attraction_Finalize(m_AttractionIndex);
+	//Attraction_Finalize(m_AttractionIndex);
+	delete this;
 }
 
 void Cwheel::EnemyDamage(void)

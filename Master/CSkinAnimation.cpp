@@ -1,6 +1,7 @@
 #pragma warning(disable:4996)
 #include "CSkinAnimation.h"
 #include <crtdbg.h>
+#include "CGameObj.h"
 #define _CRTDBG_MAP_ALLOC
 
 #define new  ::new(_NORMAL_BLOCK, __FILE__, __LINE__)
@@ -65,7 +66,8 @@ HRESULT MY_HIERARCHY::CreateMeshContainer(LPCSTR Name, CONST D3DXMESHDATA* pMesh
 		return E_FAIL;
 	}
 	strcpy(pMeshContainer->Name,Name);
-    pMesh->GetDevice(&pDevice);
+    //pMesh->GetDevice(&pDevice);
+	pMesh->GetDevice(&pDevice);
     iFacesAmount = pMesh->GetNumFaces();  
    
 	pMeshContainer->MeshData.pMesh = pMesh;   
@@ -149,8 +151,12 @@ HRESULT MY_HIERARCHY::CreateMeshContainer(LPCSTR Name, CONST D3DXMESHDATA* pMesh
 //ƒtƒŒ[ƒ€‚ð”jŠü‚·‚é
 HRESULT MY_HIERARCHY::DestroyFrame(LPD3DXFRAME pFrameToFree) 
 {
-    SAFE_DELETE_ARRAY( pFrameToFree->Name );
 
+    //SAFE_DELETE_ARRAY( pFrameToFree->Name );
+	if (pFrameToFree->Name)
+		delete pFrameToFree->Name;
+	if (pFrameToFree->pMeshContainer)
+		DestroyMeshContainer(pFrameToFree->pMeshContainer);
 	if(pFrameToFree->pFrameFirstChild)
 	{
 		DestroyFrame(pFrameToFree->pFrameFirstChild);
@@ -161,6 +167,7 @@ HRESULT MY_HIERARCHY::DestroyFrame(LPD3DXFRAME pFrameToFree)
 	}
 
 	SAFE_DELETE( pFrameToFree );
+	//delete pFrameToFree;
 
     return S_OK; 
 }

@@ -55,7 +55,7 @@ CMeshField_Cylinder::CMeshField_Cylinder(int TexIndex, float meshH, float radius
 
 CMeshField_Cylinder::~CMeshField_Cylinder()
 {
-	
+	Finalize();
 }
 
 //	XV

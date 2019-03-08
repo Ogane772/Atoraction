@@ -185,9 +185,8 @@ void CCamera::Update(void)
 	//m_CameraPos = m_at - m_Front * m_AtLength;
 	if (C3DObj::GetW_coaster() == false)
 	{
-		m_CameraPos = m_at - m_Front * m_AtLength;
 		//VibrationCtrl();
-		//m_CameraPos = m_at - m_Front * m_AtLength;
+		m_CameraPos = m_at - m_Front * m_AtLength;
 	}
 	if (C3DObj::GetW_coaster() == true)
 	{
@@ -268,7 +267,14 @@ void CCamera::VibrationCtrl(void)
 }
 
 
-
+void CCamera::Dalete_Camera(void)
+{
+	CGameObj *pcamera = CGameObj::Get(CGameObj::TYPE_CAMERA);
+	if (pcamera)
+	{
+		delete pcamera;
+	}
+}
 
 
 

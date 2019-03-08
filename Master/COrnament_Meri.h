@@ -23,8 +23,16 @@ public:
 private:
 	void MERI_Create(void);
 	void Initialize(ORNAMENT_EMITTER *Emitter);
+	void Ornament_Damage_Meri(float flyinghigh);
+	void Ornament_Flying_Meri(float speed);
+	void Death_Meri(void);
 	bool m_playercheck;
 	float angle;
+	bool m_OrnamentFlying;
+	bool m_OrnamentFlyingDown;
+	int m_FlyingCount;
+	D3DXVECTOR3 m_FlyingMove;
+	D3DXVECTOR3 m_FlyingMove2;
 	THING_NORMAL uma;
 	D3DXMATRIX m_mtxWorld2;
 	D3DXMATRIX trans2;

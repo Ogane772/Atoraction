@@ -23,6 +23,14 @@ public:
 private:
 	void Kanransya_Create(void);
 	void Initialize(ORNAMENT_EMITTER *Emitter);
+	void Ornament_Damage_Kanransya(float flyinghigh);
+	void Ornament_Flying_Kanransya(float speed);
+	void Death_Kanransya(void);
+	bool m_OrnamentFlying;
+	bool m_OrnamentFlyingDown;
+	int m_FlyingCount;
+	D3DXVECTOR3 m_FlyingMove;
+	D3DXVECTOR3 m_FlyingMove2;
 	bool m_playercheck;
 	float angle;
 	THING_NORMAL kanransya;

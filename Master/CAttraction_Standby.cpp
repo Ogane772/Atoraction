@@ -47,7 +47,7 @@
 //	ê∂ê¨
 //=============================================================================
 
-Standby::Standby(int nType) :CAttraction(AT_STANDBY), C3DObj(AT_STANDBY)
+Standby::Standby(int nType) :CAttraction(AT_STANDBY), C3DObj(TYPE_STADBY)
 {
 	Initialize(nType);
 	
@@ -115,7 +115,8 @@ void Standby::Draw(void)
 
 void Standby::Finalize(void)
 {
-	Attraction_Finalize(m_AttractionIndex);
+	//Attraction_Finalize(m_AttractionIndex);
+	delete this;
 }
 
 void Standby::Standby_Create(void)

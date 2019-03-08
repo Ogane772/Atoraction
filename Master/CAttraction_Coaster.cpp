@@ -116,15 +116,15 @@ void Coaster::Draw(void)
 	//DebugFont_Draw(600, 0, "U = %f\n,", u);
 	if (m_Enable)
 	{
-		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-
+		
 		DrawDX_Normal(m_mtxWorld, MODELL_COASTER, &Thing_Normal_model);
 	}
 }
 
 void Coaster::Finalize(void)
 {
-	Attraction_Finalize(m_AttractionIndex);
+	//Attraction_Finalize(m_AttractionIndex);
+	delete this;
 }
 
 void Coaster::Coaster_Create(void)

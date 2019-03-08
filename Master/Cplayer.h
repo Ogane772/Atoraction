@@ -31,7 +31,7 @@ typedef enum
 	SUMMONS_MAX,
 }SUMMONS_TYPE;
 
-class CPlayer:public C3DObj
+class CPlayer :public C3DObj
 {
 
 public:
@@ -39,11 +39,12 @@ public:
 	CPlayer();
 	~CPlayer();
 
+	void GameBegin(void);
 	void Update(void);
 	void Draw(void);
 	void Finalize(void);	//	終了処理
 
-	static CPlayer *PlayerCreate(void);	
+	static CPlayer *PlayerCreate(void);
 	static CPlayer *Get_Player(int IndexPlayer) { return m_pPlayer[IndexPlayer]; }
 	//D3DXMATRIX Get_mtxkeep(void) { return m_mtxKeepTranslation; }
 	static int Get_KoCount(void) { return m_KO_Count; }
@@ -54,12 +55,12 @@ public:
 	static bool GetCoaster_Enable(void) { return g_CosterMode; };
 	static void TitleFlag_Change(bool change) { m_TitleFlag = change; }
 protected:
-	
-	
+
+
 	bool m_DrawCheck;			//	描画フラグ
 private:
 	void Summons_Attraction(void);	//	アトラクション召喚
-	void Player_Initialize(void);	//	初期化
+	void Initialize(void);	//	初期化
 	void Player_Move(void);			//	移動処理
 	void Player_GamepadMove(void);			//	移動処理
 	void AngleChange(int index);	//	方向変換
@@ -73,7 +74,7 @@ private:
 	void Ornament_Check(void);
 	int m_Direction;				//	方向
 	bool m_MoveCheck;				//	移動フラグ
-
+	int m_PadDirection;
 	enum
 	{
 		DIRE_UP,		//　上
@@ -85,18 +86,21 @@ private:
 		DIRE_DOWN_RIGHT,//	右下
 		DIRE_DOWN_LEFT,	//	左下
 
+		DIRE_N,
+
 	};//　方向
 
-	
+
 	static CPlayer *m_pPlayer[PLAYER_MAX];
 	static int m_PlayerNum;
 	int m_PlayerIndex;
 	static int m_KO_Count;
-	
+
 	static bool g_CosterMode;
-	
+
 	int m_DrawCount;
-	
+
+	bool right_on;//右スティック入力確認
 	static bool m_TitleFlag;
 };
 

@@ -16,6 +16,7 @@ public:
 	CEnemy_Middle(ENEMY_EMITTER *Emitter);
 	~CEnemy_Middle();
 
+	void GameBegin(void);
 	void Update(void);
 	void Draw(void);
 	void Finalize(void);

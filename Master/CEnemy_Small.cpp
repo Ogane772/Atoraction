@@ -81,10 +81,6 @@ void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 	Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2f, 0);
 	SkinMesh.InitSphere(m_pD3DDevice, &Thing);
 
-	//Thing = GetAnimeModel(MODELL_ANIME_SMALL);
-	//Thing.Sphere.fRadius = 1.3f;
-	//Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2f, 0);
-
 	m_EnemyIndex = Get_EnemyIndex(TYPE_ALL);
 	//モデル情報取得
 	//アニメーショントラックを得る
@@ -110,13 +106,21 @@ void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 	m_Score = SMALL_SCORE;
 	m_Mp = SMALL_MP;
 	m_Direction = Emitter->InitDirection;
+	m_InitDirection = m_Direction;
 	m_CreateCount = Emitter->CreateFrame;
+	m_InitCreateCount = m_CreateCount;
 
 	D3DXMatrixTranslation(&m_mtxTranslation, Emitter->InitPos.x, Emitter->InitPos.y, Emitter->InitPos.z);
 	D3DXMatrixScaling(&m_mtxScaling, 1, 1, 1);
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
+	m_mtxInit = m_mtxWorld;
 	m_mtxKeepTranslation = m_mtxTranslation;
 	Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
+}
+
+void CEnemy_Small::GameBegin(void)
+{
+
 }
 
 //=============================================================================
@@ -124,9 +128,20 @@ void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 //=============================================================================
 void CEnemy_Small::Finalize(void)
 {
-	
-	Enemy_Finalize(m_EnemyIndex);
-	
+	m_MoveCheck = false;
+	m_DrawCheck = true;
+	m_Hp = SMALL_HP;
+	m_Attack = SMALL_ATTACK;
+	m_Score = SMALL_SCORE;
+	m_Mp = SMALL_MP;
+	m_Direction = m_InitDirection;
+	m_CreateCount = m_InitCreateCount;
+
+	m_mtxWorld = m_mtxInit;
+	D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+
+	m_Enable = false;
+	Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 }
 
 //=============================================================================
@@ -182,6 +197,7 @@ void CEnemy_Small::Update(void)
 		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 		m_mtxKeepTranslation = m_mtxTranslation;
 
+		Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 		Draw_Check();
 
 		if (m_Hp <= 0)
@@ -190,7 +206,8 @@ void CEnemy_Small::Update(void)
 			if (!m_DrawCheck)
 			{
 				CPlayer::Add_KoCount();
-				C3DObj_delete();
+				//C3DObj_delete();
+				m_Enable = false;
 			}
 		}
 	}
@@ -216,7 +233,6 @@ void CEnemy_Small::Draw(void)
 		{//当たり判定位置更新
 			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);	//　ライティング有効
 			
-			Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 			DrawDX_Anime(m_mtxWorld, MODELL_ANIME_SMALL, &Thing);
 			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);	//　ライティング有効
 

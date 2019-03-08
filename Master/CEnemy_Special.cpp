@@ -52,6 +52,7 @@ enum ANIMATION{
 
 CEnemy_Special::CEnemy_Special(ENEMY_EMITTER *Emitter) :CEnemy(TYPE_SPECIAL), C3DObj(C3DObj::TYPE_ENEMY)
 {
+
 	Initialize(Emitter);
 }
 
@@ -99,20 +100,54 @@ void CEnemy_Special::Initialize(ENEMY_EMITTER *Emitter)
 	m_Score = SPECIAL_SCORE;
 	m_Mp = SPECIAL_MP;
 	m_Direction = Emitter->InitDirection;
+	m_InitDirection = m_Direction;
 
 	D3DXMatrixTranslation(&m_mtxTranslation, Emitter->InitPos.x, Emitter->InitPos.y, Emitter->InitPos.z);
 	D3DXMatrixScaling(&m_mtxScaling, 1, 1, 1);
 	m_mtxWorld = m_mtxScaling * m_mtxTranslation;
+	m_mtxInit = m_mtxWorld;
 
 	Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
 	m_CreateCount = Emitter->CreateFrame;
+	m_InitCreateCount = m_CreateCount;
 }
 
+void CEnemy_Special::GameBegin(void)
+{
+	/*m_MoveCheck = false;
+	m_DrawCheck = true;
+	m_Hp = SPECIAL_HP;
+	m_Attack = SPECIAL_ATTACK;
+	m_Score = SPECIAL_SCORE;
+	m_Mp = SPECIAL_MP;
+	m_Direction = m_InitDirection;
+
+	m_mtxWorld = m_mtxInit;
+	Animation_Change(WALK, WALK_SPEED);
+
+	Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+	m_CreateCount = m_InitCreateCount;*/
+	
+}
 
 void CEnemy_Special::Finalize(void)
 {
 
-	Enemy_Finalize(m_EnemyIndex);
+	m_MoveCheck = false;
+	m_DrawCheck = true;
+	m_Hp = SPECIAL_HP;
+	m_Attack = SPECIAL_ATTACK;
+	m_Score = SPECIAL_SCORE;
+	m_Mp = SPECIAL_MP;
+	m_Direction = m_InitDirection;
+
+	m_mtxWorld = m_mtxInit;
+	Animation_Change(WALK, WALK_SPEED);
+	D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+
+	m_Enable = false;
+	Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+	m_CreateCount = m_InitCreateCount;
 
 }
 
@@ -170,6 +205,7 @@ void CEnemy_Special::Update(void)
 		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 		m_mtxKeepTranslation = m_mtxTranslation;
 
+		Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 		Draw_Check();
 
 
@@ -180,7 +216,8 @@ void CEnemy_Special::Update(void)
 			if (!m_DrawCheck)
 			{
 				CPlayer::Add_KoCount();
-				C3DObj_delete();
+				//C3DObj_delete();
+				m_Enable = false;
 			}
 		}
 	}
@@ -200,7 +237,6 @@ void CEnemy_Special::Draw(void)
 		if (m_DrawCheck)
 		{//当たり判定位置更新
 			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);	//　ライティング有効
-			Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 			DrawDX_Anime(m_mtxWorld, MODELL_ANIME_SMALL, &Thing);
 			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);	//　ライティング有効
 
