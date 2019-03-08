@@ -147,6 +147,17 @@ void Title_Update(void)
 			Scene_Change(SCENE_INDEX_CHUTO);
 		}
 	}
+	if (Keyboard_IsPress(DIK_T))//スクリーンショット
+	{													   // バックバファの取得
+		LPDIRECT3DSURFACE9 pBackBuf;
+		C3DObj::m_pD3DDevice->GetRenderTarget(0, &pBackBuf);
+
+		// 繧ｹ繧ｯ繧ｷ繝ｧ蜃ｺ蜉・
+		D3DXSaveSurfaceToFile("asset/screenshot.bmp", D3DXIFF_BMP, pBackBuf, NULL, NULL);
+
+		// Get系で取得したサーフェイスはAddRefが呼ばれているので忘れずに解放する
+		pBackBuf->Release();
+	}
 	g_Camera_At = (front * at_lenght) + g_Camera_Eye;
 
 	D3DXMatrixLookAtLH(&mtxView, &g_Camera_Eye, &g_Camera_At, &up);
@@ -187,7 +198,7 @@ void Title_Draw(void)
 
 	C3DObj::DrawAll();		//	3Dオブジェクト描画
 	CGameObj::DrawAll();	//	2Dオブジェクト描画
-	ptitle->Sprite_Draw(CTexture::TEX_PUSHBUTTON, 400, 700, 0, 0, ptitle->Texture_GetWidth(CTexture::TEX_PUSHBUTTON, 1), ptitle->Texture_GetHeight(CTexture::TEX_PUSHBUTTON, 1));
+	//ptitle->Sprite_Draw(CTexture::TEX_PUSHBUTTON, 400, 700, 0, 0, ptitle->Texture_GetWidth(CTexture::TEX_PUSHBUTTON, 1), ptitle->Texture_GetHeight(CTexture::TEX_PUSHBUTTON, 1));
 	ptitle->Sprite_Draw(CTexture::TEX_TITLELOGO, 400, 30, 0, 0, ptitle->Texture_GetWidth(CTexture::TEX_TITLELOGO, 1), ptitle->Texture_GetHeight(CTexture::TEX_TITLELOGO, 1));
 	//テクスチャが出ない＆カメラ回転がおかしい？
 //	DebugFont_Draw(300, 50, "X = %ld , Y= %ld", js.lX, js.lY);

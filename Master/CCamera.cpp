@@ -185,7 +185,8 @@ void CCamera::Update(void)
 	//m_CameraPos = m_at - m_Front * m_AtLength;
 	if (C3DObj::GetW_coaster() == false)
 	{
-		VibrationCtrl();
+		m_CameraPos = m_at - m_Front * m_AtLength;
+		//VibrationCtrl();
 		//m_CameraPos = m_at - m_Front * m_AtLength;
 	}
 	if (C3DObj::GetW_coaster() == true)

@@ -91,7 +91,7 @@ CTexture::TextureFileData CTexture::TEXTURE_FILES[] = {
 	{ "asset/ui/ui_r1.png",200,200 },
 	{ "asset/number_yellow.png",1350,270 },
 	{ "asset/effect/hikkaki.png",1200,480 },
-	{ "asset/effect/star.png",1200,720 },
+	{ "asset/effect/star2.png",1200,720 },
 	{ "asset/effect/shine.png",2400,240 },
 	{ "asset/effect/heal_17.png",960,384 },
 	{ "asset/effect/hit.png",4000,2000 },

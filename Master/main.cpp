@@ -341,7 +341,7 @@ void Draw(void)
 
 #if defined(_DEBUG) || defined(DEBUG)
 	// FPSのデバック表示
-	DebugFont_Draw(8, 8, "FPS : %.2f", g_FPS);
+	//DebugFont_Draw(8, 8, "FPS : %.2f", g_FPS);
 	//DebugPrimitive_BatchRun();
 #endif // _DEBUG || DEBUG
 

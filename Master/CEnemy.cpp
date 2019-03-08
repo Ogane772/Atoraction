@@ -61,6 +61,7 @@ CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 	{ 300 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
 	{ 300 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
 	{ 300 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+
 	{ 300 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 15.0f), DIRE_SOUTH,false },
 	{ 300 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 15.0f), DIRE_SOUTH,false },
 	{ 300 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 15.0f), DIRE_SOUTH,false },
@@ -97,6 +98,48 @@ CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 	{ 600 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
 	{ 600 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
 	{ 600 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+
+	{ 1200 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 1200 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 1200 , TYPE_MIDDLE,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 1200 , TYPE_MIDDLE,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 1200 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 15.0f), DIRE_SOUTH,false },
+	{ 1200 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , -75.0f), DIRE_SOUTH,false },
+	{ 1200 , TYPE_MIDDLE,D3DXVECTOR3(0.0f, 0.0f , -75.0f), DIRE_SOUTH,false },
+	{ 1200 , TYPE_MIDDLE,D3DXVECTOR3(0.0f, 0.0f , -75.0f), DIRE_SOUTH,false },
+	{ 1200 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+	{ 1200 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+	{ 1200 , TYPE_MIDDLE,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+	{ 1200 , TYPE_MIDDLE,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+
+	{ 2700 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 2700 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 2700 , TYPE_MIDDLE,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 2700 , TYPE_MIDDLE,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 2700 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 15.0f), DIRE_SOUTH,false },
+	{ 2700 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , -75.0f), DIRE_SOUTH,false },
+	{ 2700 , TYPE_MIDDLE,D3DXVECTOR3(0.0f, 0.0f , -75.0f), DIRE_SOUTH,false },
+	{ 2700 , TYPE_MIDDLE,D3DXVECTOR3(0.0f, 0.0f , -75.0f), DIRE_SOUTH,false },
+	{ 2700 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+	{ 2700 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+	{ 2700 , TYPE_MIDDLE,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+	{ 2700 , TYPE_MIDDLE,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+
+	{ 3800 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 3800 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 3800 , TYPE_SPECIAL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 3800 , TYPE_MIDDLE,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 3800 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 15.0f), DIRE_SOUTH,false },
+	{ 3800 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , -75.0f), DIRE_SOUTH,false },
+	{ 3800 , TYPE_SPECIAL,D3DXVECTOR3(0.0f, 0.0f , -75.0f), DIRE_SOUTH,false },
+	{ 3800 , TYPE_MIDDLE,D3DXVECTOR3(0.0f, 0.0f , -75.0f), DIRE_SOUTH,false },
+	{ 3800 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+	{ 3800 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+	{ 3800 , TYPE_SPECIAL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+	{ 3800 , TYPE_MIDDLE,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+	{ 3800 , TYPE_BIG,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+	
+
 };
 
 int CEnemy::m_ENEMY_MAX = sizeof(CEnemy_Small::m_EnemyEmitter) / sizeof(m_EnemyEmitter[0]);
@@ -372,7 +415,7 @@ void CEnemy::Enemy_Damage(float flyinghigh)
 			m_FlyingMove.y = flyinghigh;
 			if (m_Hp <= 0)
 			{
-				Exp_Set(STAR, m_mtxWorld._41, m_mtxWorld._42 + 1, m_mtxWorld._43 + 1, 5.0, 0);
+				Exp_Set(STAR, m_mtxWorld._41, m_mtxWorld._42 + 1, m_mtxWorld._43 + 1, 3.0, 0);
 				Add_Mp(m_Mp);
 				Add_Score(m_Score);
 			}

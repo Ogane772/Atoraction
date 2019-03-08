@@ -171,7 +171,7 @@ void Popcorn::PopcornDamage(void)
 					m_DrawCheck = false;
 					if (m_Hp <= 0)
 					{
-						Exp_Set(SMALLSTAR, m_mtxWorld._41, m_mtxWorld._42 + 1, m_mtxWorld._43, 5.0, 0);
+						Exp_Set(SMALLSTAR, m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43, 5.0, 0);
 						C3DObj_delete();
 					}
 					break;
