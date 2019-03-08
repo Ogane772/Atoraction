@@ -65,7 +65,7 @@ void Manual_Update(void)
 	{
 		if (ManualPage == 1)
 		{
-			if (Keyboard_IsTrigger(DIK_D) && FPS_mCounter >= 30 || Keyboard_IsTrigger(DIK_SPACE) && FPS_mCounter >= 30 || js.lY >= -2 && js.lY <= 2 && js.lX == 6 && FPS_mCounter >= 30) // 押したら次のページへ
+			if (Keyboard_IsTrigger(DIK_D) && FPS_mCounter >= 30 || Keyboard_IsTrigger(DIK_SPACE) && FPS_mCounter >= 30 || js.lY >= -2 && js.lY <= 2 && js.lX == 6 && FPS_mCounter >= 30 || js.rgbButtons[0] && FPS_mCounter >= 30) // 押したら次のページへ
 			{
 				ManualPage = 2;
 				FPS_mCounter = 0;
@@ -74,13 +74,13 @@ void Manual_Update(void)
 		if (ManualPage == 2)
 		{
 			// 前のページにもどる 箱コンの操作をここに
-			if (Keyboard_IsTrigger(DIK_A) && FPS_mCounter >= 30 || js.lY >= -2 && js.lY <= 2 && js.lX == -6 && FPS_mCounter >= 30)
+			if (Keyboard_IsTrigger(DIK_A) && FPS_mCounter >= 30 || js.lY >= -2 && js.lY <= 2 && js.lX == -6 && FPS_mCounter >= 30 || js.rgbButtons[1] && FPS_mCounter >= 30)
 			{
 				ManualPage = 1;
 				FPS_mCounter = 0;
 			}
 			// 次のページへ 箱コンの操作をここに
-			if (Keyboard_IsTrigger(DIK_D) && FPS_mCounter >= 30 || Keyboard_IsTrigger(DIK_SPACE) && FPS_mCounter >= 30 || js.lY >= -2 && js.lY <= 2 && js.lX == 6 && FPS_mCounter >= 30)
+			if (Keyboard_IsTrigger(DIK_D) && FPS_mCounter >= 30 || Keyboard_IsTrigger(DIK_SPACE) && FPS_mCounter >= 30 || js.lY >= -2 && js.lY <= 2 && js.lX == 6 && FPS_mCounter >= 30 || js.rgbButtons[0] && FPS_mCounter >= 30)
 			{
 				ManualPage = 3;
 				FPS_mCounter = 0;
@@ -92,7 +92,7 @@ void Manual_Update(void)
 		// 前のページにもどる 箱コンの操作をここに
 		if (!g_bend)
 		{
-			if (Keyboard_IsTrigger(DIK_A) && FPS_mCounter >= 30 || js.lY >= -2 && js.lY <= 2 && js.lX == -6 && FPS_mCounter >= 30)
+			if (Keyboard_IsTrigger(DIK_A) && FPS_mCounter >= 30 || js.lY >= -2 && js.lY <= 2 && js.lX == -6 && FPS_mCounter >= 30 || js.rgbButtons[1] && FPS_mCounter >= 30)
 			{
 				ManualPage = 2;
 				FPS_mCounter = 0;
@@ -100,7 +100,7 @@ void Manual_Update(void)
 		}
 		if (!g_bend)
 		{
-			if (Keyboard_IsTrigger(DIK_D) && FPS_mCounter >= 30 || Keyboard_IsTrigger(DIK_SPACE) && FPS_mCounter >= 30 || js.lY >= -2 && js.lY <= 2 && js.lX == 6 && FPS_mCounter >= 30)
+			if (Keyboard_IsTrigger(DIK_D) && FPS_mCounter >= 30 || Keyboard_IsTrigger(DIK_SPACE) && FPS_mCounter >= 30 || js.lY >= -2 && js.lY <= 2 && js.lX == 6 && FPS_mCounter >= 30 || js.rgbButtons[0] && FPS_mCounter >= 30)
 			{
 				StopSound(CHUTO_BGM);
 				PlaySound(START_SE);

@@ -101,6 +101,8 @@ private:
 	int m_DrawCount;
 
 	bool right_on;//右スティック入力確認
+	bool right_trigger;//ゲームパッド右ショルダー
+	bool left_trigger;//ゲームパッド左ショルダー
 	static bool m_TitleFlag;
 };
 

@@ -775,7 +775,9 @@ void C3DObj::Animation_Change(int index, float speed)
 {
 	if (TrackDesc.Speed != speed)
 	{
+		TrackDesc.Position = 0;//アニメーションタイムリセット
 		TrackDesc.Speed = speed;//モーションスピード
+		Thing.pAnimController->SetTrackPosition(0, 0);
 		//Thing.pAnimController->SetTrackDesc(0, &TrackDesc);//アニメ情報セット
 		Thing.pAnimController->SetTrackSpeed(0,TrackDesc.Speed);//アニメ情報セット
 	}

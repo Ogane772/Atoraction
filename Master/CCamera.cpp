@@ -135,7 +135,7 @@ void CCamera::Update(void)
 	m_at.z = at._43;
 
 	m_AngleCheck = false;
-	if (!*standby)
+	if (!*standby && C3DObj::GetW_coaster() == false)
 	{
 		if ((Keyboard_IsPress(DIK_RIGHT)) && !r || js.lRx >= 6)
 		{
@@ -156,6 +156,44 @@ void CCamera::Update(void)
 		}
 
 		if ((Keyboard_IsPress(DIK_LEFT)) && !l || js.lRx <= -6)
+		{
+			//	注視点回転
+			D3DXMATRIX mtxRotation;
+			D3DXMatrixRotationY(&mtxRotation, D3DXToRadian(-m_Angle));
+			//D3DXMatrixRotationAxis(&mtxRotation, &m_Up, D3DXToRadian(2));
+			D3DXVec3TransformNormal(&m_Front, &m_Front, &mtxRotation); // 第2引数を第3引数で行列変換し第1引数に入れる
+			D3DXVec3TransformNormal(&m_Right, &m_Right, &mtxRotation);
+			D3DXVec3TransformNormal(&m_Up, &m_Up, &mtxRotation);
+			m_AngleCheck = true;
+			angle -= m_Angle;
+
+		}
+		if (Keyboard_IsRelease(DIK_RIGHT))
+		{
+			m_AngleCheck = false;
+		}
+	}
+	else
+	{
+		if ((Keyboard_IsPress(DIK_RIGHT)) && !r || js.lX >= 6)
+		{
+			//	注視点回転
+			D3DXMATRIX mtxRotation;
+			D3DXMatrixRotationY(&mtxRotation, D3DXToRadian(m_Angle));
+			//D3DXMatrixRotationAxis(&mtxRotation, &m_Up, D3DXToRadian(2));
+			D3DXVec3TransformNormal(&m_Front, &m_Front, &mtxRotation); // 第2引数を第3引数で行列変換し第1引数に入れる
+			D3DXVec3TransformNormal(&m_Right, &m_Right, &mtxRotation);
+			D3DXVec3TransformNormal(&m_Up, &m_Up, &mtxRotation);
+			m_AngleCheck = true;
+			angle += m_Angle;
+
+		}
+		if (Keyboard_IsRelease(DIK_RIGHT))
+		{
+			m_AngleCheck = false;
+		}
+
+		if ((Keyboard_IsPress(DIK_LEFT)) && !l || js.lX <= -6)
 		{
 			//	注視点回転
 			D3DXMATRIX mtxRotation;
