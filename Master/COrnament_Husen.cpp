@@ -136,9 +136,10 @@ void COrnament_HUSEN::Update(void)
 			{
 				updown += 0.003f;
 				D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41, m_mtxWorld._42 + updown, m_mtxWorld._43);
+				Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 			}
 			m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
-			//Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+			
 
 			Death();
 		}
