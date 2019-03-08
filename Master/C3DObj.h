@@ -77,6 +77,8 @@ public:
 		MODELL_ANIME_BIG,
 		ANIME_MODEL_MAX,//アニメモデル最大数
 	}AnimeModelFileData;;
+
+	virtual void Finalize(void) ;
 	virtual void Update(void) = 0;	//	更新
 	virtual void Draw(void) = 0;	//	描画
 
@@ -85,6 +87,7 @@ public:
 	D3DXMATRIX Get_mtxWorld(void) { return m_mtxWorld; }				//	ワールド変換用行列取得
 	D3DXMATRIX Get_mtxTranslation(void) { return m_mtxTranslation; }	//	移動用行列取得
 
+	static void FinalizeAll();	// 全オブジェクト初期化
 	static void UpdateAll();	// 全オブジェクト更新
 	static void DrawAll();		// 全オブジェクト描画
 	static void DeleteAll();	// 全オブジェクト削除
@@ -107,9 +110,9 @@ public:
 	static HRESULT InitModelLoad();
 	//モデル情報取得
 	THING* C3DObj::GetAnimeModel(void);
-	THING GetAnimeModel(int index);
+	//THING GetAnimeModel(int index);
 	THING_NORMAL GetNormalModel(int index);
-	THING_NORMAL GetNormal(int index);
+	//THING_NORMAL GetNormal(int index);
 	THING_NORMAL GetNormalModel(void);
 	//	終了処理
 	static void Model_Finalize(void);
@@ -137,7 +140,7 @@ public:
 	static bool *GetCosterModeStandby(void) { return &g_CosterModeStandby; }//コースターを呼んでるとき; }//コースターを呼んでるとき
 protected:
 	THING *Thing_Anime_model;//アニメモデル情報
-	static THING Thing_Anime[];//読み込むモデルの最大数+1
+	//static THING Thing_Anime[];//読み込むモデルの最大数+1
 
 	THING_NORMAL Thing_Normal_model;//通常モデル情報
 	D3DXMATRIX m_mtxWorld;			//	ワールド変換用行列
@@ -145,6 +148,7 @@ protected:
 	D3DXMATRIX m_mtxRotation;		//	移動行列
 	D3DXMATRIX m_mtxScaling;		//	移動行列
 	D3DXMATRIX m_mtxKeepTranslation;	//	移動保持行列
+	D3DXMATRIX m_mtxInit;			//	初期位置行列
 	float m_Angle;			//	角度
 	
 	int m_MpStock;			//	MPストック
@@ -155,6 +159,7 @@ protected:
 	bool m_DamageFlag;		//	ダメージフラグ
 	bool m_AttakFlag;		//	アタックフラグ
 	int m_SummonsNum;				//	召喚するアトラクションの番号
+
 	D3DXVECTOR3 m_PosKeep;	//	ポジション保持
 	//  0 coffee
 	//  1 fall
@@ -214,7 +219,8 @@ private:
 
 	static C3DObj *p3DObj[MAX_GAMEOBJ];
 
-	
+
+	static bool VFCulling(D3DXVECTOR3* pPosition);
 	
 
 	static LPD3DXMESH m_pD3DXMesh[];			//	メッシュを受け取る変数

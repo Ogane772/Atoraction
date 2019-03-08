@@ -18,6 +18,7 @@
 #include "debug_font.h"
 #include "CLight.h"
 #include <crtdbg.h>
+#include "CUserInterface.h"
 #define _CRTDBG_MAP_ALLOC
 
 #define new  ::new(_NORMAL_BLOCK, __FILE__, __LINE__)
@@ -58,6 +59,8 @@ C2DObj *ptitle;
 
 void Title_Initialize(void)
 {
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
 	ptitle = new C2DObj;
 	g_bend = false;
 	//コントローラー情報取得
@@ -89,16 +92,18 @@ void Title_Initialize(void)
 
 	a = 0;
 	b = 0;
-	C3DObj::InitModelLoad();
+	/*C3DObj::InitModelLoad();
 	CPlayer::PlayerCreate();				//	プレイヤー生成		
 	CLight::Light_Create();					//	ライト生成
 	CMeshField::MeshField_Create(CTexture::TEX_KUSA_RENGA, 120.0f, 2, 2);							//	地面生成																									//CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_FLORR, 10.0f, SYLINDERSIZE, 20, 1,true);	//	内カベ生成
 	CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_MOUNTAIN, 10.0f, FIELDSIZE, 20, 1, false);	//	外カベ生成
 	CMesh_SkyDome::Mesh_SkyDome_Create(CTexture::TEX_SKY, 2.0f, SKYSIZE, 40, 20);
-	COrnament::Create();
+	COrnament::Create();*/
 
 	CPlayer::TitleFlag_Change(true);
+	CUserInterFace::TitleFlag_Change(true);
 
+	
 }
 
 //=============================================================================
@@ -108,10 +113,11 @@ void Title_Initialize(void)
 void Title_Finalize(void)
 {
 	delete ptitle;
-	C3DObj::DeleteAll();			//	3Dオブジェクト全消去
+	/*C3DObj::DeleteAll();			//	3Dオブジェクト全消去
 	CGameObj::DeleteAll2D();
-	C3DObj::Model_Finalize();
+	C3DObj::Model_Finalize();*/
 	CPlayer::TitleFlag_Change(false);
+	CUserInterFace::TitleFlag_Change(false);
 	CPlayer::Reset_KoCount();
 	_CrtDumpMemoryLeaks();
 	

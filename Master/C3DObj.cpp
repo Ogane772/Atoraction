@@ -9,7 +9,10 @@
 #include "CTexture.h"
 #include "Cplayer.h"
 #include "exp.h"
+#include "CCamera.h"
+#include "common.h"
 #define _CRTDBG_MAP_ALLOC
+#define VF_ANGLE (1.0f)//ƒJƒŠƒ“ƒO‚Ì‘å‘Ì‚Ì‘å‚«‚³
 
 #define new  ::new(_NORMAL_BLOCK, __FILE__, __LINE__)
 //=============================================================================
@@ -18,7 +21,7 @@
 C3DObj *C3DObj::p3DObj[MAX_GAMEOBJ];
 int C3DObj::m_3DObjNum = 0;
 int C3DObj::m_TotalScore = 0;
-THING C3DObj::Thing_Anime[5];//“Ç‚İ‚Şƒ‚ƒfƒ‹‚ÌÅ‘å”+1
+//THING C3DObj::Thing_Anime[5];//“Ç‚İ‚Şƒ‚ƒfƒ‹‚ÌÅ‘å”+1
 bool C3DObj::GetWCos = false;
 bool C3DObj::g_CosterModeStandby = false;
 C3DObj::MaterialFileData C3DObj::NORMAL_MODEL_FILES[] = {
@@ -54,7 +57,7 @@ C3DObj::MaterialFileData2 C3DObj::ANIME_MODEL_FILES[] = {
 int C3DObj::MODEL_FILES_MAX = sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0]);
 int C3DObj::ANIME_MODEL_FILES_MAX = sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0]);
 
-bool C3DObj::boRenderSphere = true;
+bool C3DObj::boRenderSphere = false;
 //ƒ‚ƒfƒ‹ƒAƒjƒ[ƒVƒ‡ƒ“ŠÖŒW•Ï”
 /*
 #define MODEL_MAX (9)
@@ -78,6 +81,7 @@ DWORD C3DObj::m_dwNumMaterials[sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMA
 LPD3DXBUFFER C3DObj::m_pD3DXMtrBuffer[sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0])] = {};
 LPDIRECT3DTEXTURE9 *C3DObj::m_pTexures[sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0])] = {};
 D3DMATERIAL9 *C3DObj::m_pd3dMaterials[sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0])] = {};
+
 
 //=============================================================================
 //	¶¬
@@ -135,8 +139,30 @@ C3DObj::C3DObj(int type)
 //=============================================================================
 C3DObj::~C3DObj()
 {
+	if (Thing.pSphereMeshMaterials)
+	{
+		//delete Thing.pSphereMeshMaterials;
+		for (DWORD i = 0; i < Thing.dwNumMaterials; i++)
+		{
+			delete[]Thing.pSphereMeshMaterials;
+		}
+	}
+	if (Thing.pFrameRoot)
+	{
+		SkinMesh.cHierarchy.DestroyFrame(Thing.pFrameRoot);
+	}
+
+	/*if (Thing.pSphereMeshMaterials)
+	{
+		for (DWORD i = 0; i < Thing.dwNumMaterials; i++)
+		{
+			delete[]Thing.pSphereMeshMaterials;
+		}
+	}*/
 	THING();
 	THING_NORMAL();
+
+
 	//delete &SkinMesh;
 
 	m_3DObjNum--;
@@ -144,8 +170,21 @@ C3DObj::~C3DObj()
 
 }
 
+void C3DObj::FinalizeAll()
+{
+	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	{
+		// ƒ|ƒŠƒ‚[ƒtƒBƒYƒ€‚É‚æ‚Á‚Ä”h¶ƒNƒ‰ƒX‚ÌUpdate()‚ªŒÄ‚Î‚ê‚é
+		if (p3DObj[i])
+		{
+			p3DObj[i]->Finalize();
+		}
+	}
+}
+void C3DObj::Finalize()
+{
 
-
+}
 
 
 //=============================================================================
@@ -170,14 +209,47 @@ void C3DObj::UpdateAll()
 void C3DObj::DrawAll()
 {
 	int i;
+	int dc = 0;
 	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
 		// ƒ|ƒŠƒ‚[ƒtƒBƒYƒ€‚É‚æ‚Á‚Ä”h¶ƒNƒ‰ƒX‚ÌDraw()‚ªŒÄ‚Î‚ê‚é
 		if (p3DObj[i])
 		{
-			p3DObj[i]->Draw();
+			if (p3DObj[i]->m_3DObjType != TYPE_STADBY)
+			{
+				if (!p3DObj[i]->Thing.pFrameRoot)
+				{
+					if (VFCulling(&p3DObj[i]->Thing_Normal_model.vPosition))
+					{
+						p3DObj[i]->Draw();
+					}
+					else
+					{
+						//‰æ–ÊŠO‚Ì‚ÍƒeƒNƒXƒ`ƒƒ‚ğXV
+						//p3DObj[i]->SkinMesh.DrawFrame(m_pD3DDevice, p3DObj[i]->Thing_Normal_model.pFrameRoot, &p3DObj[i]->Thing, false);
+					}
+				}
+				else
+				{
+					if (VFCulling(&p3DObj[i]->Thing.vPosition))
+					{
+						p3DObj[i]->Draw();
+						dc++;
+					}
+					else
+					{
+						//‰æ–ÊŠO‚Ì‚ÍƒeƒNƒXƒ`ƒƒ‚ğXV
+						p3DObj[i]->SkinMesh.DrawFrame(m_pD3DDevice, p3DObj[i]->Thing.pFrameRoot, &p3DObj[i]->Thing, false);
+					}
+				}
+			}
+			else
+			{
+				p3DObj[i]->Draw();
+			}
 		}
 	}
+	DebugFont_Draw(10, 470, "%d", dc);
 }
 
 
@@ -307,11 +379,20 @@ void C3DObj::Model_Finalize(void)	//	ƒ‚ƒfƒ‹ƒf[ƒ^‚ÌŠJ•ú@•¡”‰»‚µ‚½‚ç‘S•”Á‚·‚©‚
 		}
 		if (Thing_Normal[i].pMeshMaterials)
 		{
-			delete[]Thing_Normal[i].pMeshMaterials;
+			//delete[]Thing_Normal[i].pMeshMaterials;
+			for (DWORD k = 0; k < Thing_Normal[i].dwNumMaterials; i++)
+			{
+				delete[]Thing_Normal[i].pMeshMaterials;
+			}
+			
 		}
 		if (Thing_Normal[i].pMeshTextures)
 		{
-			delete[]Thing_Normal[i].pMeshTextures;
+			//delete[]Thing_Normal[i].pMeshTextures;
+			for (DWORD k = 0; k < Thing_Normal[i].dwNumMaterials; i++)
+			{
+				delete[]Thing_Normal[i].pMeshMaterials;
+			}
 		}
 	}
 }
@@ -666,20 +747,20 @@ THING* C3DObj::GetAnimeModel(void)
 	return &Thing;
 }
 
-THING C3DObj::GetAnimeModel(int index)
+/*THING C3DObj::GetAnimeModel(int index)
 {
 	return Thing_Anime[index];
-}
+}*/
 
 THING_NORMAL C3DObj::GetNormalModel(int index)
 {
 	return Thing_Normal[index];
 }
 
-THING_NORMAL C3DObj::GetNormal(int index)
+/*THING_NORMAL C3DObj::GetNormal(int index)
 {
 	return Thing_Normal[index];
-}
+}*/
 
 THING_NORMAL C3DObj::GetNormalModel(void)
 {
@@ -695,7 +776,8 @@ void C3DObj::Animation_Change(int index, float speed)
 	if (TrackDesc.Speed != speed)
 	{
 		TrackDesc.Speed = speed;//ƒ‚[ƒVƒ‡ƒ“ƒXƒs[ƒh
-		Thing.pAnimController->SetTrackDesc(0, &TrackDesc);//ƒAƒjƒî•ñƒZƒbƒg
+		//Thing.pAnimController->SetTrackDesc(0, &TrackDesc);//ƒAƒjƒî•ñƒZƒbƒg
+		Thing.pAnimController->SetTrackSpeed(0,TrackDesc.Speed);//ƒAƒjƒî•ñƒZƒbƒg
 	}
 	if (m_AnimationType != index)
 	{
@@ -752,4 +834,100 @@ void C3DObj::Add_Hp(void)
 	{
 		pplayer->m_Hp = HP_MAX;
 	}
+}
+
+bool C3DObj::VFCulling(D3DXVECTOR3* pPosition)
+{
+	//‹ŠE“àFtrue ŠOFfalse 
+	D3DXPLANE VFLeftPlane, VFRightPlane, VFTopPlane, VFBottomPlane;
+	D3DXVECTOR3 Pos = *pPosition;
+	float Radius = 0;
+	D3DXMATRIX pmView = CCamera::Get_ViewMtx();
+	float Angle = D3DX_PI / VF_ANGLE;
+	float NearClip = 0.1f;//‚±‚Ì“ñ‚Â‚¢‚¶‚Á‚Ä‚à‘å‚«‚³•Ï‚í‚é
+	float FarClip = 80.0f;//
+	float Aspect = WINDOW_WIDTH / WINDOW_HIGHT;
+	//‚Ü‚¸AƒWƒIƒƒgƒŠ‚ÌˆÊ’uƒxƒNƒgƒ‹‚ğƒ[ƒ‹ƒh‚©‚çƒrƒ…[‹óŠÔ‚É•ÏŠ·
+	D3DXVec3TransformCoord(&Pos, &Pos, &pmView);
+
+	//¶‰EAã‰º‚Ì•½–Ê‚ğŒvZ
+	{
+		D3DXVECTOR3 p1, p2, p3;
+		//¶–Ê
+		p1 = D3DXVECTOR3(0, 0, 0);
+		p2.x = -FarClip * ((FLOAT)tan(Angle / 2)*Aspect);
+		p2.y = -FarClip * (FLOAT)tan(Angle / 2);
+		p2.z = FarClip;
+		p3.x = p2.x;
+		p3.y = -p2.y;
+		p3.z = p2.z;
+		D3DXPlaneFromPoints(&VFLeftPlane, &p1, &p2, &p3);
+		//‰E–Ê
+		p1 = D3DXVECTOR3(0, 0, 0);
+		p2.x = FarClip * ((FLOAT)tan(Angle / 2)*Aspect);
+		p2.y = FarClip * (FLOAT)tan(Angle / 2);
+		p2.z = FarClip;
+		p3.x = p2.x;
+		p3.y = -p2.y;
+		p3.z = p2.z;
+		D3DXPlaneFromPoints(&VFRightPlane, &p1, &p2, &p3);
+		//ã–Ê
+		p1 = D3DXVECTOR3(0, 0, 0);
+		p2.x = -FarClip * ((FLOAT)tan(Angle / 2)*Aspect);
+		p2.y = FarClip * (FLOAT)tan(Angle / 2);
+		p2.z = FarClip;
+		p3.x = -p2.x;
+		p3.y = p2.y;
+		p3.z = p2.z;
+		D3DXPlaneFromPoints(&VFTopPlane, &p1, &p2, &p3);
+		//‰º–Ê
+		p1 = D3DXVECTOR3(0, 0, 0);
+		p2.x = FarClip * ((FLOAT)tan(Angle / 2)*Aspect);
+		p2.y = -FarClip * (FLOAT)tan(Angle / 2);
+		p2.z = FarClip;
+		p3.x = -p2.x;
+		p3.y = p2.y;
+		p3.z = p2.z;
+		D3DXPlaneFromPoints(&VFBottomPlane, &p1, &p2, &p3);
+	}
+
+	//6‚Â‚Ì•½–Ê‚ÆƒWƒIƒƒgƒŠ‹«ŠE‹…‚ğƒ`ƒFƒbƒN
+	{
+		//ƒjƒAƒNƒŠƒbƒv–Ê‚É‚Â‚¢‚Ä
+		if ((Pos.z + Radius) < NearClip)
+		{
+			return false;
+		}
+		//ƒtƒ@[ƒNƒŠƒbƒv–Ê‚É‚Â‚¢‚Ä
+		if ((Pos.z - Radius) > FarClip)
+		{
+			return false;
+		}
+		//¶ƒNƒŠƒbƒv–Ê‚É‚Â‚¢‚Ä
+		FLOAT Distance = (Pos.x * VFLeftPlane.a) + (Pos.z * VFLeftPlane.c);
+		if (Distance>Radius)
+		{
+			return false;
+		}
+		//‰EƒNƒŠƒbƒv–Ê‚É‚Â‚¢‚Ä
+		Distance = (Pos.x * VFRightPlane.a) + (Pos.z * VFRightPlane.c);
+		if (Distance>Radius)
+		{
+			return false;
+		}
+		//ãƒNƒŠƒbƒv–Ê‚É‚Â‚¢‚Ä
+		Distance = (Pos.y * VFTopPlane.b) + (Pos.z * VFTopPlane.c);
+		if (Distance>Radius)
+		{
+			return false;
+		}
+		//‰ºƒNƒŠƒbƒv–Ê‚É‚Â‚¢‚Ä
+		Distance = (Pos.y * VFBottomPlane.b) + (Pos.z * VFBottomPlane.c);
+		if (Distance>Radius)
+		{
+			return false;
+		}
+	}
+
+	return true;
 }

@@ -56,7 +56,7 @@ CMesh_SkyDome::CMesh_SkyDome(int TexIndex,float meshH, float radius, int meshXnu
 
 CMesh_SkyDome::~CMesh_SkyDome()
 {
-
+	Finalize();
 }
 
 //	XV

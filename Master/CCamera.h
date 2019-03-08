@@ -32,6 +32,7 @@ public:
 
 	static bool Get_CameraAngleCheck(void) { return m_AngleCheck; }
 	static float Get_Angle(void) { return angle; }
+	static void Dalete_Camera(void);
 protected:
 
 

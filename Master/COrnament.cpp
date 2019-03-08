@@ -356,7 +356,7 @@ void COrnament::Ornament_Flying(float speed)
 
 				D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41 + m_FlyingMove.x * speed, m_mtxWorld._42 - m_FlyingMove.y, m_mtxWorld._43 + m_FlyingMove.z * speed);
 				m_FlyingCount--;
-				if (m_FlyingCount <= 0)
+				if (m_FlyingCount < -3)
 				{
 					m_mtxTranslation._42 = 0.0f;
 					m_OrnamentFlying = false;
@@ -380,7 +380,8 @@ void COrnament::Death(void)
 		if (!m_OrnamentFlying)
 		{
 			Exp_Set(SMALLSTAR, m_mtxWorld._41, m_mtxWorld._42 + 1, m_mtxWorld._43, 5.0, 0);
-			delete this;
+			//delete this;
+			m_Enable = false;
 		}
 	}
 }

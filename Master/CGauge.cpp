@@ -42,7 +42,7 @@
 //	¶¬
 //=============================================================================
 
-CGAUGE::CGAUGE(D3DXMATRIX mtxWorld) :CAttraction(AT_GAUGE), C3DObj(AT_GAUGE)
+CGAUGE::CGAUGE(D3DXMATRIX mtxWorld) :CAttraction(AT_GAUGE), C3DObj(TYPE_STADBY)
 {
 	Initialize(mtxWorld);
 	
@@ -93,9 +93,11 @@ void CGAUGE::Draw(void)
 {
 	if (m_Enable)
 	{
+	//	CGameObj::m_pD3DDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
 		WhiteGaugeDraw();
 		UpdateGaugeDraw();
 		GaugeDraw();
+	//	CGameObj::m_pD3DDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 	}
 }
 

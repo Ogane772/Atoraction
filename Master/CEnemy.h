@@ -105,6 +105,8 @@ protected:
 	void Ornament_Check(void);
 	int m_ColorType;
 	int m_CreateCount;
+	int m_InitCreateCount;
+	int m_InitDirection;
 
 	void Enable_Check(void);
 private:

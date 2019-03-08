@@ -66,15 +66,13 @@ void COrnament_BENCH::Initialize(ORNAMENT_EMITTER *Emitter)
 
 	Thing_Normal_model = GetNormalModel(MODELL_BENCH);
 
-	//InitThing(&Thing_Normal_model, NORMAL_MODEL_FILES[MODELL_BENCH].filename);
-	//InitSphere(m_pD3DDevice, &Thing_Normal_model);//“–‚½‚è”»’è‚Ì•\Ž¦
 	m_Direction = Emitter->InitDirection;
 
 	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(m_Direction));
 	D3DXMatrixTranslation(&m_mtxTranslation, Emitter->InitPos.x, Emitter->InitPos.y, Emitter->InitPos.z);
 	D3DXMatrixScaling(&m_mtxScaling, Emitter->scale.x, Emitter->scale.y, Emitter->scale.z);
 	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
-
+	m_mtxInit = m_mtxWorld;
 	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 2.0f);//“–‚½‚è”»’è‚Ì•ÏX
 
 	Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
@@ -83,9 +81,19 @@ void COrnament_BENCH::Initialize(ORNAMENT_EMITTER *Emitter)
 
 void COrnament_BENCH::Finalize(void)
 {
+	m_DrawCount = 0;
+	m_OrnamentIndex = Get_OrnamentIndex(TYPE_ALL);
+	m_Enable = true;
+	m_DrawCheck = true;
+	m_Hp = BENCH_HP;
+	m_Attack = BENCH_ATK;
 
-	Ornament_Finalize(m_OrnamentIndex);
+	D3DXMatrixTranslation(&m_mtxTranslation, m_mtxInit._41, m_mtxInit._42, m_mtxInit._43);
+	
+	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 
+
+	Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 }
 
 
@@ -105,6 +113,8 @@ void COrnament_BENCH::Update(void)
 			}
 		}
 		m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
+		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+
 		Death();
 	}
 
@@ -116,7 +126,6 @@ void COrnament_BENCH::Draw(void)
 {
 	if (m_Enable)
 	{
-		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 		DrawDX_Normal(m_mtxWorld, MODELL_BENCH, &Thing_Normal_model);
 		if (!m_DrawCheck)

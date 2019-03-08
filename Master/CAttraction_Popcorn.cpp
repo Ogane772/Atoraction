@@ -133,7 +133,8 @@ void Popcorn::Draw(void)
 
 void Popcorn::Finalize(void)
 {
-	Attraction_Finalize(m_AttractionIndex);
+	//Attraction_Finalize(m_AttractionIndex);
+	delete this;
 }
 
 bool Popcorn::PlayerCheck(void)

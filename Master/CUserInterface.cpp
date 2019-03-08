@@ -35,7 +35,7 @@
 //=============================================================================
 //	静的変数
 //=============================================================================
-
+bool CUserInterFace::m_TitleFlag = true;
 
 
 //=============================================================================
@@ -70,86 +70,89 @@ void CUserInterFace::Update(void)
 
 void CUserInterFace::Draw(void)
 {
-	C3DObj *playerget = CPlayer::Get_Player();
-	C3DObj *enemyget;
-	C3DObj *attraction_get;
-	D3DXMATRIX enemymatrix;
-	D3DXMATRIX Attraction_matrix;
-	int i;
-	int hp = playerget->Get_Hp();
-	Sprite_Draw(TEX_UI_GRAYBAR, HP_X, HP_Y, 0, 0, 1024, 222, 0.0f, 0.0f, 0.45f, 0.4f, 0.0f);
-	Sprite_Draw(TEX_UI_HPWINDOW, HP_X, HP_Y, 0, 0, 1024, 222, 0.0f, 0.0f, 0.45f, 0.4f, 0.0f);
-	Sprite_Draw(TEX_UI_HPBAR, HP_X, HP_Y, 0, 0, 1024.0f * hp / HP_MAX, 222.0f, 0.0f, 0.0f, 0.45f, 0.4f, 0.0f);
-	//Sprite_Draw(TEX_UI_HPWINDOW, 20, 10, 0, 0, HP_GAGE_WIDTH, HP_GAGE_HEIGHT);
-	//Sprite_Draw(TEX_UI_HPBAR, 20, 10, 0, 0, HP_GAGE_WIDTH * hp / HP_MAX, HP_GAGE_HEIGHT);
-
-	//MP
-	int mp = playerget->Get_Mp();
-	Sprite_Draw(TEX_UI_GRAYBAR, HP_X, HP_Y + 95, 0, 0, 1024, 222, 0.0f, 0.0f, 0.3f, 0.4f, 0.0f);
-	Sprite_Draw(TEX_UI_HPWINDOW, HP_X, HP_Y + 95, 0, 0, 1024, 222, 0.0f, 0.0f, 0.3f, 0.4f, 0.0f);
-	Sprite_Draw(TEX_UI_MPBAR, HP_X, HP_Y + 95, 0, 0, mp * 35.0f, 222, 0.0f, 0.0f, 0.3f, 0.4f, 0.0f);
-	//	Sprite_Draw(TEX_HP, 20, 100, 0, 0, MP_MAX * 5, HP_GAGE_HEIGHT);
-	//	Sprite_Draw(TEX_MP, 20, 100, 0, 0, mp * 5, HP_GAGE_HEIGHT);
-
-	//MPストック
-	int stock = playerget->Get_MpStock();
-	Sprite_Draw(TEX_UI_DIAMOND, 325.0f, HP_Y + 95, 0, 0, 111, 121, 0.0f, 0.0f, 0.7f, 0.7f, 0.0f);
-	Sprite_Draw(TEX_UI_X, 385.0f, HP_Y + 115, 0, 0, 81.0f, 94.0f, 0.0f, 0.0f, 0.5f, 0.5f, 0.0f);
-	Num_Draw3(170.0f, HP_Y + 100, stock, 2, 0, false);
-	//Sprite_Draw(TEX_STOCK, MP_MAX * 6, 60, 0, 0, CTexture::Texture_GetWidth(TEX_STOCK, 1), CTexture::Texture_GetHeight(TEX_STOCK, 1));
-	//Mp_Draw(MP_MAX * 6, 80, stock, 2, 0);
-
-	//制限時間
-	int t = CGameObj::m_FrameCount / 60;
-	Time_Draw(WINDOW_WIDTH / 2 - 120, +70, GAMEEND / 60 - t, 2, 0, true);
-	int tt = (int)(CGameObj::m_FrameCount % 61 * 1.7);
-	if (CGameObj::m_FrameCount >= GAMEEND)
+	if (!m_TitleFlag)
 	{
-		tt = 100;
-	}
-	//右下のタイム
-	Mp_Draw(WINDOW_WIDTH / 2 + 80, 165, 100 - tt, 2, true);
+		C3DObj *playerget = CPlayer::Get_Player();
+		C3DObj *enemyget;
+		C3DObj *attraction_get;
+		D3DXMATRIX enemymatrix;
+		D3DXMATRIX Attraction_matrix;
+		int i;
+		int hp = playerget->Get_Hp();
+		Sprite_Draw(TEX_UI_GRAYBAR, HP_X, HP_Y, 0, 0, 1024, 222, 0.0f, 0.0f, 0.45f, 0.4f, 0.0f);
+		Sprite_Draw(TEX_UI_HPWINDOW, HP_X, HP_Y, 0, 0, 1024, 222, 0.0f, 0.0f, 0.45f, 0.4f, 0.0f);
+		Sprite_Draw(TEX_UI_HPBAR, HP_X, HP_Y, 0, 0, 1024.0f * hp / HP_MAX, 222.0f, 0.0f, 0.0f, 0.45f, 0.4f, 0.0f);
+		//Sprite_Draw(TEX_UI_HPWINDOW, 20, 10, 0, 0, HP_GAGE_WIDTH, HP_GAGE_HEIGHT);
+		//Sprite_Draw(TEX_UI_HPBAR, 20, 10, 0, 0, HP_GAGE_WIDTH * hp / HP_MAX, HP_GAGE_HEIGHT);
 
-	//	撃破数
-	int ko = CPlayer::Get_KoCount();
-	Num_Draw(WINDOW_WIDTH / 3 + 500, WINDOW_HIGHT / 2 + 290, ko, 3, 1, false);
+		//MP
+		int mp = playerget->Get_Mp();
+		Sprite_Draw(TEX_UI_GRAYBAR, HP_X, HP_Y + 95, 0, 0, 1024, 222, 0.0f, 0.0f, 0.3f, 0.4f, 0.0f);
+		Sprite_Draw(TEX_UI_HPWINDOW, HP_X, HP_Y + 95, 0, 0, 1024, 222, 0.0f, 0.0f, 0.3f, 0.4f, 0.0f);
+		Sprite_Draw(TEX_UI_MPBAR, HP_X, HP_Y + 95, 0, 0, mp * 35.0f, 222, 0.0f, 0.0f, 0.3f, 0.4f, 0.0f);
+		//	Sprite_Draw(TEX_HP, 20, 100, 0, 0, MP_MAX * 5, HP_GAGE_HEIGHT);
+		//	Sprite_Draw(TEX_MP, 20, 100, 0, 0, mp * 5, HP_GAGE_HEIGHT);
 
-	//ミニマップ
-	D3DXMATRIX playermatrix = playerget->Get_mtxTranslation();
-	Sprite_Draw(TEX_MAP, 1550.0f, 0.0f, 0, 0, 300, 300);
+		//MPストック
+		int stock = playerget->Get_MpStock();
+		Sprite_Draw(TEX_UI_DIAMOND, 325.0f, HP_Y + 95, 0, 0, 111, 121, 0.0f, 0.0f, 0.7f, 0.7f, 0.0f);
+		Sprite_Draw(TEX_UI_X, 385.0f, HP_Y + 115, 0, 0, 81.0f, 94.0f, 0.0f, 0.0f, 0.5f, 0.5f, 0.0f);
+		Num_Draw3(170.0f, HP_Y + 100, stock, 2, 0, false);
+		//Sprite_Draw(TEX_STOCK, MP_MAX * 6, 60, 0, 0, CTexture::Texture_GetWidth(TEX_STOCK, 1), CTexture::Texture_GetHeight(TEX_STOCK, 1));
+		//Mp_Draw(MP_MAX * 6, 80, stock, 2, 0);
 
-	User_angle = (int)(playerget->Get_Angle());
-	//キャラクター
-	Sprite_Draw(TEX_Player_Icon, 1685.0f + (playermatrix._41 * 1.5f), 140.0f - (playermatrix._43 * 1.5f), 0, 0, 20, 20, 10, 10, 1, 1, D3DXToRadian(User_angle) + D3DXToRadian(90));
-	//アトラクション
-	for (i = 0; i < ATTRACTION_MAX; i++)
-	{
-		attraction_get = CAttraction::Get_Attraction(i);
-		if (attraction_get)
+		//制限時間
+		int t = CGameObj::m_FrameCount / 60;
+		Time_Draw(WINDOW_WIDTH / 2 - 120, +70, GAMEEND / 60 - t, 2, 0, true);
+		int tt = (int)(CGameObj::m_FrameCount % 61 * 1.7);
+		if (CGameObj::m_FrameCount >= GAMEEND)
 		{
-
-			Attraction_matrix = attraction_get->Get_mtxWorld();
-			Sprite_Draw(TEX_ATTRACTION, 1688.5f + (Attraction_matrix._41 * 1.56f), 140.0f - (Attraction_matrix._43 * 1.56f), 0, 0, 14, 14, 7, 7, 1, 1, 0);
-
+			tt = 100;
 		}
-	}
-	//エネミー
-	for (i = 0; i < ENEMY_MAX; i++)
-	{
-		enemyget = CEnemy::Get_Map_Enemy(i);
-		if (enemyget)
-		{
-			if (enemyget->Get_Enable())
-			{
-				enemymatrix = enemyget->Get_mtxTranslation();
+		//右下のタイム
+		Mp_Draw(WINDOW_WIDTH / 2 + 80, 165, 100 - tt, 2, true);
 
-				Sprite_Draw(TEX_ENEMY_ICON, 1690.0f + (enemymatrix._41 * 1.5f), 150.0f - (enemymatrix._43 * 1.56f), 0, 0, 12, 12, 6, 6, 1, 1, 0);
+		//	撃破数
+		int ko = CPlayer::Get_KoCount();
+		Num_Draw(WINDOW_WIDTH / 3 + 500, WINDOW_HIGHT / 2 + 290, ko, 3, 1, false);
+
+		//ミニマップ
+		D3DXMATRIX playermatrix = playerget->Get_mtxTranslation();
+		Sprite_Draw(TEX_MAP, 1550.0f, 0.0f, 0, 0, 300, 300);
+
+		User_angle = (int)(playerget->Get_Angle());
+		//キャラクター
+		Sprite_Draw(TEX_Player_Icon, 1685.0f + (playermatrix._41 * 1.5f), 140.0f - (playermatrix._43 * 1.5f), 0, 0, 20, 20, 10, 10, 1, 1, D3DXToRadian(User_angle) + D3DXToRadian(90));
+		//アトラクション
+		for (i = 0; i < ATTRACTION_MAX; i++)
+		{
+			attraction_get = CAttraction::Get_Attraction(i);
+			if (attraction_get)
+			{
+
+				Attraction_matrix = attraction_get->Get_mtxWorld();
+				Sprite_Draw(TEX_ATTRACTION, 1688.5f + (Attraction_matrix._41 * 1.56f), 140.0f - (Attraction_matrix._43 * 1.56f), 0, 0, 14, 14, 7, 7, 1, 1, 0);
 
 			}
 		}
+		//エネミー
+		for (i = 0; i < ENEMY_MAX; i++)
+		{
+			enemyget = CEnemy::Get_Map_Enemy(i);
+			if (enemyget)
+			{
+				if (enemyget->Get_Enable())
+				{
+					enemymatrix = enemyget->Get_mtxTranslation();
+
+					Sprite_Draw(TEX_ENEMY_ICON, 1690.0f + (enemymatrix._41 * 1.5f), 150.0f - (enemymatrix._43 * 1.56f), 0, 0, 12, 12, 6, 6, 1, 1, 0);
+
+				}
+			}
+		}
+		Ui_Ber();
+		Ui_Icon();
 	}
-	Ui_Ber();
-	Ui_Icon();
 }
 
 void CUserInterFace::Ui_Ber(void)

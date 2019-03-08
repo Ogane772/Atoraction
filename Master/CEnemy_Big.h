@@ -17,6 +17,7 @@ public:
 	CEnemy_Big(ENEMY_EMITTER *Emitter);
 	~CEnemy_Big();
 
+	void GameBegin(void);
 	void Update(void);
 	void Draw(void);
 	void Finalize(void);

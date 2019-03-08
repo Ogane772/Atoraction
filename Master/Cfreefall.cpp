@@ -75,7 +75,7 @@ void Cfreefall::Initialize(D3DXMATRIX mtxWorld)
 	Thing_Normal_model = GetNormalModel(MODELL_HASIRA);
 	fall = GetNormalModel(MODELL_ENBAN);
 	Thing_Normal_model.Sphere.vCenter = D3DXVECTOR3(0, 0.0, 0);
-	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 4.2f);//ìñÇΩÇËîªíËÇÃïœçX
+	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 8.2f);//ìñÇΩÇËîªíËÇÃïœçX
 	InitSphere(m_pD3DDevice, &fall, D3DXVECTOR3(0, 0.0, 0), 1.0f);//ìñÇΩÇËîªíËÇÃïœçX
 	Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 	fall.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
@@ -139,6 +139,10 @@ void Cfreefall::Update(void)
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(0));
 		m_mtxWorld2 = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 
+		Thing_Normal_model.Sphere.vCenter = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+		fall.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
+
 		if (m_DrawCheck && attackon)
 		{
 			fall.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
@@ -158,9 +162,7 @@ void Cfreefall::Draw(void)
 	if (m_Enable)
 	{
 		D3DXVECTOR3 position = D3DXVECTOR3(0.0f, 2.0f, 0.0f);
-		Thing_Normal_model.Sphere.vCenter = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-		fall.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
+		
 		if (!m_DrawCheck)
 		{
 			if (m_FrameCount % 2 == 0)
@@ -188,7 +190,8 @@ void Cfreefall::Draw(void)
 
 void Cfreefall::Finalize(void)
 {
-	Attraction_Finalize(m_AttractionIndex);
+	//Attraction_Finalize(m_AttractionIndex);
+	delete this;
 }
 
 void Cfreefall::EnemyDamage(void)

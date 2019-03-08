@@ -40,23 +40,22 @@ void Game_Initialize(void)
 {
 	g_bend = false;
 	g_gameend = false;
-	/*	CPhysx::CPhysX_Initialize();			//	物理演算処理の初期化
-	gScene = CPhysx::Get_PhysX_Scene();		//	シーン初期化*/
-
-	C3DObj::InitModelLoad();
+	
+	CCamera::Camera_Create();
+	
+	/*C3DObj::InitModelLoad();
 
 	CPlayer::PlayerCreate();				//	プレイヤー生成		
 	CLight::Light_Create();					//	ライト生成
 	CCamera::Camera_Create();				//	カメラ生成
 
 	CMeshField::MeshField_Create(CTexture::TEX_KUSA_RENGA, 120.0f, 2, 2);							//	地面生成
-	//CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_FLORR, 10.0f, SYLINDERSIZE, 20, 1,true);	//	内カベ生成
 	CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_MOUNTAIN, 10.0f, FIELDSIZE, 20, 1, false);	//	外カベ生成
 	CMesh_SkyDome::Mesh_SkyDome_Create(CTexture::TEX_SKY, 2.0f, SKYSIZE, 40, 20);					//	空生成
 	CUserInterFace::UICreate();				//	UI生成
 	CEnemy::Create();						//	敵生成
-	COrnament::Create();						//	オブジェクト生成
-	Shadow_Initialize();
+	COrnament::Create();					//	オブジェクト生成*/
+	//Shadow_Initialize();
 	PlaySound(MAIN_BGM);
 }
 
@@ -66,9 +65,11 @@ void Game_Initialize(void)
 
 void Game_Finalize(void)
 {
-	C3DObj::DeleteAll();			//	3Dオブジェクト全消去
+	/*C3DObj::DeleteAll();			//	3Dオブジェクト全消去
 	CGameObj::DeleteAll2D();			//	2Dオブジェクト全消去
-	C3DObj::Model_Finalize();
+	C3DObj::Model_Finalize();*/
+	C3DObj::FinalizeAll();
+	CCamera::Dalete_Camera();
 	CGameObj::FrameCountReset();	//	フレームカウントリセット
 	_CrtDumpMemoryLeaks();
 }
@@ -132,6 +133,11 @@ void Game_Draw(void)
 void Game_End(void)
 {
 	g_gameend = true;
+}
+
+bool Get_Gameend(void)
+{
+	return g_gameend;
 }
 
 float Get_EnemyPer(void)

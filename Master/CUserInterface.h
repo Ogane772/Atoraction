@@ -22,11 +22,12 @@ public:
 	void Ui_Icon(void);
 	void Finalize(void);
 	static void UICreate(void);
+	static void TitleFlag_Change(bool change) { m_TitleFlag = change; }
 protected:
 
 private:
 	int User_angle;
-	
+	static bool m_TitleFlag;
 };
 
 #endif // !1

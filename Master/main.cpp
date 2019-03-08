@@ -26,6 +26,16 @@
 //#include "CGameObj.h"
 #include "C2DObj.h"
 
+#include "C3DObj.h"
+#include "COrnament.h"
+#include "CMeshField.h"
+#include "CMeshField_Cylinder.h"
+#include "CMesh_SkyDome.h"
+#include "Cplayer.h"
+#include "CLight.h"
+#include "CUserInterface.h"
+#include "CEnemy.h"
+#include "CCamera.h"
 
 //=============================================================================
 //	定数定義
@@ -270,7 +280,19 @@ bool Begin(HINSTANCE hInstance, HWND hWnd)
 	// フレーム固定用計測時間
 	g_StaticFrameTime = SystemTimer_GetTime();
 
-	//gScene = CPhysx::Get_PhysX_Scene();
+	
+	C3DObj::InitModelLoad();
+	CPlayer::PlayerCreate();				//	プレイヤー生成		
+	CLight::Light_Create();					//	ライト生成
+	//CCamera::Camera_Create();				//	カメラ生成
+	CMeshField::MeshField_Create(CTexture::TEX_KUSA_RENGA, 120.0f, 2, 2);							//	地面生成																									//CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_FLORR, 10.0f, SYLINDERSIZE, 20, 1,true);	//	内カベ生成
+	CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_MOUNTAIN, 10.0f, FIELDSIZE, 20, 1, false);	//	外カベ生成
+	CMesh_SkyDome::Mesh_SkyDome_Create(CTexture::TEX_SKY, 2.0f, SKYSIZE, 40, 20);
+	CUserInterFace::UICreate();				//	UI生成
+	CEnemy::Create();						//	敵生成
+	COrnament::Create();
+
+
 	//　シーンの初期化
 	Scene_Initialize(SCENE_INDEX_TITLE);
 
@@ -364,10 +386,15 @@ void End(void)
 	DebugFont_Finalize();
 #endif // _DEBUG || DEBUG
 	
+	
+
 	UninitSound();
 	// シーン終了処理
 	Scene_Finalize();
 
+	C3DObj::DeleteAll();			//	3Dオブジェクト全消去
+	CGameObj::DeleteAll2D();			//	2Dオブジェクト全消去
+	C3DObj::Model_Finalize();
 	// サウンド終了処理
 	//UninitSound();
 

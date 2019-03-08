@@ -73,7 +73,7 @@ void COrnament_Fountain::Initialize(ORNAMENT_EMITTER *Emitter)
 	D3DXMatrixTranslation(&m_mtxTranslation, Emitter->InitPos.x, Emitter->InitPos.y, Emitter->InitPos.z);
 	D3DXMatrixScaling(&m_mtxScaling, Emitter->scale.x, Emitter->scale.y, Emitter->scale.z);
 	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
-
+	m_mtxInit = m_mtxWorld;
 	Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
 	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 4.6f);//“–‚½‚è”»’è‚Ì•ÏX
 }
@@ -81,9 +81,18 @@ void COrnament_Fountain::Initialize(ORNAMENT_EMITTER *Emitter)
 
 void COrnament_Fountain::Finalize(void)
 {
+	m_DrawCount = 0;
+	m_OrnamentIndex = Get_OrnamentIndex(TYPE_ALL);
+	m_Enable = true;
+	m_DrawCheck = true;
+	m_Hp = FOUNTAIN_HP;
+	m_Attack = FOUNTAIN_ATK;
 
-	Ornament_Finalize(m_OrnamentIndex);
 
+	D3DXMatrixTranslation(&m_mtxTranslation, m_mtxInit._41, m_mtxInit._42, m_mtxInit._43);
+	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
+
+	Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 }
 
 
@@ -103,6 +112,8 @@ void COrnament_Fountain::Update(void)
 			}
 		}
 		m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
+		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+
 		Death();
 	}
 	
@@ -114,7 +125,6 @@ void COrnament_Fountain::Draw(void)
 {
 	if (m_Enable)
 	{
-		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 		if (!m_DrawCheck)
 		{

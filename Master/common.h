@@ -12,4 +12,5 @@
 #define SKYSIZE (80.0f)
 
 void Game_End(void);
+bool Get_Gameend(void);
 #endif //_COMMON_H_
