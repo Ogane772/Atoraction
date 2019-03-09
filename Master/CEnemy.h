@@ -24,6 +24,7 @@ public:
 		TYPE_BIG,		//	ãêëÂ
 		TYPE_SPECIAL,	//	ì¡éÍ
 
+
 		TYPE_MAX
 	};
 
@@ -46,8 +47,9 @@ public:
 	static int Get_EnemyMaxNum(void) { return m_ENEMY_MAX; }
 	static C3DObj *Get_Enemy(int index);
 	bool Get_DrawCheck(void) { return m_DrawCheck; }
-
+	static void Reset_EnemyEnableNum(void) {  m_EnemyEnableNum = 0; }
 	static C3DObj *Get_Map_Enemy(int Index);
+	static float Get_EnemyPer();
 protected:
 
 	enum
@@ -107,6 +109,7 @@ protected:
 	int m_CreateCount;
 	int m_InitCreateCount;
 	int m_InitDirection;
+	static int m_EnemyEnableNum;
 
 	void Enable_Check(void);
 private:
@@ -120,7 +123,7 @@ private:
 	int m_FlyingCount;
 	bool m_EnemyFlying;
 	bool m_EnemyFlyingDown;
-
+	static float EnemyPer;
 	D3DXVECTOR3 m_FlyingMove;
 
 

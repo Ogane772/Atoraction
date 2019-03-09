@@ -43,7 +43,7 @@
 //	¶¬
 //=============================================================================
 
-Coaster::Coaster() :CAttraction(AT_COASTER), C3DObj(AT_COASTER)
+Coaster::Coaster() :CAttraction(AT_COASTER), C3DObj(TYPE_COASTER)
 {
 	Initialize();
 }
@@ -95,7 +95,7 @@ void Coaster::Update(void)
 		D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(u + v));
 		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 
-		if (m_DrawCheck)
+		//if (m_DrawCheck)
 		{
 			Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 			EnemyDamage();
@@ -140,7 +140,7 @@ C3DObj *Coaster::Get_Coaster(void)
 		C3DObj *Coaster = C3DObj::Get(i);
 		if (Coaster)
 		{
-			if (Coaster->Get_3DObjType() == AT_COASTER)
+			if (Coaster->Get_3DObjType() == TYPE_COASTER)
 			{
 				return Coaster;
 			}

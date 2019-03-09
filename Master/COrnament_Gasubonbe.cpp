@@ -1,25 +1,31 @@
 //////////////////////////////////////////////////
 ////
-////	オブジェクト(ゴミ箱)クラス
+////	オブジェクト(ガスボンベ)クラス
 ////
 //////////////////////////////////////////////////
 
 //=============================================================================
 //	インクルードファイル
 //=============================================================================
-#include "COrnament_Husen.h"
+
+#include "COrnament_Gasubonbe.h"
 #include "debug_font.h"
-#include "sound.h"
+#include "exp.h"
 #include "CEnemy.h"
+#include "CTexture.h"
+#include "sound.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
 
-#define HUSEN_SIZE (1.0f)
-#define HUSEN_ATTACK (3)
-#define HUSEN_HP (1)
-#define HUSEN_SCORE (1)
-#define HUSEN_ATK (1)
+#define GASUBONBE_SIZE (1.0f)
+#define GASUBONBE_ATTACK (3)
+#define GASUBONBE_HP (1)
+#define GASUBONBE_SCORE (1)
+#define GASUBONBE_ATK (1)
+
+#define FRY_HEIGHT (0.1f)
+#define FRY_SPEED (0.07f)
 //=============================================================================
 //	静的変数
 //=============================================================================
@@ -32,7 +38,7 @@
 //	生成
 //=============================================================================
 
-COrnament_HUSEN::COrnament_HUSEN(ORNAMENT_EMITTER *Emitter) :COrnament(TYPE_HUSEN), C3DObj(C3DObj::TYPE_ORNAMENT)
+COrnament_Gasubonbe::COrnament_Gasubonbe(ORNAMENT_EMITTER *Emitter) :COrnament(MODELL_GASUBONBE), C3DObj(C3DObj::TYPE_ORNAMENT)
 {
 	Initialize(Emitter);
 }
@@ -40,50 +46,50 @@ COrnament_HUSEN::COrnament_HUSEN(ORNAMENT_EMITTER *Emitter) :COrnament(TYPE_HUSE
 //=============================================================================
 //	破棄
 //=============================================================================
-COrnament_HUSEN::~COrnament_HUSEN()
+COrnament_Gasubonbe::~COrnament_Gasubonbe()
 {
 
 }
 
 
-void COrnament_HUSEN::Husen_Create(void)
+void COrnament_Gasubonbe::Dust_Create(void)
 {
 
 }
 
-void COrnament_HUSEN::Initialize(ORNAMENT_EMITTER *Emitter)
+void COrnament_Gasubonbe::Initialize(ORNAMENT_EMITTER *Emitter)
 {
+	m_DrawCount = 0;
 	m_OrnamentIndex = Get_OrnamentIndex(TYPE_ALL);
 	m_Enable = true;
 	m_DrawCheck = true;
-	m_Hp = HUSEN_HP;
-	m_Attack = HUSEN_ATK;
-	m_angle = false;
-	updown = 0.0f;
-	hit = false;
-	Thing_Normal_model = GetNormalModel(MODELL_HUSEN);
+	m_Hp = GASUBONBE_HP;
+	m_Attack = GASUBONBE_ATK;
+
+	Thing_Normal_model = GetNormalModel(MODELL_GASUBONBE);
 
 	m_Direction = Emitter->InitDirection;
 
-	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(m_Direction));
 	D3DXMatrixTranslation(&m_mtxTranslation, Emitter->InitPos.x, Emitter->InitPos.y, Emitter->InitPos.z);
+	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(m_Direction));
 	D3DXMatrixScaling(&m_mtxScaling, Emitter->scale.x, Emitter->scale.y, Emitter->scale.z);
 	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 	m_mtxInit = m_mtxWorld;
-	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 1.1f);//当たり判定の変更
-
 	Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
+	InitSphere(m_pD3DDevice, &Thing_Normal_model, D3DXVECTOR3(0, 0.0, 0), 1.5f);//当たり判定の変更
 }
 
 
-void COrnament_HUSEN::Finalize(void)
+void COrnament_Gasubonbe::Finalize(void)
 {
 
+	m_DrawCount = 0;
 	m_OrnamentIndex = Get_OrnamentIndex(TYPE_ALL);
 	m_Enable = true;
 	m_DrawCheck = true;
-	m_Hp = HUSEN_HP;
-	m_Attack = HUSEN_ATK;
+	m_Hp = GASUBONBE_HP;
+	m_Attack = GASUBONBE_ATK;
+
 
 
 	D3DXMatrixTranslation(&m_mtxTranslation, m_mtxInit._41, m_mtxInit._42, m_mtxInit._43);
@@ -95,73 +101,60 @@ void COrnament_HUSEN::Finalize(void)
 }
 
 
-void COrnament_HUSEN::Update(void)
+void COrnament_Gasubonbe::Update(void)
 {
 	if (m_Enable)
 	{
 		//エフェクト処理を行う
 		if (m_DrawCheck)
 		{
-
 			if (m_DamageFlag)
 			{
-				hit = true;
-				PlaySound(HUSEN_SE);
-				Ornament_Damage(0.1f);
-				Ornament_Flying(0.0f);//飛ばしたいときは0.05fを入れる
+				Ornament_Damage(FRY_HEIGHT);
+				Ornament_Flying(FRY_SPEED);
 				Damage();
 			}
-
-			if (!hit)
-			{
-				if (!m_angle)
-				{
-					updown += 0.002f;
-					if (updown >= 0.08f)
-					{
-						m_angle = true;
-					}
-				}
-				else
-				{
-					updown -= 0.002f;
-					if (updown <= -0.08f)
-					{
-						m_angle = false;
-					}
-				}
-				D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41, m_mtxWorld._42 + updown, m_mtxWorld._43);
-			}
-			else
-			{
-				updown += 0.003f;
-				D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41, m_mtxWorld._42 + updown, m_mtxWorld._43);
-				Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-			}
-			m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
-
-
-			Death();
 		}
+		m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
+		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 
+		Death();
 	}
-
 }
 
 
 
-void COrnament_HUSEN::Draw(void)
+void COrnament_Gasubonbe::Draw(void)
 {
 	if (m_Enable)
 	{
-		D3DXVECTOR3 position = D3DXVECTOR3(0.0f, 2.0f, 0.0f);
-		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
-		DrawDX_NormalAdd(m_mtxWorld, MODELL_HUSEN, &Thing_Normal_model, position);
+		D3DXVECTOR3 position = D3DXVECTOR3(0.0f, 1.2f, -1.0f);
+		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
+		if (!m_DrawCheck)
+		{
+			if (m_FrameCount % 2 == 0)
+			{
+				m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+				DrawDX_NormalAdd(m_mtxWorld, MODELL_GASUBONBE, &Thing_Normal_model, position);
+
+				m_DrawCount++;
+				if (m_DrawCount >= ORNAMENT_WAIT_TIME)
+				{
+					m_DrawCount = 0;
+					m_DrawCheck = true;
+				}
+			}
+		}
+		else
+		{
+			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+			DrawDX_NormalAdd(m_mtxWorld, MODELL_GASUBONBE, &Thing_Normal_model, position);
+		}
 	}
 }
 
 
-void COrnament_HUSEN::Damage(void)
+void COrnament_Gasubonbe::Damage(void)
 {
 	int i;
 	C3DObj *enemy;

@@ -35,8 +35,8 @@
 //=============================================================================
 //	静的変数
 //=============================================================================
+bool CUserInterFace::cnt_flg = false;
 bool CUserInterFace::m_TitleFlag = true;
-
 
 //=============================================================================
 //	グローバル変数
@@ -103,18 +103,36 @@ void CUserInterFace::Draw(void)
 
 		//制限時間
 		int t = CGameObj::m_FrameCount / 60;
-		Time_Draw(WINDOW_WIDTH / 2 - 120, +70, GAMEEND / 60 - t, 2, 0, true);
-		int tt = (int)(CGameObj::m_FrameCount % 61 * 1.7);
-		if (CGameObj::m_FrameCount >= GAMEEND)
+		float tcount = GAMEEND / 60 - t;
+		if ((tcount == 30) || (tcount <= 10) || (tcount == 50))
 		{
-			tt = 100;
+			cnt_flg = true;
 		}
-		//右下のタイム
-		Mp_Draw(WINDOW_WIDTH / 2 + 80, 165, 100 - tt, 2, true);
+		else
+		{
+			cnt_flg = false;
+		}
+
+		if (cnt_flg == false)
+		{
+			Time_Draw(WINDOW_WIDTH / 2 - 120, +70, tcount, 2, 0, true);
+		}
+		else
+		{
+			Time_Draw02(WINDOW_WIDTH / 2 - 170, +70, tcount, 2, 0, true);
+		}
+
+		//int tt = (int)(CGameObj::m_FrameCount % 61 * 1.7);
+		//if (CGameObj::m_FrameCount >= GAMEEND)
+		//{
+		//	tt = 100;
+		//}
+		////右下のタイム
+		//Mp_Draw(WINDOW_WIDTH / 2 + 80, 165, 100 - tt, 2, true);
 
 		//	撃破数
 		int ko = CPlayer::Get_KoCount();
-		Num_Draw(WINDOW_WIDTH / 3 + 500, WINDOW_HIGHT / 2 + 290, ko, 3, 1, false);
+		Num_Draw(WINDOW_WIDTH / 3 + 500, WINDOW_HIGHT / 2 + 270, ko, 3, 1, false);
 
 		//ミニマップ
 		D3DXMATRIX playermatrix = playerget->Get_mtxTranslation();
@@ -124,7 +142,7 @@ void CUserInterFace::Draw(void)
 		//キャラクター
 		Sprite_Draw(TEX_Player_Icon, 1685.0f + (playermatrix._41 * 1.5f), 140.0f - (playermatrix._43 * 1.5f), 0, 0, 20, 20, 10, 10, 1, 1, D3DXToRadian(User_angle) + D3DXToRadian(90));
 		//アトラクション
-		for (i = 0; i < ATTRACTION_MAX; i++)
+		for (i = 0; i <  MAX_GAMEOBJ; i++)
 		{
 			attraction_get = CAttraction::Get_Attraction(i);
 			if (attraction_get)
@@ -158,7 +176,7 @@ void CUserInterFace::Draw(void)
 void CUserInterFace::Ui_Ber(void)
 {
 	Sprite_Draw(TEX_MP3, 631, 38, 0, 0, 762, 40, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
-	Sprite_Draw(TEX_HP3, 631, 38, 0, 0, 762 * Get_EnemyPer(), 40, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
+	Sprite_Draw(TEX_HP3, 631, 38, 0, 0, 762 * CEnemy::Get_EnemyPer(), 40, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
 	Sprite_Draw(TEX_UI_BER, 500, 10, 0, 0, 1024, 157, 0.0f, 0.0f, 1.0f, 0.6f, 0.0f);
 	Sprite_Draw(TEX_UI_MEMORI, 614 + 532, 10, 0, 0, 43, 38, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
 	Sprite_Draw(TEX_UI_MEMORI, 614 + 532, 70, 0, 0, 43, 38, 43 / 2, 38 / 2, 1.0f, 1.0f, D3DXToRadian(180));

@@ -76,7 +76,10 @@ void CEnemy_Small::Initialize(ENEMY_EMITTER *Emitter)
 {
 
 
-	SkinMesh.InitThing(m_pD3DDevice, &Thing, ANIME_MODEL_FILES[MODELL_ANIME_SMALL].filename);
+	//SkinMesh.InitThing(m_pD3DDevice, &Thing, ANIME_MODEL_FILES[MODELL_ANIME_SMALL].filename);
+	char animefile[TEXTURE_FILENAME_MAX] = {  };
+	strcpy(animefile, C3DObj::Get_AnimeFileName(MODELL_ANIME_SMALL));
+	SkinMesh.InitThing(m_pD3DDevice, &Thing, animefile);
 	Thing.Sphere.fRadius = 1.3f;
 	Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2f, 0);
 	SkinMesh.InitSphere(m_pD3DDevice, &Thing);
@@ -208,6 +211,7 @@ void CEnemy_Small::Update(void)
 				CPlayer::Add_KoCount();
 				//C3DObj_delete();
 				m_Enable = false;
+				m_EnemyEnableNum--;
 			}
 		}
 	}
@@ -242,6 +246,7 @@ void CEnemy_Small::Draw(void)
 			}
 		}
 	}
+	DebugFont_Draw(10, 470, "%d", m_EnemyEnableNum);
 }
 
 

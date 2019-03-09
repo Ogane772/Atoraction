@@ -39,7 +39,7 @@ THING_NORMAL thing_cup2, thing_cup3, thing_cup4;
 //	生成
 //=============================================================================
 
-CCoffeeCup::CCoffeeCup(D3DXMATRIX mtxWorld) :CAttraction(AT_COFFEE), C3DObj(AT_COFFEE)
+CCoffeeCup::CCoffeeCup(D3DXMATRIX mtxWorld) :CAttraction(AT_COFFEE), C3DObj(TYPE_ATTRACTION)
 {
 	Initialize(mtxWorld);
 }
@@ -57,8 +57,7 @@ void CCoffeeCup::Initialize(D3DXMATRIX mtxWorld)
 	m_DrawCount = 0;
 	angCup = 0.0f;//カップの回転
 	CoolTime = 0;//クールタイム
-	B_CoolTime;//クールタイムのブール
-
+	attackon = true;
 	B_CoolTime = true;
 	m_Hp = COFFEE_CUP_HP;
 	m_Mp = COFFEE_CUP_MP;
@@ -167,7 +166,7 @@ void CCoffeeCup::Update(void)
 		D3DXMatrixMultiply(&m_mtxWorld4, &m_mtxWorld4, &m_mtxWorld);
 
 		m_mtxWorld = m_mtxScaling * m_mtxWorld;
-		if (m_DrawCheck)
+		if (attackon)
 		{
 			Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
 			thing_cup2.vPosition = D3DXVECTOR3(m_mtxWorld3._41, m_mtxWorld3._42, m_mtxWorld3._43);
@@ -176,6 +175,7 @@ void CCoffeeCup::Update(void)
 			OrnamentDamage(thing_cup2);
 			OrnamentDamage(thing_cup3);
 			OrnamentDamage(thing_cup4);
+
 			EnemyDamage();
 			CoffeeCupDamage();
 		}
@@ -240,7 +240,7 @@ void CCoffeeCup::CoffeeCup_Create(void)
 
 void CCoffeeCup::EnemyDamage(void)
 {
-	if (m_FrameCount - m_TimeKeep >= 120)
+	if (attackon)
 	{
 		int i;
 		C3DObj *enemy;

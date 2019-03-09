@@ -15,5 +15,13 @@ void Number_Draw4(float x, float y, int n, int colornum);
 
 void Number_Draw5(float x, float y, int n, int colornum);
 
+void Number_Draw_Leader(float x, float y, int n, int colornum);
+
+void Number_Draw_Leader_red(float x, float y, int n, int colornum);
+
+void Number_Draw_yellow_180(float x, float y, int n, int colornum);
+
+void Number_Draw_Break(float x, float y, int n, int colornum);
+
 void Number_Draw_Select(float x, float y, int n, int texindex, int colornum);
 #endif

@@ -59,7 +59,7 @@ private:
 
 	int m_Type;			// í—Ş
 	static bool createchack;//ì¬‚©‚Ç‚¤‚© true=ì¬Ï‚İ
-	static CAttraction *m_pAttraction[ATTRACTION_MAX];
+	//static CAttraction *m_pAttraction[ATTRACTION_MAX];
 };
 
 #endif // !1

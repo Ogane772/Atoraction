@@ -44,7 +44,7 @@ THING_NORMAL fall;
 //=============================================================================
 //	ê∂ê¨
 //=============================================================================
-Cfreefall::Cfreefall(D3DXMATRIX mtxWorld) :CAttraction(AT_FALL), C3DObj(AT_FALL)
+Cfreefall::Cfreefall(D3DXMATRIX mtxWorld) :CAttraction(AT_FALL), C3DObj(TYPE_ATTRACTION)
 {
 	Initialize(mtxWorld);
 }
@@ -143,7 +143,7 @@ void Cfreefall::Update(void)
 		Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 		fall.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
 
-		if (m_DrawCheck && attackon)
+		if (attackon)
 		{
 			fall.vPosition = D3DXVECTOR3(m_mtxWorld2._41, m_mtxWorld2._42, m_mtxWorld2._43);
 			OrnamentDamage(Thing_Normal_model);

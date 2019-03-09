@@ -14,6 +14,7 @@
 #include "CSkinAnimation.h"
 #include "debug_font.h"
 #include "CTexture.h"
+#include "CAttraction.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -28,6 +29,8 @@
 #define FRY_SPEED (0.05f)
 #define WALK_SPEED (0.01f)
 #define ATTACK_SPEED (0.01f)
+
+#define CHASE_SPEED (0.015f)
 enum ANIMATION{
 	DEATH,
 	ATTACK3,
@@ -69,7 +72,11 @@ void CEnemy_Special::Initialize(ENEMY_EMITTER *Emitter)
 {
 
 
-	SkinMesh.InitThing(m_pD3DDevice, &Thing, ANIME_MODEL_FILES[MODELL_ANIME_SPECIAL].filename);
+//	SkinMesh.InitThing(m_pD3DDevice, &Thing, ANIME_MODEL_FILES[MODELL_ANIME_SPECIAL].filename);
+	char animefile[TEXTURE_FILENAME_MAX] = { };
+	strcpy(animefile, C3DObj::Get_AnimeFileName(MODELL_ANIME_SPECIAL));
+	SkinMesh.InitThing(m_pD3DDevice, &Thing, animefile);
+
 	Thing.Sphere.fRadius = 1.3f;
 	Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2f, 0);
 	SkinMesh.InitSphere(m_pD3DDevice, &Thing);
@@ -163,7 +170,7 @@ void CEnemy_Special::Update(void)
 			{
 				if (!PlayerCheck())	//	近くにプレイヤーがいるか
 				{
-					if ((!Chase_Popcorn()) && (!m_AttackCheck))
+					if ((!Chase_Attraction()) && (!m_AttackCheck))
 					{
 						Special_Move();
 					}
@@ -218,6 +225,7 @@ void CEnemy_Special::Update(void)
 				CPlayer::Add_KoCount();
 				//C3DObj_delete();
 				m_Enable = false;
+				m_EnemyEnableNum--;
 			}
 		}
 	}
@@ -331,6 +339,52 @@ void CEnemy_Special::Special_Attack(void)
 	}
 }
 
+bool CEnemy_Special::Chase_Attraction(void)
+{
+	int i;
+	C3DObj *pattraction;
+	THING_NORMAL thingpop;
+	D3DXMATRIX playerworld;
+	D3DXMATRIX mtxtrans;
+	float x;
+	float z;
+	float angle;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
+	{
+		pattraction = CAttraction::Get_Attraction(i);
+		if (pattraction)
+		{
+			//if (ppop->Get_DrawCheck())
+			{
+				Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+				//thingpop = ppop->GetNormalModel(MODELL_POPCORN);
+				thingpop = pattraction->GetNormalModel();
+				thingpop.Sphere.fRadius = 15.0f;
+				//ppop->Thing_Normal_model.Sphere.fRadius= 15.0f;
+				if (C3DObj::Collision_AnimeVSNormal(&Thing, &thingpop))
+				{
+					thingpop.Sphere.fRadius = 4.0f;
+					if (!C3DObj::Collision_AnimeVSNormal(&Thing, &thingpop))
+					{
+						playerworld = pattraction->Get_mtxWorld();
+						x = playerworld._41 - m_mtxWorld._41;
+						z = playerworld._43 - m_mtxWorld._43;
 
+						mtxtrans;
+						D3DXMatrixTranslation(&mtxtrans, x * CHASE_SPEED, 0.0f, z * CHASE_SPEED);
+						m_mtxTranslation *= mtxtrans;
+
+						angle = (float)(atan2(-z, x));
+						D3DXMatrixRotationY(&m_mtxRotation, angle);
+
+						return true;
+					}
+				}
+				thingpop.Sphere.fRadius = 4.0f;
+			}
+		}
+	}
+	return false;
+}
 
 

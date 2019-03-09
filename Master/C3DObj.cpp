@@ -45,6 +45,8 @@ C3DObj::MaterialFileData C3DObj::NORMAL_MODEL_FILES[] = {
 	{ "asset/model/ornament/meri_dodai.blend.x" },
 	{ "asset/model/ornament/Uma.blend.x" },
 	{ "asset/model/ornament/kanransya_ornament.x" },
+	{ "asset/model/GasBonbe.blend.x" },
+	{ "asset/model/Got_PotatZou.blend.x" },
 };
 //	使いたいアニメモデルの数だけ書く
 C3DObj::MaterialFileData2 C3DObj::ANIME_MODEL_FILES[] = {
@@ -57,7 +59,7 @@ C3DObj::MaterialFileData2 C3DObj::ANIME_MODEL_FILES[] = {
 int C3DObj::MODEL_FILES_MAX = sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL_MODEL_FILES[0]);
 int C3DObj::ANIME_MODEL_FILES_MAX = sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0]);
 
-bool C3DObj::boRenderSphere = false;
+bool C3DObj::boRenderSphere =false;
 //モデルアニメーション関係変数
 /*
 #define MODEL_MAX (9)
@@ -234,7 +236,7 @@ void C3DObj::DrawAll()
 					if (VFCulling(&p3DObj[i]->Thing.vPosition))
 					{
 						p3DObj[i]->Draw();
-						dc++;
+						//dc++;
 					}
 					else
 					{
@@ -249,7 +251,7 @@ void C3DObj::DrawAll()
 			}
 		}
 	}
-	DebugFont_Draw(10, 470, "%d", dc);
+	
 }
 
 
@@ -775,14 +777,14 @@ void C3DObj::Animation_Change(int index, float speed)
 {
 	if (TrackDesc.Speed != speed)
 	{
-		TrackDesc.Position = 0;//アニメーションタイムリセット
 		TrackDesc.Speed = speed;//モーションスピード
-		Thing.pAnimController->SetTrackPosition(0, 0);
 		//Thing.pAnimController->SetTrackDesc(0, &TrackDesc);//アニメ情報セット
+		Thing.pAnimController->SetTrackPosition(0, 0);
 		Thing.pAnimController->SetTrackSpeed(0,TrackDesc.Speed);//アニメ情報セット
 	}
 	if (m_AnimationType != index)
 	{
+		Thing.pAnimController->SetTrackPosition(0, 0);
 		Thing.pAnimController->SetTrackAnimationSet(0, pAnimSet[index]);
 		m_AnimationType = index;
 	}
@@ -831,12 +833,13 @@ void C3DObj::Add_Hp(void)
 {
 	C3DObj *pplayer = CPlayer::Get_Player();
 	pplayer->m_Hp++;
-	Exp_Set(SHINE, pplayer->m_mtxTranslation._41, pplayer->m_mtxTranslation._42 , pplayer->m_mtxTranslation._43, 3.0, 0);
+	Exp_Set(HEAL, pplayer->m_mtxTranslation._41, pplayer->m_mtxTranslation._42 + 1.0f, pplayer->m_mtxTranslation._43, 3.0, 0);
+	if (pplayer->m_Hp > HP_MAX)
 	if (pplayer->m_Hp > HP_MAX)
 	{
 		pplayer->m_Hp = HP_MAX;
 	}
-}
+}															
 
 bool C3DObj::VFCulling(D3DXVECTOR3* pPosition)
 {
