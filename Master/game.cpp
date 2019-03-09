@@ -22,6 +22,7 @@
 #include "COrnament.h"
 #include "sound.h"
 #include <crtdbg.h>
+#include "Score_total.h"
 //=============================================================================
 //	定数定義
 //=============================================================================
@@ -69,6 +70,8 @@ void Game_Finalize(void)
 	CGameObj::DeleteAll2D();			//	2Dオブジェクト全消去
 
 	C3DObj::Model_Finalize();*/
+	//↓ここの前にバー情報取得
+	ScorePer_Set(CEnemy::Get_EnemyPer());
 	CEnemy::Reset_EnemyEnableNum();
 	C3DObj::FinalizeAll();
 	CCamera::Dalete_Camera();

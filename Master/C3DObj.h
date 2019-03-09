@@ -108,7 +108,7 @@ public:
 	int Get_OrnamentType(void) { return m_OrnamentType; }
 	bool Get_DamageFlag(void) { return m_DamageFlag; }
 	static char* Get_AnimeFileName(int index) { return ANIME_MODEL_FILES[index].filename; }
-
+	static void TitleFlag_Change(bool change) { m_TitleFlag = change; }
 
 	static bool boRenderSphere;//当たり判定を可視化するかどうか？ true 可視化
 	//	モデル読み込み
@@ -200,6 +200,7 @@ protected:
 	int m_OrnamentType;
 	
 	int m_AnimationType;
+	static bool m_TitleFlag;
 private:
 	
 	//	モデルデータの構造体

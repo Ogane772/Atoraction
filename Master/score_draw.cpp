@@ -13,7 +13,7 @@
 #define SCORE_NUMBER_SIZE_RED (180)
 #define SCORE_NUMBER_SIZE_BREAK (225)
 #define MP_NUMBER_SIZE (45)
-#define MP_NUMBER_SIZE2 (80) //MP‚Ì‰¡‚Ì”Žš
+#define MP_NUMBER_SIZE2 (50) //MP‚Ì‰¡‚Ì”Žš
 //=============================================================================
 //	ƒOƒ[ƒoƒ‹•Ï”éŒ¾
 //=============================================================================

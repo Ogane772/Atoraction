@@ -60,6 +60,7 @@ int C3DObj::MODEL_FILES_MAX = sizeof(C3DObj::NORMAL_MODEL_FILES) / sizeof(NORMAL
 int C3DObj::ANIME_MODEL_FILES_MAX = sizeof(C3DObj::ANIME_MODEL_FILES) / sizeof(ANIME_MODEL_FILES[0]);
 
 bool C3DObj::boRenderSphere =false;
+bool C3DObj::m_TitleFlag = true;
 //モデルアニメーション関係変数
 /*
 #define MODEL_MAX (9)
@@ -447,17 +448,18 @@ void C3DObj::DrawDX_Anime(D3DXMATRIX mtxWorld, int type, THING* pThing)
 	SkinMesh.UpdateFrameMatrices(pThing->pFrameRoot, &mtxWorld);
 	SkinMesh.DrawFrame(m_pD3DDevice, pThing->pFrameRoot, pThing, true);
 	pThing->pAnimController->AdvanceTime(fAnimTime - fAnimTimeHold, NULL);
-	//　バウンディングスフィアのレンダリング////////	
-	D3DXMatrixTranslation(&mat, pThing->vPosition.x, pThing->vPosition.y,
-		pThing->vPosition.z);
-	D3DXMatrixTranslation(&mtxWorld, pThing->Sphere.vCenter.x, pThing->Sphere.vCenter.y,
-		pThing->Sphere.vCenter.z);
+
 	mtxWorld *= mat;
 
 	m_pD3DDevice->SetTransform(D3DTS_WORLD, &mtxWorld);
 
 	if (boRenderSphere)
 	{
+		//　バウンディングスフィアのレンダリング////////	
+		D3DXMatrixTranslation(&mat, pThing->vPosition.x, pThing->vPosition.y,
+			pThing->vPosition.z);
+		D3DXMatrixTranslation(&mtxWorld, pThing->Sphere.vCenter.x, pThing->Sphere.vCenter.y,
+			pThing->Sphere.vCenter.z);
 		m_pD3DDevice->SetTexture(0, NULL);
 		m_pD3DDevice->SetMaterial(pThing->pSphereMeshMaterials);
 		pThing->pSphereMesh->DrawSubset(0);

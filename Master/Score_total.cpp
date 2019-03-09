@@ -12,6 +12,7 @@
 #include "Cplayer.h"
 #include "CTexture.h"
 #include "sound.h"
+#include "gamepad.h"
 #include "CEnemy.h"
 #define _CRTDBG_MAP_ALLOC
 
@@ -19,7 +20,7 @@
 //=============================================================================
 //	グローバル変数宣言
 //=============================================================================
-
+static int FPS_mCounter;
 static bool g_bend;			//	フェードインアウトフラグ
 static bool Clear_flg;		//	クリア判定
 static float Percent;		//	制圧率
@@ -28,9 +29,12 @@ static float Mark_Percent;
 static int score_counter;	//	秒数
 static int score_total;		//	合計
 static float score_per;		//	加算用
+static float score_up;		//	加算用
 static float Mark_per;
 static int total;
-
+static DIJOYSTATE2 js;
+static LPDIRECTINPUTDEVICE8 pJoyDevice;
+static HRESULT hr;
 C2DObj *pScore_total;
 //=============================================================================
 //	初期化処理
@@ -41,10 +45,19 @@ void Score_total_Initialize(void)
 	PlaySound(RESULT_BGM);
 	//C2DObj::Texture_Release(CTexture::TEX_SCREENSHOT);	//	テクスチャ破棄
 	//C2DObj::Texture_Load(CTexture::TEX_SCREENSHOT);	//	テクスチャ読み込み
+	//コントローラー情報取得
+	js = { 0 };
+	pJoyDevice = *JoyDevice_Get();
+	if (pJoyDevice)
+	{
+		hr = pJoyDevice->Acquire();
+	}
 	pScore_total = new C2DObj;
+	FPS_mCounter = 0;
 	g_bend = false;
 	Clear_flg = false;
-	score_per = 0;
+	//score_per = 0;
+	score_up = 0;
 	Mark_per = 0;
 	score_counter = 0;
 	score_total = 0;
@@ -70,23 +83,28 @@ void Score_total_Finalize(void)
 
 void Score_total_Update(void)
 {
+	//コントローラー情報があるときのみ取得
+	if (pJoyDevice)
+	{
+		pJoyDevice->GetDeviceState(sizeof(DIJOYSTATE2), &js);
+	}
 	//スコア画面でカウンタースタート
 	score_counter++;
 
 
 
 	//ゲージの長さに対する制圧率
-	Enemy_Percent = 762 * CEnemy::Get_EnemyPer();
-	Percent = 100 * CEnemy::Get_EnemyPer();
+	Enemy_Percent = 762 * score_per;
+	Percent = 100 * score_per;
 	//score_total = CUserInterFace::Get_UIScore();
 
 	//ゲームオーバー
-	if (CEnemy::Get_EnemyPer() * 100 < 0)
+	if (score_per * 100 < 0)
 	{
 		Clear_flg = false;
 	}
 	//ゲームクリアー
-	if (CEnemy::Get_EnemyPer() * 100 >= 0)
+	if (score_per * 100 >= 0)
 	{
 		Clear_flg = true;
 	}
@@ -94,7 +112,7 @@ void Score_total_Update(void)
 	//	スペースでタイトル画面へ
 	if (!g_bend)
 	{
-		if (Keyboard_IsTrigger(DIK_SPACE))
+		if (Keyboard_IsTrigger(DIK_SPACE) && js.rgbButtons[0] && score_counter >= 700 || js.rgbButtons[0] && score_counter >= 700)
 		{
 			Fade_Start(true, 3, 0, 0, 0);
 			g_bend = true;
@@ -149,7 +167,7 @@ void Score_total_Draw(void)
 
 		//ゲージ
 		pScore_total->Sprite_Draw(CTexture::TEX_MP3, 631, 570, 0, 0, 791, 54, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
-		pScore_total->Sprite_Draw(CTexture::TEX_HP3, 631, 570, 0, 0, score_per, 54, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
+		pScore_total->Sprite_Draw(CTexture::TEX_HP3, 631, 570, 0, 0, score_up, 54, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
 		pScore_total->Sprite_Draw(CTexture::TEX_UI_BER, 500, 537, 0, 0, 1024, 172, 0.0f, 0.0f, 1.0f, 0.8f, 0.0f);
 		//指標					
 		pScore_total->Sprite_Draw(CTexture::TEX_UI_MEMORI, 614 + 532, 550, 0, 0, 43, 38, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
@@ -159,9 +177,9 @@ void Score_total_Draw(void)
 		ResultScore_Draw02(1540, 500, (int)Percent, 2, 0);
 
 		//指標とゲージ動かしてるとこ
-		if (score_per <= Enemy_Percent)
+		if (score_up <= Enemy_Percent)
 		{
-			score_per += 3;
+			score_up += 3;
 		}
 
 
@@ -209,4 +227,7 @@ void Score_total_Draw(void)
 
 }
 
-
+void ScorePer_Set(float score)
+{
+	score_per = score;
+}

@@ -116,7 +116,7 @@ void Title_Finalize(void)
 	/*C3DObj::DeleteAll();			//	3Dオブジェクト全消去
 	CGameObj::DeleteAll2D();
 	C3DObj::Model_Finalize();*/
-	CPlayer::TitleFlag_Change(false);
+	C3DObj::TitleFlag_Change(false);
 	CUserInterFace::TitleFlag_Change(false);
 	CPlayer::Reset_KoCount();
 	_CrtDumpMemoryLeaks();
