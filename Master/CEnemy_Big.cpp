@@ -64,7 +64,9 @@ CEnemy_Big::~CEnemy_Big()
 
 void CEnemy_Big::Initialize(ENEMY_EMITTER *Emitter)
 {
-	SkinMesh.InitThing(m_pD3DDevice, &Thing, ANIME_MODEL_FILES[MODELL_ANIME_BIG].filename);
+	char animefile[TEXTURE_FILENAME_MAX] = {};
+	strcpy(animefile, C3DObj::Get_AnimeFileName(MODELL_ANIME_BIG));
+	SkinMesh.InitThing(m_pD3DDevice, &Thing, animefile);
 	Thing.Sphere.fRadius = 6.0f;
 	Thing.Sphere.vCenter = D3DXVECTOR3(0, 1.2f, 0);
 	SkinMesh.InitSphere(m_pD3DDevice, &Thing);
@@ -194,6 +196,7 @@ void CEnemy_Big::Update(void)
 				CPlayer::Add_KoCount();
 				//C3DObj_delete();
 				m_Enable = false;
+				m_EnemyEnableNum--;
 			}
 		}
 	}

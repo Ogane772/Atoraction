@@ -76,17 +76,17 @@ void Score_total_Update(void)
 
 
 	//ゲージの長さに対する制圧率
-	Enemy_Percent = 762 * Get_EnemyPer();
-	Percent = 100 * Get_EnemyPer();
+	Enemy_Percent = 762 * CEnemy::Get_EnemyPer();
+	Percent = 100 * CEnemy::Get_EnemyPer();
 	//score_total = CUserInterFace::Get_UIScore();
-	
+
 	//ゲームオーバー
-	if (Get_EnemyPer() * 100 < 70)
+	if (CEnemy::Get_EnemyPer() * 100 < 0)
 	{
 		Clear_flg = false;
 	}
 	//ゲームクリアー
-	if (Get_EnemyPer() * 100 >= 70)
+	if (CEnemy::Get_EnemyPer() * 100 >= 0)
 	{
 		Clear_flg = true;
 	}
@@ -118,94 +118,94 @@ void Score_total_Update(void)
 
 void Score_total_Draw(void)
 {
-	
+
 	pScore_total->m_Sprite_Draw(CTexture::TEX_SCREENSHOT, 0, 0, 0, 0, pScore_total->Texture_GetWidth(CTexture::TEX_SCREENSHOT, 1), pScore_total->Texture_GetHeight(CTexture::TEX_SCREENSHOT, 1));
 
 	//撃破数
-		//文字
-		pScore_total->m_Sprite_Draw(CTexture::TEX_RESULT_BREAK, 100, 100, 0, 0, pScore_total->Texture_GetWidth(CTexture::TEX_RESULT_BREAK, 1), pScore_total->Texture_GetHeight(CTexture::TEX_RESULT_BREAK, 1));
-		//値
-		if (score_counter >= 100)
-		{
-			ResultScore_Draw(500, 100, CPlayer::Get_KoCount(), 5,CTexture::TEX_TOTAL, 0);
-		}
+	//文字
+	pScore_total->m_Sprite_Draw(CTexture::TEX_RESULT_BREAK, 100, 340, 0, 0, pScore_total->Texture_GetWidth(CTexture::TEX_RESULT_BREAK, 1), pScore_total->Texture_GetHeight(CTexture::TEX_RESULT_BREAK, 1));
+	//値
+	if (score_counter >= 100)
+	{
+		ResultScore_Draw02(500, 330, CPlayer::Get_KoCount(), 3, CTexture::TEX_UI_GEKIHA, 0);
+	}
 
 
-		// 線
-			//文字
-			pScore_total->m_Sprite_Draw(CTexture::TEX_RESULT_BOU, 50, 600, 0, 0, pScore_total->Texture_GetWidth(CTexture::TEX_RESULT_BOU, 1), pScore_total->Texture_GetHeight(CTexture::TEX_RESULT_BOU, 1));
+	// 線
+	//文字
+	pScore_total->m_Sprite_Draw(CTexture::TEX_RESULT_BOU, 50, 710, 0, 0, pScore_total->Texture_GetWidth(CTexture::TEX_RESULT_BOU, 1), pScore_total->Texture_GetHeight(CTexture::TEX_RESULT_BOU, 1));
 
 	//制圧率
-		//文字
-		pScore_total->m_Sprite_Draw(CTexture::TEX_RESULT_PER, 100, 400, 0, 0, pScore_total->Texture_GetWidth(CTexture::TEX_RESULT_PER, 1), pScore_total->Texture_GetHeight(CTexture::TEX_RESULT_PER, 1));
-		if (score_counter >= 200)
+	//文字
+	pScore_total->m_Sprite_Draw(CTexture::TEX_RESULT_PER, 100, 510, 0, 0, pScore_total->Texture_GetWidth(CTexture::TEX_RESULT_PER, 1), pScore_total->Texture_GetHeight(CTexture::TEX_RESULT_PER, 1));
+	if (score_counter >= 200)
+	{
+		////ゲージ
+		//pScore_total->m_Sprite_Draw(CTexture::TEX_PER_GAUGE01, 530, 465, 0, 0, pScore_total->Texture_GetWidth(CTexture::TEX_PER_GAUGE01, 1), pScore_total->Texture_GetHeight(CTexture::TEX_PER_GAUGE01, 1));
+		//pScore_total->m_Sprite_Draw(CTexture::TEX_PER_GAUGE02, 530, 465, 0, 0, score_per * 2, pScore_total->Texture_GetHeight(CTexture::TEX_PER_GAUGE02, 1));
+		////指標
+		//pScore_total->m_Sprite_Draw(CTexture::TEX_BER, 510 + score_per * 2, 440, 0, 0, pScore_total->Texture_GetWidth(CTexture::TEX_BER, 1), pScore_total->Texture_GetHeight(CTexture::TEX_BER, 1));
+
+
+		//ゲージ
+		pScore_total->Sprite_Draw(CTexture::TEX_MP3, 631, 570, 0, 0, 791, 54, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
+		pScore_total->Sprite_Draw(CTexture::TEX_HP3, 631, 570, 0, 0, score_per, 54, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
+		pScore_total->Sprite_Draw(CTexture::TEX_UI_BER, 500, 537, 0, 0, 1024, 172, 0.0f, 0.0f, 1.0f, 0.8f, 0.0f);
+		//指標					
+		pScore_total->Sprite_Draw(CTexture::TEX_UI_MEMORI, 614 + 532, 550, 0, 0, 43, 38, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
+		pScore_total->Sprite_Draw(CTexture::TEX_UI_MEMORI, 614 + 532, 610, 0, 0, 43, 38, 43 / 2, 38 / 2, 1.0f, 1.0f, D3DXToRadian(180));
+
+		//値
+		ResultScore_Draw02(1540, 500, (int)Percent, 2, 0);
+
+		//指標とゲージ動かしてるとこ
+		if (score_per <= Enemy_Percent)
 		{
-			////ゲージ
-			//pScore_total->m_Sprite_Draw(CTexture::TEX_PER_GAUGE01, 530, 465, 0, 0, pScore_total->Texture_GetWidth(CTexture::TEX_PER_GAUGE01, 1), pScore_total->Texture_GetHeight(CTexture::TEX_PER_GAUGE01, 1));
-			//pScore_total->m_Sprite_Draw(CTexture::TEX_PER_GAUGE02, 530, 465, 0, 0, score_per * 2, pScore_total->Texture_GetHeight(CTexture::TEX_PER_GAUGE02, 1));
-			////指標
-			//pScore_total->m_Sprite_Draw(CTexture::TEX_BER, 510 + score_per * 2, 440, 0, 0, pScore_total->Texture_GetWidth(CTexture::TEX_BER, 1), pScore_total->Texture_GetHeight(CTexture::TEX_BER, 1));
-		
-
-			//ゲージ
-			pScore_total->Sprite_Draw(CTexture::TEX_MP3, 631, 470, 0, 0, 791, 54, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
-			pScore_total->Sprite_Draw(CTexture::TEX_HP3, 631, 470, 0, 0, score_per, 54, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
-			pScore_total->Sprite_Draw(CTexture::TEX_UI_BER, 500, 437, 0, 0, 1024, 172, 0.0f, 0.0f, 1.0f, 0.8f, 0.0f);
-			//指標					
-			pScore_total->Sprite_Draw(CTexture::TEX_UI_MEMORI, 614 + 532, 450, 0, 0, 43, 38, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f);
-			pScore_total->Sprite_Draw(CTexture::TEX_UI_MEMORI, 614 + 532, 510, 0, 0, 43, 38, 43 / 2, 38 / 2, 1.0f, 1.0f, D3DXToRadian(180));
-
-			//値
-			ResultScore_Draw(1500, 380, (int)Percent, 2, 1);
-
-			//指標とゲージ動かしてるとこ
-			if (score_per <= Enemy_Percent)
-			{
-				score_per+= 3;
-			}
-
-			
+			score_per += 3;
 		}
-		
-		
 
 
-	
+	}
+
+
+
+
+
 
 	//合計
-		//文字
-		pScore_total->m_Sprite_Draw(CTexture::TEX_RESULT_TOTAL, 140, 700, 0, 0, pScore_total->Texture_GetWidth(CTexture::TEX_RESULT_TOTAL, 1), pScore_total->Texture_GetHeight(CTexture::TEX_RESULT_TOTAL, 1));
-		
-		if (score_counter >= 450)
+	//文字
+	pScore_total->m_Sprite_Draw(CTexture::TEX_RESULT_TOTAL, 140, 770, 0, 0, pScore_total->Texture_GetWidth(CTexture::TEX_RESULT_TOTAL, 1), pScore_total->Texture_GetHeight(CTexture::TEX_RESULT_TOTAL, 1));
+
+	if (score_counter >= 450)
+	{
+		if (Clear_flg == false)
 		{
-			if (Clear_flg == false)
+			//値
+			ResultScore_Draw02(600, 770, score_total, 5, 0);
+			//スコアまで
+			if (score_total < C3DObj::Get_Score())
 			{
-				//値
-				ResultScore_Draw(600, 710, score_total, 5, 1);
-				//スコアまで
+				score_total += 100;
+			}
+		}
+		if (Clear_flg == true)
+		{
+
+			if (score_counter >= 500)
+			{
+				//クリアボーナス用
+				pScore_total->m_Sprite_Draw(CTexture::TEX_CLEAR_BONUS, 1460, 700, 0, 0, pScore_total->Texture_GetWidth(CTexture::TEX_CLEAR_BONUS, 1), pScore_total->Texture_GetHeight(CTexture::TEX_CLEAR_BONUS, 1));
+				//2倍までプラス
 				if (score_total < C3DObj::Get_Score())
 				{
 					score_total += 100;
 				}
 			}
-			if (Clear_flg == true)
-			{
 
-				if (score_counter >= 500)
-				{
-					//クリアボーナス用
-					pScore_total->m_Sprite_Draw(CTexture::TEX_CLEAR_BONUS, 1260, 580, 0, 0, pScore_total->Texture_GetWidth(CTexture::TEX_CLEAR_BONUS, 1), pScore_total->Texture_GetHeight(CTexture::TEX_CLEAR_BONUS, 1));
-					//2倍までプラス
-					if (score_total < C3DObj::Get_Score())
-					{
-						score_total += 100;
-					}
-				}
-
-				//値
-				ResultScore_Draw(600, 710, C3DObj::Get_Score() + score_total, 5, 0);
-			}
+			//値
+			ResultScore_Draw02(600, 760, C3DObj::Get_Score() + score_total, 5, 0);
 		}
+	}
 
 }
 

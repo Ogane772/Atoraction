@@ -31,7 +31,7 @@
 //	Ã“I•Ï”
 //=============================================================================
 
-CAttraction *CAttraction::m_pAttraction[ATTRACTION_MAX] = {};
+//CAttraction *CAttraction::m_pAttraction[ATTRACTION_MAX] = {};
 int CAttraction::m_AttractionNum[TYPE_MAX] = {};
 bool CAttraction::createchack;
 //=============================================================================
@@ -89,11 +89,6 @@ void CAttraction::Create(int nType)
 		Cwheel *m_pAttraction = new Cwheel;
 		createchack = true;
 	}
-	if (nType == AT_COASTER)
-	{
-		Coaster *m_pAttraction = new Coaster;
-		createchack = true;
-	}
 	if (nType == AT_POPCORN)
 	{
 		Standby *m_pAttraction = new Standby(nType);
@@ -121,23 +116,23 @@ C3DObj* CAttraction::Get_Attraction(int index)
 }
 CAttraction* CAttraction::Get_Attraction(int index, int type)
 {
-	if (m_pAttraction[index])
+/*	if (m_pAttraction[index])
 	{
 		if (m_pAttraction[index]->m_Type == type)
 		{
 			return m_pAttraction[index];
 		}
-	}
+	}*/
 	return NULL;
 }
 
 void CAttraction::Attraction_Finalize(int index)
 {
-	if (m_pAttraction[index])
+/*	if (m_pAttraction[index])
 	{
 		delete m_pAttraction[index];
 		m_pAttraction[index] = NULL;
-	}
+	}*/
 }
 
 
@@ -170,13 +165,16 @@ void CAttraction::OrnamentDamage(THING_NORMAL nomal)
 		C3DObj *ornament = COrnament::Get_Ornament(i);
 		if (ornament)
 		{
-			//Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
-			int type = ornament->Get_OrnamentType();
-			THING_NORMAL thingornament = ornament->GetNormalModel();
-			if (C3DObj::Collision_NomalVSNormal(&thingornament, &nomal))
+			if (ornament->Get_Enable())
 			{
-				ornament->DamageFlag_Change();
-				ornament->Position_Keep(m_mtxWorld);
+				//Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+				int type = ornament->Get_OrnamentType();
+				THING_NORMAL thingornament = ornament->GetNormalModel();
+				if (C3DObj::Collision_NomalVSNormal(&thingornament, &nomal))
+				{
+					ornament->DamageFlag_Change();
+					ornament->Position_Keep(m_mtxWorld);
+				}
 			}
 		}
 	}

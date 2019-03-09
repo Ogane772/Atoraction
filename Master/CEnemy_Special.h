@@ -32,6 +32,7 @@ private:
 
 	void Special_Move(void);
 	void Special_Attack(void);
+	bool Chase_Attraction(void);
 	bool m_Stop = false;
 };
 #endif;

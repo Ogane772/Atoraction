@@ -27,6 +27,7 @@ protected:
 
 private:
 	int User_angle;
+	static bool cnt_flg;
 	static bool m_TitleFlag;
 };
 

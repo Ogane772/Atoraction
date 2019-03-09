@@ -129,7 +129,7 @@ void CCamera::Update(void)
 	C3DObj *pPlayer = CPlayer::Get_Player();
 	bool *standby = C3DObj::GetCosterModeStandby();
 	at = pPlayer->Get_mtxWorld();
-	
+
 	m_at.x = at._41;
 	m_at.y = at._42 + 2.3f;
 	m_at.z = at._43;
@@ -217,8 +217,8 @@ void CCamera::Update(void)
 	}
 	/*if ((Keyboard_IsRelease(DIK_J)))
 	{
-		m_Vibration = false;
-		m_VibCount = 0;
+	m_Vibration = false;
+	m_VibCount = 0;
 	}*/
 	//m_CameraPos = m_at - m_Front * m_AtLength;
 	if (C3DObj::GetW_coaster() == false)

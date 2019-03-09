@@ -32,7 +32,7 @@
 //=============================================================================
 static bool g_bend;				//	フェードインアウトフラグ
 static bool g_gameend;
-static float EnemyPer;
+
 //=============================================================================
 //	初期化処理
 //=============================================================================
@@ -67,7 +67,9 @@ void Game_Finalize(void)
 {
 	/*C3DObj::DeleteAll();			//	3Dオブジェクト全消去
 	CGameObj::DeleteAll2D();			//	2Dオブジェクト全消去
+
 	C3DObj::Model_Finalize();*/
+	CEnemy::Reset_EnemyEnableNum();
 	C3DObj::FinalizeAll();
 	CCamera::Dalete_Camera();
 	CGameObj::FrameCountReset();	//	フレームカウントリセット
@@ -83,7 +85,7 @@ void Game_Updata(void)
 	C3DObj::UpdateAll();	//	3Dオブジェクト更新
 	CGameObj::UpdateAll();	//	2Dオブジェクト更新
 	//COrnament::Create();    //  オブジェクト生成
-	EnemyPer = 1.0f - (float)CEnemy::Get_EnemyNum(0) / CEnemy::Get_EnemyMaxNum(); //敵の数を取得
+	
 	if (g_gameend)		//	FraemCountがGAMEENDになるまでカウントUP　なったら終了
 	{
 		if (!g_bend)
@@ -140,7 +142,3 @@ bool Get_Gameend(void)
 	return g_gameend;
 }
 
-float Get_EnemyPer(void)
-{
-	return EnemyPer;
-}

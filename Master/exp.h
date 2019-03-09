@@ -9,6 +9,7 @@ enum Effect
 	HIT,	   //普通のヒット
 	IMPACT_13, //候補
 	SURASYU,//スラッシュ
+	HEAL,
 };
 void Exp_Init(void);
 void Exp_Update(void);

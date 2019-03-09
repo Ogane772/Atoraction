@@ -133,7 +133,7 @@ void Manual_Draw(void)
 	// 2ページ目
 	if (ManualPage == 2)
 	{
-		C2DObj::SpriteDraw(CTexture::TEX_CHUTO02,0, 0);
+		C2DObj::SpriteDraw(CTexture::TEX_CHUTO02, 0, 0);
 	}
 	// 3ページ目
 	if (ManualPage == 3)

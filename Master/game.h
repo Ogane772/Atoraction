@@ -8,5 +8,5 @@ void Game_Finalize(void);
 void Game_Updata(void);
 void Game_Draw(void);
 
-float Get_EnemyPer(void);
+
 #endif //_GAME_H_

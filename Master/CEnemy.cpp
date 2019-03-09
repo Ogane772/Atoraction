@@ -51,6 +51,54 @@ CEnemy::ENEMY_MOVE CEnemy::m_EnemyMove[8] = {
 CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 {
 
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 69.0f), DIRE_SOUTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(1.0f, 0.0f , 70.0f), DIRE_SOUTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(2.0f, 0.0f , 72.0f), DIRE_SOUTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(3.0f, 0.0f , 71.0f), DIRE_SOUTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(4.0f, 0.0f , 73.0f), DIRE_SOUTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(-1.0f, 0.0f , 70.0f), DIRE_SOUTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(-2.0f, 0.0f , 72.0f), DIRE_SOUTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(-3.0f, 0.0f , 71.0f), DIRE_SOUTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(-4.0f, 0.0f , 73.0f), DIRE_SOUTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(-5.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+
+
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 19.0f), DIRE_WEST,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(74.0f, 0.0f , 18.0f), DIRE_WEST,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(73.0f, 0.0f , 17.0f), DIRE_WEST,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(72.0f, 0.0f , 16.0f), DIRE_WEST,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(71.0f, 0.0f , 15.0f), DIRE_WEST,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(72.0f, 0.0f , 14.0f), DIRE_WEST,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(73.0f, 0.0f , 13.0f), DIRE_WEST,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(74.0f, 0.0f , 12.0f), DIRE_WEST,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 11.0f), DIRE_WEST,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(76.0f, 0.0f , 10.0f), DIRE_WEST,false },
+
+
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , -65.0f), DIRE_NORTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(2.0f, 0.0f , -70.0f), DIRE_NORTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(5.0f, 0.0f , -75.0f), DIRE_NORTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(8.0f, 0.0f , -60.0f), DIRE_NORTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(10.0f, 0.0f , -65.0f), DIRE_NORTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(-2.0f, 0.0f , -70.0f), DIRE_NORTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(-5.0f, 0.0f , -75.0f), DIRE_NORTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(-8.0f, 0.0f , -70.0f), DIRE_NORTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(-10.0f, 0.0f , -65.0f), DIRE_NORTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(-12.0f, 0.0f , -60.0f), DIRE_NORTH,false },
+
+
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -19.0f), DIRE_EAST,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(-74.0f, 0.0f , -18.0f), DIRE_EAST,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(-73.0f, 0.0f , -17.0f), DIRE_EAST,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(-72.0f, 0.0f , -16.0f), DIRE_EAST,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(-71.0f, 0.0f , -15.0f), DIRE_EAST,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(-72.0f, 0.0f , -14.0f), DIRE_EAST,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(-73.0f, 0.0f , -13.0f), DIRE_EAST,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(-74.0f, 0.0f , -12.0f), DIRE_EAST,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -11.0f), DIRE_EAST,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(-76.0f, 0.0f , -10.0f), DIRE_EAST,false },
+
+	/*
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
@@ -97,7 +145,7 @@ CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 
 
 
-/*	{ 300 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
+	{ 300 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
 	{ 300 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
 	{ 300 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
 	{ 300 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
@@ -178,14 +226,15 @@ CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 	{ 3800 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
 	{ 3800 , TYPE_SPECIAL,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
 	{ 3800 , TYPE_MIDDLE,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
-	{ 3800 , TYPE_BIG,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },*/
-
+	{ 3800 , TYPE_BIG,D3DXVECTOR3(-75.0f, 0.0f , -1.5f), DIRE_SOUTH,false },
+	*/
 };
 
 int CEnemy::m_ENEMY_MAX = sizeof(CEnemy_Small::m_EnemyEmitter) / sizeof(m_EnemyEmitter[0]);
 
 int CEnemy::m_EnemyNum[TYPE_MAX] = {};
-
+int CEnemy::m_EnemyEnableNum = 0;
+float CEnemy::EnemyPer;
 //=============================================================================
 //	¶¬
 //=============================================================================
@@ -588,7 +637,7 @@ void CEnemy::Ornament_Check(void)
 		pornament = COrnament::Get_Ornament(i);
 		if (pornament)
 		{
-			//if (pornament->Get_DrawCheck())
+			if (pornament->Get_Enable())
 			{
 				Thing.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
 				thingorna = pornament->GetNormalModel();
@@ -618,10 +667,20 @@ void CEnemy::Ornament_Check(void)
 
 void CEnemy::Enable_Check(void)
 {
-	if (m_CreateCount == m_FrameCount)
+	if (m_EnemyEnableNum < 70)
 	{
-		m_Enable = true;
-		m_EnemyNum[TYPE_ALL]++;
+		if (m_CreateCount == m_FrameCount)
+		{
+			m_Enable = true;
+			m_EnemyEnableNum++;
+		}
 	}
 
+}
+
+float CEnemy::Get_EnemyPer(void)
+{
+	
+	EnemyPer = 1.0f - (float)m_EnemyEnableNum / 70.0f; //“G‚Ì”‚ðŽæ“¾
+  	return EnemyPer;
 }

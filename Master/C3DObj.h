@@ -67,6 +67,8 @@ public:
 		MODELL_MERI_DODAI,
 		MODELL_MERI_UMA,
 		MODELL_KANRANSYA,
+		MODELL_GASUBONBE,
+		MODELL_POTETO,
 	}ModelFileData;
 	enum ANIME_MODEL
 	{
@@ -105,6 +107,9 @@ public:
 	bool Get_AttacFlag(void) { return m_AttakFlag; }
 	int Get_OrnamentType(void) { return m_OrnamentType; }
 	bool Get_DamageFlag(void) { return m_DamageFlag; }
+	static char* Get_AnimeFileName(int index) { return ANIME_MODEL_FILES[index].filename; }
+
+
 	static bool boRenderSphere;//当たり判定を可視化するかどうか？ true 可視化
 	//	モデル読み込み
 	static HRESULT InitModelLoad();
@@ -139,10 +144,11 @@ public:
 	static bool GetW_coaster(void) { return GetWCos; }
 	static bool *GetCosterModeStandby(void) { return &g_CosterModeStandby; }//コースターを呼んでるとき; }//コースターを呼んでるとき
 protected:
-	THING *Thing_Anime_model;//アニメモデル情報
+	//THING *Thing_Anime_model;//アニメモデル情報
 	//static THING Thing_Anime[];//読み込むモデルの最大数+1
 
 	THING_NORMAL Thing_Normal_model;//通常モデル情報
+
 	D3DXMATRIX m_mtxWorld;			//	ワールド変換用行列
 	D3DXMATRIX m_mtxTranslation;	//	移動行列
 	D3DXMATRIX m_mtxRotation;		//	移動行列
@@ -179,6 +185,23 @@ protected:
 	D3DXTRACK_DESC TrackDesc;
 	SKIN_MESH SkinMesh;
 
+
+
+	
+	//static THING Thing[];//読み込むモデルの最大数+1
+	THING Thing;//読み込むモデルの最大数+1
+
+	
+
+	void Add_Mp(int mp);	//	MP加算
+	void Add_Hp(void);
+	void Add_Score(int score) { m_TotalScore += score; }	//	スコア加算
+	void Attraction_Delete(void);
+	int m_OrnamentType;
+	
+	int m_AnimationType;
+private:
+	
 	//	モデルデータの構造体
 	typedef struct
 	{
@@ -194,23 +217,9 @@ protected:
 	//	使いたいモデルの数だけ書く
 	static MaterialFileData NORMAL_MODEL_FILES[];
 	static MaterialFileData2 ANIME_MODEL_FILES[];
-
-	static THING_NORMAL Thing_Normal[];//読み込むモデルの最大数+1
-	//static THING Thing[];//読み込むモデルの最大数+1
-	THING Thing;//読み込むモデルの最大数+1
-
 	static int MODEL_FILES_MAX;	//	テクスチャ構造体総数
 	static int ANIME_MODEL_FILES_MAX;	//	テクスチャ構造体総数
-
-	void Add_Mp(int mp);	//	MP加算
-	void Add_Hp(void);
-	void Add_Score(int score) { m_TotalScore += score; }	//	スコア加算
-	void Attraction_Delete(void);
-	int m_OrnamentType;
-	
-	int m_AnimationType;
-private:
-	
+	static THING_NORMAL Thing_Normal[];//読み込むモデルの最大数+1
 	static HRESULT InitThing(THING_NORMAL *pThing, LPSTR szXFileName);//ノーマルモデルの読み込み
 	int m_3DObjIndex;		//	3Dオブジェクトインデックス
 	int m_3DObjType;		//	3Dオブジェクトタイプ

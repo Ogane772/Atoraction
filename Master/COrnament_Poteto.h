@@ -1,19 +1,19 @@
 //////////////////////////////////////////////////
 ////
-////	オブジェクト(風船)クラス
+////	オブジェクト(ポテト像)クラス
 ////
 //////////////////////////////////////////////////
 
-#ifndef _CORNAMENT_HUSEN_H_
-#define _CORNAMENT_HUSEN_H_
+#ifndef _CORNAMENT_POTETO_H_
+#define _CORNAMENT_POTETO_H_
 
 #include "COrnament.h"
 
-class COrnament_HUSEN : public COrnament
+class COrnament_Poteto : public COrnament
 {
 public:
-	COrnament_HUSEN(ORNAMENT_EMITTER *Emitter);
-	~COrnament_HUSEN();
+	COrnament_Poteto(ORNAMENT_EMITTER *Emitter);
+	~COrnament_Poteto();
 
 	void Update(void);
 	void Draw(void);
@@ -21,12 +21,9 @@ public:
 	void Damage(void);
 	bool Get_DrawCheck(void) { return false; }
 private:
-	void Husen_Create(void);
+	void Dust_Create(void);
 	void Initialize(ORNAMENT_EMITTER *Emitter);
 	bool m_playercheck;
-	bool m_angle;
-	bool hit;
-	float updown;
-
+	int m_DrawCount;
 };
-#endif;#pragma once
+#endif;

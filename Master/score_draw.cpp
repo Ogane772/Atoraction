@@ -10,6 +10,8 @@
 
 #define NUMBER_SIZE (32)
 #define SCORE_NUMBER_SIZE (130)
+#define SCORE_NUMBER_SIZE_RED (180)
+#define SCORE_NUMBER_SIZE_BREAK (225)
 #define MP_NUMBER_SIZE (45)
 #define MP_NUMBER_SIZE2 (80) //MPÇÃâ°ÇÃêîéö
 //=============================================================================
@@ -164,14 +166,14 @@ void Time_Draw(float x, float y, int score, int fig, int color, bool zero)
 	{
 		int number = score % 10;
 		score /= 10;
-		Number_Draw4(x + SCORE_NUMBER_SIZE*(fig + 1), y, number, color);
+		Number_Draw_Leader(x + SCORE_NUMBER_SIZE*(fig + 1), y, number, color);
 		for (int i = 0; i < fig - 1; i++)
 		{
 			if (score > 0)
 			{
 				int number = score % 10;
 				score /= 10;
-				Number_Draw4(x + SCORE_NUMBER_SIZE*(fig - i), y, number, color);
+				Number_Draw_Leader(x + SCORE_NUMBER_SIZE*(fig - i), y, number, color);
 			}
 		}
 	}
@@ -181,11 +183,51 @@ void Time_Draw(float x, float y, int score, int fig, int color, bool zero)
 		{
 			int number = score % 10;
 			score /= 10;
-			Number_Draw4(x + SCORE_NUMBER_SIZE*(fig - (i + 1)), y, number, color);
+			Number_Draw_Leader(x + SCORE_NUMBER_SIZE*(fig - (i + 1)), y, number, color);
 		}
 	}
 }
 
+
+void Time_Draw02(float x, float y, int score, int fig, int color, bool zero)
+{
+
+	int count_stop_score = 1;
+	for (int i = 0; i < fig; i++)
+	{
+		count_stop_score *= 10;
+	}
+	if (score >= count_stop_score)
+	{
+		score = count_stop_score - 1;
+	}
+
+
+	if (!zero)
+	{
+		int number = score % 10;
+		score /= 10;
+		Number_Draw_Leader_red(x + SCORE_NUMBER_SIZE_RED*(fig + 1), y, number, color);
+		for (int i = 0; i < fig - 1; i++)
+		{
+			if (score > 0)
+			{
+				int number = score % 10;
+				score /= 10;
+				Number_Draw_Leader_red(x + SCORE_NUMBER_SIZE_RED*(fig - i), y, number, color);
+			}
+		}
+	}
+	else
+	{
+		for (int i = 0; i < fig; i++)
+		{
+			int number = score % 10;
+			score /= 10;
+			Number_Draw_Leader_red(x + SCORE_NUMBER_SIZE_RED*(fig - (i + 1)), y, number, color);
+		}
+	}
+}
 
 void Num_Draw(float x, float y, int score, int fig, int color, bool zero)
 {
@@ -205,14 +247,14 @@ void Num_Draw(float x, float y, int score, int fig, int color, bool zero)
 	{
 		int number = score % 10;
 		score /= 10;
-		Number_Draw2(x + SCORE_NUMBER_SIZE*(fig + 1), y, number, color);
+		Number_Draw_Break(x + SCORE_NUMBER_SIZE*(fig + 1), y, number, color);
 		for (int i = 0; i < fig - 1; i++)
 		{
 			if (score > 0)
 			{
 				int number = score % 10;
 				score /= 10;
-				Number_Draw2(x + SCORE_NUMBER_SIZE*(fig - i), y, number, color);
+				Number_Draw_Break(x + SCORE_NUMBER_SIZE*(fig - i), y, number, color);
 			}
 		}
 	}
@@ -222,7 +264,7 @@ void Num_Draw(float x, float y, int score, int fig, int color, bool zero)
 		{
 			int number = score % 10;
 			score /= 10;
-			Number_Draw2(x + SCORE_NUMBER_SIZE*(fig - (i + 1)), y, number, color);
+			Number_Draw_Break(x + SCORE_NUMBER_SIZE*(fig - (i + 1)), y, number, color);
 		}
 	}
 }
@@ -314,10 +356,21 @@ void ResultScore_Draw(float x, float y, int score, int fig, int colornum)
 
 		int number = score % 10;
 		score /= 10;
-		Number_Draw2(x + SCORE_NUMBER_SIZE*(fig - (i + 1)), y, number, colornum);
+		Number_Draw_Leader(x + SCORE_NUMBER_SIZE_BREAK*(fig - (i + 1)), y, number, colornum);
 
 	}
+}
 
+void ResultScore_Draw02(float x, float y, int score, int fig, int colornum)
+{
+	for (int i = 0; i < fig; i++)
+	{
+
+		int number = score % 10;
+		score /= 10;
+		Number_Draw_yellow_180(x + SCORE_NUMBER_SIZE_RED*(fig - (i + 1)), y, number, colornum);
+
+	}
 }
 
 void ResultScore_Draw(float x, float y, int score, int fig, int texindex, int colornum)
@@ -330,7 +383,18 @@ void ResultScore_Draw(float x, float y, int score, int fig, int texindex, int co
 		Number_Draw_Select(x + numbersize*(fig - (i + 1)), y, number, texindex, colornum);
 
 	}
+}
 
+void ResultScore_Draw02(float x, float y, int score, int fig, int texindex, int colornum)
+{
+	for (int i = 0; i < fig; i++)
+	{
+		int numbersize = /*CTexture::Texture_GetWidth(texindex, 10);*/100;
+		int number = score % 10;
+		score /= 10;
+		Number_Draw_Select(x + 200 * (fig - (i + 1)), y, number, texindex, colornum);
+
+	}
 }
 
 int Get_TotalScore(void)

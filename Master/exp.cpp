@@ -92,6 +92,9 @@ void Exp_Set(int exp_number, float x, float y, float z, float size, float rotati
 	case SURASYU:
 		Exp_Create(x, y, z, size, rotation, CTexture::TEX_EFFECT_EFFECT_P020, 8, 4, 1600 / 8, 200 / 1, 8);
 		break;
+	case HEAL:
+		Exp_Create(x, y, z, size, rotation, CTexture::TEX_EFFECT_HEAL, 10, 4, 960 / 5, 384 / 2, 5);
+		break;
 	}
 }
 

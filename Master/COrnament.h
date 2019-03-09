@@ -27,6 +27,8 @@ public:
 		TYPE_KANRANSYA_DODAI,	//観覧車の土台	
 		TYPE_HUSEN,				//風船
 		TYPE_MERI,				//メリーゴーランド
+		TYPE_GASUBONBE,         //ガスボンベ
+		TYPE_POTETO,			//ごっつぽてと像
 		TYPE_MAX
 	};
 	
