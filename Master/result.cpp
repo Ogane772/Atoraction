@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include "score_draw.h"
 #include "common.h"
+#include "gamepad.h"
 #include "sound.h"
 #include "C3DObj.h"
 #define _CRTDBG_MAP_ALLOC
@@ -35,6 +36,9 @@ void Check(void);
 
 C2DObj *presult;
 C2DObj *presult2;
+static DIJOYSTATE2 js;
+static LPDIRECTINPUTDEVICE8 pJoyDevice;
+static HRESULT hr;
 //=============================================================================
 //	初期化処理
 //=============================================================================
@@ -48,7 +52,12 @@ void Result_Initialize(void)
 	g_bend = false;
 	count = 0;
 	DrawCount = 0;
-
+	js = { 0 };
+	pJoyDevice = *JoyDevice_Get();
+	if (pJoyDevice)
+	{
+		hr = pJoyDevice->Acquire();
+	}
 	for (int i = 0;i < 7;i++)
 	{
 		g_ranking[i].score = 0;
@@ -78,10 +87,15 @@ void Result_Finalize(void)
 
 void Result_Update(void)
 {
+	//コントローラー情報があるときのみ取得
+	if (pJoyDevice)
+	{
+		pJoyDevice->GetDeviceState(sizeof(DIJOYSTATE2), &js);
+	}
 	//	スペースでタイトル画面へ
 	if (!g_bend)
 	{
-		if (Keyboard_IsTrigger(DIK_SPACE))
+		if (Keyboard_IsTrigger(DIK_SPACE) || js.rgbButtons[0])
 		{
 			PlaySound(ENTER_SE);
 			//PlaySound(SOUND_LABEL_SELECT);

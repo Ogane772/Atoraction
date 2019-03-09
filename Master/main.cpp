@@ -294,7 +294,7 @@ bool Begin(HINSTANCE hInstance, HWND hWnd)
 
 
 	//@ƒV[ƒ“‚Ì‰Šú‰»
-	Scene_Initialize(SCENE_INDEX_GAME);
+	Scene_Initialize(SCENE_INDEX_TITLE);
 
 	return true;
 }

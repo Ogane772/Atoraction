@@ -97,7 +97,14 @@ void CUserInterFace::Draw(void)
 		int stock = playerget->Get_MpStock();
 		Sprite_Draw(TEX_UI_DIAMOND, 325.0f, HP_Y + 95, 0, 0, 111, 121, 0.0f, 0.0f, 0.7f, 0.7f, 0.0f);
 		Sprite_Draw(TEX_UI_X, 385.0f, HP_Y + 115, 0, 0, 81.0f, 94.0f, 0.0f, 0.0f, 0.5f, 0.5f, 0.0f);
-		Num_Draw3(170.0f, HP_Y + 100, stock, 2, 0, false);
+		if (stock >= 10)
+		{
+			Num_Draw3(315.0f, HP_Y + 100, stock, 2, 0, false);
+		}
+		else
+		{
+			Num_Draw3(270.0f, HP_Y + 100, stock, 2, 0, false);
+		}
 		//Sprite_Draw(TEX_STOCK, MP_MAX * 6, 60, 0, 0, CTexture::Texture_GetWidth(TEX_STOCK, 1), CTexture::Texture_GetHeight(TEX_STOCK, 1));
 		//Mp_Draw(MP_MAX * 6, 80, stock, 2, 0);
 

@@ -53,7 +53,7 @@ public:
 	static C3DObj *Get_Player(void);
 	bool Get_DrawCheck(void) { return m_DrawCheck; }
 	static bool GetCoaster_Enable(void) { return g_CosterMode; };
-	static void TitleFlag_Change(bool change) { m_TitleFlag = change; }
+	
 protected:
 
 
@@ -102,7 +102,7 @@ private:
 	bool right_trigger = false;
 	bool left_trigger = false;
 	bool right_on;//右スティック入力確認
-	static bool m_TitleFlag;
+	
 };
 
 
