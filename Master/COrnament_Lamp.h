@@ -22,9 +22,7 @@ public:
 	void PlayerDebug(void);
 	bool Get_DrawCheck(void) { return false; }
 private:
-	void Lamp_Create(void);
 	void Initialize(ORNAMENT_EMITTER *Emitter);
-	bool m_playercheck;
 	int m_DrawCount;
 };
 #endif;

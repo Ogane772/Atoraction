@@ -5,7 +5,7 @@
 #include <d3dx9.h>
 
 #define PLAYER_MAX (2)
-#define MP_MAX (30)
+#define MP_MAX (15)
 #define HP_MAX (50)
 //アトラクション待機時間
 #define COOLTIME_COFFEE   (300.0f)

@@ -30,7 +30,7 @@ static bool g_bend = false;	//	フェードインアウトフラグ
 							//コントローラーに使う変数
 static float f;
 static float f2;
-
+static int counter;
 static int a;
 static int b;
 
@@ -60,7 +60,7 @@ C2DObj *ptitle;
 void Title_Initialize(void)
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-
+	counter = 0;
 	ptitle = new C2DObj;
 	g_bend = false;
 	//コントローラー情報取得
@@ -112,6 +112,7 @@ void Title_Initialize(void)
 
 void Title_Finalize(void)
 {
+	counter = 0;
 	delete ptitle;
 	/*C3DObj::DeleteAll();			//	3Dオブジェクト全消去
 	CGameObj::DeleteAll2D();
@@ -182,6 +183,7 @@ void Title_Update(void)
 	}
 	C3DObj::UpdateAll();	//	3Dオブジェクト更新
 	CGameObj::UpdateAll();	//	2Dオブジェクト更新
+	counter++;
 }
 
 //=============================================================================
@@ -193,7 +195,14 @@ void Title_Draw(void)
 
 	C3DObj::DrawAll();		//	3Dオブジェクト描画
 	CGameObj::DrawAll();	//	2Dオブジェクト描画
-	ptitle->Sprite_Draw(CTexture::TEX_PUSHBUTTON, 400, 700, 0, 0, ptitle->Texture_GetWidth(CTexture::TEX_PUSHBUTTON, 1), ptitle->Texture_GetHeight(CTexture::TEX_PUSHBUTTON, 1));
+	if (counter <= 60)
+	{
+		ptitle->Sprite_Draw(CTexture::TEX_PUSHBUTTON, 400, 700, 0, 0, ptitle->Texture_GetWidth(CTexture::TEX_PUSHBUTTON, 1), ptitle->Texture_GetHeight(CTexture::TEX_PUSHBUTTON, 1));
+	}
+	else if (counter == 120)
+	{
+		counter = 0;
+	}
 	ptitle->Sprite_Draw(CTexture::TEX_TITLELOGO, 400, 30, 0, 0, ptitle->Texture_GetWidth(CTexture::TEX_TITLELOGO, 1), ptitle->Texture_GetHeight(CTexture::TEX_TITLELOGO, 1));
 	//テクスチャが出ない＆カメラ回転がおかしい？
 //	DebugFont_Draw(300, 50, "X = %ld , Y= %ld", js.lX, js.lY);

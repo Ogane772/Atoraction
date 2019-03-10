@@ -52,12 +52,6 @@ COrnament_Lamp::~COrnament_Lamp()
 
 }
 
-
-void COrnament_Lamp::Lamp_Create(void)
-{
-
-}
-
 void COrnament_Lamp::Initialize(ORNAMENT_EMITTER *Emitter)
 {
 	m_DrawCount = 0;

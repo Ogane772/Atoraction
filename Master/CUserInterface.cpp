@@ -110,7 +110,7 @@ void CUserInterFace::Draw(void)
 
 		//êßå¿éûä‘
 		int t = CGameObj::m_FrameCount / 60;
-		float tcount = GAMEEND / 60 - t;
+		float tcount = (float)(GAMEEND / 60 - t);
 		if ((tcount == 30) || (tcount <= 10) || (tcount == 50))
 		{
 			cnt_flg = true;
@@ -122,11 +122,11 @@ void CUserInterFace::Draw(void)
 
 		if (cnt_flg == false)
 		{
-			Time_Draw(WINDOW_WIDTH / 2 - 120, +70, tcount, 2, 0, true);
+			Time_Draw(WINDOW_WIDTH / 2 - 120, +70, (int)tcount, 2, 0, true);
 		}
 		else
 		{
-			Time_Draw02(WINDOW_WIDTH / 2 - 170, +70, tcount, 2, 0, true);
+			Time_Draw02(WINDOW_WIDTH / 2 - 170, +70, (int)tcount, 2, 0, true);
 		}
 
 		//int tt = (int)(CGameObj::m_FrameCount % 61 * 1.7);

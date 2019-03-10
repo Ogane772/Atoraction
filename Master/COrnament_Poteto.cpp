@@ -51,12 +51,6 @@ COrnament_Poteto::~COrnament_Poteto()
 
 }
 
-
-void COrnament_Poteto::Dust_Create(void)
-{
-
-}
-
 void COrnament_Poteto::Initialize(ORNAMENT_EMITTER *Emitter)
 {
 	m_DrawCount = 0;

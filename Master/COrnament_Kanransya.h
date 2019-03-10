@@ -21,7 +21,6 @@ public:
 	void Damage(void);
 	bool Get_DrawCheck(void) { return false; }
 private:
-	void Kanransya_Create(void);
 	void Initialize(ORNAMENT_EMITTER *Emitter);
 	void Ornament_Damage_Kanransya(float flyinghigh);
 	void Ornament_Flying_Kanransya(float speed);
@@ -31,7 +30,6 @@ private:
 	int m_FlyingCount;
 	D3DXVECTOR3 m_FlyingMove;
 	D3DXVECTOR3 m_FlyingMove2;
-	bool m_playercheck;
 	float angle;
 	THING_NORMAL kanransya;
 	D3DXMATRIX m_mtxWorld2;

@@ -56,7 +56,7 @@ Coaster::~Coaster()
 void Coaster::Initialize()
 {
 	m_AttractionIndex = Get_AttractionIndex(AT_ALL);
-
+	PlaySound(COASTER_SE);
 	m_Enable = true;
 
 	m_TimeKeep = m_FrameCount;
@@ -86,7 +86,6 @@ void Coaster::Update(void)
 	u = (int)(playerget->Get_Angle());
 	if (m_FrameCount - m_TimeKeep <= J_TIME)
 	{
-		PlaySound(COASTER_SE);
 		C3DObj *playerget = CPlayer::Get_Player();
 		D3DXMATRIX playermatrix = playerget->Get_mtxTranslation();
 

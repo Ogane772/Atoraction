@@ -195,7 +195,8 @@ void C3DObj::Finalize()
 //=============================================================================
 void C3DObj::UpdateAll()
 {
-	for (int i = 0; i < MAX_GAMEOBJ; i++)
+	int i;
+	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
 		GetWCos = CPlayer::GetCoaster_Enable();
 		// ポリモーフィズムによって派生クラスのUpdate()が呼ばれる
@@ -836,7 +837,6 @@ void C3DObj::Add_Hp(void)
 	C3DObj *pplayer = CPlayer::Get_Player();
 	pplayer->m_Hp++;
 	Exp_Set(HEAL, pplayer->m_mtxTranslation._41, pplayer->m_mtxTranslation._42 + 1.0f, pplayer->m_mtxTranslation._43, 3.0, 0);
-	if (pplayer->m_Hp > HP_MAX)
 	if (pplayer->m_Hp > HP_MAX)
 	{
 		pplayer->m_Hp = HP_MAX;

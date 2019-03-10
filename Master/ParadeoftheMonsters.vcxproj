@@ -270,6 +270,7 @@
     <ClInclude Include="manual.h" />
     <ClInclude Include="move.h" />
     <ClInclude Include="number.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="score_draw.h" />
@@ -279,6 +280,12 @@
     <ClInclude Include="system_timer.h" />
     <ClInclude Include="tex_animation.h" />
     <ClInclude Include="title.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ゲームループ.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="asset\gameicon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

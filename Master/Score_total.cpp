@@ -14,6 +14,7 @@
 #include "sound.h"
 #include "gamepad.h"
 #include "CEnemy.h"
+#include "sound.h"
 #define _CRTDBG_MAP_ALLOC
 
 #define new  ::new(_NORMAL_BLOCK, __FILE__, __LINE__)
@@ -99,12 +100,12 @@ void Score_total_Update(void)
 	//score_total = CUserInterFace::Get_UIScore();
 
 	//ゲームオーバー
-	if (score_per * 100 < 0)
+	if (Percent < 70)
 	{
 		Clear_flg = false;
 	}
 	//ゲームクリアー
-	if (score_per * 100 >= 0)
+	if (Percent >= 70)
 	{
 		Clear_flg = true;
 	}
@@ -146,6 +147,10 @@ void Score_total_Draw(void)
 	if (score_counter >= 100)
 	{
 		ResultScore_Draw02(500, 330, CPlayer::Get_KoCount(), 3, CTexture::TEX_UI_GEKIHA, 0);
+		if (score_counter == 100)
+		{
+			PlaySound(SCOREHYOUJI_SE);
+		}
 	}
 
 
@@ -176,6 +181,10 @@ void Score_total_Draw(void)
 		//値
 		ResultScore_Draw02(1540, 500, (int)Percent, 2, 0);
 
+		if (score_counter == 200)
+		{
+			PlaySound(BARUP_SE);
+		}
 		//指標とゲージ動かしてるとこ
 		if (score_up <= Enemy_Percent)
 		{
@@ -199,6 +208,10 @@ void Score_total_Draw(void)
 		if (Clear_flg == false)
 		{
 			//値
+			if (score_counter == 450)
+			{
+				PlaySound(SCOREHYOUJI_SE);
+			}
 			ResultScore_Draw02(600, 770, score_total, 5, 0);
 			//スコアまで
 			if (score_total < C3DObj::Get_Score())
@@ -211,6 +224,10 @@ void Score_total_Draw(void)
 
 			if (score_counter >= 500)
 			{
+				if (score_counter == 500)
+				{
+					PlaySound(CLEARBONUS_SE);
+				}
 				//クリアボーナス用
 				pScore_total->m_Sprite_Draw(CTexture::TEX_CLEAR_BONUS, 1460, 700, 0, 0, pScore_total->Texture_GetWidth(CTexture::TEX_CLEAR_BONUS, 1), pScore_total->Texture_GetHeight(CTexture::TEX_CLEAR_BONUS, 1));
 				//2倍までプラス
@@ -218,9 +235,14 @@ void Score_total_Draw(void)
 				{
 					score_total += 100;
 				}
+
 			}
 
 			//値
+			if (score_counter == 450)
+			{
+				PlaySound(SCOREHYOUJI_SE);
+			}
 			ResultScore_Draw02(600, 760, C3DObj::Get_Score() + score_total, 5, 0);
 		}
 	}

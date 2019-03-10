@@ -242,11 +242,11 @@ void CEnemy_Small::Draw(void)
 
 			if (m_AttackCheck)
 			{
-				DebugFont_Draw(300, 500, "%d",m_FrameCount - m_AttackTime);
+				//DebugFont_Draw(300, 500, "%d",m_FrameCount - m_AttackTime);
 			}
 		}
 	}
-	DebugFont_Draw(10, 470, "%d", m_EnemyEnableNum);
+	//DebugFont_Draw(10, 470, "%d", m_EnemyEnableNum);
 }
 
 

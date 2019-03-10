@@ -50,12 +50,6 @@ COrnament_Fountain::~COrnament_Fountain()
 
 }
 
-
-void COrnament_Fountain::Fountain_Create(void)
-{
-
-}
-
 void COrnament_Fountain::Initialize(ORNAMENT_EMITTER *Emitter)
 {
 	m_DrawCount = 0;
