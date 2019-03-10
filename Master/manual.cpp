@@ -18,7 +18,7 @@
 #include "fade.h"
 #include "sound.h"
 #include "scene.h"
-
+#include "game.h"
 /////////////////////////////////////////////////////////////////
 //
 //				マクロ
@@ -129,16 +129,19 @@ void Manual_Draw(void)
 	if (ManualPage == 1)
 	{
 		C2DObj::SpriteDraw(CTexture::TEX_CHUTO01, 0, 0);
+		C2DObj::SpriteDraw(CTexture::TEX_ABUTTON, 1630, 780);
 	}
 	// 2ページ目
 	if (ManualPage == 2)
 	{
 		C2DObj::SpriteDraw(CTexture::TEX_CHUTO02, 0, 0);
+		C2DObj::SpriteDraw(CTexture::TEX_ABUTTON, 1630, 780);
 	}
 	// 3ページ目
 	if (ManualPage == 3)
 	{
 		C2DObj::SpriteDraw(CTexture::TEX_CHUTO03, 0, 0);
+		C2DObj::SpriteDraw(CTexture::TEX_ABUTTON, 1630, 780);
 	}
 
 }

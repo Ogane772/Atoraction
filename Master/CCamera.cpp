@@ -118,7 +118,7 @@ void CCamera::Update(void)
 {
 	C3DObj *playerget = CPlayer::Get_Player();	//	プレイヤー取得
 	float u;
-	u = (int)(playerget->Get_Angle());
+	u = (float)(playerget->Get_Angle());
 	//コントローラー情報があるときのみ取得
 	if (pJoyDevice)
 	{

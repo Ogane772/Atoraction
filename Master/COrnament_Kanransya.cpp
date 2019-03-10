@@ -48,12 +48,6 @@ COrnament_KANRANSYA::~COrnament_KANRANSYA()
 
 }
 
-
-void COrnament_KANRANSYA::Kanransya_Create(void)
-{
-
-}
-
 void COrnament_KANRANSYA::Initialize(ORNAMENT_EMITTER *Emitter)
 {
 	m_OrnamentIndex = Get_OrnamentIndex(TYPE_ALL);

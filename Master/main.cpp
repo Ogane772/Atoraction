@@ -23,6 +23,7 @@
 #include "gamepad.h"
 #include "fade.h"
 #include "sound.h"
+#include "resource.h"
 //#include "CGameObj.h"
 #include "C2DObj.h"
 
@@ -41,7 +42,7 @@
 //	定数定義
 //=============================================================================
 #define CLASS_NAME		("GameWindow")
-#define WINDOW_CAPTION	("3DGAME")
+#define WINDOW_CAPTION	("ParadeoftheMonsters")
 #define WINDOW_STYLE	(WS_OVERLAPPEDWINDOW - WS_MAXIMIZEBOX - WS_THICKFRAME)	// ウィンドウスタイル
 
 
@@ -90,15 +91,18 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hprevInstance, LPSTR lpCmdli
 	UNREFERENCED_PARAMETER(lpCmdline);
 
 	// ウィンドウクラス構造体の設定
-	WNDCLASS wc = {};
+	// ウィンドウクラス構造体の設定
+	WNDCLASSEX wc = {};
+	wc.cbSize = sizeof(WNDCLASSEX);
 	wc.lpfnWndProc = WndProc;                          // ウィンドウプロシージャの指定
 	wc.lpszClassName = CLASS_NAME;                     // クラス名の設定
 	wc.hInstance = hInstance;                          // インスタンスハンドルの指定
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);          // マウスカーソルを指定
 	wc.hbrBackground = (HBRUSH)(COLOR_BACKGROUND + 1); // ウインドウのクライアント領域の背景色を設定
-
-													   // クラス登録
-	RegisterClass(&wc);
+													   //アイコン指定
+	wc.hIconSm = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON2));
+	// クラス登録
+	RegisterClassEx(&wc);
 
 
 	// ウィンドウスタイル

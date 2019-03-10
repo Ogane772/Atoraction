@@ -49,12 +49,6 @@ COrnament_MERI::~COrnament_MERI()
 
 }
 
-
-void COrnament_MERI::MERI_Create(void)
-{
-
-}
-
 void COrnament_MERI::Initialize(ORNAMENT_EMITTER *Emitter)
 {
 	m_OrnamentIndex = Get_OrnamentIndex(TYPE_ALL);

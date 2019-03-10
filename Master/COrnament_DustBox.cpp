@@ -51,12 +51,6 @@ COrnament_DustBox::~COrnament_DustBox()
 
 }
 
-
-void COrnament_DustBox::Dust_Create(void)
-{
-
-}
-
 void COrnament_DustBox::Initialize(ORNAMENT_EMITTER *Emitter)
 {
 	m_DrawCount = 0;

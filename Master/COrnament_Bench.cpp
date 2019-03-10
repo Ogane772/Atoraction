@@ -49,12 +49,6 @@ COrnament_BENCH::~COrnament_BENCH()
 
 }
 
-
-void COrnament_BENCH::Bench_Create(void)
-{
-
-}
-
 void COrnament_BENCH::Initialize(ORNAMENT_EMITTER *Emitter)
 {
 	m_DrawCount = 0;

@@ -91,7 +91,7 @@ CTexture::TextureFileData CTexture::TEXTURE_FILES[] = {
 	{ "asset/ui/ui_r1.png",200,200 },
 	{ "asset/number_yellow.png",1350,270 },
 	{ "asset/effect/hikkaki.png",1200,480 },
-	{ "asset/effect/star.png",1200,720 },
+	{ "asset/effect/star2.png",1200,720 },
 	{ "asset/effect/shine.png",2400,240 },
 	{ "asset/effect/heal_17.png",960,384 },
 	{ "asset/effect/hit.png",4000,2000 },
@@ -110,6 +110,9 @@ CTexture::TextureFileData CTexture::TEXTURE_FILES[] = {
 	{ "asset/ui/time03.png",1500,300 },
 	{ "asset/ui/time01.png",1800,180 },
 	{ "asset/ui/time04.png",2250,225 },
+	{ "asset/ui/ui_a.png",130,130 },
+	{ "asset/effect/maru_fadeout.png",9600,7112 },
+	{ "asset/effect/maru_fade_in.png",9600,7112 },
 };
 
 int CTexture::TEXTURE_MAX = sizeof(CTexture::TEXTURE_FILES) / sizeof(TEXTURE_FILES[0]);

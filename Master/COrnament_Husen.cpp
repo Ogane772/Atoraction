@@ -45,12 +45,6 @@ COrnament_HUSEN::~COrnament_HUSEN()
 
 }
 
-
-void COrnament_HUSEN::Husen_Create(void)
-{
-
-}
-
 void COrnament_HUSEN::Initialize(ORNAMENT_EMITTER *Emitter)
 {
 	m_OrnamentIndex = Get_OrnamentIndex(TYPE_ALL);

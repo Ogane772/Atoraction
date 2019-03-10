@@ -22,7 +22,7 @@
 #include "COrnament.h"
 #include "exp.h"
 #define _CRTDBG_MAP_ALLOC
-
+#define ENEMY_FIELDMAX (60.0f)//フィールドに沸けるEnemy最大数
 #define new  ::new(_NORMAL_BLOCK, __FILE__, __LINE__)
 //=============================================================================
 //	定数定義
@@ -513,7 +513,7 @@ void CEnemy::Enemy_Damage(float flyinghigh)
 	{
 		if (m_DrawCheck)
 		{
-			PlaySound(NORMALHIT_SE);
+			PlaySound(MONSTERHIT_SE);
 			Exp_Set(HIT, m_mtxWorld._41, m_mtxWorld._42 + 1, m_mtxWorld._43 + 1, 4.0, 0);
 			m_Hp--;
 			m_EnemyFlying = true;
@@ -686,7 +686,7 @@ void CEnemy::Enable_Check(void)
 {
 	if (!m_TitleFlag)
 	{
-		if (m_EnemyEnableNum < 70)
+		if (m_EnemyEnableNum < (int)ENEMY_FIELDMAX)
 		{
 			if (m_CreateCount == m_FrameCount)
 			{
@@ -701,6 +701,6 @@ void CEnemy::Enable_Check(void)
 float CEnemy::Get_EnemyPer(void)
 {
 	
-	EnemyPer = 1.0f - (float)m_EnemyEnableNum / 70.0f; //敵の数を取得
+	EnemyPer = 1.0f - (float)m_EnemyEnableNum / ENEMY_FIELDMAX; //敵の数を取得
   	return EnemyPer;
 }

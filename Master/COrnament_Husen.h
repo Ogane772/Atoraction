@@ -21,9 +21,7 @@ public:
 	void Damage(void);
 	bool Get_DrawCheck(void) { return false; }
 private:
-	void Husen_Create(void);
 	void Initialize(ORNAMENT_EMITTER *Emitter);
-	bool m_playercheck;
 	bool m_angle;
 	bool hit;
 	float updown;

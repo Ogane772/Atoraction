@@ -21,12 +21,10 @@ public:
 	void Damage(void);
 	bool Get_DrawCheck(void) { return false; }
 private:
-	void MERI_Create(void);
 	void Initialize(ORNAMENT_EMITTER *Emitter);
 	void Ornament_Damage_Meri(float flyinghigh);
 	void Ornament_Flying_Meri(float speed);
 	void Death_Meri(void);
-	bool m_playercheck;
 	float angle;
 	bool m_OrnamentFlying;
 	bool m_OrnamentFlyingDown;

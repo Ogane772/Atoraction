@@ -51,12 +51,6 @@ COrnament_Gasubonbe::~COrnament_Gasubonbe()
 
 }
 
-
-void COrnament_Gasubonbe::Dust_Create(void)
-{
-
-}
-
 void COrnament_Gasubonbe::Initialize(ORNAMENT_EMITTER *Emitter)
 {
 	m_DrawCount = 0;

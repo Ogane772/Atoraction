@@ -51,6 +51,11 @@ SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 	{ "asset/SE/freewall_up_se.wav",0 },
 	{ "asset/SE/husen_se.wav",0 },
 	{ "asset/SE/wheel_se.wav",0 },
+	{ "asset/SE/bar_up_se.wav",0 },
+	{ "asset/SE/clearbonus_se.wav",0 },
+	{ "asset/SE/monster_hit_se.wav",0 },
+	{ "asset/SE/object_hit_se.wav",0 },
+	{ "asset/SE/score_hyouji_se.wav",0 },
 };
 
 //=============================================================================
