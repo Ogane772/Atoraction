@@ -113,6 +113,7 @@ CTexture::TextureFileData CTexture::TEXTURE_FILES[] = {
 	{ "asset/ui/ui_a.png",130,130 },
 	{ "asset/effect/maru_fadeout.png",9600,7112 },
 	{ "asset/effect/maru_fade_in.png",9600,7112 },
+	{ "asset/result.png",1920,1080 },
 };
 
 int CTexture::TEXTURE_MAX = sizeof(CTexture::TEXTURE_FILES) / sizeof(TEXTURE_FILES[0]);

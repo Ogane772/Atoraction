@@ -18,7 +18,7 @@
 //	’è”’è‹`
 //=============================================================================
 
-#define POTETO_SIZE (1.0f)
+#define POTETO_SIZE (0.5f)
 #define POTETO_ATTACK (3)
 #define POTETO_HP (1)
 #define POTETO_SCORE (1)
@@ -38,7 +38,7 @@
 //	¶¬
 //=============================================================================
 
-COrnament_Poteto::COrnament_Poteto(ORNAMENT_EMITTER *Emitter) :COrnament(MODELL_GASUBONBE), C3DObj(C3DObj::TYPE_ORNAMENT)
+COrnament_Poteto::COrnament_Poteto(ORNAMENT_EMITTER *Emitter) :COrnament(TYPE_POTETO), C3DObj(C3DObj::TYPE_ORNAMENT)
 {
 	Initialize(Emitter);
 }
@@ -66,7 +66,8 @@ void COrnament_Poteto::Initialize(ORNAMENT_EMITTER *Emitter)
 
 	D3DXMatrixTranslation(&m_mtxTranslation, Emitter->InitPos.x, Emitter->InitPos.y, Emitter->InitPos.z);
 	D3DXMatrixRotationY(&m_mtxRotation, D3DXToRadian(m_Direction));
-	D3DXMatrixScaling(&m_mtxScaling, Emitter->scale.x, Emitter->scale.y, Emitter->scale.z);
+	//D3DXMatrixScaling(&m_mtxScaling, Emitter->scale.x, Emitter->scale.y, Emitter->scale.z);
+	D3DXMatrixScaling(&m_mtxScaling, POTETO_SIZE, POTETO_SIZE, POTETO_SIZE);
 	m_mtxWorld = m_mtxRotation * m_mtxScaling * m_mtxTranslation;
 	m_mtxInit = m_mtxWorld;
 	Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxTranslation._41, m_mtxTranslation._42, m_mtxTranslation._43);
@@ -123,13 +124,14 @@ void COrnament_Poteto::Draw(void)
 	if (m_Enable)
 	{
 		D3DXVECTOR3 position = D3DXVECTOR3(0.0f, 1.2f, -1.0f);
-		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
+		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 		if (!m_DrawCheck)
 		{
 			if (m_FrameCount % 2 == 0)
 			{
 				m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-				DrawDX_NormalAdd(m_mtxWorld, MODELL_POTETO, &Thing_Normal_model, position);
+				//DrawDX_NormalAdd(m_mtxWorld, MODELL_POTETO, &Thing_Normal_model, position);
+				DrawDX_Normal(m_mtxWorld, MODELL_POTETO, &Thing_Normal_model);
 
 				m_DrawCount++;
 				if (m_DrawCount >= ORNAMENT_WAIT_TIME)
@@ -141,8 +143,11 @@ void COrnament_Poteto::Draw(void)
 		}
 		else
 		{
-			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-			DrawDX_NormalAdd(m_mtxWorld, MODELL_POTETO, &Thing_Normal_model, position);
+			
+			     m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+			CGameObj::m_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+			//DrawDX_NormalAdd(m_mtxWorld, MODELL_POTETO, &Thing_Normal_model, position);
+			DrawDX_Normal(m_mtxWorld, MODELL_POTETO, &Thing_Normal_model);
 		}
 	}
 }

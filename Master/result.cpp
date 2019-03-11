@@ -45,7 +45,7 @@ static HRESULT hr;
 
 void Result_Initialize(void)
 {
-//	PlaySound(SOUND_LABEL_ED);
+	//	PlaySound(SOUND_LABEL_ED);
 	presult = new C2DObj;
 	presult2 = new C2DObj;
 	g_bend = false;
@@ -121,7 +121,8 @@ void Result_Update(void)
 
 void Result_Draw(void)
 {
-	presult->m_Sprite_Draw(CTexture::TEX_RESULT, 0, 0, 0, 0, presult->Texture_GetWidth(4, 1), presult->Texture_GetHeight(4, 1));
+
+	presult->m_Sprite_Draw(CTexture::TEXTURE_INDEX_RANKING, 0, 0, 0, 0, presult->Texture_GetWidth(CTexture::TEXTURE_INDEX_RANKING, 1), presult->Texture_GetHeight(CTexture::TEXTURE_INDEX_RANKING, 1));
 
 	for (int i = 0;i < 5;i++)
 	{
@@ -130,17 +131,40 @@ void Result_Draw(void)
 			if ((count % 60) > 25)
 			{
 				//Score_Draw(WINDOW_WIDTH/2, WINDOW_HIGHT / 2 + 50 * i, g_ranking[i].score, 5, 0, 1);
-				ResultScore_Draw(WINDOW_WIDTH / 2 - 230, WINDOW_HIGHT / 2 - 190 + 120 * i, g_ranking[i].score, 5, CTexture::TEX_RANKING_NUM, 0);
+				if (i == 0)
+				{
+					ResultScore_Draw(WINDOW_WIDTH / 2 - 230, WINDOW_HIGHT / 2 - 190 + 45 * i, g_ranking[i].score, 5, CTexture::TEX_RANKING_NUM, 0);
+				}
+				else if (i == 4)
+				{
+					ResultScore_Draw(WINDOW_WIDTH / 2 - 230, WINDOW_HIGHT / 2 - 190 + 125 * i, g_ranking[i].score, 5, CTexture::TEX_RANKING_NUM, 0);
+				}
+				else if (i == 1 || i == 2 || i == 3)
+				{
+					ResultScore_Draw(WINDOW_WIDTH / 2 - 230, WINDOW_HIGHT / 2 - 190 + 125 * i, g_ranking[i].score, 5, CTexture::TEX_RANKING_NUM, 0);
+				}
 			}
 		}
 		else
 		{
-			ResultScore_Draw(WINDOW_WIDTH / 2 - 230, WINDOW_HIGHT / 2 - 190 + 120 * i, g_ranking[i].score, 5, CTexture::TEX_RANKING_NUM, 0);
+			if (i == 0)
+			{
+				ResultScore_Draw(WINDOW_WIDTH / 2 - 230, WINDOW_HIGHT / 2 - 190 + 45 * i, g_ranking[i].score, 5, CTexture::TEX_RANKING_NUM, 0);
+			}
+			else if (i == 4)
+			{
+				ResultScore_Draw(WINDOW_WIDTH / 2 - 230, WINDOW_HIGHT / 2 - 190 + 125 * i, g_ranking[i].score, 5, CTexture::TEX_RANKING_NUM, 0);
+			}
+			else if (i == 1 || i == 2 || i == 3)
+			{
+				ResultScore_Draw(WINDOW_WIDTH / 2 - 230, WINDOW_HIGHT / 2 - 190 + 125 * i, g_ranking[i].score, 5, CTexture::TEX_RANKING_NUM, 0);
+			}
+
 		}
 
 
 	}
-	ResultScore_Draw(WINDOW_WIDTH / 1.4f, WINDOW_HIGHT / 2 - 190 + 220, g_ranking[6].score, 5, CTexture::TEX_RANKING_NUM, 1);
+	ResultScore_Draw(WINDOW_WIDTH / 1.4f, WINDOW_HIGHT / 2 - 190 + 230, g_ranking[6].score, 5, CTexture::TEX_RANKING_NUM, 1);
 	if ((count % 60) > 25)
 	{
 		//presult2->Sprite_Draw(CTexture::TEX_SPACE, 450, WINDOW_HIGHT - 90, 0, CTexture::Texture_GetHeight(CTexture::TEX_SPACE, 3) * 0, CTexture::Texture_GetWidth(CTexture::TEX_SPACE, 1), CTexture::Texture_GetHeight(CTexture::TEX_SPACE, 3));

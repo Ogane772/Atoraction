@@ -118,6 +118,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glut32.lib;d3d9.lib;d3dx9d.lib;dinput8.lib;dxguid.lib;%(AdditionalDependencies);ws2_32.lib;winmm.lib;</AdditionalDependencies>
       <AdditionalOptions>/LIBPATH:../../../SDKs/lib/win32 /LIBPATH:../../../Graphics/lib/win32/glut /DEBUG PhysXLoader.lib  %(AdditionalOptions)</AdditionalOptions>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -157,6 +158,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>glut32.lib;d3d9.lib;d3dx9d.lib;dinput8.lib;dxguid.lib;%(AdditionalDependencies);ws2_32.lib;winmm.lib;</AdditionalDependencies>
       <AdditionalOptions>/LIBPATH:../../../SDKs/lib/win32 /LIBPATH:../../../Graphics/lib/win32/glut /DEBUG PhysXLoader.lib  %(AdditionalOptions)</AdditionalOptions>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

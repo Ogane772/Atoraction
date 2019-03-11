@@ -103,7 +103,7 @@ void Title_Initialize(void)
 
 	CPlayer::TitleFlag_Change(true);
 	CUserInterFace::TitleFlag_Change(true);
-	CTitleKanransya *m_pAttraction = new CTitleKanransya(D3DXVECTOR3(60.0f, 0.0f, 30.0f));
+	//CTitleKanransya *m_pAttraction = new CTitleKanransya(D3DXVECTOR3(60.0f, 0.0f, 30.0f));
 
 }
 

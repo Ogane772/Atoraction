@@ -133,6 +133,7 @@ void CEnemy_Big::Finalize(void)
 	m_CreateCount = m_InitCreateCount;
 	m_AttackCheck = false;
 	Color_Change(CTexture::TEX_BIG);
+	m_Death = false;
 }
 
 
@@ -193,12 +194,18 @@ void CEnemy_Big::Update(void)
 		if (m_Hp <= 0)
 		{
 			Color_Change(CTexture::TEX_BIG_END);
-			if (!m_DrawCheck)
+			if (!m_Death)//	1回だけ通る
 			{
 				CPlayer::Add_KoCount();
+				m_EnemyEnableNum--;
+				m_Death = true;
+			}
+			if (!m_DrawCheck)
+			{
+				
 				//C3DObj_delete();
 				m_Enable = false;
-				m_EnemyEnableNum--;
+				
 			}
 		}
 	}
@@ -219,7 +226,7 @@ void CEnemy_Big::Draw(void)
 		{//当たり判定位置更新
 			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);	//　ライティング有効
 			DrawDX_Anime(m_mtxWorld, MODELL_ANIME_SMALL, &Thing);
-			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);	//　ライティング有効
+			//m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);	//　ライティング有効
 
 			if (m_AttackCheck)
 			{

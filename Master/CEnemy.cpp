@@ -51,15 +51,15 @@ CEnemy::ENEMY_MOVE CEnemy::m_EnemyMove[8] = {
 //	エネミーエミッター
 CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 {
-	{ 0 , TYPE_SMALL,D3DXVECTOR3(70.0f, 0.0f , 70.0f), DIRE_SOUTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f , 50.0f), DIRE_SOUTH,false },
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f , 20.0f), DIRE_SOUTH,false },
-	{ 0 , TYPE_SMALL,D3DXVECTOR3(60.0f, 0.0f , 10.0f), DIRE_SOUTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(40.0f, 0.0f , 10.0f), DIRE_SOUTH,false },
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(40.0f, 0.0f , 50.0f), DIRE_SOUTH,false },
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(10.0f, 0.0f , 40.0f), DIRE_SOUTH,false },
-	{ 0 , TYPE_SMALL,D3DXVECTOR3(80.0f, 0.0f , 60.0f), DIRE_SOUTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f , 40.0f), DIRE_SOUTH,false },
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(-30.0f, 0.0f , 50.0f), DIRE_SOUTH,false },
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(20.0f, 0.0f , 60.0f), DIRE_SOUTH,false },
-	{ 0 , TYPE_SMALL,D3DXVECTOR3(60.0f, 0.0f , 40.0f), DIRE_SOUTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f , 40.0f), DIRE_SOUTH,false },
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(30.0f, 0.0f , 75.0f), DIRE_SOUTH,false },
 
 
@@ -80,11 +80,11 @@ CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(60.0f, 0.0f , -10.0f), DIRE_NORTH,false },
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(40.0f, 0.0f , -50.0f), DIRE_NORTH,false },
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(10.0f, 0.0f , -40.0f), DIRE_NORTH,false },
-	{ 0 , TYPE_SMALL,D3DXVECTOR3(80.0f, 0.0f , -60.0f), DIRE_NORTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f , -60.0f), DIRE_NORTH,false },
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(-30.0f, 0.0f , -50.0f), DIRE_NORTH,false },
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(20.0f, 0.0f , -60.0f), DIRE_NORTH,false },
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(60.0f, 0.0f , -40.0f), DIRE_NORTH,false },
-	{ 0 , TYPE_SMALL,D3DXVECTOR3(30.0f, 0.0f , -75.0f), DIRE_NORTH,false },
+	{ 0 , TYPE_SMALL,D3DXVECTOR3(30.0f, 0.0f , -15.0f), DIRE_NORTH,false },
 
 
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(-20.0f, 0.0f , 10.0f), DIRE_EAST,false },
@@ -100,117 +100,109 @@ CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 
 
 
-	{ 1800 , TYPE_SMALL,D3DXVECTOR3(6.0f, 0.0f , 71.0f), DIRE_SOUTH,false },
-	{ 1800 , TYPE_MIDDLE,D3DXVECTOR3(12.0f, 0.0f , 69.0f), DIRE_SOUTH,false },
-	{ 1800 , TYPE_SMALL,D3DXVECTOR3(18.0f, 0.0f , 70.0f), DIRE_SOUTH,false },
-	{ 1800 , TYPE_MIDDLE,D3DXVECTOR3(24.0f, 0.0f , 73.0f), DIRE_SOUTH,false },
-	{ 1800 , TYPE_SMALL,D3DXVECTOR3(36.0f, 0.0f , 72.0f), DIRE_SOUTH,false },
-	{ 1800 , TYPE_MIDDLE,D3DXVECTOR3(0.0f, 0.0f , 71.0f), DIRE_SOUTH,false },
-	{ 1800 , TYPE_SMALL,D3DXVECTOR3(-6.0f, 0.0f , 69.0f), DIRE_SOUTH,false },
-	{ 1800 , TYPE_MIDDLE,D3DXVECTOR3(-12.0f, 0.0f , 70.0f), DIRE_SOUTH,false },
-	{ 1800 , TYPE_SMALL,D3DXVECTOR3(-18.0f, 0.0f , 73.0f), DIRE_SOUTH,false },
-	{ 1800 , TYPE_SPECIAL,D3DXVECTOR3(-24.0f, 0.0f , 72.0f), DIRE_SOUTH,false },
+	{ 00 , TYPE_SMALL,D3DXVECTOR3(6.0f, 0.0f , 71.0f), DIRE_SOUTH,false },
+	{ 00 , TYPE_MIDDLE,D3DXVECTOR3(12.0f, 0.0f , 69.0f), DIRE_SOUTH,false },
+	{ 00 , TYPE_SMALL,D3DXVECTOR3(18.0f, 0.0f , 70.0f), DIRE_SOUTH,false },
+	{ 00 , TYPE_MIDDLE,D3DXVECTOR3(24.0f, 0.0f , 73.0f), DIRE_SOUTH,false },
+	{ 00 , TYPE_SMALL,D3DXVECTOR3(36.0f, 0.0f , 62.0f), DIRE_SOUTH,false },
+	{ 00 , TYPE_MIDDLE,D3DXVECTOR3(0.0f, 0.0f , 51.0f), DIRE_SOUTH,false },
+	{ 00 , TYPE_SMALL,D3DXVECTOR3(-6.0f, 0.0f , 69.0f), DIRE_SOUTH,false },
+	{ 00 , TYPE_MIDDLE,D3DXVECTOR3(-12.0f, 0.0f , 70.0f), DIRE_SOUTH,false },
+	{ 00 , TYPE_SMALL,D3DXVECTOR3(-18.0f, 0.0f , 73.0f), DIRE_SOUTH,false },
+	{ 00 , TYPE_SPECIAL,D3DXVECTOR3(-24.0f, 0.0f , 72.0f), DIRE_SOUTH,false },
 
 
-	{ 1800 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 16.0f), DIRE_WEST,false },
-	{ 1800 , TYPE_MIDDLE,D3DXVECTOR3(70.0f, 0.0f , 15.0f), DIRE_WEST,false },
-	{ 1800 , TYPE_SMALL,D3DXVECTOR3(65.0f, 0.0f , 14.0f), DIRE_WEST,false },
-	{ 1800 , TYPE_MIDDLE,D3DXVECTOR3(60.0f, 0.0f , 13.0f), DIRE_WEST,false },
-	{ 1800 , TYPE_SMALL,D3DXVECTOR3(65.0f, 0.0f , 12.0f), DIRE_WEST,false },
-	{ 1800 , TYPE_MIDDLE,D3DXVECTOR3(70.0f, 0.0f , 11.0f), DIRE_WEST,false },
-	{ 1800 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 10.0f), DIRE_WEST,false },
-	{ 1800 , TYPE_SMALL,D3DXVECTOR3(70.0f, 0.0f , 9.0f), DIRE_WEST,false },
-	{ 1800 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 8.0f), DIRE_WEST,false },
-	{ 1800 , TYPE_SPECIAL,D3DXVECTOR3(75.0f, 0.0f , 7.0f), DIRE_WEST,false },
+	{ 00 , TYPE_SMALL,D3DXVECTOR3(25.0f, 0.0f , 16.0f), DIRE_WEST,false },
+	{ 00 , TYPE_MIDDLE,D3DXVECTOR3(70.0f, 0.0f , 15.0f), DIRE_WEST,false },
+	{ 00 , TYPE_SMALL,D3DXVECTOR3(65.0f, 0.0f , 14.0f), DIRE_WEST,false },
+	{ 00 , TYPE_MIDDLE,D3DXVECTOR3(60.0f, 0.0f , 13.0f), DIRE_WEST,false },
+	{ 00 , TYPE_SMALL,D3DXVECTOR3(65.0f, 0.0f , 12.0f), DIRE_WEST,false },
+	{ 00 , TYPE_MIDDLE,D3DXVECTOR3(70.0f, 0.0f , 11.0f), DIRE_WEST,false },
+	{ 00 , TYPE_SMALL,D3DXVECTOR3(15.0f, 0.0f , 10.0f), DIRE_WEST,false },
+	{ 00 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f , 9.0f), DIRE_WEST,false },
+	{ 00 , TYPE_SMALL,D3DXVECTOR3(25.0f, 0.0f , 8.0f), DIRE_WEST,false },
+	{ 00 , TYPE_SPECIAL,D3DXVECTOR3(35.0f, 0.0f , 7.0f), DIRE_WEST,false },
 
 
-	{ 1800 , TYPE_SMALL,D3DXVECTOR3(6.0f, 0.0f , -71.0f), DIRE_NORTH,false },
+	{ 1800 , TYPE_SMALL,D3DXVECTOR3(6.0f, 0.0f , -11.0f), DIRE_NORTH,false },
 	{ 1800 , TYPE_MIDDLE,D3DXVECTOR3(12.0f, 0.0f , -69.0f), DIRE_NORTH,false },
 	{ 1800 , TYPE_SMALL,D3DXVECTOR3(18.0f, 0.0f , -70.0f), DIRE_NORTH,false },
-	{ 1800 , TYPE_MIDDLE,D3DXVECTOR3(24.0f, 0.0f , -73.0f), DIRE_NORTH,false },
-	{ 1800 , TYPE_SMALL,D3DXVECTOR3(36.0f, 0.0f , -72.0f), DIRE_NORTH,false },
-	{ 1800 , TYPE_MIDDLE,D3DXVECTOR3(0.0f, 0.0f , -71.0f), DIRE_NORTH,false },
+	{ 1800 , TYPE_MIDDLE,D3DXVECTOR3(24.0f, 0.0f , -3.0f), DIRE_NORTH,false },
+	{ 1800 , TYPE_SMALL,D3DXVECTOR3(36.0f, 0.0f , -2.0f), DIRE_NORTH,false },
+	{ 1800 , TYPE_MIDDLE,D3DXVECTOR3(0.0f, 0.0f , -41.0f), DIRE_NORTH,false },
 	{ 1800 , TYPE_SMALL,D3DXVECTOR3(-6.0f, 0.0f , -69.0f), DIRE_NORTH,false },
 	{ 1800 , TYPE_SMALL,D3DXVECTOR3(-12.0f, 0.0f , -70.0f), DIRE_NORTH,false },
-	{ 1800 , TYPE_SMALL,D3DXVECTOR3(-18.0f, 0.0f , -73.0f), DIRE_NORTH,false },
-	{ 1800 , TYPE_SPECIAL,D3DXVECTOR3(-24.0f, 0.0f , -72.0f), DIRE_NORTH,false },
+	{ 1800 , TYPE_SMALL,D3DXVECTOR3(-18.0f, 0.0f , -54.0f), DIRE_NORTH,false },
+	{ 1800 , TYPE_SPECIAL,D3DXVECTOR3(-24.0f, 0.0f , -27.0f), DIRE_NORTH,false },
 
 
-	{ 1800 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , 19.0f), DIRE_EAST,false },
-	{ 1800 , TYPE_MIDDLE,D3DXVECTOR3(-74.0f, 0.0f , 18.0f), DIRE_EAST,false },
-	{ 1800 , TYPE_SMALL,D3DXVECTOR3(-73.0f, 0.0f , 17.0f), DIRE_EAST,false },
-	{ 1800 , TYPE_MIDDLE,D3DXVECTOR3(-72.0f, 0.0f , 16.0f), DIRE_EAST,false },
-	{ 1800 , TYPE_SMALL,D3DXVECTOR3(-71.0f, 0.0f , 14.0f), DIRE_EAST,false },
-	{ 1800 , TYPE_MIDDLE,D3DXVECTOR3(-72.0f, 0.0f , 13.0f), DIRE_EAST,false },
-	{ 1800 , TYPE_SMALL,D3DXVECTOR3(-73.0f, 0.0f , 12.0f), DIRE_EAST,false },
-	{ 1800 , TYPE_SMALL,D3DXVECTOR3(-74.0f, 0.0f , 11.0f), DIRE_EAST,false },
-	{ 1800 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , 15.0f), DIRE_EAST,false },
-	{ 1800 , TYPE_SPECIAL,D3DXVECTOR3(-76.0f, 0.0f , 10.0f), DIRE_EAST,false },
-
-
-
-	{ 3600 , TYPE_BIG,D3DXVECTOR3(6.0f, 0.0f , 71.0f), DIRE_SOUTH,false },
-	{ 3600 , TYPE_SMALL,D3DXVECTOR3(12.0f, 0.0f , 69.0f), DIRE_SOUTH,false },
-	//{ 3600 , TYPE_MIDDLE,D3DXVECTOR3(18.0f, 0.0f , 70.0f), DIRE_SOUTH,false },
-	//{ 3600 , TYPE_SMALL,D3DXVECTOR3(24.0f, 0.0f , 73.0f), DIRE_SOUTH,false },
-	{ 3600 , TYPE_MIDDLE,D3DXVECTOR3(36.0f, 0.0f , 72.0f), DIRE_SOUTH,false },
-	{ 3600 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 71.0f), DIRE_SOUTH,false },
-	{ 3600 , TYPE_SPECIAL,D3DXVECTOR3(-6.0f, 0.0f , 69.0f), DIRE_SOUTH,false },
-	//{ 3600 , TYPE_SMALL,D3DXVECTOR3(-12.0f, 0.0f , 70.0f), DIRE_SOUTH,false },
-	//{ 3600 , TYPE_SPECIAL,D3DXVECTOR3(-18.0f, 0.0f , 73.0f), DIRE_SOUTH,false },
-	{ 3600 , TYPE_SMALL,D3DXVECTOR3(-24.0f, 0.0f , 72.0f), DIRE_SOUTH,false },
-
-
-	{ 3600 , TYPE_MIDDLE,D3DXVECTOR3(75.0f, 0.0f , 16.0f), DIRE_WEST,false },
-	{ 3600 , TYPE_SMALL,D3DXVECTOR3(70.0f, 0.0f , 15.0f), DIRE_WEST,false },
-	//{ 3600 , TYPE_MIDDLE,D3DXVECTOR3(65.0f, 0.0f , 14.0f), DIRE_WEST,false },
-	//{ 3600 , TYPE_SMALL,D3DXVECTOR3(60.0f, 0.0f , 13.0f), DIRE_WEST,false },
-	{ 3600 , TYPE_MIDDLE,D3DXVECTOR3(65.0f, 0.0f , 12.0f), DIRE_WEST,false },
-	{ 3600 , TYPE_SMALL,D3DXVECTOR3(70.0f, 0.0f , 11.0f), DIRE_WEST,false },
-	{ 3600 , TYPE_SPECIAL,D3DXVECTOR3(75.0f, 0.0f , 10.0f), DIRE_WEST,false },
-	{ 3600 , TYPE_SMALL,D3DXVECTOR3(70.0f, 0.0f , 9.0f), DIRE_WEST,false },
-	//{ 3600 , TYPE_SPECIAL,D3DXVECTOR3(75.0f, 0.0f , 8.0f), DIRE_WEST,false },
-	//{ 3600 , TYPE_SMALL,D3DXVECTOR3(75.0f, 0.0f , 7.0f), DIRE_WEST,false },
-
-
-	{ 3600 , TYPE_MIDDLE,D3DXVECTOR3(6.0f, 0.0f , -71.0f), DIRE_NORTH,false },
-	{ 3600 , TYPE_SMALL,D3DXVECTOR3(12.0f, 0.0f , -69.0f), DIRE_NORTH,false },
-	//{ 3600 , TYPE_MIDDLE,D3DXVECTOR3(18.0f, 0.0f , -70.0f), DIRE_NORTH,false },
-	//{ 3600 , TYPE_SMALL,D3DXVECTOR3(24.0f, 0.0f , -73.0f), DIRE_NORTH,false },
-	{ 3600 , TYPE_MIDDLE,D3DXVECTOR3(36.0f, 0.0f , -72.0f), DIRE_NORTH,false },
-	{ 3600 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , -71.0f), DIRE_NORTH,false },
-	{ 3600 , TYPE_SPECIAL,D3DXVECTOR3(-6.0f, 0.0f , -69.0f), DIRE_NORTH,false },
-	//{ 3600 , TYPE_SMALL,D3DXVECTOR3(-12.0f, 0.0f , -70.0f), DIRE_NORTH,false },
-	//{ 3600 , TYPE_SPECIAL,D3DXVECTOR3(-18.0f, 0.0f , -73.0f), DIRE_NORTH,false },
-	{ 3600 , TYPE_SMALL,D3DXVECTOR3(-24.0f, 0.0f , -72.0f), DIRE_NORTH,false },
-
-
-	{ 3600 , TYPE_MIDDLE,D3DXVECTOR3(-75.0f, 0.0f , 19.0f), DIRE_EAST,false },
-	{ 3600 , TYPE_SMALL,D3DXVECTOR3(-74.0f, 0.0f , 18.0f), DIRE_EAST,false },
-	//{ 3600 , TYPE_MIDDLE,D3DXVECTOR3(-73.0f, 0.0f , 17.0f), DIRE_EAST,false },
-	//{ 3600 , TYPE_SMALL,D3DXVECTOR3(-72.0f, 0.0f , 16.0f), DIRE_EAST,false },
-	{ 3600 , TYPE_MIDDLE,D3DXVECTOR3(-71.0f, 0.0f , 14.0f), DIRE_EAST,false },
-	{ 3600 , TYPE_SMALL,D3DXVECTOR3(-72.0f, 0.0f , 13.0f), DIRE_EAST,false },
-	{ 3600 , TYPE_SPECIAL,D3DXVECTOR3(-73.0f, 0.0f , 12.0f), DIRE_EAST,false },
-	{ 3600 , TYPE_SMALL,D3DXVECTOR3(-74.0f, 0.0f , 11.0f), DIRE_EAST,false },
-	//{ 3600 , TYPE_SPECIAL,D3DXVECTOR3(-75.0f, 0.0f , 15.0f), DIRE_EAST,false },
-	//{ 3600 , TYPE_SMALL,D3DXVECTOR3(-76.0f, 0.0f , 10.0f), DIRE_EAST,false },
+	{ 1800 , TYPE_SMALL,D3DXVECTOR3(-57.0f, 0.0f , 19.0f), DIRE_EAST,false },
+	{ 1800 , TYPE_MIDDLE,D3DXVECTOR3(-47.0f, 0.0f , 18.0f), DIRE_EAST,false },
+	{ 1800 , TYPE_SMALL,D3DXVECTOR3(-37.0f, 0.0f , 17.0f), DIRE_EAST,false },
+	{ 1800 , TYPE_MIDDLE,D3DXVECTOR3(-27.0f, 0.0f , 16.0f), DIRE_EAST,false },
+	{ 1800 , TYPE_SMALL,D3DXVECTOR3(-17.0f, 0.0f , 14.0f), DIRE_EAST,false },
+	{ 1800 , TYPE_MIDDLE,D3DXVECTOR3(-27.0f, 0.0f , 13.0f), DIRE_EAST,false },
+	{ 1800 , TYPE_SMALL,D3DXVECTOR3(-34.0f, 0.0f , 12.0f), DIRE_EAST,false },
+	{ 1800 , TYPE_SMALL,D3DXVECTOR3(-47.0f, 0.0f , 11.0f), DIRE_EAST,false },
+	{ 1800 , TYPE_SMALL,D3DXVECTOR3(-57.0f, 0.0f , 15.0f), DIRE_EAST,false },
+	{ 1800 , TYPE_SPECIAL,D3DXVECTOR3(-6.0f, 0.0f , 10.0f), DIRE_EAST,false },
 
 
 
-	{ 5400 , TYPE_MIDDLE,D3DXVECTOR3(6.0f, 0.0f , 71.0f), DIRE_SOUTH,false },
+	{ 3000 , TYPE_BIG,D3DXVECTOR3(6.0f, 0.0f , 17.0f), DIRE_SOUTH,false },
+	{ 3000 , TYPE_SMALL,D3DXVECTOR3(12.0f, 0.0f , 69.0f), DIRE_SOUTH,false },
+	   
+	{ 3000 , TYPE_MIDDLE,D3DXVECTOR3(36.0f, 0.0f , 58.0f), DIRE_SOUTH,false },
+	{ 3000 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , 25.0f), DIRE_SOUTH,false },
+	{ 3000 , TYPE_SPECIAL,D3DXVECTOR3(-6.0f, 0.0f , 69.0f), DIRE_SOUTH,false },
+	   
+	{ 3000 , TYPE_SMALL,D3DXVECTOR3(-24.0f, 0.0f , 2.0f), DIRE_SOUTH,false },
+	   
+	   
+	{ 3000 , TYPE_MIDDLE,D3DXVECTOR3(64.0f, 0.0f , 16.0f), DIRE_WEST,false },
+	{ 3000 , TYPE_SMALL,D3DXVECTOR3(70.0f, 0.0f , 15.0f), DIRE_WEST,false },
+	   
+	{ 3000 , TYPE_MIDDLE,D3DXVECTOR3(65.0f, 0.0f , 12.0f), DIRE_WEST,false },
+	{ 3000 , TYPE_SMALL,D3DXVECTOR3(70.0f, 0.0f , 11.0f), DIRE_WEST,false },
+	{ 3000 , TYPE_SPECIAL,D3DXVECTOR3(54.0f, 0.0f , 10.0f), DIRE_WEST,false },
+	{ 3000 , TYPE_SMALL,D3DXVECTOR3(70.0f, 0.0f , 9.0f), DIRE_WEST,false },
+	   
+	   
+	   
+	{ 3000 , TYPE_MIDDLE,D3DXVECTOR3(6.0f, 0.0f , -67.0f), DIRE_NORTH,false },
+	{ 3000 , TYPE_SMALL,D3DXVECTOR3(12.0f, 0.0f , -69.0f), DIRE_NORTH,false },
+	   
+	{ 3000 , TYPE_MIDDLE,D3DXVECTOR3(36.0f, 0.0f , -7.0f), DIRE_NORTH,false },
+	{ 3000 , TYPE_SMALL,D3DXVECTOR3(0.0f, 0.0f , -9.0f), DIRE_NORTH,false },
+	{ 3000 , TYPE_SPECIAL,D3DXVECTOR3(-6.0f, 0.0f , -69.0f), DIRE_NORTH,false },
+	   
+	{ 3000 , TYPE_SMALL,D3DXVECTOR3(-24.0f, 0.0f , -39.0f), DIRE_NORTH,false },
+	   
+	   
+	{ 3000 , TYPE_MIDDLE,D3DXVECTOR3(-45.0f, 0.0f , 19.0f), DIRE_EAST,false },
+	{ 3000 , TYPE_SMALL,D3DXVECTOR3(-42.0f, 0.0f , 18.0f), DIRE_EAST,false },
+	   
+	{ 3000 , TYPE_MIDDLE,D3DXVECTOR3(-41.0f, 0.0f , 14.0f), DIRE_EAST,false },
+	{ 3000 , TYPE_SMALL,D3DXVECTOR3(-23.0f, 0.0f , 13.0f), DIRE_EAST,false },
+	{ 3000 , TYPE_SPECIAL,D3DXVECTOR3(-37.0f, 0.0f , 12.0f), DIRE_EAST,false },
+	{ 3000 , TYPE_SMALL,D3DXVECTOR3(-47.0f, 0.0f , 11.0f), DIRE_EAST,false },
+	
+
+
+
+	/*{ 5400 , TYPE_MIDDLE,D3DXVECTOR3(6.0f, 0.0f , 71.0f), DIRE_SOUTH,false },
 	{ 5400 , TYPE_MIDDLE,D3DXVECTOR3(12.0f, 0.0f , 69.0f), DIRE_SOUTH,false },
 	{ 5400 , TYPE_MIDDLE,D3DXVECTOR3(18.0f, 0.0f , 70.0f), DIRE_SOUTH,false },
 	//{ 5400 , TYPE_MIDDLE,D3DXVECTOR3(24.0f, 0.0f , 73.0f), DIRE_SOUTH,false },
 	{ 5400 , TYPE_SPECIAL,D3DXVECTOR3(36.0f, 0.0f , 72.0f), DIRE_SOUTH,false },
 	{ 5400 , TYPE_SPECIAL,D3DXVECTOR3(0.0f, 0.0f , 71.0f), DIRE_SOUTH,false },
-	{ 5400 , TYPE_SPECIAL,D3DXVECTOR3(-6.0f, 0.0f , 69.0f), DIRE_SOUTH,false },
+	{ 5400 , TYPE_SPECIAL,D3DXVECTOR3(-6.0f, 0.0f , 69.0f), DIRE_SOUTH,false },*/
 	//{ 5400 , TYPE_SPECIAL,D3DXVECTOR3(-12.0f, 0.0f , 70.0f), DIRE_SOUTH,false },
 	//{ 5400 , TYPE_SMALL,D3DXVECTOR3(-18.0f, 0.0f , 73.0f), DIRE_SOUTH,false },
 	//{ 5400 , TYPE_SMALL,D3DXVECTOR3(-24.0f, 0.0f , 72.0f), DIRE_SOUTH,false },
 
 
-	{ 5400 , TYPE_BIG,D3DXVECTOR3(75.0f, 0.0f , 16.0f), DIRE_WEST,false },
+/*	{ 5400 , TYPE_BIG,D3DXVECTOR3(75.0f, 0.0f , 16.0f), DIRE_WEST,false },
 	{ 5400 , TYPE_MIDDLE,D3DXVECTOR3(70.0f, 0.0f , 15.0f), DIRE_WEST,false },
 	//{ 5400 , TYPE_MIDDLE,D3DXVECTOR3(65.0f, 0.0f , 14.0f), DIRE_WEST,false },
 	{ 5400 , TYPE_MIDDLE,D3DXVECTOR3(60.0f, 0.0f , 13.0f), DIRE_WEST,false },
@@ -243,7 +235,7 @@ CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 	{ 5400 , TYPE_SPECIAL,D3DXVECTOR3(-73.0f, 0.0f , 12.0f), DIRE_EAST,false },
 	{ 5400 , TYPE_SPECIAL,D3DXVECTOR3(-74.0f, 0.0f , 11.0f), DIRE_EAST,false },
 	//{ 5400 , TYPE_SMALL,D3DXVECTOR3(-75.0f, 0.0f , 15.0f), DIRE_EAST,false },
-	//{ 5400 , TYPE_SMALL,D3DXVECTOR3(-76.0f, 0.0f , 10.0f), DIRE_EAST,false },
+	//{ 5400 , TYPE_SMALL,D3DXVECTOR3(-76.0f, 0.0f , 10.0f), DIRE_EAST,false },*/
 };
 
 
@@ -275,6 +267,7 @@ CEnemy::CEnemy(int EnemyType)
 	m_EnemyFlying = false;
 	m_EnemyFlyingDown = false;
 	m_FlyingCount = 0;
+	m_Death = false;
 
 
 }
@@ -463,18 +456,19 @@ void CEnemy::Chase_Player(void)
 
 bool CEnemy::Draw_Check(void)
 {
-	C3DObj *pplayer = CPlayer::Get_Player();
+	//C3DObj *pplayer = CPlayer::Get_Player();
 	//float l = SYLINDERSIZE;//範囲
-	D3DXMATRIX playerworld = pplayer->Get_mtxWorld();
-	float cc = (playerworld._41 - m_mtxWorld._41) * (playerworld._41 - m_mtxWorld._41) + (playerworld._43 - m_mtxWorld._43) *  (playerworld._43 - m_mtxWorld._43);
+	//D3DXMATRIX playerworld = pplayer->Get_mtxWorld();
+	//float cc = (playerworld._41 - m_mtxWorld._41) * (playerworld._41 - m_mtxWorld._41) + (playerworld._43 - m_mtxWorld._43) *  (playerworld._43 - m_mtxWorld._43);
 
-	if (cc < (FIELDSIZE * FIELDSIZE))
+	//if (cc < (FIELDSIZE * FIELDSIZE))
+	if ((FIELDSIZE)*(FIELDSIZE) < (m_mtxTranslation._41*m_mtxTranslation._41) + (m_mtxTranslation._43 * m_mtxTranslation._43))
 	{
-		m_DrawCheck = true;
+		m_DrawCheck = false;
 	}
 	else
 	{
-		m_DrawCheck = false;
+		m_DrawCheck = true;
 	}
 
 	return m_DrawCheck;
@@ -686,15 +680,23 @@ void CEnemy::Enable_Check(void)
 {
 	if (!m_TitleFlag)
 	{
-		if (m_EnemyEnableNum < (int)ENEMY_FIELDMAX)
+
+		if (m_CreateCount == m_FrameCount)
 		{
-			if (m_CreateCount == m_FrameCount)
+			if (m_EnemyEnableNum < (int)ENEMY_FIELDMAX)
 			{
 				m_Enable = true;
 				m_DamageFlag = false;
 				m_EnemyEnableNum++;
 			}
+			else
+			{
+				m_CreateCount *= 2.5;
+			}
+
 		}
+
+
 	}
 
 }

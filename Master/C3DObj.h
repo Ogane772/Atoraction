@@ -143,6 +143,7 @@ public:
 	static void Reset_Score(void) { m_TotalScore = 0; }	//　スコアリセット
 	static bool GetW_coaster(void) { return GetWCos; }
 	static bool *GetCosterModeStandby(void) { return &g_CosterModeStandby; }//コースターを呼んでるとき; }//コースターを呼んでるとき
+	static void Add_Score(int score) { m_TotalScore += score; }	//	スコア加算
 protected:
 	//THING *Thing_Anime_model;//アニメモデル情報
 	//static THING Thing_Anime[];//読み込むモデルの最大数+1
@@ -195,7 +196,7 @@ protected:
 
 	void Add_Mp(int mp);	//	MP加算
 	void Add_Hp(void);
-	void Add_Score(int score) { m_TotalScore += score; }	//	スコア加算
+	
 	void Attraction_Delete(void);
 	int m_OrnamentType;
 	

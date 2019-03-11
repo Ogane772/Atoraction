@@ -23,7 +23,7 @@
 #define SMALL_SIZE (0.8f)
 #define SMALL_ATTACK (3)
 #define SMALL_HP (1)
-#define SMALL_MP (2)
+#define SMALL_MP (3)
 #define SMALL_SCORE (100)
 #define FRY_HEIGHT (0.5f)	//	飛ぶ高さ
 #define FRY_SPEED (0.05f)	//	飛ぶ速さ
@@ -148,6 +148,7 @@ void CEnemy_Small::Finalize(void)
 	Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 	m_AttackCheck = false;
 	Color_Change(CTexture::TEX_SMALL);
+	m_Death = false;
 }
 
 //=============================================================================
@@ -209,12 +210,16 @@ void CEnemy_Small::Update(void)
 		if (m_Hp <= 0)
 		{
 			Color_Change(CTexture::TEX_SMALL_END);
-			if (!m_DrawCheck)
+			if (!m_Death)//	1回だけ通る
 			{
 				CPlayer::Add_KoCount();
+				m_EnemyEnableNum--;
+				m_Death = true;
+			}
+			if (!m_DrawCheck)
+			{
 				//C3DObj_delete();
 				m_Enable = false;
-				m_EnemyEnableNum--;
 			}
 		}
 	}
@@ -241,7 +246,7 @@ void CEnemy_Small::Draw(void)
 			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);	//　ライティング有効
 			
 			DrawDX_Anime(m_mtxWorld, MODELL_ANIME_SMALL, &Thing);
-			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);	//　ライティング有効
+			//m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);	//　ライティング有効
 
 			if (m_AttackCheck)
 			{
@@ -249,7 +254,7 @@ void CEnemy_Small::Draw(void)
 			}
 		}
 	}
-	//DebugFont_Draw(10, 470, "%d", m_EnemyEnableNum);
+	DebugFont_Draw(10, 470, "%d", m_EnemyEnableNum);
 }
 
 

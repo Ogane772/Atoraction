@@ -119,6 +119,10 @@ void Score_total_Update(void)
 			Fade_Start(true, 3, 0, 0, 0);
 			g_bend = true;
 			score_counter = 0;
+			if (Clear_flg)
+			{
+				C3DObj::Add_Score(score_total);
+			}
 		}
 	}
 	else
@@ -243,8 +247,10 @@ void Score_total_Draw(void)
 			if (score_counter == 450)
 			{
 				PlaySound(SCOREHYOUJI_SE);
+				
 			}
 			ResultScore_Draw02(600, 760, C3DObj::Get_Score() + score_total, 5, 0);
+			
 		}
 	}
 

@@ -168,10 +168,12 @@ void CUserInterFace::Draw(void)
 			{
 				if (enemyget->Get_Enable())
 				{
-					enemymatrix = enemyget->Get_mtxTranslation();
+				//	if (enemyget->Get_DrawCheck())
+					{
+						enemymatrix = enemyget->Get_mtxTranslation();
 
-					Sprite_Draw(TEX_ENEMY_ICON, 1690.0f + (enemymatrix._41 * 1.5f), 150.0f - (enemymatrix._43 * 1.56f), 0, 0, 12, 12, 6, 6, 1, 1, 0);
-
+						Sprite_Draw(TEX_ENEMY_ICON, 1690.0f + (enemymatrix._41 * 1.5f), 150.0f - (enemymatrix._43 * 1.56f), 0, 0, 12, 12, 6, 6, 1, 1, 0);
+					}
 				}
 			}
 		}
