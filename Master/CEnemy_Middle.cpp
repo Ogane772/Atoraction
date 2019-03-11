@@ -138,6 +138,8 @@ void CEnemy_Middle::Finalize(void)
 {
 	m_MoveCheck = false;
 	m_DrawCheck = true;
+	m_EnemyFlying = false;
+	m_DamageFlag = false;
 	m_Hp = MIDDLE_HP;
 	m_Attack = MIDDLE_ATTACK;
 	m_Score = MIDDLE_SCORE;
@@ -190,7 +192,7 @@ void CEnemy_Middle::Update(void)
 				Comeback_Move(MIDDLE_SPEED);
 
 			}
-
+			Ornament_Check();
 		}
 		else
 		{
@@ -200,7 +202,7 @@ void CEnemy_Middle::Update(void)
 
 
 		}
-		Ornament_Check();
+	
 
 		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 		m_mtxKeepTranslation = m_mtxTranslation;

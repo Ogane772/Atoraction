@@ -133,7 +133,8 @@ void CEnemy_Small::Finalize(void)
 {
 	m_MoveCheck = false;
 	m_DrawCheck = true;
-	
+	m_EnemyFlying = false;
+	m_DamageFlag = false;
 	m_Hp = SMALL_HP;
 	m_Attack = SMALL_ATTACK;
 	m_Score = SMALL_SCORE;
@@ -188,7 +189,7 @@ void CEnemy_Small::Update(void)
 				Comeback_Move(SMALL_SPEED);
 
 			}
-
+			Ornament_Check();
 		}
 		else
 		{
@@ -199,7 +200,7 @@ void CEnemy_Small::Update(void)
 
 		}
 
-		Ornament_Check();
+		
 
 		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 		m_mtxKeepTranslation = m_mtxTranslation;

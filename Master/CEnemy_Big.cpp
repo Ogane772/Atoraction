@@ -118,6 +118,8 @@ void CEnemy_Big::Finalize(void)
 {
 	m_MoveCheck = false;
 	m_DrawCheck = true;
+	m_EnemyFlying = false;
+	m_DamageFlag = false;
 	m_Hp = BIG_HP;
 	m_Attack = BIG_ATTACK;
 	m_Score = BIG_SCORE;
@@ -173,7 +175,7 @@ void CEnemy_Big::Update(void)
 				Comeback_Move(BIG_SPEED);
 
 			}
-
+			Ornament_Check();
 		}
 		else
 		{
@@ -183,7 +185,7 @@ void CEnemy_Big::Update(void)
 
 
 		}
-		Ornament_Check();
+		
 
 		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 		m_mtxKeepTranslation = m_mtxTranslation;
