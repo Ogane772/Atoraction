@@ -32,6 +32,7 @@ static int score_total;		//	合計
 static float score_per;		//	加算用
 static float score_up;		//	加算用
 static float Mark_per;
+static int Ko_Count;
 static int total;
 static DIJOYSTATE2 js;
 static LPDIRECTINPUTDEVICE8 pJoyDevice;
@@ -113,7 +114,7 @@ void Score_total_Update(void)
 	//	スペースでタイトル画面へ
 	if (!g_bend)
 	{
-		if (Keyboard_IsTrigger(DIK_SPACE) && js.rgbButtons[0] && score_counter >= 700 || js.rgbButtons[0] && score_counter >= 700)
+		if (Keyboard_IsTrigger(DIK_SPACE) && score_counter >= 700 || js.rgbButtons[0] && score_counter >= 700 || js.rgbButtons[0] && score_counter >= 700)
 		{
 			Fade_Start(true, 3, 0, 0, 0);
 			g_bend = true;
@@ -146,7 +147,7 @@ void Score_total_Draw(void)
 	//値
 	if (score_counter >= 100)
 	{
-		ResultScore_Draw02(500, 330, CPlayer::Get_KoCount(), 3, CTexture::TEX_UI_GEKIHA, 0);
+		ResultScore_Draw02(500, 330, Ko_Count, 3, CTexture::TEX_UI_GEKIHA, 0);
 		if (score_counter == 100)
 		{
 			PlaySound(SCOREHYOUJI_SE);
@@ -252,4 +253,9 @@ void Score_total_Draw(void)
 void ScorePer_Set(float score)
 {
 	score_per = score;
+}
+
+void KoCount_Set(int count)
+{
+	Ko_Count = count;
 }
