@@ -142,6 +142,8 @@ void CEnemy_Special::Finalize(void)
 
 	m_MoveCheck = false;
 	m_DrawCheck = true;
+	m_EnemyFlying = false;
+	m_DamageFlag = false;
 	m_Hp = SPECIAL_HP;
 	m_Attack = SPECIAL_ATTACK;
 	m_Score = SPECIAL_SCORE;
@@ -197,7 +199,7 @@ void CEnemy_Special::Update(void)
 				Comeback_Move(SPECIAL_SPEED);
 
 			}
-
+			Ornament_Check();
 		}
 		else
 		{
@@ -210,7 +212,7 @@ void CEnemy_Special::Update(void)
 
 
 
-		Ornament_Check();
+		
 
 		m_mtxWorld = m_mtxScaling * m_mtxRotation * m_mtxTranslation;
 		m_mtxKeepTranslation = m_mtxTranslation;

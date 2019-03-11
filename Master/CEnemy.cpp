@@ -55,7 +55,7 @@ CEnemy::ENEMY_EMITTER CEnemy::m_EnemyEmitter[]
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f , 20.0f), DIRE_SOUTH,false },
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(40.0f, 0.0f , 10.0f), DIRE_SOUTH,false },
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(40.0f, 0.0f , 50.0f), DIRE_SOUTH,false },
-	{ 0 , TYPE_SMALL,D3DXVECTOR3(10.0f, 0.0f , 40.0f), DIRE_SOUTH,false },
+	/*{ 0 , TYPE_SMALL,D3DXVECTOR3(10.0f, 0.0f , 40.0f), DIRE_SOUTH,false },
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(50.0f, 0.0f , 40.0f), DIRE_SOUTH,false },
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(-30.0f, 0.0f , 50.0f), DIRE_SOUTH,false },
 	{ 0 , TYPE_SMALL,D3DXVECTOR3(20.0f, 0.0f , 60.0f), DIRE_SOUTH,false },
@@ -511,6 +511,8 @@ void CEnemy::Enemy_Damage(float flyinghigh)
 			Exp_Set(HIT, m_mtxWorld._41, m_mtxWorld._42 + 1, m_mtxWorld._43 + 1, 4.0, 0);
 			m_Hp--;
 			m_EnemyFlying = true;
+			m_EnemyFlyingDown = false;
+			m_FlyingCount = 0;
 			m_FlyingMove = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43) - m_PosKeep;
 			m_FlyingMove.y = flyinghigh;
 			if (m_Hp <= 0)

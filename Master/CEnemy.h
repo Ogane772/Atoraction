@@ -111,7 +111,7 @@ protected:
 	int m_InitDirection;
 	bool m_Death;	//	Ž€‚ñ‚¾‚ç1‰ñ‚¾‚¯’Ê‚é—p
 	static int m_EnemyEnableNum;
-
+	bool m_EnemyFlying;
 	void Enable_Check(void);
 private:
 
@@ -122,7 +122,7 @@ private:
 	static int m_ENEMY_MAX;
 
 	int m_FlyingCount;
-	bool m_EnemyFlying;
+	
 	bool m_EnemyFlyingDown;
 	static float EnemyPer;
 	D3DXVECTOR3 m_FlyingMove;
