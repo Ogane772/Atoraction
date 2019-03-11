@@ -236,11 +236,11 @@ void Game_Draw(void)
 	{
 		if (fade_ioFlg == false)
 		{
-			m_fade->Sprite_Draw(CTexture::TEX_EFFECT_FADE_IN, 0.0f, 0.0f, (int)(fade_in_u * 1920), fade_in_v * 1016, 1920, 1016);
+			m_fade->Sprite_Draw(CTexture::TEX_EFFECT_FADE_IN, 0.0f, 0.0f, (int)(fade_in_u * 1920), (int)(fade_in_v * 1016), 1920, 1016);
 		}
 		if (fade_ioFlg == true)
 		{
-			m_fade->Sprite_Draw(CTexture::TEX_EFFECT_FADE, 0.0f, 0.0f, (int)(fade_u * 1920), fade_v * 1016, 1920, 1016);
+			m_fade->Sprite_Draw(CTexture::TEX_EFFECT_FADE, 0.0f, 0.0f, (int)(fade_u * 1920), (int)(fade_v * 1016), 1920, 1016);
 		}
 	}
 	//C3DObj::HitCheck();
