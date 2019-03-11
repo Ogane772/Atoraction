@@ -20,7 +20,7 @@
 //=============================================================================
 #define SPEED (0.5f)
 #define COFFEE_SIZE (4)
-#define COFFEE_CUP_HP (5)
+#define COFFEE_CUP_HP (10)
 #define COFFEE_CUP_MP (1)
 #define COFFEE_CUP_ATK (1)
 #define SCORE (1)

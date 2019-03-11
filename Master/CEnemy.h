@@ -109,6 +109,7 @@ protected:
 	int m_CreateCount;
 	int m_InitCreateCount;
 	int m_InitDirection;
+	bool m_Death;	//	Ž€‚ñ‚¾‚ç1‰ñ‚¾‚¯’Ê‚é—p
 	static int m_EnemyEnableNum;
 
 	void Enable_Check(void);

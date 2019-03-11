@@ -153,7 +153,7 @@ void Coaster::EnemyDamage(void)
 	int i;
 	C3DObj *enemy;
 	THING *thingenemy;
-	int hp;
+	
 	for (i = 0; i < MAX_GAMEOBJ; i++)
 	{
 		enemy = CEnemy::Get_Enemy(i);
@@ -163,7 +163,7 @@ void Coaster::EnemyDamage(void)
 			{
 				Thing_Normal_model.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 				thingenemy = enemy->GetAnimeModel();
-				hp = enemy->Get_Hp();
+				
 				if (C3DObj::Collision_AnimeVSNormal(thingenemy, &Thing_Normal_model))
 				{
 					Exp_Set(HIT, thingenemy->vPosition.x, thingenemy->vPosition.y, thingenemy->vPosition.z, 4.0, 0);

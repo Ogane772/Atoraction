@@ -21,11 +21,11 @@
 //=============================================================================
 #define SPEED (0.2f)
 #define SIZE (0.8f)
-#define FREEFALL_HP (10)
+#define FREEFALL_HP (18)
 #define FREEFALL_MP (1)
-#define FREEFALL_ATK (1)
+#define FREEFALL_ATK (3)
 #define SCORE (1)
-#define FREEFALL_SCALE (1)
+#define FREEFALL_SCALE (1.5)
 #define ATTACK_TIME (5)//‰~”Õ‚ª—Ž‚¿‚Ä‚©‚ç‚ÌUŒ‚ŽžŠÔ
 
 
@@ -124,7 +124,7 @@ void Cfreefall::Update(void)
 				{
 					PlaySound(FREEFALL_SE);
 					attackon = false;
-					Exp_Set(IMPACT_13, m_mtxWorld._41, m_mtxWorld._42 + 1, m_mtxWorld._43, 6.0, 0);
+					Exp_Set(IMPACT_13, m_mtxWorld._41, m_mtxWorld._42 + 1, m_mtxWorld._43, 15.0, 0);
 				}
 				if (CoolTime >= WAIT_TIME)
 				{

@@ -123,13 +123,14 @@ void COrnament_Gasubonbe::Draw(void)
 	if (m_Enable)
 	{
 		D3DXVECTOR3 position = D3DXVECTOR3(0.0f, 1.2f, -1.0f);
-		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
+		m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 		if (!m_DrawCheck)
 		{
 			if (m_FrameCount % 2 == 0)
 			{
 				m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 				DrawDX_NormalAdd(m_mtxWorld, MODELL_GASUBONBE, &Thing_Normal_model, position);
+				//DrawDX_Normal(m_mtxWorld, MODELL_GASUBONBE, &Thing_Normal_model);
 
 				m_DrawCount++;
 				if (m_DrawCount >= ORNAMENT_WAIT_TIME)
@@ -143,6 +144,7 @@ void COrnament_Gasubonbe::Draw(void)
 		{
 			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 			DrawDX_NormalAdd(m_mtxWorld, MODELL_GASUBONBE, &Thing_Normal_model, position);
+			//DrawDX_Normal(m_mtxWorld, MODELL_GASUBONBE, &Thing_Normal_model);
 		}
 	}
 }

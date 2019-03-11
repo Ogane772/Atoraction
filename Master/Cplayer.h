@@ -5,12 +5,12 @@
 #include <d3dx9.h>
 
 #define PLAYER_MAX (2)
-#define MP_MAX (15)
+#define MP_MAX (30)
 #define HP_MAX (50)
 //アトラクション待機時間
 #define COOLTIME_COFFEE   (300.0f)
 #define COOLTIME_FALL	  (400.0f)
-#define COOLTIME_WHEEL	 (1800.0f)
+#define COOLTIME_WHEEL	 (1200.0f)
 #define COOLTIME_COASTER (1200.0f)
 #define COOLTIME_POPCORN    (100.0f)
 //アトラクションMP

@@ -20,9 +20,9 @@
 //=============================================================================
 
 #define MIDDLE_SIZE (0.8f)
-#define MIDDLE_ATTACK (5)
-#define MIDDLE_HP (3)
-#define MIDDLE_MP (4)
+#define MIDDLE_ATTACK (3)
+#define MIDDLE_HP (2)
+#define MIDDLE_MP (6)
 #define MIDDLE_SCORE (1000)
 #define FRY_HEIGHT (0.1f)
 #define FRY_SPEED (0.05f)
@@ -144,7 +144,7 @@ void CEnemy_Middle::Finalize(void)
 	m_Mp = MIDDLE_MP;
 	m_Direction = m_InitDirection;
 	Animation_Change(WALK, WALK_SPEED);
-
+	m_Death = false;
 
 	m_mtxWorld = m_mtxInit;
 	D3DXMatrixTranslation(&m_mtxTranslation, m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
@@ -211,12 +211,18 @@ void CEnemy_Middle::Update(void)
 		if (m_Hp <= 0)
 		{
 			Color_Change(CTexture::TEX_MIDDLE_END);
-			if (!m_DrawCheck)
+			if (!m_Death)//	1回だけ通る
 			{
 				CPlayer::Add_KoCount();
+				m_EnemyEnableNum--;
+				m_Death = true;
+			}
+			if (!m_DrawCheck)
+			{
+				
 				//C3DObj_delete();
 				m_Enable = false;
-				m_EnemyEnableNum--;
+				
 			}
 		}
 	}
@@ -237,7 +243,7 @@ void CEnemy_Middle::Draw(void)
 		{//当たり判定位置更新
 			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, FALSE);	//　ライティング有効
 			DrawDX_Anime(m_mtxWorld, MODELL_ANIME_MIDDLE, &Thing);
-			m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);	//　ライティング有効
+			//m_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);	//　ライティング有効
 		}
 	}
 }
