@@ -183,7 +183,7 @@ void CGAUGE::WhiteGaugeDraw(void)
 
 void CGAUGE::Finalize(void)
 {
-
+	C3DObj_delete();
 }
 
 void CGAUGE::CGAUGE_Create(D3DXMATRIX m_mtxWorld)

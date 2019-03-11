@@ -131,6 +131,8 @@ void CEnemy_Big::Finalize(void)
 	m_Enable = false;
 	Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
 	m_CreateCount = m_InitCreateCount;
+	m_AttackCheck = false;
+	Color_Change(CTexture::TEX_BIG);
 }
 
 

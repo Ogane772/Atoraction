@@ -7,6 +7,7 @@ void Score_total_Finalize(void);
 void Score_total_Update(void);
 void Score_total_Draw(void);
 void ScorePer_Set(float score);
+void KoCount_Set(int count);
 
 
 

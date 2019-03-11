@@ -691,6 +691,7 @@ void CEnemy::Enable_Check(void)
 			if (m_CreateCount == m_FrameCount)
 			{
 				m_Enable = true;
+				m_DamageFlag = false;
 				m_EnemyEnableNum++;
 			}
 		}

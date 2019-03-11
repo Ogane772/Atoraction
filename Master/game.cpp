@@ -90,7 +90,9 @@ void Game_Finalize(void)
 	CGameObj::DeleteAll2D();			//	2Dオブジェクト全消去
 
 	C3DObj::Model_Finalize();*/
-	//↓ここの前にバー情報取得
+	CTexture::Texture_Release(CTexture::TEX_SCREENSHOT);
+	CTexture::Texture_Load(CTexture::TEX_SCREENSHOT);
+	KoCount_Set(CPlayer::Get_KoCount());
 	ScorePer_Set(CEnemy::Get_EnemyPer());
 	CEnemy::Reset_EnemyEnableNum();
 	C3DObj::FinalizeAll();
@@ -234,11 +236,11 @@ void Game_Draw(void)
 	{
 		if (fade_ioFlg == false)
 		{
-			m_fade->Sprite_Draw(CTexture::TEX_EFFECT_FADE_IN, 0, 0, fade_in_u * 1920, fade_in_v * 1016, 1920, 1016);
+			m_fade->Sprite_Draw(CTexture::TEX_EFFECT_FADE_IN, 0.0f, 0.0f, (int)(fade_in_u * 1920), fade_in_v * 1016, 1920, 1016);
 		}
 		if (fade_ioFlg == true)
 		{
-			m_fade->Sprite_Draw(CTexture::TEX_EFFECT_FADE, 0, 0, fade_u * 1920, fade_v * 1016, 1920, 1016);
+			m_fade->Sprite_Draw(CTexture::TEX_EFFECT_FADE, 0.0f, 0.0f, (int)(fade_u * 1920), fade_v * 1016, 1920, 1016);
 		}
 	}
 	//C3DObj::HitCheck();

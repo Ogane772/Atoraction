@@ -133,6 +133,7 @@ void CEnemy_Small::Finalize(void)
 {
 	m_MoveCheck = false;
 	m_DrawCheck = true;
+	
 	m_Hp = SMALL_HP;
 	m_Attack = SMALL_ATTACK;
 	m_Score = SMALL_SCORE;
@@ -145,6 +146,8 @@ void CEnemy_Small::Finalize(void)
 
 	m_Enable = false;
 	Thing.vPosition = D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43);
+	m_AttackCheck = false;
+	Color_Change(CTexture::TEX_SMALL);
 }
 
 //=============================================================================

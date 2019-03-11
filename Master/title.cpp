@@ -19,6 +19,7 @@
 #include "CLight.h"
 #include <crtdbg.h>
 #include "CUserInterface.h"
+#include "Titlekanransya.h"
 #define _CRTDBG_MAP_ALLOC
 
 #define new  ::new(_NORMAL_BLOCK, __FILE__, __LINE__)
@@ -93,7 +94,7 @@ void Title_Initialize(void)
 	a = 0;
 	b = 0;
 	/*C3DObj::InitModelLoad();
-	CPlayer::PlayerCreate();				//	プレイヤー生成		
+	CPlayer::PlayerCreate();				//	プレイヤー生成
 	CLight::Light_Create();					//	ライト生成
 	CMeshField::MeshField_Create(CTexture::TEX_KUSA_RENGA, 120.0f, 2, 2);							//	地面生成																									//CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_FLORR, 10.0f, SYLINDERSIZE, 20, 1,true);	//	内カベ生成
 	CMeshField_Cylinder::MeshField_Cylinder_Create(CTexture::TEX_MOUNTAIN, 10.0f, FIELDSIZE, 20, 1, false);	//	外カベ生成
@@ -102,8 +103,8 @@ void Title_Initialize(void)
 
 	CPlayer::TitleFlag_Change(true);
 	CUserInterFace::TitleFlag_Change(true);
+	CTitleKanransya *m_pAttraction = new CTitleKanransya(D3DXVECTOR3(60.0f, 0.0f, 30.0f));
 
-	
 }
 
 //=============================================================================
@@ -121,7 +122,7 @@ void Title_Finalize(void)
 	CUserInterFace::TitleFlag_Change(false);
 	CPlayer::Reset_KoCount();
 	_CrtDumpMemoryLeaks();
-	
+
 }
 
 //=============================================================================
@@ -205,7 +206,7 @@ void Title_Draw(void)
 	}
 	ptitle->Sprite_Draw(CTexture::TEX_TITLELOGO, 400, 30, 0, 0, ptitle->Texture_GetWidth(CTexture::TEX_TITLELOGO, 1), ptitle->Texture_GetHeight(CTexture::TEX_TITLELOGO, 1));
 	//テクスチャが出ない＆カメラ回転がおかしい？
-//	DebugFont_Draw(300, 50, "X = %ld , Y= %ld", js.lX, js.lY);
+	//	DebugFont_Draw(300, 50, "X = %ld , Y= %ld", js.lX, js.lY);
 }
 
 
